@@ -1,0 +1,114 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin-top:0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+}
+
+.imgLogin{
+    width: 50vw;
+    height: 100vh;
+    display: block;
+}
+.imgUE{
+    width:320px;
+    height:160px;
+}
+.logoUE{
+    text-align: right;
+
+}
+.logomasbox{
+    padding-right:40px;
+}
+.bloqueLogin{
+    text-align: center;
+    padding: 16px 16px 16px 16px;
+    margin:240px 80px 0px 200px;
+    width:30vw;
+    height:29vh;
+    border: solid black;
+    border-radius: 5px;
+    background-color: rgb(231, 231, 231);
+    
+}
+
+input{
+    margin:8px;
+    width: 200px;
+    height: 35px;
+    border-radius: 5px;
+    border: solid black;
+    font-size: 20px;
+}
+
+.btnLogin{
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    font-size: 20px;
+}
+
+.btnLogin:hover{
+    background-color: rgb(255,50,40);
+    cursor: pointer;
+}
+
+@media screen and (max-width:1000px){
+    .bloqueLogin{
+        margin-left:102px;
+    }
+
+    .logomasbox{
+        padding:0px;
+    }
+
+
+
+}
+
+
+
+
+@media screen and (max-height:770px){
+    .bloqueLogin{
+        height:35vh;
+    }
+}
+
+
+/* En caso de que sea en móvil */
+@media screen and (max-width:600px){
+    body{
+        background-image: url(../img/img1.jpeg);
+        background-size: 100vw 100vh;
+        background-repeat: no-repeat;
+    }
+
+    .imgLogin{
+        width:0vw;
+        height:0vh;
+    }
+
+    .imgUE{
+        width:160px;
+        height:80px;
+    }
+
+    .bloqueLogin{
+        width:80vw;
+        height:35vh;
+        margin:200px 0px 0px 40px;
+    }
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styleLogin.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="mainContainer">
+        <div>
+            <img src="img/img1.jpeg" alt="ImagenLogin" class="imgLogin">
+        </div>
+        <div class="logomasbox">
+            <div class="logoUE">
+                <img src="img/UE.png" alt="Logo de la Universidad" class="imgUE">
+            </div>
+            <div class="bloqueLogin">
+                <h1>Iniciar Sesión</h1>
+                <form action="" method="POST">
+                    <input type="text" class="usuario" placeholder="Usuario">
+                    <br>
+                    <input type="password" class="password" placeholder="Contraseña">
+                    <br>
+                    <button type="submit" class="btnLogin">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
