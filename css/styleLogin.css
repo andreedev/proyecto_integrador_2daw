@@ -80,15 +80,9 @@ input{
 }
 
 @media screen and (max-width:1000px){
-    .bloqueLogin{
-    }
-
     .logomasbox{
         padding:0px;
     }
-
-
-
 }
 
 
