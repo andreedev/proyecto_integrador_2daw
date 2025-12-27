@@ -7,3 +7,11 @@
     font-family: "Open Sans", sans-serif;
     font-optical-sizing: auto;
 }
+
+:root{
+    --universidad-europea-color-rojo: #FF2E23;
+    --universidad-europea-color-negro: #181818;
+    --white-color: #FFFFFF;
+    --dark-color: #262626;
+    --gray-color: #E5E5E5;
+}

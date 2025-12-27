@@ -30,17 +30,27 @@ function revisarSesionIniciada(){
 
 }
 
-
+/**
+ * Función para iniciar sesión en la aplicación
+ */
 function loginPHP(){
     global $conexion;
 
     $numExpediente = $_POST['numExpediente'];
     $passwd = $_POST['password'];
 
-    $query = "SELECT * FROM participante WHERE nro_expediente = '$numExpediente'";
+    $query = "SELECT * FROM participante WHERE nro_expediente = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("s", $numExpediente);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-    if(!$resultado = $conexion->query($query)){
-        die("Error en la consulta: " . $conexion->error);
+    if(!$resultado){
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error en la consulta a la base de datos"
+        ]);
+        return;
     }
 
     if($resultado->num_rows > 0){
@@ -54,18 +64,18 @@ function loginPHP(){
 
             echo json_encode([
                 "status" => "success",
-                "message" => "Login correcto. Bienvenido a la aplicación."
+                "message" => "Sesión iniciada con éxito, redireccionando..."
             ]);
         } else {
             echo json_encode([
                 "status" => "error",
-                "message" => "Usuario o contraseña incorrectos."
+                "message" => "Usuario o contraseña incorrectos"
             ]);
         }
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Usuario o contraseña incorrectos."
+            "message" => "Usuario o contraseña incorrectos"
         ]);
     }
 
