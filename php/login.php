@@ -17,11 +17,12 @@
             </div>
             <div class="bloqueLogin">
                 <h1>Iniciar Sesión</h1>
-                <form action="" method="POST">
+                <form method="POST">
                     <input type="text" class="usuario" placeholder="Usuario">
                     <br>
                     <input type="password" class="password" placeholder="Contraseña">
                     <br>
+                    <label class="mensajeError"></label>
                     <button type="submit" class="btnLogin">Iniciar Sesión</button>
                 </form>
             </div>
