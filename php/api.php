@@ -1,4 +1,5 @@
 <?php
+require_once "./BBDD/BD.php";
 require_once "./BBDD/conection.php";
 
 header("Access-Control-Allow-Origin: *");
@@ -7,11 +8,7 @@ header("Content-Type: application/json");
 abrirConexion();
 seleccionarBaseDatos();
 
-global $conexion;
-
 session_start();
-
-global $conexion;
 
 if(isset($_POST['action'])){
     switch($_POST['action']){
@@ -37,13 +34,41 @@ function revisarSesionIniciada(){
 function loginPHP(){
     global $conexion;
 
-    $usuario = $_POST['usuario'];
-    $passwd = $_POST['passwd'];
+    $numExpediente = $_POST['numExpediente'];
+    $passwd = $_POST['password'];
 
-    //cifrar la contraseña
-    $hash = password_hash($passwd, PASSWORD_DEFAULT);
+    $query = "SELECT * FROM participante WHERE nro_expediente = '$numExpediente'";
 
-    $query = "SELECT"
+    if(!$resultado = $conexion->query($query)){
+        die("Error en la consulta: " . $conexion->error);
+    }
+
+    if($resultado->num_rows > 0){
+        $fila = $resultado->fetch_assoc();
+        $hash_guardado = $fila['contrasena'];
+
+        //verificar la contraseña
+        if(password_verify($passwd, $hash_guardado)){
+            $_SESSION['iniciada'] = true;
+            $_SESSION['usuario'] = $numExpediente;
+
+            echo json_encode([
+                "status" => "success",
+                "message" => "Login correcto. Bienvenido a la aplicación."
+            ]);
+        } else {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Usuario o contraseña incorrectos."
+            ]);
+        }
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Usuario o contraseña incorrectos."
+        ]);
+    }
+
 
 }
 

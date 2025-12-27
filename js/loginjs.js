@@ -1,8 +1,7 @@
-const API_URL = "http://localhost/DWES/proyecto_integrador_2daw/php/api.php";
-
 // Elementos del login
 
-const inputUsuario = document.querySelector(".usuario");
+const formLogin = document.querySelector(".formLogin")
+const inputExpediente = document.querySelector(".numExpediente");
 const inputPassword = document.querySelector(".password");
 const btnLogin = document.querySelector(".btnLogin");
 const mensajeError = document.querySelector(".mensajeError");
@@ -12,16 +11,16 @@ const mensajeError = document.querySelector(".mensajeError");
 
 // Validaciones de los campos del login
 
-username.addEventListener('blur', (event) => {
-    if (inputUsuario.value.trim() === '') {
-        mensajeError.textContent = 'El campo usuario no puede estar vacío.';
+inputExpediente.addEventListener('blur', (event) => {
+    if (inputExpediente.value.trim() === '') {
+        mensajeError.textContent = 'El campo del expediente no puede estar vacío.';
         mensajeError.style.color = 'red';
     } else {
         mensajeError.textContent = '';
     }   
 });
 
-password.addEventListener('blur', (event) => {
+inputPassword.addEventListener('blur', (event) => {
     if (inputPassword.value.trim() === '') {
         mensajeError.textContent = 'El campo contraseña no puede estar vacío.';
         mensajeError.style.color = 'red';
@@ -32,25 +31,27 @@ password.addEventListener('blur', (event) => {
 
 
 // Evento click del boton de login
-btnLogin.addEventListener('click', () =>{
+formLogin.addEventListener('submit', (event) =>{
+    event.preventDefault();
     login();
 });
 
 async function login(){
 
     // Obtener los valores de los campos
-    const usuario = inputUsuario.value;
+    const expediente = inputExpediente.value;
     const password = inputPassword.value;
 
     // Crear el objeto de datos a enviar
 
     const datos = new FormData();
-    datos.append('usuario', usuario);
+    datos.append('numExpediente', expediente);
     datos.append('password', password);
+    datos.append('action', 'login');
 
     // Enviar la solicitud a la API
 
-    let response = await fetch(API_URL, {
+    let response = await fetch(URL_API, {
         method: 'POST',
         body: datos
     });
@@ -59,9 +60,13 @@ async function login(){
     // Procesar la respuesta de la API
     let result = await response.json();
 
-    if(result.success){
+    if(result.status === 'success'){
+        mensajeError.textContent = result.message;
+        mensajeError.style.color = 'green';
         // Redirigir a la pagina principal si el login es exitoso
-        window.location.href = "http://localhost/DWES/proyecto_integrador_2daw/index.html";
+        setTimeout(() => {
+            window.location.href = "./index.html";
+        }, 500);
     } else {
         // Mostrar mensaje de error si el login falla
         mensajeError.textContent = result.message;

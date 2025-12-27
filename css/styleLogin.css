@@ -12,6 +12,7 @@ body{
 .mainContainer{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .imgLogin{
@@ -28,12 +29,12 @@ body{
 
 }
 .logomasbox{
-    padding-right:40px;
+    padding-right:8px;
 }
 .bloqueLogin{
     text-align: center;
     padding: 16px 16px 16px 16px;
-    margin:240px 80px 0px 200px;
+    margin:240px 160px 0px 0px;
     width:30vw;
     height:29vh;
     border: solid black;
@@ -44,7 +45,7 @@ body{
 
 input{
     margin:8px;
-    width: 200px;
+    width: 216px;
     height: 35px;
     border-radius: 5px;
     border: solid black;
@@ -52,7 +53,7 @@ input{
 }
 
 .btnLogin{
-    width: 200px;
+    width: 216px;
     height: 30px;
     border-radius: 5px;
     background-color: rgb(0, 0, 0);

@@ -164,12 +164,11 @@ INSERT INTO premio (nombre_completo, telefono, correo, cantidad_dinero, id_categ
 ('Premio Especial', '600555555', 'exp@cine.com', 2000, 5);
 
 INSERT INTO participante (nombre, dni, correo, contrasena, nro_expediente) VALUES
-('Juan Pérez', '11111111A', 'juan@mail.com', 'hash1', 'PAR-001'),
-('María López', '22222222B', 'maria@mail.com', 'hash2', 'PAR-002'),
-('Carlos Ruiz', '33333333C', 'carlos@mail.com', 'hash3', 'PAR-003'),
-('Laura Gómez', '44444444D', 'laura@mail.com', 'hash4', 'PAR-004'),
-('Ana Torres', '55555555E', 'ana@mail.com', 'hash5', 'PAR-005');
-
+('Juan Pérez', '11111111A', 'juan@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-001'),
+('María López', '22222222B', 'maria@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-002'),
+('Carlos Ruiz', '33333333C', 'carlos@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-003'),
+('Laura Gómez', '44444444D', 'laura@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-004'),
+('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
 INSERT INTO candidatura (id_participante, estado, fecha_presentacion, sinopsis) VALUES
 (1, 'En revisión', NOW(), 'Documental sobre el océano'),
 (2, 'Aceptada', NOW(), 'Corto social'),
