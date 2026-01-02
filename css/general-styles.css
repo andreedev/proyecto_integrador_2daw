@@ -6,12 +6,75 @@
     box-sizing: border-box;
     font-family: "Open Sans", sans-serif;
     font-optical-sizing: auto;
+    scroll-behavior: smooth;
 }
 
+/* Kit de componentes Figma */
 :root{
-    --universidad-europea-color-rojo: #FF2E23;
-    --universidad-europea-color-negro: #181818;
-    --white-color: #FFFFFF;
-    --dark-color: #262626;
-    --gray-color: #E5E5E5;
+    --primary-01: #801914;
+    --primary-02: #BF261E;
+    --primary-03: #FF2E23;
+    --primary-04: #FF8C87;
+    --primary-05: #FFE6E5;
+    --secondary-01: #F1A7FD;
+    --secondary-02: #A730BB;
+    --secondary-03: #E040FB;
+    --secondary-04: #E874FC;
+    --secondary-05: #F1A7FD;
+    --neutral-01: #272727;
+    --neutral-02: #393A3B;
+    --neutral-03: #707273;
+    --neutral-04: #A6A9AC;
+    --neutral-05: #DDE1E4;
+    --neutral-06: #E5E5E5;
+    --neutral-07: #F3F3F5;
+    --neutral-08: #F6F7F8;
+    --neutral-09: #FFFFFF;
+    --warning-01: #8A7400;
+    --warning-02: #FFD600;
+    --warning-03: #FFEC8A;
+    --warning-04: #FFFAE0;
+    --information-01: #004E7E;
+    --information-02: #0091EA;
+    --information-03: #8ACCF5;
+    --information-04: #E0F2FD;
+    --success-01: #006C2D;
+    --success-02: #00C853;
+    --success-03: #CEF7D8;
+    --success-04: #E0F8EA;
+    --error-01: #7C0000;
+    --error-02: #D50000;
+    --error-03: #EC8A8A;
+    --error-04: #F6CACA;
+}
+
+/* Eliminar estilos por defecto de elementos HTML */
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: var(--neutral-09);
+    color: var(--neutral-01);
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+input {
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+}
+
+input:focus {
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+}
+
+p{
+    margin: 0;
+    padding: 0;
 }
