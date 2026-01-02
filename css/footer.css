@@ -1,0 +1,126 @@
+.footer-container{
+    background-color: var(--neutral-01);
+    width: 100%;
+}
+
+.footer-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 24px;
+    width: 100%;
+    gap: 32px;
+    margin: 0 auto;
+    flex-wrap: nowrap;
+}
+
+@media (min-width: 768px) {
+    .footer-content{
+        flex-direction: row;
+        width: 720px;
+        flex-wrap: wrap;
+    }
+}
+
+@media (min-width: 992px) {
+    .footer-content{
+        width: 960px;
+        flex-wrap: nowrap;
+    }
+}
+
+@media (min-width: 1200px) {
+    .footer-content {
+        width: 1128px;
+    }
+}
+
+.footer-container-1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 64px;
+    max-width: 350px;
+}
+
+@media (min-width: 480px) {
+    .footer-container-1 {
+        gap: 48px;
+    }
+}
+
+@media (min-width: 768px) {
+    .footer-container-1 {
+        max-width: 450px;
+        gap: 32px;
+    }
+}
+
+.footer-image{
+    width: 120px;
+}
+
+@media (min-width: 1200px) {
+    .footer-image{
+        width: 160px;
+    }
+}
+
+.footer-container-2{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footer-text{
+    color: var(--neutral-09);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.footer-container-3{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footer-secondary-text{
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--neutral-03);
+}
+
+.footer-container-4{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+@media (min-width: 480px) {
+    .footer-container-4{
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 768px) {
+    .footer-container-4{
+        flex-direction: column;
+    }
+}
+
+
+.social-media-container{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.social-media-icon {
+    width: 36px;
+    height: 36px;
+    transition: transform 0.3s ease;
+}
+
+.social-media-icon:hover {
+    transform: scale(1.1);
+}

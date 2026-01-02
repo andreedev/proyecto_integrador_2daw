@@ -49,7 +49,7 @@ body{
     height:29vh;
     border: solid black;
     border-radius: 5px;
-    background-color: var(--gray-color);
+    background-color: var(--neutral-07);
     
 }
 
@@ -67,14 +67,14 @@ input{
     width: 216px;
     height: 30px;
     border-radius: 5px;
-    background-color: var(--universidad-europea-color-negro);
+    background-color: var(--neutral-01);
     color: white;
     font-size: 16px;
     transition: all 300ms ease;
 }
 
 .btnLogin:hover{
-    background-color: var(--universidad-europea-color-rojo);
+    background-color: var(--primario03);
     cursor: pointer;
     transition: all 300ms ease;
 }
