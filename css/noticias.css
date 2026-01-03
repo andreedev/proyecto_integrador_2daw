@@ -1,0 +1,139 @@
+/*Listado de noticias*/
+
+.news-list {
+    max-width: 1100px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.news-item {
+    padding: 1.5rem;
+    border-radius: 8px;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover desktop */
+.news-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    background-color: #ecebeb;
+}
+
+.news-item h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+}
+
+.news-item h3 {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.news-image {
+    width: 100%;
+    height: 220px;
+    background: #d0d0d0;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+}
+
+/* Texto simulado */
+.news-text p {
+    height: 1rem;
+    margin-bottom: 0.7rem;
+    border-radius: 4px;
+}
+
+.news-text p:nth-child(2) { width: 85%; }
+.news-text p:nth-child(3) { width: 70%; }
+.news-text p:nth-child(4) { width: 60%; }
+
+
+/*DETALLE DE LA NOTICIA*/
+
+#news-detail {
+    max-width: 1000px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.news-full h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.news-full h2 {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.news-full .news-content p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.news-full .news-image {
+    height: 300px;
+    margin-bottom: 2rem;
+}
+
+
+/*Responsive*/
+
+/*TABLET*/
+@media (max-width: 1024px) {
+    .news-list,
+    #news-detail {
+        max-width: 900px;
+        padding: 0 1.25rem;
+    }
+
+    .news-item h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/*MÓVIL*/
+@media (max-width: 768px) {
+    .news-list,
+    #news-detail {
+        max-width: 100%;
+        padding: 0 1rem;
+        margin: 2rem auto;
+    }
+
+    .news-item {
+        padding: 1.25rem;
+    }
+
+    .news-item h2 {
+        font-size: 1.4rem;
+    }
+
+    .news-item h3 {
+        font-size: 0.95rem;
+    }
+
+    .news-image {
+        height: 180px;
+    }
+
+    .news-full h1 {
+        font-size: 1.8rem;
+    }
+
+    .news-full h2 {
+        font-size: 1.05rem;
+    }
+}

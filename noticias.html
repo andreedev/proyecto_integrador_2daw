@@ -1,20 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noticias</title>
+
     <link rel="stylesheet" href="css/general-styles.css">
     <link rel="stylesheet" href="css/utils.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/noticias.css">
 </head>
+
 <body>
     <home-header></home-header>
-    <div>
-        Contenido de noticias
-    </div>
+
+    <!-- BLOQUE LISTADO DE NOTICIAS -->
+    <main class="news-list">
+
+        <!-- BLOQUE NOTICIA -->
+        <article class="news-item" data-id="1">
+            <header class="news-header">
+                <h2>Título de la noticia 1</h2>
+                <h3>Subtítulo de la noticia</h3>
+            </header>
+
+            <div class="news-image"></div>
+
+            <div class="news-text">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <p>Curabitur blandit tempus porttitor.</p>
+            </div>
+        </article>
+
+        <article class="news-item" data-id="2">
+            <header class="news-header">
+                <h2>Título de la noticia 2</h2>
+                <h3>Subtítulo de la noticia</h3>
+            </header>
+
+            <div class="news-text">
+                <p>Donec ullamcorper nulla non metus auctor fringilla.</p>
+                <p>Cras justo odio, dapibus ac facilisis in.</p>
+                <p>Morbi leo risus, porta ac consectetur ac.</p>
+            </div>
+        </article>
+
+        <article class="news-item" data-id="3">
+            <header class="news-header">
+                <h2>Título de la noticia 3</h2>
+                <h3>Subtítulo de la noticia</h3>
+            </header>
+
+            <div class="news-image"></div>
+
+            <div class="news-text">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <p>Integer posuere erat a ante venenatis dapibus.</p>
+            </div>
+        </article>
+
+        <article class="news-item" data-id="4">
+            <header class="news-header">
+                <h2>Título de la noticia 4</h2>
+                <h3>Subtítulo de la noticia</h3>
+            </header>
+
+            <div class="news-text">
+                <p>Donec ullamcorper nulla non metus auctor fringilla.</p>
+                <p>Cras justo odio, dapibus ac facilisis in.</p>
+                <p>Morbi leo risus, porta ac consectetur ac.</p>
+            </div>
+        </article>
+
+    </main>
+
     <home-footer></home-footer>
+
     <script src="./js/header.js"></script>
     <script src="./js/footer.js"></script>
     <script src="./js/constantes.js"></script>
