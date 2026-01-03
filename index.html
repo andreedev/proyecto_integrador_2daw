@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +9,168 @@
     <link rel="stylesheet" href="css/utils.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
+
 <body>
     <home-header></home-header>
-    <div>
-        Home
+    <div id="home-content">
+
+        <!-- HERO (Primera sección que se cve de la aplicación) -->
+        <section class="hero">
+            <div class="hero-text">
+                <h1>Participa en el III Concurso de Cortos de la Universidad Europea</h1>
+                <p>Sube tu corto y participa en el concurso.</p>
+                <button class="primary-btn">Subir corto</button>
+            </div>
+
+            <div class="hero-video">
+                <div class="video-placeholder">
+                    <span>▶</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CARRUSEL -->
+        <section class="winners">
+            <h2>Explora los ganadores de años anteriores</h2>
+
+            <div class="carousel-container">
+                <button class="carousel-btn" id="prev">‹</button>
+
+                <div class="carousel">
+                    <article class="slide">
+                        <div class="thumb"></div>
+                        <h3>Corto 1</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem sunt eveniet ipsa
+                            incidunt modi dignissimos illum rem excepturi.</p>
+                    </article>
+
+                    <article class="slide">
+                        <div class="thumb"></div>
+                        <h3>Corto 2</h3>
+                        <p>Descripción del corto</p>
+                    </article>
+
+                    <article class="slide">
+                        <div class="thumb"></div>
+                        <h3>Corto 3</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, sunt accusantium. Sequi
+                            asperiores maiores eveniet aut.</p>
+                    </article>
+
+                    <article class="slide">
+                        <div class="thumb"></div>
+                        <h3>Corto 4</h3>
+                        <p>Descripción del corto</p>
+                    </article>
+                </div>
+
+                <button class="carousel-btn" id="next">›</button>
+            </div>
+        </section>
+
+        <!-- GALA -->
+        <section class="gala">
+            <h2>Gala</h2>
+
+            <div class="gala-content">
+
+                <!-- MINI CALENDARIO -->
+                <div class="mini-calendar">
+                    <div class="calendar-header">
+                        <span>Noviembre</span>
+                        <span>2026</span>
+                    </div>
+
+                    <div class="calendar-weekdays">
+                        <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
+                    </div>
+
+                    <div class="calendar-days">
+                        <span></span><span></span><span></span><span></span><span></span>
+                        <span>1</span><span>2</span>
+                        <span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                        <span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span>
+                        <span>17</span><span>18</span><span>19</span>
+                        <span class="event-day">20</span>
+                        <span>21</span><span>22</span><span>23</span>
+                        <span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span>
+                    </div>
+                </div>
+
+                <!-- INFO GALA -->
+                <div class="gala-info">
+                    <p><strong>Noviembre 2026</strong></p>
+                    <p>Evento de entrega de premios del III Concurso de Cortos de la Universidad Europea.</p>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- NOTICIAS -->
+        <section class="news">
+            <h2>Noticias</h2>
+
+            <div class="news-grid">
+                <article class="news-card">
+                    <div class="news-thumb"></div>
+                    <h3>Título destacado</h3>
+                    <p>Texto de la noticia</p>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-thumb"></div>
+                    <h3>Título destacado</h3>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laborum unde fugit assumenda sequi
+                        animi, quisquam repudiandae voluptas.</p>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-thumb"></div>
+                    <h3>Título destacado</h3>
+                    <p>Texto de la noticia</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- PREMIOS -->
+        <section class="awards">
+            <h2>Premios</h2>
+
+            <div class="awards-grid">
+                <article class="award-card">
+                    <div class="award-icon"></div>
+                    <h3>Premio 1</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis molestias aspernatur fugiat
+                        molestiae consequuntur earum, in repellat.</p>
+                </article>
+
+                <article class="award-card">
+                    <div class="award-icon"></div>
+                    <h3>Premio 2</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem magni consequatur, fuga nobis ad
+                        quidem? Laboriosam laborum, culpa exercitationem.</p>
+                </article>
+
+                <article class="award-card">
+                    <div class="award-icon"></div>
+                    <h3>Premio 3</h3>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam similique, harum eos unde
+                        debitis, ex dolores natus odit maiores magni quod corrupti.</p>
+                </article>
+            </div>
+        </section>
+
     </div>
+
+
     <home-footer></home-footer>
     <script src="./js/header.js"></script>
     <script src="./js/footer.js"></script>
     <script src="./js/constantes.js"></script>
     <script src="./js/index.js"></script>
 </body>
+
 </html>
