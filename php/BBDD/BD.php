@@ -184,11 +184,11 @@ INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES
 (5, 'En revisión', 'Documentación incompleta');
 
 INSERT INTO organizador (nombre, correo, contrasena, dni, nro_empresa) VALUES
-('Fundación Cine', 'info@cine.org', 'hasho1', '99999991Z', 'EMP-01'),
-('Asoc. Cultural', 'info@cultura.org', 'hasho2', '99999992Z', 'EMP-02'),
-('Cine Madrid', 'info@cinemad.com', 'hasho3', '99999993Z', 'EMP-03'),
-('Festival Films', 'info@films.com', 'hasho4', '99999994Z', 'EMP-04'),
-('Arte Visual', 'info@arte.com', 'hasho5', '99999995Z', 'EMP-05');
+('admin', 'admin@uem.org', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999991Z', 'EMP-001'),
+('Asoc. Cultural', 'info@cultura.org', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999992Z', 'EMP-002'),
+('Cine Madrid', 'info@cinemad.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999993Z', 'EMP-003'),
+('Festival Films', 'info@films.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999994Z', 'EMP-004'),
+('Arte Visual', 'info@arte.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999995Z', 'EMP-005');
 
 INSERT INTO configuracion (nombre, valor, id_organizador) VALUES
 ('max_candidaturas', '5', 1),

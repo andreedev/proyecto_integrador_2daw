@@ -1,4 +1,5 @@
 <?php
+
 require_once "./BBDD/BD.php";
 require_once "./BBDD/conection.php";
 
@@ -10,13 +11,16 @@ seleccionarBaseDatos();
 
 session_start();
 
+/**
+ * Manejo de acciones enviadas por POST
+ */
 if(isset($_POST['action'])){
     switch($_POST['action']){
         case 'revisarSesion':
-            revisarSesionIniciada();
+            revisarSesion();
             break;
         case 'login':
-            loginPHP();
+            login();
             break;
         case 'cerrarSesion':
             cerrarSesion(); 
@@ -26,60 +30,96 @@ if(isset($_POST['action'])){
     }
 }
 
-function revisarSesionIniciada(){
-
-}
 
 /**
- * Función para iniciar sesión en la aplicación
+ * Funcion para revisar si la sesión está iniciada
  */
-function loginPHP(){
-    global $conexion;
 
-    $numExpediente = $_POST['numExpediente'];
-    $passwd = $_POST['password'];
-
-    $query = "SELECT * FROM participante WHERE nro_expediente = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("s", $numExpediente);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    if(!$resultado){
+/**
+ * Revisa si la sesión está activa y devuelve el estado
+ */
+function revisarSesion()
+{
+    if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
-            "status" => "error",
-            "message" => "Error en la consulta a la base de datos"
+            "status" => "inactive",
         ]);
         return;
     }
 
-    if($resultado->num_rows > 0){
-        $fila = $resultado->fetch_assoc();
-        $hash_guardado = $fila['contrasena'];
+    echo json_encode([
+        "status" => "active",
+        "rol" => $_SESSION['rol'] ?? '',
+        "id" => $_SESSION['id'] ?? ''
+    ]);
+}
 
-        //verificar la contraseña
-        if(password_verify($passwd, $hash_guardado)){
-            $_SESSION['iniciada'] = true;
-            $_SESSION['usuario'] = $numExpediente;
+/**
+ * Intenta validar las credenciales en una tabla específica
+ */
+function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad) {
+    global $conexion;
 
-            echo json_encode([
-                "status" => "success",
-                "message" => "Sesión iniciada con éxito, redireccionando..."
-            ]);
-        } else {
-            echo json_encode([
-                "status" => "error",
-                "message" => "Usuario o contraseña incorrectos"
-            ]);
+    $query = "SELECT * FROM $tabla WHERE $columnaId = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("s", $identificador);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado && $resultado->num_rows > 0) {
+        $usuario = $resultado->fetch_assoc();
+        if (password_verify($password, $usuario['contrasena'])) {
+            // fill in idEntidad, if it's participante, get id_participante, if organizador, get id_organizador
+            if ($tabla === 'participante') {
+                $idEntidad = $usuario['id_participante'];
+            } elseif ($tabla === 'organizador') {
+                $idEntidad = $usuario['id_organizador'];
+            }
+            return $usuario;
         }
+    }
+    return false;
+}
+
+/**
+ * Función principal de inicio de sesión
+ * Intenta autenticar al usuario como Participante o Organizador
+ */
+function login() {
+    $numIdentidad = $_POST['numExpediente'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $idEntidad=null;
+
+    if (empty($numIdentidad) || empty($password)) {
+        echo json_encode(["status" => "error", "message" => "Faltan datos de inicio de sesión"]);
+        return;
+    }
+
+    // Intentar como Participante
+    $datos = verificarUsuario('participante', 'nro_expediente', $numIdentidad, $password, $idEntidad);
+    $rol = 'participante';
+
+    // Intentar como Organizador
+    if (!$datos) {
+        $datos = verificarUsuario('organizador', 'nro_empresa', $numIdentidad, $password, $idEntidad);
+        $rol = 'organizador';
+    }
+
+    if ($datos) {
+        $_SESSION['iniciada'] = true;
+        $_SESSION['rol'] = $rol;
+        $_SESSION['id'] = $idEntidad;
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Sesión iniciada como $rol, redireccionando..."
+        ]);
     } else {
         echo json_encode([
             "status" => "error",
             "message" => "Usuario o contraseña incorrectos"
         ]);
     }
-
-
 }
 
 function cerrarSesion(){
