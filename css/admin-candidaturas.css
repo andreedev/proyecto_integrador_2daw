@@ -1,0 +1,241 @@
+:root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --border: #dddddd;
+    --text: #333;
+    --muted: #777;
+    --primary: #e53935;
+
+    --yellow-bg: #fff3cd;
+    --yellow-text: #856404;
+
+    --green-bg: #d4edda;
+    --green-text: #155724;
+
+    --red-bg: #f8d7da;
+    --red-text: #721c24;
+
+    --blue-bg: #e3f2fd;
+    --blue-text: #0d47a1;
+
+    --gold-bg: #ffe082;
+    --gold-text: #5d4037;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* PAGE */
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+h1 {
+    margin: 0 0 4px;
+    font-size: 22px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+/* FILTERS */
+.filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: var(--card);
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+
+.filters input,
+.filters select,
+.filters button {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    background: #fff;
+}
+
+.filters input {
+    min-width: 260px;
+}
+
+.filters .clear {
+    margin-left: auto;
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* TABLE */
+.table-wrapper {
+    background: var(--card);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead {
+    background: #fafafa;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+th {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+.participant {
+    font-weight: 600;
+}
+
+.email {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.synopsis {
+    font-size: 13px;
+    color: #555;
+    max-width: 280px;
+}
+
+/* BADGES */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge img {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+}
+
+/* Badge colors */
+.review {
+    background: var(--yellow-bg);
+    color: var(--yellow-text);
+}
+
+.accepted {
+    background: var(--green-bg);
+    color: var(--green-text);
+}
+
+.rejected {
+    background: var(--red-bg);
+    color: var(--red-text);
+}
+
+.finalist {
+    background: var(--blue-bg);
+    color: var(--blue-text);
+}
+
+.winner {
+    background: var(--gold-bg);
+    color: var(--gold-text);
+}
+
+/* Icon color filters */
+.review img {
+    filter: invert(41%) sepia(82%) saturate(376%) hue-rotate(2deg) brightness(96%) contrast(92%);
+}
+
+.accepted img {
+    filter: invert(33%) sepia(86%) saturate(384%) hue-rotate(88deg) brightness(92%) contrast(90%);
+}
+
+.rejected img {
+    filter: invert(24%) sepia(86%) saturate(2626%) hue-rotate(344deg) brightness(96%) contrast(95%);
+}
+
+.finalist img {
+    filter: invert(24%) sepia(91%) saturate(1756%) hue-rotate(198deg) brightness(94%) contrast(92%);
+}
+
+.winner img {
+    filter: invert(63%) sepia(72%) saturate(356%) hue-rotate(8deg) brightness(101%) contrast(92%);
+}
+
+/* ACTIONS */
+.actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: #fff;
+    cursor: pointer;
+}
+
+.btn.change {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* FOOTER */
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    background: #fafafa;
+}
+
+.pagination span {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-left: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+}
+
+.pagination .active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
