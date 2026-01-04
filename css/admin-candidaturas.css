@@ -137,7 +137,6 @@ th {
     border-radius: 2px;
     font-size: 12px;
     font-weight: 600;
-    white-space: nowrap;
 }
 
 .badge img {
@@ -172,7 +171,7 @@ th {
     color: var(--gold-text);
 }
 
-/* Icon color filters */
+/* Badge icon filters */
 .review img {
     filter: invert(41%) sepia(82%) saturate(376%) hue-rotate(2deg) brightness(96%) contrast(92%);
 }
@@ -195,12 +194,16 @@ th {
 
 /* ACTIONS */
 .actions {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 6px 8px;
+    align-items: center;
 }
 
+
 .btn {
+    display: inline-flex;
+    align-items: center;
     padding: 4px 8px;
     font-size: 12px;
     border-radius: 5px;
@@ -209,10 +212,22 @@ th {
     cursor: pointer;
 }
 
+.btn img {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    filter: invert(36%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(85%);
+}
+
 .btn.change {
     color: var(--primary);
     border-color: var(--primary);
 }
+
+.btn.change img {
+    filter: invert(21%) sepia(94%) saturate(2486%) hue-rotate(346deg) brightness(95%) contrast(96%);
+}
+
 
 /* FOOTER */
 .table-footer {
