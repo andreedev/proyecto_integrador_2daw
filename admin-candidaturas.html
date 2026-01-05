@@ -64,10 +64,11 @@
                         <td>20/11/2024, 15:45</td>
                         <td>
                             <div class="actions">
-                                <button class="btn"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
+                                <button class="btn btn-detail"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
                                 <button class="btn"><img src="img/icon/DocumentIcon.svg" alt="">Documentos</button>
                                 <button class="btn"><img src="img/icon/TimeBackIcon.svg" alt="">Historial</button>
-                                <button class="btn change"><img src="img/icon/EditIcon.svg" alt="">Cambiar</button>
+                                <button class="btn change" data-estado="review"><img src="img/icon/EditIcon.svg"
+                                        alt="">Cambiar</button>
                             </div>
                         </td>
                     </tr>
@@ -91,10 +92,11 @@
                         <td>22/11/2024, 10:12</td>
                         <td>
                             <div class="actions">
-                                <button class="btn"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
+                                <button class="btn btn-detail"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
                                 <button class="btn"><img src="img/icon/DocumentIcon.svg" alt="">Documentos</button>
                                 <button class="btn"><img src="img/icon/TimeBackIcon.svg" alt="">Historial</button>
-                                <button class="btn change"><img src="img/icon/EditIcon.svg" alt="">Cambiar</button>
+                                <button class="btn change" data-estado="review"><img src="img/icon/EditIcon.svg"
+                                        alt="">Cambiar</button>
                             </div>
                         </td>
                     </tr>
@@ -118,10 +120,11 @@
                         <td>25/11/2024, 18:03</td>
                         <td>
                             <div class="actions">
-                                <button class="btn"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
+                                <button class="btn btn-detail"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
                                 <button class="btn"><img src="img/icon/DocumentIcon.svg" alt="">Documentos</button>
                                 <button class="btn"><img src="img/icon/TimeBackIcon.svg" alt="">Historial</button>
-                                <button class="btn change"><img src="img/icon/EditIcon.svg" alt="">Cambiar</button>
+                                <button class="btn change" data-estado="review"><img src="img/icon/EditIcon.svg"
+                                        alt="">Cambiar</button>
                             </div>
                         </td>
                     </tr>
@@ -145,10 +148,11 @@
                         <td>28/11/2024, 12:40</td>
                         <td>
                             <div class="actions">
-                                <button class="btn"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
+                                <button class="btn btn-detail"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
                                 <button class="btn"><img src="img/icon/DocumentIcon.svg" alt="">Documentos</button>
                                 <button class="btn"><img src="img/icon/TimeBackIcon.svg" alt="">Historial</button>
-                                <button class="btn change"><img src="img/icon/EditIcon.svg" alt="">Cambiar</button>
+                                <button class="btn change" data-estado="review"><img src="img/icon/EditIcon.svg"
+                                        alt="">Cambiar</button>
                             </div>
                         </td>
                     </tr>
@@ -172,10 +176,11 @@
                         <td>30/11/2024, 09:15</td>
                         <td>
                             <div class="actions">
-                                <button class="btn"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
+                                <button class="btn btn-detail"><img src="img/icon/EyeIcon.svg" alt="">Detalle</button>
                                 <button class="btn"><img src="img/icon/DocumentIcon.svg" alt="">Documentos</button>
                                 <button class="btn"><img src="img/icon/TimeBackIcon.svg" alt="">Historial</button>
-                                <button class="btn change"><img src="img/icon/EditIcon.svg" alt="">Cambiar</button>
+                                <button class="btn change" data-estado="review"><img src="img/icon/EditIcon.svg"
+                                        alt="">Cambiar</button>
                             </div>
                         </td>
                     </tr>
@@ -198,5 +203,240 @@
 
     </div>
 
+    <!-- MODAL CAMBIAR ESTADO -->
+    <div class="modal" id="changeModal">
+        <div class="modal-overlay"></div>
+
+        <div class="modal-content">
+            <h2>Cambiar estado de candidatura</h2>
+
+            <!-- Información contextual (se llenará con JS) -->
+            <div class="modal-context">
+                <p><strong>Participante:</strong> <span id="modal-participant"></span></p>
+                <p><strong>Estado actual:</strong> <span id="modal-current-status"></span></p>
+            </div>
+
+            <label>
+                Nuevo estado
+                <select id="modalStatus">
+                    <option value="review">En revisión</option>
+                    <option value="accepted">Aceptada</option>
+                    <option value="rejected">Rechazada</option>
+                    <option value="finalist">Finalista</option>
+                    <option value="winner">Ganador</option>
+                </select>
+            </label>
+
+            <label id="rejectReasonWrapper" style="display: none;">
+                Motivo del rechazo *
+                <textarea id="rejectReason" rows="3"
+                    placeholder="Indique el motivo del rechazo (visible para el participante)"></textarea>
+            </label>
+
+            <div class="modal-actions">
+                <button class="btn" id="closeModal">Cancelar</button>
+                <button class="btn change" id="saveModal">Guardar</button>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL DOCUMENTOS -->
+    <div class="modal" id="documentsModal">
+        <div class="modal-overlay"></div>
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Documentos de la candidatura</h2>
+                <button class="close-btn" id="closeDocumentsModal">&times;</button>
+            </div>
+
+            <!-- PESTAÑAS -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="video">Vídeo</button>
+                <button class="tab-btn" data-tab="poster">Cartel</button>
+                <button class="tab-btn" data-tab="technical">Ficha técnica</button>
+            </div>
+
+            <!-- CONTENIDO DE LAS PESTAÑAS -->
+            <div class="tab-content">
+
+                <!-- VÍDEO -->
+                <div class="tab-pane active" id="video-pane">
+                    <div class="video-container">
+                        <img src="img/Video_Cortometraje.png" alt="Video" class="video-placeholder">
+                    </div>
+                </div>
+
+                <!-- CARTEL -->
+                <div class="tab-pane" id="poster-pane">
+                    <div class="poster-container">
+                        <img src="img/Foto_corto.png" alt="Cartel" class="poster-placeholder">
+                    </div>
+                </div>
+
+                <!-- FICHA TÉCNICA -->
+                <div class="tab-pane" id="technical-pane">
+                    <div class="technical-info">
+                        <img src="img/Ficha_Tecnica.png" alt="Ficha técnica">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- MODAL DETALLE -->
+    <div class="modal" id="detailModal">
+        <div class="modal-overlay"></div>
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalle de Candidatura</h2>
+                <button class="close-btn" id="closeDetailModal">&times;</button>
+            </div>
+
+            <div class="detail-content">
+
+                <!-- ID y Estado -->
+                <div class="detail-row">
+                    <span><strong>ID Candidatura:</strong> <span id="detail-id">CD001</span></span>
+                    <span><strong>Estado actual:</strong> <span id="detail-status" class="badge review">En
+                            revisión</span></span>
+                </div>
+
+                <!-- Información del participante -->
+                <h3>Información del participante</h3>
+                <div class="participant-info">
+                    <div class="info-item">
+                        <img src="img/icon/UserIcon.svg" alt="Nombre">
+                        <span id="detail-name">María García López</span>
+                    </div>
+                    <div class="info-item">
+                        <img src="img/icon/EmailIcon.svg" alt="Email">
+                        <span id="detail-email">maria.garcia@email.com</span>
+                    </div>
+                    <div class="info-item">
+                        <img src="img/icon/IdIcon.svg" alt="ID">
+                        <span id="detail-id-number">12345678A</span>
+                    </div>
+                    <div class="info-item">
+                        <img src="img/icon/HashIcon.svg" alt="Expediente">
+                        <span id="detail-exp">EXP-2025-001</span>
+                    </div>
+                </div>
+
+                <!-- Sinopsis -->
+                <h3>Información de la candidatura</h3>
+                <div class="synopsis-detail">
+                    <strong>Sinopsis</strong>
+                    <p id="detail-synopsis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum voluptates
+                        amet, libero dolorum sequi dolore quidem, sed quam officiis maiores, esse consequatur corrupti
+                        ea? Blanditiis exercitationem provident cupiditate quis suscipit?</p>
+                </div>
+
+                <!-- Fechas -->
+                <div class="dates-row">
+                    <div class="date-item">
+                        <img src="img/icon/CalendarIcon.svg" alt="Fecha presentación">
+                        <div>
+                            <strong>Fecha de presentación</strong>
+                            <div id="detail-date-presented">15/09/2024, 10:30</div>
+                        </div>
+                    </div>
+                    <div class="date-item">
+                        <img src="img/icon/CalendarIcon.svg" alt="Última actualización">
+                        <div>
+                            <strong>Última actualización</strong>
+                            <div id="detail-date-updated">10/12/2024, 18:00</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- MODAL HISTORIAL -->
+<div class="modal" id="historyModal">
+    <div class="modal-overlay"></div>
+
+    <div class="modal-content history-modal">
+        <div class="modal-header">
+            <h2>Historial de estados</h2>
+            <button class="close-btn" id="closeHistoryModal">&times;</button>
+        </div>
+
+        <div class="history-body">
+
+            <div class="history-id">
+                <strong>ID Candidatura:</strong> <span id="history-id">CD001</span>
+            </div>
+
+            <div class="timeline">
+
+                <!-- ITEM -->
+                <div class="timeline-item review">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-badge review">En revisión</span>
+                        <span class="timeline-date">22/08/2024, 16:45</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item rejected">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-badge rejected">Rechazada</span>
+                        <span class="timeline-date">10/09/2024, 12:30</span>
+
+                        <div class="timeline-reason">
+                            <strong>Motivo del rechazo:</strong>
+                            Falta documentación: certificado de derechos de autor de la banda sonora.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item review">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-badge review">En revisión</span>
+                        <span class="timeline-date">10/09/2024, 12:30</span>
+
+                        <div class="timeline-fix">
+                            <strong>Subsanación enviada:</strong>
+                            Se adjunta certificado de derechos solicitado y declaración jurada del compositor.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item accepted">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-badge accepted">Aceptada</span>
+                        <span class="timeline-date">22/09/2024, 16:45</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item finalist">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-badge finalist">Finalista</span>
+                        <span class="timeline-date">22/10/2024, 16:45</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item winner">
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-badge winner">Ganador</span>
+                        <span class="timeline-date">22/11/2024, 16:45</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="js/admin-candidaturas.js"></script>
+
 </body>
+
 </html>
