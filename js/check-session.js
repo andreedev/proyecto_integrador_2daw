@@ -20,7 +20,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const result = await httpResponse.json();
 
-    await sleep(400);
+    await sleep(300);
 
     splash.style.display = 'none';
 

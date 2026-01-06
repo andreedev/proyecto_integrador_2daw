@@ -37,8 +37,8 @@ ul{
     }
 }
 .iconoAdminPanel{
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     background-color: var(--neutral-09);
     mask-image: url('../img/icon/AdminPanelIcon.svg');
     display: inline-block;
@@ -238,21 +238,23 @@ ul{
     display:none;
 }
 
-@media (max-width: 960px){
+.menuLateralCompleto{
+    z-index: 1000;
+    background-color: var(--neutral-05);
+}
+
+@media (max-width: 992px){
 
     .menuLateralCompleto {
         position: fixed;
         left: -17rem;
         top:72px;
-
     }
 
     .iconoMenuEscondido{
         background-color: var(--neutral-01);
         width:56px;
         height:56px;
-        margin-left:8px;
-        margin-top:8px;
         border-radius: 5px;
         
     }
@@ -268,12 +270,39 @@ ul{
         margin: 8px 0px 8px 8px;
         cursor: pointer;
     }
-    #checkMenu:checked ~ .menuLateralCompleto {
-        left: 0;
-        transition: left 300ms ease-in-out;
+
+}
+
+#checkMenu:checked ~ .menuLateralCompleto {
+    left: 0;
+    transition: left 300ms ease-in-out;
+}
+#checkMenu:not(:checked) ~ .menuLateralCompleto {
+    left: -17rem;
+    transition: left 300ms ease-in-out;
+}
+
+.admin-super-container{
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 992px){
+    .admin-super-container{
+        flex-direction: row;
     }
-    #checkMenu:not(:checked) ~ .menuLateralCompleto {
-        left: -17rem;
-        transition: left 300ms ease-in-out;
+}
+
+
+.responsiveMenuAdmin{
+    border-bottom: 1px solid var(--neutral-04);
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+}
+
+@media (min-width: 992px){
+    .responsiveMenuAdmin{
+        display: none;
     }
 }

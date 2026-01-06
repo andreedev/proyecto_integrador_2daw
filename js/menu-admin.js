@@ -1,16 +1,20 @@
-class HomeHeader extends HTMLElement {
+/**
+ * Menú lateral para el panel de admin
+ */
+class MenuAdmin extends HTMLElement {
     constructor() {
         super();
     }
     connectedCallback() {
         this.innerHTML = `
             <input type="checkbox" id="checkMenu">
-            <label for="checkMenu" class="iconoMenu">
-                <div class="iconoMenuEscondido">
-                    <span class="iconoMenuHamburguesa"></span>
-                </div>
-            </label>
-            <hr>
+            <div class="responsiveMenuAdmin">
+                <label for="checkMenu" class="iconoMenu">
+                    <div class="iconoMenuEscondido">
+                        <span class="iconoMenuHamburguesa"></span>
+                    </div>
+                </label>
+            </div>
             <div class="menuLateralCompleto">
                 <div class="cabeceraMenuLateral">
                     <div class="cabeceraIcono">
@@ -88,4 +92,4 @@ class HomeHeader extends HTMLElement {
     }
 }
 
-customElements.define('home-header', HomeHeader);
+customElements.define('menu-admin', MenuAdmin);

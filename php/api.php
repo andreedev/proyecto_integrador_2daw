@@ -1,13 +1,14 @@
 <?php
 
-require_once "./BBDD/BD.php";
-require_once "./BBDD/conection.php";
-
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
+require_once "./BBDD/BD.php";
+require_once "./BBDD/conection.php";
+
 abrirConexion();
-seleccionarBaseDatos();
+
+crearBaseDatosSiNoExiste();
 
 session_start();
 
@@ -98,11 +99,13 @@ function login() {
     // Intentar como Participante
     $datos = verificarUsuario('participante', 'nro_expediente', $numIdentidad, $password, $idEntidad);
     $rol = 'participante';
+    $redirect = './index.html';
 
     // Intentar como Organizador
     if (!$datos) {
         $datos = verificarUsuario('organizador', 'nro_empresa', $numIdentidad, $password, $idEntidad);
         $rol = 'organizador';
+        $redirect = './admin-candidaturas.html';
     }
 
     if ($datos) {
@@ -112,7 +115,8 @@ function login() {
 
         echo json_encode([
             "status" => "success",
-            "message" => "Sesión iniciada como $rol, redireccionando..."
+            "message" => "Sesión iniciada como $rol, redireccionando...",
+            "redirect" => $redirect
         ]);
     } else {
         echo json_encode([
@@ -130,4 +134,6 @@ function cerrarSesion(){
         "message" => "Sesión cerrada correctamente"
     ]);
 }
-?>
+
+
+cerrarConexion();
