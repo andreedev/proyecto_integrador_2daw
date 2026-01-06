@@ -66,12 +66,12 @@ async function login(){
     // Procesar la respuesta de la API
     let result = await response.json();
 
-    // Si el login es exitoso, redirigir al usuario a la pagina principal
+    // Si el login es exitoso, redirigir al usuario
     if(result.status === 'success'){
         mensajeSpan.textContent = result.message;
         mensajeSpan.classList.add('success');
         setTimeout(() => {
-            window.location.href = "./index.html";
+            window.location.href = result.redirect;
             sessionStorage.setItem('sesionIniciada', 'true');
         }, 1000);
     } else {

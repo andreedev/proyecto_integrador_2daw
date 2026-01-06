@@ -80,13 +80,29 @@ input:focus{
     color: white;
     font-size: 16px;
     transition: all 300ms ease;
+    border: 1px solid var(--neutral-01);
 }
 
 .btnLogin:hover{
+    border: 1px solid transparent;
     background-color: var(--primary-03);
     cursor: pointer;
     transition: all 300ms ease;
-    border: 1px solid var(--primary-03);
+}
+
+@media screen and (max-width:1000px){
+    .logomasbox{
+        padding:0px;
+    }
+}
+
+
+
+
+@media screen and (max-height:770px){
+    .bloqueLogin{
+        height:35vh;
+    }
 }
 
 
