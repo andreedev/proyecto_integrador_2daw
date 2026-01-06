@@ -216,7 +216,7 @@ ul{
 .textoIcono:hover{
     background-color: var(--neutral-04);
     color: var(--neutral-01);
-    border-radius: 5px;
+    border-radius: 6px;
     transition: all 300ms ease;
 }
 
@@ -224,7 +224,7 @@ ul{
 .textoIcono.active {
     background-color: var(--neutral-02);
     color: var(--neutral-09);
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
 .textoIcono.active div span{
@@ -238,23 +238,34 @@ ul{
     display:none;
 }
 
-
 @media (max-width: 960px){
 
     .menuLateralCompleto {
         position: fixed;
         left: -17rem;
+        top:72px;
 
     }
+
+    .iconoMenuEscondido{
+        background-color: var(--neutral-01);
+        width:56px;
+        height:56px;
+        margin-left:8px;
+        margin-top:8px;
+        border-radius: 5px;
+        
+    }
+
     .iconoMenuHamburguesa{
         width:40px;
         height:40px;
-        background-color: var(--neutral-01);
+        background-color: var(--neutral-09);
         mask-image: url('../img/icon/MenuBarsIcon.svg');
         display: inline-block;
         mask-repeat: no-repeat;
         mask-size: contain;
-        margin: 6px 0px 0px 6px;
+        margin: 8px 0px 8px 8px;
         cursor: pointer;
     }
     #checkMenu:checked ~ .menuLateralCompleto {
