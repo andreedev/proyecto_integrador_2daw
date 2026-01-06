@@ -1,0 +1,91 @@
+class HomeHeader extends HTMLElement {
+    constructor() {
+        super();
+    }
+    connectedCallback() {
+        this.innerHTML = `
+            <input type="checkbox" id="checkMenu">
+            <label for="checkMenu" class="iconoMenu">
+                <div class="iconoMenuEscondido">
+                    <span class="iconoMenuHamburguesa"></span>
+                </div>
+            </label>
+            <hr>
+            <div class="menuLateralCompleto">
+                <div class="cabeceraMenuLateral">
+                    <div class="cabeceraIcono">
+                        <span class="iconoAdminPanel"></span>
+                    </div>
+                    <h1>Panel de Admin</h1>
+                </div>
+
+                <div class="menuLateral">
+                    <ul>
+                        <li class="textoIcono active">
+                            <div class="iconoCandidaturasMenuLateral">
+                                <span class="iconoCandidaturas"></span>
+                            </div>
+                            <span>Candidaturas</span>
+                        </li>
+                        <li class="textoIcono">
+                            <div class="iconoFinalistasMenuLateral">
+                                <span class="iconoFinalistas"></span>
+                            </div>
+                            <span>Finalistas</span>
+                        </li>
+                        <li class="textoIcono">
+                            <div class="iconoNoticiasMenuLateral">
+                                <span class="iconoNoticias"></span>
+                            </div>
+                            <span>Noticias</span>
+                        </li>
+                        <li class="textoIcono">
+                            <div class="iconoCategoriasMenuLateral">
+                                <span class="iconoCategorias"></span>
+                            </div>
+                            <span>Categorías y Premios</span>
+                        </li>
+                        <li class="textoIcono">
+                            <div class="iconoPatrocinadoresMenuLateral">
+                                <span class="iconoPatrocinadores"></span>
+                            </div>
+                            <span>Patrocinadores</span>
+                        </li>
+                        <li>
+                            <div class="gala">
+                                <div class="iconoGalaMenuLateral">
+                                    <span class="iconoGala"></span>
+                                </div>
+                                <span>Gala</span>
+                            </div>
+                        </li>
+                        <li class="menuGala">
+                            <ul>
+                                <li class="textoIcono">
+                                    <div class="iconoEventoMenuLateral">
+                                        <span class="iconoEvento"></span>
+                                    </div>
+                                    <span>Eventos</span>
+                                </li>
+                                <li class="textoIcono">
+                                    <div class="iconoEdicionesAnterioresMenuLateral">
+                                        <span class="iconoEdicionesAnteriores"></span>
+                                    </div>
+                                    <span>Ediciones Anteriores</span>
+                                </li>
+                                <li class="textoIcono">
+                                    <div class="iconoConfiguracionWebMenuLateral">
+                                        <span class="iconoConfiguracionWeb"></span>
+                                    </div>
+                                    <span>Configuración Web</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+}
+
+customElements.define('home-header', HomeHeader);
