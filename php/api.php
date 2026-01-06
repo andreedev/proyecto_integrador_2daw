@@ -69,7 +69,6 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
     if ($resultado && $resultado->num_rows > 0) {
         $usuario = $resultado->fetch_assoc();
         if (password_verify($password, $usuario['contrasena'])) {
-            // fill in idEntidad, if it's participante, get id_participante, if organizador, get id_organizador
             if ($tabla === 'participante') {
                 $idEntidad = $usuario['id_participante'];
             } elseif ($tabla === 'organizador') {
@@ -130,4 +129,3 @@ function cerrarSesion(){
         "message" => "Sesión cerrada correctamente"
     ]);
 }
-?>
