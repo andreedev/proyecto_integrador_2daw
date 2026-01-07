@@ -29,7 +29,7 @@ class HomeHeader extends HTMLElement {
         this.innerHTML = `
             <div class="header-container">
                 <a href="./" class="header-logo-container">
-                    <img src="./img/logo1.png" alt="Logo" class="header-logo-image">
+                    <img src="./../img/logo1.png" alt="Logo" class="header-logo-image">
                 </a>
                 <div class="icon-menu-bards-container">
                     <span class="icon-menu-bars"></span>

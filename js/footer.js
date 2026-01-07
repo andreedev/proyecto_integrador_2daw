@@ -8,8 +8,8 @@ class HomeFooter extends HTMLElement {
             <div class="footer-container">
                 <div class="footer-content">
                     <div class="footer-container-1">
-                        <img src="./img/canon-logo.png" alt="Logo" class="footer-image">
-                        <img src="./img/logo3.png" alt="Logo" class="footer-image">
+                        <img src="./../img/canon-logo.png" alt="Logo" class="footer-image">
+                        <img src="./../img/logo3.png" alt="Logo" class="footer-image">
                     </div>
                     <div class="footer-container-2">
                         <p class="footer-text">C/Tajo, s/n, 28670</p>
@@ -27,13 +27,13 @@ class HomeFooter extends HTMLElement {
                         <p class="footer-secondary-text">Redes sociales</p>
                         <div class="social-media-container">
                             <a href="#">
-                                <img src="./img/icon/YoutubeIcon.svg" class="social-media-icon" alt="YouTube">
+                                <img src="./../img/icon/YoutubeIcon.svg" class="social-media-icon" alt="YouTube">
                             </a>
                             <a href="#">
-                                <img src="./img/icon/InstagramIcon.svg" class="social-media-icon" alt="Instagram">
+                                <img src="./../img/icon/InstagramIcon.svg" class="social-media-icon" alt="Instagram">
                             </a>
                             <a href="#">
-                                <img src="./img/icon/TiktokIcon.svg" class="social-media-icon" alt="TikTok">
+                                <img src="./../img/icon/TiktokIcon.svg" class="social-media-icon" alt="TikTok">
                             </a>
                         </div>
                     </div>
