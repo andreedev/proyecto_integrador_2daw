@@ -99,3 +99,11 @@ p{
     opacity: 0;
     pointer-events: none;
 }
+
+.hidden-force {
+    display: none !important;
+}
+
+.block-force {
+    display: block !important;
+}

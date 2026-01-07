@@ -15,7 +15,7 @@
         <p class="upload-short-film-title">Subir cortometraje</p>
         <span class="upload-short-film-secondary-text">Comparte tu obra con nosotros. Completa el formulario paso a paso.</span>
         <div class="steps-container">
-            <div id="step-1" class="step active-step completed-step">
+            <div id="step1" class="step active-step">
                 <span class="step-number-container">
                     <span class="step-number-text">1</span>
                     <span class="icon-checked"></span>
@@ -23,39 +23,166 @@
                 <span class="step-text">Datos del Participante</span>
             </div>
             <div class="step-line-divider"></div>
-            <div id="step-2" class="step active-step">
-                <span class="step-number-container">2</span>
+            <div id="step2" class="step">
+                <span class="step-number-container">
+                    <span class="step-number-text">2</span>
+                    <span class="icon-checked"></span>
+                </span>
                 <span class="step-text">Datos del Cortometraje</span>
             </div>
             <div class="step-line-divider"></div>
-            <div id="step-3" class="step">
-                <span class="step-number-container">3</span>
+            <div id="step3" class="step">
+                <span class="step-number-container">
+                    <span class="step-number-text">3</span>
+                    <span class="icon-checked"></span>
+                </span>
                 <span class="step-text">Documentación</span>
             </div>
         </div>
         <div class="upload-short-film-card-container">
-            <div class="upload-short-film-card-header step-3">
+            <div class="upload-short-film-card-header step-1">
                 <span class="upload-short-film-card-header-text">Registro del Participante</span>
                 <span class="upload-short-film-card-header-subtext">Paso 1 de 3</span>
             </div>
             <div class="upload-short-firm-card-body">
-                <div class="upload-short-film-card-body-step-1">
+
+                <div id="cardBodyStep1" class="upload-short-film-card-body-step">
                     <div class="upload-short-film-input-group">
                         <span class="upload-short-film-input-label">Nombre Completo</span>
-                        <label class="upload-short-film-input-wrapper" for="nombreParticipanteInput">
-                            <span class="icon-user"></span>
-                            <input id="nombreParticipanteInput" class="upload-short-film-input" placeholder="Mario Vete Rinario">
+                        <label class="upload-short-film-input-wrapper" for="nombreInput">
+                            <span class="icon icon-user"></span>
+                            <input id="nombreInput" class="upload-short-film-input" placeholder="Mario Vete Rinario">
                         </label>
+                        <span id="nombreErrorMessage" class="error-message"></span>
+                    </div>
+                    <div class="upload-short-film-input-row">
+                        <div class="upload-short-film-input-group">
+                            <span class="upload-short-film-input-label">Correo Electrónico</span>
+                            <label class="upload-short-film-input-wrapper" for="correoInput">
+                                <span class="icon icon-email"></span>
+                                <input id="correoInput" class="upload-short-film-input" placeholder="correo@gmail.com">
+                            </label>
+                            <span id="correoErrorMessage" class="error-message"></span>
+                        </div>
+                        <div class="upload-short-film-input-group">
+                            <span class="upload-short-film-input-label">Contraseña</span>
+                            <label class="upload-short-film-input-wrapper" for="passwordInput">
+                                <span class="icon icon-lock"></span>
+                                <input id="passwordInput" class="upload-short-film-input" placeholder="*********" type="password">
+                                <span class="icon icon-eye" id="switchPasswordVisible"></span>
+                            </label>
+                            <span id="passwordHelperText" class="helper-text">La contraseña debe tener al menos 8 caracteres e incluir al menos un número</span>
+                            <span id="passwordErrorMessage" class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="upload-short-film-divider-container">
+                        <span class="divider-line"></span>
+                        <span class="divider-text">IDENTIFICACIÓN</span>
+                        <span class="divider-line"></span>
+                    </div>
+                    <div class="upload-short-film-input-row">
+                        <div class="upload-short-film-input-group">
+                            <span class="upload-short-film-input-label">DNI / Pasaporte</span>
+                            <label class="upload-short-film-input-wrapper" for="dniInput">
+                                <span class="icon icon-id"></span>
+                                <input id="dniInput" class="upload-short-film-input" placeholder="36580582W">
+                            </label>
+                            <span id="dniErrorMessage" class="error-message"></span>
+                        </div>
+                        <div class="upload-short-film-input-group">
+                            <span class="upload-short-film-input-label">Número de Expediente</span>
+                            <label class="upload-short-film-input-wrapper" for="nroExpedienteInput">
+                                <span class="icon icon-hashtag"></span>
+                                <input id="nroExpedienteInput" class="upload-short-film-input" placeholder="A12345678B">
+                            </label>
+                            <span id="nroExpedienteErrorMessage" class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="upload-short-film-divider-container">
+                        <span class="divider-line"></span>
+                    </div>
+                    <div class="upload-short-film-input-space-between-row">
+                        <p class="upload-short-film-terms-text">Al continuar, confirmo que he leído y acepto las <a href="#" class="upload-short-film-link">bases legales</a> del concurso.</p>
+                        <button id="step1ContinueBtn" class="upload-short-film-primary-button" disabled>
+                            <span class="upload-short-film-primary-button-text">Continuar</span>
+                            <span class="icon icon-right-arrow upload-short-film-primary-button-icon"></span>
+                        </button>
                     </div>
                 </div>
-                <div class="upload-short-film-card-body-step-2">
 
+                <div id="cardBodyStep2" class="upload-short-film-card-body-step step-2 hidden-force">
+                    <div class="upload-short-film-large-input-group">
+                        <div class="upload-short-film-large-input-group-header">
+                            <span class="upload-short-film-large-input-group-label-text">Vídeo del Cortometraje</span>
+                        </div>
+                        <div id="videoDropZone" class="upload-short-film-large-input-group-body video">
+                            <input type="file" id="videoInput" class="file-input" hidden>
+                            <div class="upload-content">
+                                <div class="upload-content-icon-container video">
+                                    <span class="icon-video-file"></span>
+                                </div>
+                                <p class="upload-text">Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                                <p class="upload-subtext">MOV o MP4, máximo 2GB</p>
+                            </div>
+                        </div>
+                        <div class="upload-short-film-large-input-group-helper-text">
+                            <span>El archivo debe enviarse en formato QuickTime MOV o MP4, con compresión H.264, resolución 1920 x 1080 píxeles, 25 fps, formato 16:9 y audio mezclado en estéreo.</span>
+                        </div>
+                    </div>
+                    <div class="upload-short-film-large-input-group">
+                        <div class="upload-short-film-large-input-group-header">
+                            <span class="upload-short-film-large-input-group-label-text">Cartel o Fotografía Representativa</span>
+                        </div>
+                        <div id="posterDropZone" class="upload-short-film-large-input-group-body poster">
+                            <input type="file" id="posterInput" class="file-input" hidden>
+                            <div class="upload-content">
+                                <div class="upload-content-icon-container poster">
+                                    <span class="icon-image"></span>
+                                </div>
+                                <p class="upload-text">Arrasta o selecciona una imagen</p>
+                                <p class="upload-subtext">TIF o JPG, máximo 10MB</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upload-short-film-large-input-group">
+                        <div class="upload-short-film-large-input-group-header">
+                            <span class="upload-short-film-large-input-group-label-text">Sinopsis de la obra</span>
+                            <span class="upload-short-film-large-input-group-secondary-text"><span id="sinopsisTotalWords">0</span>/100 palabras</span>
+                        </div>
+                        <div class="upload-short-film-large-input-group-body">
+                            <textarea id="sinopsisInput" class="upload-short-film-textarea-input" placeholder="Describe brevemente tu cortometraje. Máximo 100 palabras..."></textarea>
+                        </div>
+                    </div>
+                    <div class="upload-short-film-divider-container">
+                        <span class="divider-line"></span>
+                    </div>
+                    <div class="upload-short-film-input-space-between-row">
+                        <button id="step2BackBtn" class="upload-short-film-secondary-button">
+                            <span class="icon icon-left-arrow upload-short-film-secondary-button-icon"></span>
+                            <span class="upload-short-film-secondary-button-text">Volver</span>
+                        </button>
+                        <button id="step2ContinueBtn" class="upload-short-film-primary-button" disabled>
+                            <span class="upload-short-film-primary-button-text">Continuar</span>
+                            <span class="icon icon-right-arrow upload-short-film-primary-button-icon"></span>
+                        </button>
+                    </div>
                 </div>
-                <div class="upload-short-film-card-body-step-3">
 
+                <div id="cardBodyStep3" class="upload-short-film-card-body-step hidden-force">
+                    <div class="upload-short-film-input-space-between-row">
+                        <button id="step3BackBtn" class="upload-short-film-secondary-button">
+                            <span class="icon icon-left-arrow upload-short-film-secondary-button-icon"></span>
+                            <span class="upload-short-film-secondary-button-text">Volver</span>
+                        </button>
+                        <button id="step3ContinueBtn" class="upload-short-film-primary-button" disabled>
+                            <span class="icon icon-checked upload-short-film-primary-button-icon"></span>
+                            <span class="upload-short-film-primary-button-text">Enviar candidatura</span>
+                        </button>
+                    </div>
                 </div>
+
             </div>
-            <div class="upload-short-film-card-successfully-completed">
+            <div class="upload-short-film-card-successfully-completed hidden-force">
 
             </div>
         </div>
