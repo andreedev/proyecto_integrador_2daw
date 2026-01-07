@@ -22,43 +22,23 @@ ul{
     }
 }
 .cabeceraIcono{
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     background-color: var(--neutral-01);
     align-items: center;
     border-radius: 6px;
 }
-@media (min-width: 990px){
-    .cabeceraIcono{
-        width: 56px;
-        height: 56px;
-        background-color: var(--neutral-01);
-        align-items: center;
-    }
-}
+
 .iconoAdminPanel{
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     background-color: var(--neutral-09);
     mask-image: url('../img/icon/AdminPanelIcon.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
     margin: 4px 0px 0px 4px;
-}
-
-@media (min-width: 990px){
-    .iconoAdminPanel{
-        width: 48px;
-        height: 48px;
-        background-color: var(--neutral-09);
-        mask-image: url('../img/icon/AdminPanelIcon.svg');
-        display: inline-block;
-        mask-repeat: no-repeat;
-        mask-size: contain;
-        margin: 4px 0px 0px 4px;
-    }
-}
+} 
 .cabeceraMenuLateral h1{
     margin: 8px 8px 8px 8px;
     font-size: 20px;
@@ -123,8 +103,8 @@ ul{
 /* Iconos del menu lateral */
 
 .iconoCandidaturas{
-    width:32px;
-    height:32px;
+    width:24px;
+    height:24px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/DocumentIcon.svg');
     display: inline-block;
@@ -133,8 +113,8 @@ ul{
     margin: 6px 0px 0px 6px;
 }
 .iconoFinalistas{
-    width:28px;
-    height:28px;
+    width:24px;
+    height:24px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/TrophyIcon.svg');
     display: inline-block;
@@ -143,8 +123,8 @@ ul{
     margin: 6px 0px 0px 6px;
 }
 .iconoNoticias{
-    width:32px;
-    height:32px;
+    width:24px;
+    height:24px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/NewspaperIcon.svg');
     display: inline-block;
@@ -153,8 +133,8 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoCategorias{
-    width:28px;
-    height:28px;
+    width:24px;
+    height:24px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/TagsIcon.svg');
     display: inline-block;
@@ -163,8 +143,8 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoPatrocinadores{
-    width:28px;
-    height:28px;
+    width:24px;
+    height:24px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/HandshakeIcon.svg');
     display: inline-block;
@@ -173,8 +153,8 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoGala{
-    width:28px;
-    height:28px;
+    width:24px;
+    height:24px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/CinemaMovieIcon.svg');
     display: inline-block;
@@ -183,8 +163,8 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoEvento{
-    width:32px;
-    height:32px;
+    width:16px;
+    height:16px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/CalendarIcon.svg');
     display: inline-block;
@@ -193,8 +173,8 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoEdicionesAnteriores{
-    width:32px;
-    height:32px;
+    width:16px;
+    height:16px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/ClockIcon.svg');
     display: inline-block;
@@ -203,8 +183,8 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoConfiguracionWeb{
-    width:28px;
-    height:28px;
+    width:16px;
+    height:16px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/SettingsIcon.svg');
     display: inline-block;
@@ -243,12 +223,21 @@ ul{
     background-color: var(--neutral-05);
 }
 
-@media (max-width: 992px){
+@media (max-width: 1000px){
+
+    .cabeceraMenuLateral{
+        width: 100%;
+    }
 
     .menuLateralCompleto {
+        width: 100%;
+        height: 100vh;
         position: fixed;
-        left: -17rem;
         top:72px;
+    }
+
+    .menuLateral{
+        width: 100%;
     }
 
     .iconoMenuEscondido{
@@ -278,7 +267,7 @@ ul{
     transition: left 300ms ease-in-out;
 }
 #checkMenu:not(:checked) ~ .menuLateralCompleto {
-    left: -17rem;
+    left: -70rem;
     transition: left 300ms ease-in-out;
 }
 
@@ -299,10 +288,25 @@ ul{
     display: flex;
     flex-direction: row;
     padding: 8px;
+    background-color: var(--neutral-09);
 }
 
 @media (min-width: 992px){
     .responsiveMenuAdmin{
         display: none;
     }
+}
+
+#botonCerrarSesionAdmin{
+    width: 150px;
+    height: 40px;
+    background-color: var(--primary-02);
+    color: var(--neutral-09);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 6rem;
+    margin-top:144px;
 }
