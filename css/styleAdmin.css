@@ -1,0 +1,308 @@
+*{
+    box-sizing: border-box;
+}
+
+ul{
+    list-style: none;
+
+}
+
+.cabeceraMenuLateral{
+    display: flex;
+    flex-direction: row;
+    padding: 8px 0px 8px 8px;
+    width: 17rem;
+    border: 1px solid var(--neutral-04);
+
+}
+@media (min-width: 990px){
+    .cabeceraMenuLateral{
+        padding: 8px 0px 8px 8px;
+
+    }
+}
+.cabeceraIcono{
+    width: 48px;
+    height: 48px;
+    background-color: var(--neutral-01);
+    align-items: center;
+    border-radius: 6px;
+}
+@media (min-width: 990px){
+    .cabeceraIcono{
+        width: 56px;
+        height: 56px;
+        background-color: var(--neutral-01);
+        align-items: center;
+    }
+}
+.iconoAdminPanel{
+    width: 36px;
+    height: 36px;
+    background-color: var(--neutral-09);
+    mask-image: url('../img/icon/AdminPanelIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 4px 0px 0px 4px;
+}
+
+@media (min-width: 990px){
+    .iconoAdminPanel{
+        width: 48px;
+        height: 48px;
+        background-color: var(--neutral-09);
+        mask-image: url('../img/icon/AdminPanelIcon.svg');
+        display: inline-block;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        margin: 4px 0px 0px 4px;
+    }
+}
+.cabeceraMenuLateral h1{
+    margin: 8px 8px 8px 8px;
+    font-size: 20px;
+    color: var(--neutral-01);
+
+}
+
+@media (min-width: 990px){
+    .cabeceraMenuLateral h1{
+        margin: 16px 8px 8px 8px;
+    }
+}
+
+/*Menu lateral*/
+.menuLateral{
+    background-color: var(--neutral-05);
+    height: 100vh;
+    width:17rem;
+}
+
+.menuLateral ul{
+    padding-left: 16px;
+    padding-top: 16px;
+    padding-right: 16px;
+    margin-top:0px;
+    background-color: var(--neutral-05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menuLateral ul li{
+    width: 100%;
+}
+
+.textoIcono{
+    color: var(--neutral-01);
+    background-color: transparent;
+    cursor:pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 48px;
+    transition: all 300ms ease;
+}
+
+.gala{
+    background-color: var(--neutral-05);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.menuGala ul{
+    padding-top:0px;
+}
+
+.menuLateral ul li span{
+    padding-left: 8px;
+}
+
+/* Iconos del menu lateral */
+
+.iconoCandidaturas{
+    width:32px;
+    height:32px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/DocumentIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+}
+.iconoFinalistas{
+    width:28px;
+    height:28px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/TrophyIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+}
+.iconoNoticias{
+    width:32px;
+    height:32px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/NewspaperIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+} 
+.iconoCategorias{
+    width:28px;
+    height:28px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/TagsIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+} 
+.iconoPatrocinadores{
+    width:28px;
+    height:28px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/HandshakeIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+} 
+.iconoGala{
+    width:28px;
+    height:28px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/CinemaMovieIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+} 
+.iconoEvento{
+    width:32px;
+    height:32px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/CalendarIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+} 
+.iconoEdicionesAnteriores{
+    width:32px;
+    height:32px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/ClockIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+} 
+.iconoConfiguracionWeb{
+    width:28px;
+    height:28px;
+    background-color: var(--neutral-01);
+    mask-image: url('../img/icon/SettingsIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 6px 0px 0px 6px;
+}
+
+.textoIcono:hover{
+    background-color: var(--neutral-04);
+    color: var(--neutral-01);
+    border-radius: 6px;
+    transition: all 300ms ease;
+}
+
+
+.textoIcono.active {
+    background-color: var(--neutral-02);
+    color: var(--neutral-09);
+    border-radius: 6px;
+}
+
+.textoIcono.active div span{
+    background-color: var(--neutral-09);
+}
+
+
+/*Menu lateral responsive*/
+
+#checkMenu{
+    display:none;
+}
+
+.menuLateralCompleto{
+    z-index: 1000;
+    background-color: var(--neutral-05);
+}
+
+@media (max-width: 992px){
+
+    .menuLateralCompleto {
+        position: fixed;
+        left: -17rem;
+        top:72px;
+    }
+
+    .iconoMenuEscondido{
+        background-color: var(--neutral-01);
+        width:56px;
+        height:56px;
+        border-radius: 5px;
+        
+    }
+
+    .iconoMenuHamburguesa{
+        width:40px;
+        height:40px;
+        background-color: var(--neutral-09);
+        mask-image: url('../img/icon/MenuBarsIcon.svg');
+        display: inline-block;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        margin: 8px 0px 8px 8px;
+        cursor: pointer;
+    }
+
+}
+
+#checkMenu:checked ~ .menuLateralCompleto {
+    left: 0;
+    transition: left 300ms ease-in-out;
+}
+#checkMenu:not(:checked) ~ .menuLateralCompleto {
+    left: -17rem;
+    transition: left 300ms ease-in-out;
+}
+
+.admin-super-container{
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 992px){
+    .admin-super-container{
+        flex-direction: row;
+    }
+}
+
+
+.responsiveMenuAdmin{
+    border-bottom: 1px solid var(--neutral-04);
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+}
+
+@media (min-width: 992px){
+    .responsiveMenuAdmin{
+        display: none;
+    }
+}

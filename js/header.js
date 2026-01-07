@@ -63,7 +63,6 @@ class HomeHeader extends HTMLElement {
                 body: formData
             });
             const result = await response.json();
-            console.log(result);
         } catch (error) {
             console.error('Error:', error);
         } finally {

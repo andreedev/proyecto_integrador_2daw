@@ -1,1 +1,1 @@
-console.log("subir-corto.js");
+let step = 1;

@@ -5,14 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subir corto</title>
     <link rel="stylesheet" href="css/general-styles.css">
-    <link rel="stylesheet" href="css/utils.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/subir-corto.css">
 </head>
 <body>
     <home-header></home-header>
-    <div>
-        Contenido de subir corto
+    <div class="upload-short-film-container">
+        <p class="upload-short-film-title">Subir cortometraje</p>
+        <span class="upload-short-film-secondary-text">Comparte tu obra con nosotros. Completa el formulario paso a paso.</span>
+        <div class="steps-container">
+            <div id="step-1" class="step active-step completed-step">
+                <span class="step-number-container">
+                    <span class="step-number-text">1</span>
+                    <span class="icon-checked"></span>
+                </span>
+                <span class="step-text">Datos del Participante</span>
+            </div>
+            <div class="step-line-divider"></div>
+            <div id="step-2" class="step active-step">
+                <span class="step-number-container">2</span>
+                <span class="step-text">Datos del Cortometraje</span>
+            </div>
+            <div class="step-line-divider"></div>
+            <div id="step-3" class="step">
+                <span class="step-number-container">3</span>
+                <span class="step-text">Documentación</span>
+            </div>
+        </div>
+        <div class="upload-short-film-card-container">
+            <div class="upload-short-film-card-header step-3">
+                <span class="upload-short-film-card-header-text">Registro del Participante</span>
+                <span class="upload-short-film-card-header-subtext">Paso 1 de 3</span>
+            </div>
+            <div class="upload-short-firm-card-body">
+                <div class="upload-short-film-card-body-step-1">
+                    <div class="upload-short-film-input-group">
+                        <span class="upload-short-film-input-label">Nombre Completo</span>
+                        <label class="upload-short-film-input-wrapper" for="nombreParticipanteInput">
+                            <span class="icon-user"></span>
+                            <input id="nombreParticipanteInput" class="upload-short-film-input" placeholder="Mario Vete Rinario">
+                        </label>
+                    </div>
+                </div>
+                <div class="upload-short-film-card-body-step-2">
+
+                </div>
+                <div class="upload-short-film-card-body-step-3">
+
+                </div>
+            </div>
+            <div class="upload-short-film-card-successfully-completed">
+
+            </div>
+        </div>
     </div>
     <home-footer></home-footer>
     <script src="./js/header.js"></script>

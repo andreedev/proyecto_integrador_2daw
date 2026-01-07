@@ -4,15 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Candidaturas</title>
+    <link rel="stylesheet" href="css/general-styles.css">
+    <link rel="stylesheet" href="css/styleAdmin.css">
     <link rel="stylesheet" href="css/admin-candidaturas.css">
 </head>
 
 <body>
 
-    <div class="page">
+    <div class="admin-super-container">
+        <menu-admin></menu-admin>
+        <div class="page">
 
-        <h1>Gestión de Candidaturas</h1>
-        <div class="subtitle">Administra las candidaturas de los participantes</div>
+            <h1>Gestión de Candidaturas</h1>
+            <div class="subtitle">Administra las candidaturas de los participantes</div>
 
         <!-- FILTERS -->
         <div class="filters">
@@ -29,10 +33,10 @@
             <button class="clear">Limpiar filtros</button>
         </div>
 
-        <!-- TABLE -->
-        <div class="table-wrapper">
-            <table>
-                <thead>
+            <!-- TABLE -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
                     <tr>
                         <th>Participante</th>
                         <th>Sinopsis</th>
@@ -41,9 +45,9 @@
                         <th>Últ. actualización</th>
                         <th>Acciones</th>
                     </tr>
-                </thead>
+                    </thead>
 
-                <tbody>
+                    <tbody>
 
                     <!-- EN REVISIÓN -->
                     <tr>
@@ -185,22 +189,23 @@
                         </td>
                     </tr>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            <div class="table-footer">
-                <div>Mostrando 5 de 25 candidaturas</div>
-                <div class="pagination">
-                    <span>Anterior</span>
-                    <span class="active">1</span>
-                    <span>2</span>
-                    <span>3</span>
-                    <span>Siguiente</span>
+                <div class="table-footer">
+                    <div>Mostrando 5 de 25 candidaturas</div>
+                    <div class="pagination">
+                        <span>Anterior</span>
+                        <span class="active">1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>Siguiente</span>
+                    </div>
                 </div>
+
             </div>
 
         </div>
-
     </div>
 
     <!-- MODAL CAMBIAR ESTADO -->
@@ -434,9 +439,8 @@
         </div>
     </div>
 </div>
-
     <script src="js/admin-candidaturas.js"></script>
-
+    <script src="js/menu-admin.js"></script>
 </body>
 
 </html>
