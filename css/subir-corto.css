@@ -318,6 +318,15 @@
     mask-image: url('../img/icon/LeftArrowIcon.svg');
 }
 
+.icon-check{
+    mask-image: url('../img/icon/CheckIcon.svg');
+}
+
+.icon-close{
+    mask-image: url('../img/icon/CloseIcon.svg');
+    flex-shrink: 0;
+}
+
 .upload-short-film-input-row{
     display: flex;
     flex: 1 0 auto;
@@ -585,9 +594,16 @@
 }
 
 .upload-text {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--neutral-02);
-    font-weight: 500;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .upload-text {
+        font-size: 14px;
+        font-weight: 500;
+    }
 }
 
 .upload-subtext {
@@ -628,4 +644,89 @@
     line-height: 1.4;
     color: var(--neutral-02);
     resize: none;
+}
+
+.file-updated-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 24px;
+    background-color: var(--success-04);
+}
+
+@media (min-width: 768px) {
+    .file-updated-card{
+        padding: 16px 24px;
+    }
+}
+
+.file-updated-card-row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.file-updated-card-icon-container{
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    background-color: var(--success-03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.width-height-24px{
+    width: 24px;
+    height: 24px;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.file-updated-card-file-info{
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.file-updated-card-file-name{
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--neutral-02);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.file-updated-card-file-size{
+    font-size: 12px;
+    color: var(--neutral-03);
+}
+
+@media (min-width: 768px) {
+    .file-updated-card-file-size{
+        font-size: 14px;
+    }
+}
+
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+.shake-error {
+    animation: shake 0.4s ease-in-out;
+    border-color: var(--error-03, #EB4534) !important;
 }

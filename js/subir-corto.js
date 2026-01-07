@@ -34,9 +34,13 @@ const step3BackBtn = document.getElementById('step3BackBtn');
 
 const videoInput = document.getElementById('videoInput');
 const videoDropZone = document.getElementById('videoDropZone');
+const videoFileUpdatedCard = document.getElementById('videoFileUpdatedCard');
+const videoErrorMessage = document.getElementById('videoErrorMessage');
 
 const posterInput = document.getElementById('posterInput');
 const posterDropZone = document.getElementById('posterDropZone');
+const posterFileUpdatedCard = document.getElementById('posterFileUpdatedCard');
+const posterErrorMessage = document.getElementById('posterErrorMessage');
 
 const sinopsisInput = document.getElementById('sinopsisInput');
 const MAX_SINOPSIS_WORDS = 100;
@@ -56,9 +60,16 @@ passwordInput.addEventListener('keyup',  ()=> validateStep1Form());
 dniInput.addEventListener('keyup', () => validateStep1Form());
 nroExpedienteInput.addEventListener('keyup', () => validateStep1Form());
 
+sinopsisInput.addEventListener('keyup', () => validateStep2Form());
+
 step1ContinueBtn.addEventListener('click', () => {
     if (!validateStep1Form()) return;
     switchStep(2);
+});
+
+step2ContinueBtn.addEventListener('click', () => {
+    if (!validateStep2Form()) return;
+    switchStep(3);
 });
 
 step2BackBtn.addEventListener('click', () => {
@@ -231,13 +242,69 @@ function switchStep(targetStep) {
 }
 
 /**
- * Configura una zona de arrastrar y soltar para un input de archivo
+ * Configura una zona de arrastrar y soltar con validación de tipo y tamaño
  */
-function setupDropZone(zoneId, inputId) {
+function setupDropZone(zoneId, inputId, cardId, nameSpanId, sizeSpanId,
+                       removeBtnId, errorSpanId, allowedExtensions, maxSizeBytes) {
     const zone = document.getElementById(zoneId);
     const input = document.getElementById(inputId);
+    const card = document.getElementById(cardId);
+    const nameSpan = document.getElementById(nameSpanId);
+    const sizeSpan = document.getElementById(sizeSpanId);
+    const removeBtn = document.getElementById(removeBtnId);
+    const errorSpan = document.getElementById(errorSpanId);
+
+    const triggerShake = () => {
+        zone.classList.add('shake-error');
+        setTimeout(() => {
+            zone.classList.remove('shake-error');
+        }, 400);
+    };
+
+    const validateFile = (file) => {
+        errorSpan.textContent = "";
+
+        // Validar Extensión
+        const fileName = file.name.toLowerCase();
+        const isInvalidType = !allowedExtensions.some(ext => fileName.endsWith(ext.toLowerCase()));
+
+        if (isInvalidType) {
+            errorSpan.textContent = `Formato no válido. Solo se permite: ${allowedExtensions.join(', ')}`;
+            triggerShake();
+            return false;
+        }
+
+        // Validar Tamaño
+        if (file.size > maxSizeBytes) {
+            errorSpan.textContent = `El archivo es demasiado grande. Máximo permitido: ${formatBytes(maxSizeBytes)}`;
+            triggerShake();
+            return false;
+        }
+
+        return true;
+    };
+
+    const updateUI = (file) => {
+        if (!file) return;
+        zone.classList.add('hidden-force');
+        card.classList.remove('hidden-force');
+        nameSpan.textContent = file.name;
+        sizeSpan.textContent = formatBytes(file.size);
+    };
+
+    const clearFile = () => {
+        input.value = "";
+        card.classList.add('hidden-force');
+        zone.classList.remove('hidden-force');
+        errorSpan.textContent = "";
+    };
 
     zone.addEventListener('click', () => input.click());
+
+    removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clearFile();
+    });
 
     ['dragenter', 'dragover'].forEach(name => {
         zone.addEventListener(name, (e) => {
@@ -254,17 +321,84 @@ function setupDropZone(zoneId, inputId) {
     });
 
     zone.addEventListener('drop', (e) => {
-        input.files = e.dataTransfer.files;
-        console.log("Archivo cargado en " + zoneId, input.files[0].name);
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        if (files.length && validateFile(files[0])) {
+            input.files = files;
+            updateUI(files[0]);
+        }
     });
 
     input.addEventListener('change', () => {
         if (input.files.length) {
-            console.log("Archivo seleccionado en " + zoneId, input.files[0].name);
+            if (validateFile(input.files[0])) {
+                updateUI(input.files[0]);
+            } else {
+                input.value = "";
+            }
         }
     });
 }
 
-setupDropZone('videoDropZone', 'videoInput');
-setupDropZone('posterDropZone', 'posterInput');
-switchStep(1);
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+// Vídeo: .mov, .mp4 | Máximo 2GB (2 * 1024 * 1024 * 1024)
+setupDropZone(
+    'videoDropZone',
+    'videoInput',
+    'videoFileUpdatedCard',
+    'videoFileName',
+    'videoFileSize',
+    'removeVideoFileBtn',
+    'videoErrorMessage',
+    ['.mov', '.mp4'],
+    2147483648
+);
+
+// Poster: .jpg, .tif | Máximo 10MB (10 * 1024 * 1024)
+setupDropZone(
+    'posterDropZone',
+    'posterInput',
+    'posterFileUpdatedCard',
+    'posterFileName',
+    'posterFileSize',
+    'removePosterFileBtn',
+    'posterErrorMessage',
+    ['.jpg', '.jpeg', '.tif', '.tiff'],
+    10485760
+);
+
+function validateStep2Form() {
+    if (videoInput.files.length === 0) {
+        videoErrorMessage.textContent = 'Por favor, sube el archivo de video del cortometraje';
+        step2ContinueBtn.disabled = true;
+        return false;
+    } else {
+        videoErrorMessage.textContent = '';
+    }
+
+    if (posterInput.files.length === 0) {
+        posterErrorMessage.textContent = 'Por favor, sube el archivo del póster del cortometraje';
+        step2ContinueBtn.disabled = true;
+        return false;
+    } else {
+        posterErrorMessage.textContent = '';
+    }
+
+    if (sinopsisInput.value.trim() === '') {
+        alert('Por favor, ingresa la sinopsis del cortometraje');
+        step2ContinueBtn.disabled = true;
+        return false;
+    }
+
+    step2ContinueBtn.disabled = false;
+}
+
+switchStep(2);

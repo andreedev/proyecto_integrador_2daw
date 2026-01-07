@@ -116,7 +116,7 @@
                             <span class="upload-short-film-large-input-group-label-text">Vídeo del Cortometraje</span>
                         </div>
                         <div id="videoDropZone" class="upload-short-film-large-input-group-body video">
-                            <input type="file" id="videoInput" class="file-input" hidden>
+                            <input type="file" id="videoInput" class="file-input" accept="video/mp4,video/quicktime" hidden>
                             <div class="upload-content">
                                 <div class="upload-content-icon-container video">
                                     <span class="icon-video-file"></span>
@@ -125,16 +125,29 @@
                                 <p class="upload-subtext">MOV o MP4, máximo 2GB</p>
                             </div>
                         </div>
+                        <div id="videoFileUpdatedCard" class="file-updated-card hidden-force">
+                            <div class="file-updated-card-row">
+                                <div class="file-updated-card-icon-container">
+                                    <span class="icon icon-check width-height-24px"></span>
+                                </div>
+                                <div class="file-updated-card-file-info">
+                                    <span id="videoFileName" class="file-updated-card-file-name">file_example_MP4_480_1_5MG.mp4</span>
+                                    <span id="videoFileSize" class="file-updated-card-file-size">1.15 GB</span>
+                                </div>
+                            </div>
+                            <span class="icon icon-close width-height-24px cursor-pointer" id="removeVideoFileBtn"></span>
+                        </div>
                         <div class="upload-short-film-large-input-group-helper-text">
                             <span>El archivo debe enviarse en formato QuickTime MOV o MP4, con compresión H.264, resolución 1920 x 1080 píxeles, 25 fps, formato 16:9 y audio mezclado en estéreo.</span>
                         </div>
+                        <span id="videoErrorMessage" class="error-message"></span>
                     </div>
                     <div class="upload-short-film-large-input-group">
                         <div class="upload-short-film-large-input-group-header">
                             <span class="upload-short-film-large-input-group-label-text">Cartel o Fotografía Representativa</span>
                         </div>
                         <div id="posterDropZone" class="upload-short-film-large-input-group-body poster">
-                            <input type="file" id="posterInput" class="file-input" hidden>
+                            <input type="file" id="posterInput" class="file-input" accept="image/tiff, image/jpeg" hidden>
                             <div class="upload-content">
                                 <div class="upload-content-icon-container poster">
                                     <span class="icon-image"></span>
@@ -143,6 +156,19 @@
                                 <p class="upload-subtext">TIF o JPG, máximo 10MB</p>
                             </div>
                         </div>
+                        <div id="posterFileUpdatedCard" class="file-updated-card hidden-force">
+                            <div class="file-updated-card-row">
+                                <div class="file-updated-card-icon-container">
+                                    <span class="icon icon-check width-height-24px"></span>
+                                </div>
+                                <div class="file-updated-card-file-info">
+                                    <span id="posterFileName" class="file-updated-card-file-name">file_example_JPG_500kB.jpg</span>
+                                    <span id="posterFileSize" class="file-updated-card-file-size">0.53 MB</span>
+                                </div>
+                            </div>
+                            <span class="icon icon-close width-height-24px cursor-pointer" id="removePosterFileBtn"></span>
+                        </div>
+                        <span id="posterErrorMessage" class="error-message"></span>
                     </div>
                     <div class="upload-short-film-large-input-group">
                         <div class="upload-short-film-large-input-group-header">
