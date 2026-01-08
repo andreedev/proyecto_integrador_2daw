@@ -94,6 +94,7 @@ ul{
 
 .menuGala ul{
     padding-top:0px;
+    padding-left:24px;
 }
 
 .menuLateral ul li span{
@@ -225,6 +226,13 @@ ul{
 
 @media (max-width: 1000px){
 
+    .responsiveMenuAdmin{
+        position: fixed;
+        width:100%;
+        background-color: var(--neutral-09);
+    }
+
+
     .cabeceraMenuLateral{
         width: 100%;
     }
@@ -271,6 +279,11 @@ ul{
     transition: left 300ms ease-in-out;
 }
 
+#checkMenu:not(:checked) ~ .responsiveMenuAdmin {
+    position:relative;
+    
+}
+
 .admin-super-container{
     display: flex;
     flex-direction: column;
@@ -297,15 +310,34 @@ ul{
     }
 }
 
-#botonCerrarSesionAdmin{
-    width: 150px;
-    height: 40px;
+.cerrarSesionAdmin{
+    display: flex;
+    flex-direction: row;
     background-color: var(--primary-02);
+    border-radius:6px;
+
+}
+
+.iconoCerrarSesion{
+    width:24px;
+    height:24px;
+    background-color: var(--neutral-09);
+    mask-image: url('../img/icon/LogoutIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 0px 0px 0px 6px;
+}
+
+
+
+#botonCerrarSesionAdmin{
+    width: 100%;
     color: var(--neutral-09);
+    background-color: var(--primary-01);
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
-    margin-left: 40px;
 }

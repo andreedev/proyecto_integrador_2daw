@@ -87,10 +87,11 @@ class MenuAdmin extends HTMLElement {
                                 </li>
                             </ul>
                         </li>
+                        <li class="textoIcono cerrarSesionAdmin" id="botonCerrarSesionAdmin">
+                            <span class="iconoCerrarSesion"></span>
+                            <span>Cerrar Sesión</span>
+                        </li>
                     </ul>
-                    <div class= "cerrarSesionAdmin">
-                        <button id="botonCerrarSesionAdmin">Cerrar Sesión</button>
-                    </div>
                 </div>
             </div>
         `;
@@ -135,7 +136,7 @@ class MenuAdmin extends HTMLElement {
 
         async function cerrarSesion() {
             const formData = new FormData();
-            formData.append('action', 'cerrarSesionAdmin');
+            formData.append('action', 'cerrarSesion');
 
             try {
                 const response = await fetch(URL_API, {
