@@ -45,6 +45,7 @@ const posterErrorMessage = document.getElementById('posterErrorMessage');
 const sinopsisInput = document.getElementById('sinopsisInput');
 const MAX_SINOPSIS_WORDS = 100;
 const sinopsisTotalWords = document.getElementById('sinopsisTotalWords');
+const sinopsisErrorMessage = document.getElementById('sinopsisErrorMessage');
 
 switchPasswordVisible.addEventListener('click', switchPasswordVisibility);
 
@@ -60,6 +61,7 @@ passwordInput.addEventListener('keyup',  ()=> validateStep1Form());
 dniInput.addEventListener('keyup', () => validateStep1Form());
 nroExpedienteInput.addEventListener('keyup', () => validateStep1Form());
 
+sinopsisInput.addEventListener('blur', () => validateSinopsisInput(true));
 sinopsisInput.addEventListener('keyup', () => validateStep2Form());
 
 step1ContinueBtn.addEventListener('click', () => {
@@ -85,9 +87,6 @@ step3BackBtn.addEventListener('click', () => {
  */
 sinopsisInput.addEventListener('keyup', () => {
     const words = sinopsisInput.value.trim().split(/\s+/);
-    if (words.length > MAX_SINOPSIS_WORDS) {
-        sinopsisInput.value = words.slice(0, MAX_SINOPSIS_WORDS).join(' ');
-    }
     sinopsisTotalWords.textContent = words.length;
 });
 
@@ -192,8 +191,6 @@ function validateStep1Form() {
     } else {
         step1ContinueBtn.disabled = true;
         return false;
-        // step1ContinueBtn.disabled = false;
-        // return true;
     }
 }
 
@@ -304,6 +301,7 @@ function setupDropZone(zoneId, inputId, cardId, nameSpanId, sizeSpanId,
     removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         clearFile();
+        validateStep2Form();
     });
 
     ['dragenter', 'dragover'].forEach(name => {
@@ -326,6 +324,7 @@ function setupDropZone(zoneId, inputId, cardId, nameSpanId, sizeSpanId,
         if (files.length && validateFile(files[0])) {
             input.files = files;
             updateUI(files[0]);
+            validateStep2Form(false);
         }
     });
 
@@ -333,6 +332,7 @@ function setupDropZone(zoneId, inputId, cardId, nameSpanId, sizeSpanId,
         if (input.files.length) {
             if (validateFile(input.files[0])) {
                 updateUI(input.files[0]);
+                validateStep2Form(false);
             } else {
                 input.value = "";
             }
@@ -375,30 +375,54 @@ setupDropZone(
     10485760
 );
 
-function validateStep2Form() {
+
+function validateVideoInput(messageOnError) {
     if (videoInput.files.length === 0) {
-        videoErrorMessage.textContent = 'Por favor, sube el archivo de video del cortometraje';
-        step2ContinueBtn.disabled = true;
+        if (messageOnError) videoErrorMessage.textContent = 'Por favor, sube el vídeo del cortometraje';
         return false;
     } else {
         videoErrorMessage.textContent = '';
+        return true;
     }
+}
 
+function validatePosterInput(messageOnError) {
     if (posterInput.files.length === 0) {
-        posterErrorMessage.textContent = 'Por favor, sube el archivo del póster del cortometraje';
-        step2ContinueBtn.disabled = true;
+        if (messageOnError) posterErrorMessage.textContent = 'Por favor, sube el cartel del cortometraje';
         return false;
     } else {
         posterErrorMessage.textContent = '';
+        return true;
     }
+}
 
+function validateSinopsisInput(messageOnError) {
     if (sinopsisInput.value.trim() === '') {
-        alert('Por favor, ingresa la sinopsis del cortometraje');
-        step2ContinueBtn.disabled = true;
+        if (messageOnError) sinopsisErrorMessage.textContent = 'Por favor, escribe la sinopsis del cortometraje';
         return false;
     }
 
-    step2ContinueBtn.disabled = false;
+    const words = sinopsisInput.value.trim().split(/\s+/);
+    if (words.length > MAX_SINOPSIS_WORDS) {
+        if (messageOnError) sinopsisErrorMessage.textContent = `La sinopsis no debe exceder de ${MAX_SINOPSIS_WORDS} palabras`;
+        return false;
+    }
+
+    sinopsisErrorMessage.textContent = '';
+    return true;
 }
+
+function validateStep2Form() {
+    if (validateVideoInput(false) &&
+        validatePosterInput(false) &&
+        validateSinopsisInput(false)) {
+        step2ContinueBtn.disabled = false;
+        return true;
+    } else {
+        step2ContinueBtn.disabled = true;
+        return false;
+    }
+}
+
 
 switchStep(2);
