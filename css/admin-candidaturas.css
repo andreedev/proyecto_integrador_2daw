@@ -226,10 +226,22 @@ th {
     filter: invert(21%) sepia(94%) saturate(2486%) hue-rotate(346deg) brightness(95%) contrast(96%);
 }
 
+/* Botón de eliminar (destructivo) */
+.btn.delete {
+    background: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
+}
+
+.btn.delete:hover {
+    background: #c62828;
+    border-color: #c62828;
+}
+
 /* FOOTER */
 .table-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 12px;
     font-size: 13px;
@@ -571,6 +583,13 @@ th {
 .date-item div:last-child {
     font-size: 13px;
     color: #777;
+}
+
+/* Contenedor de acciones en modal de detalle */
+#detailModal .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
 }
 
 /* ===== MODAL HISTORIAL ===== */

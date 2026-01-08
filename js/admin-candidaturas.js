@@ -1,5 +1,4 @@
 // MODAL: CAMBIAR ESTADO
-
 const changeModal = document.getElementById('changeModal');
 const reasonWrapper = document.getElementById('rejectReasonWrapper');
 const closeChangeBtn = document.getElementById('closeModal');
@@ -8,6 +7,7 @@ const statusSelect = document.getElementById('modalStatus');
 const participantSpan = document.getElementById('modal-participant');
 const currentStatusSpan = document.getElementById('modal-current-status');
 
+// Mapa de etiquetas de estado
 const statusLabels = {
     review: 'En revisión',
     accepted: 'Aceptada',
@@ -16,7 +16,10 @@ const statusLabels = {
     winner: 'Ganador'
 };
 
-// SOLO botones Cambiar de la tabla
+// Almacenar la fila activa al abrir el modal   
+let activeChangeRow = null;
+
+// Abrir modal "Cambiar estado"
 document.querySelectorAll('.actions .btn.change').forEach(btn => {
     btn.addEventListener('click', () => {
         const row = btn.closest('tr');
@@ -26,46 +29,76 @@ document.querySelectorAll('.actions .btn.change').forEach(btn => {
         participantSpan.textContent = participantName;
         currentStatusSpan.textContent = statusLabels[currentStatus];
         statusSelect.value = currentStatus;
+        activeChangeRow = row;
+
+        // Cargar motivo si ya existe
+        const existingReason = row.dataset.rejectReason || '';
+        document.getElementById('rejectReason').value = existingReason;
 
         reasonWrapper.style.display = currentStatus === 'rejected' ? 'block' : 'none';
         changeModal.style.display = 'flex';
     });
 });
 
+// Mostrar/ocultar campo de motivo al cambiar estado
 statusSelect.addEventListener('change', () => {
     reasonWrapper.style.display = statusSelect.value === 'rejected' ? 'block' : 'none';
 });
 
+// Cerrar modal
 function closeChangeModal() {
     changeModal.style.display = 'none';
 }
-
 closeChangeBtn.addEventListener('click', closeChangeModal);
+changeModal.querySelector('.modal-overlay').addEventListener('click', closeChangeModal);
 
+// Guardar cambios
 saveChangeBtn.addEventListener('click', () => {
-    if (statusSelect.value === 'rejected') {
+    const newStatus = statusSelect.value;
+
+    if (newStatus === 'rejected') {
         const reason = document.getElementById('rejectReason').value.trim();
         if (!reason) {
             alert('Por favor, indique el motivo del rechazo.');
             return;
+        }
+        activeChangeRow.dataset.rejectReason = reason;
+        // Actualizar visualmente el badge
+        const badge = activeChangeRow.querySelector('.badge');
+        badge.className = 'badge rejected';
+        badge.innerHTML = '<img src="../img/icon/CloseOutlineIcon.svg" alt=""> Rechazada';
+    } else {
+        // Si se cambia a otro estado, eliminar el motivo
+        delete activeChangeRow.dataset.rejectReason;
+
+        // Definir icono según el estado
+        const iconMap = {
+            review: '../img/icon/ClockIcon.svg',
+            accepted: '../img/icon/DocumentCheckIcon.svg',
+            finalist: '../img/icon/StarIcon.svg'
+        };
+
+        const iconSrc = iconMap[newStatus] || '';
+        const displayText = statusLabels[newStatus] || newStatus;
+
+        const badge = activeChangeRow.querySelector('.badge');
+        badge.className = 'badge ' + newStatus;
+        if (iconSrc) {
+            badge.innerHTML = `<img src="${iconSrc}" alt=""> ${displayText}`;
+        } else {
+            badge.textContent = displayText;
         }
     }
     alert('Estado actualizado correctamente.');
     closeChangeModal();
 });
 
-changeModal.querySelector('.modal-overlay')
-    .addEventListener('click', closeChangeModal);
-
-
 // MODAL: DOCUMENTOS
-
 const documentsModal = document.getElementById('documentsModal');
 const closeDocumentsBtn = document.getElementById('closeDocumentsModal');
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabPanes = document.querySelectorAll('.tab-pane');
 
-// SOLO el botón "Documentos" (por texto, sin tocar HTML)
 document.querySelectorAll('.actions .btn').forEach(btn => {
     if (btn.textContent.trim() === 'Documentos') {
         btn.addEventListener('click', e => {
@@ -78,11 +111,9 @@ document.querySelectorAll('.actions .btn').forEach(btn => {
 closeDocumentsBtn.addEventListener('click', () => {
     documentsModal.style.display = 'none';
 });
-
-documentsModal.querySelector('.modal-overlay')
-    .addEventListener('click', () => {
-        documentsModal.style.display = 'none';
-    });
+documentsModal.querySelector('.modal-overlay').addEventListener('click', () => {
+    documentsModal.style.display = 'none';
+});
 
 // Tabs
 tabButtons.forEach(button => {
@@ -95,47 +126,45 @@ tabButtons.forEach(button => {
     });
 });
 
-
 // MODAL: DETALLE
-
 const detailModal = document.getElementById('detailModal');
 const closeDetailBtn = document.getElementById('closeDetailModal');
+
+let activeDetailRow = null;
 
 document.querySelectorAll('.btn-detail').forEach(btn => {
     btn.addEventListener('click', e => {
         e.preventDefault();
-
         const row = btn.closest('tr');
+        activeDetailRow = row;
 
         document.getElementById('detail-id').textContent =
             `CD${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
 
-        document.getElementById('detail-name').textContent =
-            row.querySelector('.participant').textContent;
-
-        document.getElementById('detail-email').textContent =
-            row.querySelector('.email').textContent;
-
-        document.getElementById('detail-id-number').textContent =
-            `${Math.floor(Math.random() * 90000000) + 10000000}A`;
-
-        document.getElementById('detail-exp').textContent =
-            `EXP-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000)}`;
-
-        document.getElementById('detail-synopsis').textContent =
-            row.querySelector('.synopsis').textContent;
-
-        document.getElementById('detail-date-presented').textContent =
-            row.cells[3].textContent;
-
-        document.getElementById('detail-date-updated').textContent =
-            row.cells[4].textContent;
+        document.getElementById('detail-name').textContent = row.querySelector('.participant').textContent;
+        document.getElementById('detail-email').textContent = row.querySelector('.email').textContent;
+        document.getElementById('detail-id-number').textContent = `${Math.floor(Math.random() * 90000000) + 10000000}A`;
+        document.getElementById('detail-exp').textContent = `EXP-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000)}`;
+        document.getElementById('detail-synopsis').textContent = row.querySelector('.synopsis').textContent;
+        document.getElementById('detail-date-presented').textContent = row.cells[3].textContent;
+        document.getElementById('detail-date-updated').textContent = row.cells[4].textContent;
 
         const statusText = row.querySelector('.badge').textContent.trim();
         const badge = document.getElementById('detail-status');
-
         badge.textContent = statusText;
         badge.className = 'badge ' + getBadgeClass(statusText);
+
+        // Mostrar motivo de rechazo si aplica
+        const rejectReasonDiv = document.getElementById('detail-reject-reason');
+        const rejectReasonText = document.getElementById('reject-reason-text');
+        const rejectReason = row.dataset.rejectReason;
+
+        if (statusText.includes('Rechazada') && rejectReason) {
+            rejectReasonText.textContent = rejectReason;
+            rejectReasonDiv.style.display = 'block';
+        } else {
+            rejectReasonDiv.style.display = 'none';
+        }
 
         detailModal.style.display = 'flex';
     });
@@ -144,11 +173,20 @@ document.querySelectorAll('.btn-detail').forEach(btn => {
 closeDetailBtn.addEventListener('click', () => {
     detailModal.style.display = 'none';
 });
+detailModal.querySelector('.modal-overlay').addEventListener('click', () => {
+    detailModal.style.display = 'none';
+});
 
-detailModal.querySelector('.modal-overlay')
-    .addEventListener('click', () => {
+// Botón de eliminar candidatura
+document.getElementById('deleteCandidatura').addEventListener('click', () => {
+    if (!activeDetailRow) return;
+
+    if (confirm('¿Está seguro de que desea eliminar esta candidatura? Esta acción no se puede deshacer.')) {
+        activeDetailRow.remove();
         detailModal.style.display = 'none';
-    });
+        alert('Candidatura eliminada correctamente.');
+    }
+});
 
 function getBadgeClass(status) {
     if (status.includes('En revisión')) return 'review';
@@ -160,22 +198,16 @@ function getBadgeClass(status) {
 }
 
 // MODAL: HISTORIAL
-
 const historyModal = document.getElementById('historyModal');
 const closeHistoryBtn = document.getElementById('closeHistoryModal');
 
-// Botón "Historial"
 document.querySelectorAll('.actions .btn').forEach(btn => {
     if (btn.textContent.trim() === 'Historial') {
         btn.addEventListener('click', e => {
             e.preventDefault();
-
             const row = btn.closest('tr');
-
-            // ID ficticio (igual que en detalle)
             document.getElementById('history-id').textContent =
                 `CD${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
-
             historyModal.style.display = 'flex';
         });
     }
@@ -184,8 +216,6 @@ document.querySelectorAll('.actions .btn').forEach(btn => {
 closeHistoryBtn.addEventListener('click', () => {
     historyModal.style.display = 'none';
 });
-
-historyModal.querySelector('.modal-overlay')
-    .addEventListener('click', () => {
-        historyModal.style.display = 'none';
-    });
+historyModal.querySelector('.modal-overlay').addEventListener('click', () => {
+    historyModal.style.display = 'none';
+});
