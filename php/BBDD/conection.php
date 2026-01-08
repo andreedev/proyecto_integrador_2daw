@@ -4,11 +4,11 @@
  * descomentar para probar localmente
  * comentar esto para probar en una BD compartida
  */
-//$servidor = "localhost";
-//$usuario = "root";
-//$password = "";
-//$db = "festival_cortos";
-//$port = 3306;
+// $servidor = "localhost";
+// $usuario = "root";
+// $password = "";
+// $db = "festival_cortos";
+// $port = 3306;
 
 /**
  * comentar esto para probar localmente

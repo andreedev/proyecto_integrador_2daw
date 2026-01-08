@@ -35,10 +35,6 @@ if(isset($_POST['action'])){
 /**
  * Funcion para revisar si la sesión está iniciada
  */
-
-/**
- * Revisa si la sesión está activa y devuelve el estado
- */
 function revisarSesion()
 {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {

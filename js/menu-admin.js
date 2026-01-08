@@ -86,9 +86,16 @@ class MenuAdmin extends HTMLElement {
                             </ul>
                         </li>
                     </ul>
+                    <div class= "cerrarSesionAdmin">
+                        <button id="botonCerrarSesionAdmin">Cerrar Sesión</button>
+                    </div>
                 </div>
             </div>
         `;
+
+        document.querySelector('.iconoConfiguracionWebMenuLateral').addEventListener('click', () => {
+            window.location.href = 'configuracion-web.html';
+        });
     }
 }
 
