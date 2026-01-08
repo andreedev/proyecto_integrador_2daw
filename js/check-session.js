@@ -10,8 +10,19 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 (async () => {
     const splash = document.getElementById('splash');
 
+    const getNormalizedPage = () => {
+        const p = window.location.pathname.split("/").pop().toLowerCase();
+        if (p === "" || p === "index.html") return "home";
+        return p.replace(".html", "").replace(".php", "");
+    };
+
+    const currentPage = getNormalizedPage();
+    const referrerPath = document.referrer ? new URL(document.referrer).pathname : "";
+    const previousPage = referrerPath.split("/").pop().toLowerCase() || "home";
+
     const formData = new FormData();
     formData.append('action', 'revisarSesion');
+    formData.append('page', getNormalizedPage());
 
     const httpResponse = await fetch(URL_API, {
         method: 'POST',
@@ -19,17 +30,46 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     });
 
     const result = await httpResponse.json();
-
     await sleep(300);
-
     splash.style.display = 'none';
 
-    if (result.status == 'active') {
+    if (result.status === 'active') {
         sessionStorage.setItem('sesionIniciada', 'true');
-        if (window.location.pathname.endsWith('login.html')) {
-            window.location.href = 'index.html';
+        const role = result.rol;
+
+        if (currentPage === 'login' || previousPage.includes('login')) {
+            if (role === 'participante' && currentPage === 'login') {
+                window.location.href = 'index.html';
+                return;
+            }
+            if (role === 'organizador' && currentPage === 'login') {
+                window.location.href = 'admin-candidaturas.html';
+                return;
+            }
         }
-    } else if (result.status == 'inactive') {
+
+        if (role === 'participante') {
+            if (window.location.pathname.includes('admin-')) {
+                window.location.href = 'index.html';
+                return;
+            }
+        }
+
+        if (role === 'organizador') {
+            const isAdminPage = window.location.pathname.includes('admin-');
+            const isLoginPage = currentPage === 'login';
+
+            if (!isAdminPage && !isLoginPage) {
+                window.location.href = 'admin-candidaturas.html';
+                return;
+            }
+        }
+
+    } else if (result.status === 'inactive') {
         sessionStorage.setItem('sesionIniciada', 'false');
+        if (currentPage.startsWith('admin-')) {
+            window.location.href = 'login.html';
+            return;
+        }
     }
 })();
