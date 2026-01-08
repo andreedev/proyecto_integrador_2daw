@@ -22,13 +22,7 @@
     --gold-text: #5d4037;
 }
 
-* {
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
 body {
-    margin: 0;
     background: var(--bg);
     color: var(--text);
 }
@@ -36,7 +30,6 @@ body {
 /* PAGE */
 .page {
     max-width: 1200px;
-    margin: 0 auto;
     padding: 24px;
 }
 
