@@ -1,6 +1,8 @@
 /**
  * Menú lateral para el panel de admin
  */
+
+const textoIcono = document.querySelectorAll('.textoIcono');
 class MenuAdmin extends HTMLElement {
     constructor() {
         super();
@@ -25,31 +27,31 @@ class MenuAdmin extends HTMLElement {
 
                 <div class="menuLateral">
                     <ul>
-                        <li class="textoIcono active">
+                        <li class="textoIcono active" id="candidaturasMenuLateral">
                             <div class="iconoCandidaturasMenuLateral">
                                 <span class="iconoCandidaturas"></span>
                             </div>
                             <span>Candidaturas</span>
                         </li>
-                        <li class="textoIcono">
+                        <li class="textoIcono" id="finalistasMenuLateral">
                             <div class="iconoFinalistasMenuLateral">
                                 <span class="iconoFinalistas"></span>
                             </div>
                             <span>Finalistas</span>
                         </li>
-                        <li class="textoIcono">
+                        <li class="textoIcono" id="noticiasMenuLateral">
                             <div class="iconoNoticiasMenuLateral">
                                 <span class="iconoNoticias"></span>
                             </div>
                             <span>Noticias</span>
                         </li>
-                        <li class="textoIcono">
+                        <li class="textoIcono" id="categoriasMenuLateral">
                             <div class="iconoCategoriasMenuLateral">
                                 <span class="iconoCategorias"></span>
                             </div>
                             <span>Categorías y Premios</span>
                         </li>
-                        <li class="textoIcono">
+                        <li class="textoIcono" id="patrocinadoresMenuLateral">
                             <div class="iconoPatrocinadoresMenuLateral">
                                 <span class="iconoPatrocinadores"></span>
                             </div>
@@ -65,19 +67,19 @@ class MenuAdmin extends HTMLElement {
                         </li>
                         <li class="menuGala">
                             <ul>
-                                <li class="textoIcono">
+                                <li class="textoIcono" id="eventoMenuLateral">
                                     <div class="iconoEventoMenuLateral">
                                         <span class="iconoEvento"></span>
                                     </div>
                                     <span>Eventos</span>
                                 </li>
-                                <li class="textoIcono">
+                                <li class="textoIcono" id="edicionesAnterioresMenuLateral">
                                     <div class="iconoEdicionesAnterioresMenuLateral">
                                         <span class="iconoEdicionesAnteriores"></span>
                                     </div>
                                     <span>Ediciones Anteriores</span>
                                 </li>
-                                <li class="textoIcono">
+                                <li class="textoIcono" id="configuracionWebMenuLateral">
                                     <div class="iconoConfiguracionWebMenuLateral">
                                         <span class="iconoConfiguracionWeb"></span>
                                     </div>
@@ -93,9 +95,61 @@ class MenuAdmin extends HTMLElement {
             </div>
         `;
 
-        document.querySelector('.iconoConfiguracionWebMenuLateral').addEventListener('click', () => {
-            window.location.href = 'configuracion-web.html';
+        document.querySelector('#configuracionWebMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-configuracionWeb.html';
         });
+
+        document.querySelector('#finalistasMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-finalistas.html';
+        });
+
+        document.querySelector('#candidaturasMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-candidaturas.html';
+        });
+        document.querySelector('#noticiasMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-noticias.html';
+
+        });
+
+        document.querySelector('#categoriasMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-categoriasPremios.html';
+        }); 
+        document.querySelector('#patrocinadoresMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-patrocinadores.html';
+        });
+
+        document.querySelector('#eventoMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-eventos.html';
+        });
+
+        document.querySelector('#edicionesAnterioresMenuLateral').addEventListener('click', () => {
+            window.location.href = 'admin-edicionesAnteriores.html';
+        });
+
+        const botonCerrarSesionAdmin = this.querySelector('#botonCerrarSesionAdmin');
+
+        botonCerrarSesionAdmin.addEventListener('click', (e) => {
+            e.preventDefault();
+            cerrarSesion();
+        });
+
+        async function cerrarSesion() {
+            const formData = new FormData();
+            formData.append('action', 'cerrarSesionAdmin');
+
+            try {
+                const response = await fetch(URL_API, {
+                    method: 'POST',
+                    body: formData
+                });
+            }catch (error) {
+                console.error('Error al cerrar sesión:', error);
+            } finally {
+                window.location.href = 'index.html';
+            }
+        }
+
+        
     }
 }
 
