@@ -23,14 +23,20 @@
 
             <!-- FILTERS -->
             <div class="filters">
-                <input type="text" placeholder="Buscar por participante o sinopsis…">
-                <select>
-                    <option disabled>Seleccione el estado</option>
-                    <option>En revisión</option>
-                    <option>Aceptada</option>
-                    <option>Rechazada</option>
-                </select>
-                <input type="date">
+                <div class="filter-search">
+                    <input type="text" placeholder="Buscar por participante o sinopsis…">
+                </div>
+                <div class="filter-status">
+                    <select>
+                        <option disabled selected>Todos los estados</option>
+                        <option>En revisión</option>
+                        <option>Aceptada</option>
+                        <option>Rechazada</option>
+                    </select>
+                </div>
+                <div class="filter-date">
+                    <input type="date">
+                </div>
                 <button class="clear">Limpiar filtros</button>
             </div>
 
@@ -51,22 +57,22 @@
                     <tbody>
                         <!-- EN REVISIÓN -->
                         <tr>
-                            <td>
+                            <td data-label="Participante">
                                 <div class="participant">Carlos del Prado Rodríguez</div>
                                 <div class="email">cprado23@gmail.com</div>
                             </td>
-                            <td class="synopsis">
+                            <td data-label="Sinopsis" class="synopsis">
                                 Escritor descubre los secretos en la casa heredada, una trama que desafía...
                             </td>
-                            <td>
+                            <td data-label="Estado">
                                 <span class="badge review">
                                     <img src="../img/icon/ClockIcon.svg" alt="">
                                     En revisión
                                 </span>
                             </td>
-                            <td>15/09/2024</td>
-                            <td>20/11/2024, 15:45</td>
-                            <td>
+                            <td data-label="Fecha presentación">15/09/2024</td>
+                            <td data-label="Últ. actualización">20/11/2024, 15:45</td>
+                            <td data-label="Acciones">
                                 <div class="actions">
                                     <button class="btn btn-detail"><img src="../img/icon/EyeIcon.svg"
                                             alt="">Detalle</button>
@@ -82,22 +88,22 @@
 
                         <!-- ACEPTADA -->
                         <tr>
-                            <td>
+                            <td data-label="Participante">
                                 <div class="participant">Laura Sánchez Moreno</div>
                                 <div class="email">laura.sanchez@email.com</div>
                             </td>
-                            <td class="synopsis">
+                            <td data-label="Sinopsis" class="synopsis">
                                 Una novela intimista sobre la memoria familiar y los silencios heredados.
                             </td>
-                            <td>
+                            <td data-label="Estado">
                                 <span class="badge accepted">
                                     <img src="../img/icon/DocumentCheckIcon.svg" alt="">
                                     Aceptada
                                 </span>
                             </td>
-                            <td>18/09/2024</td>
-                            <td>22/11/2024, 10:12</td>
-                            <td>
+                            <td data-label="Fecha presentación">18/09/2024</td>
+                            <td data-label="Últ. actualización">22/11/2024, 10:12</td>
+                            <td data-label="Acciones">
                                 <div class="actions">
                                     <button class="btn btn-detail"><img src="../img/icon/EyeIcon.svg"
                                             alt="">Detalle</button>
@@ -113,22 +119,22 @@
 
                         <!-- RECHAZADA -->
                         <tr data-reject-reason="La sinopsis no cumple con los requisitos temáticos del concurso.">
-                            <td>
+                            <td data-label="Participante">
                                 <div class="participant">Miguel Ángel Torres</div>
                                 <div class="email">matorres@gmail.com</div>
                             </td>
-                            <td class="synopsis">
+                            <td data-label="Sinopsis" class="synopsis">
                                 Relato experimental que mezcla ciencia ficción y poesía urbana.
                             </td>
-                            <td>
+                            <td data-label="Estado">
                                 <span class="badge rejected">
                                     <img src="../img/icon/CloseOutlineIcon.svg" alt="">
                                     Rechazada
                                 </span>
                             </td>
-                            <td>20/09/2024</td>
-                            <td>25/11/2024, 18:03</td>
-                            <td>
+                            <td data-label="Fecha presentación">20/09/2024</td>
+                            <td data-label="Últ. actualización">25/11/2024, 18:03</td>
+                            <td data-label="Acciones">
                                 <div class="actions">
                                     <button class="btn btn-detail"><img src="../img/icon/EyeIcon.svg"
                                             alt="">Detalle</button>
@@ -145,12 +151,15 @@
                 </table>
 
                 <div class="table-footer">
+                    <div class="pagination-info">
+                        Mostrando 10 de 25 candidaturas
+                    </div>
                     <div class="pagination">
-                        <span>Anterior</span>
-                        <span class="active">1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>Siguiente</span>
+                        <button class="pagination-btn"><span>Anterior</span></button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn"><span>Siguiente</span></button>
                     </div>
                 </div>
 
