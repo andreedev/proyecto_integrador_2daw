@@ -165,17 +165,15 @@
 }
 
 .upload-short-film-card-header.step-1{
-    background: #EB4534;
-    background: linear-gradient(116deg, rgba(235, 69, 52, 1) 0%, rgba(140, 79, 79, 1) 54%, rgba(63, 63, 63, 1) 80%, rgba(84, 41, 140, 1) 100%);
-}
-
-.upload-short-film-card-header.step-2{
-    background: #EB4534;
     background: linear-gradient(114deg, rgba(235, 69, 52, 1) 0%, rgba(138, 61, 222, 1) 55%, rgba(130, 65, 222, 1) 80%, rgba(84, 70, 221, 1) 100%);
 }
 
-.upload-short-film-card-header.step-3{
+.upload-short-film-card-header.step-2{
     background: linear-gradient(133deg,rgba(84, 70, 221, 1) 0%, rgba(144, 61, 222, 1) 27%, rgba(145, 62, 210, 1) 40%, rgba(235, 52, 122, 1) 69%, rgba(235, 69, 52, 1) 100%);
+}
+
+.upload-short-film-card-header.step-3{
+    background: linear-gradient(114deg, rgba(235, 69, 52, 1) 0%, rgba(138, 61, 222, 1) 55%, rgba(130, 65, 222, 1) 80%, rgba(84, 70, 221, 1) 100%);
 }
 
 .upload-short-film-card-header-text{

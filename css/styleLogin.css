@@ -16,23 +16,47 @@ body{
     }
 }
 
-.rightContainer{
-    display: flex;
+.leftContainer{
+    display: none;
     justify-content: center;
     align-items: center;
     width: 50vw;
     height: 100vh;
+    position: relative;
 }
 
-.imgLogin{
-    width: 50vw;
+@media (min-width: 992px){
+    .leftContainer{
+        display: flex;
+    }
+}
+
+.rightContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     height: 100vh;
+    overflow: hidden;
+}
+
+@media (min-width: 992px){
+    .rightContainer{
+        width: 50vw;
+    }
+}
+
+.imgLogin {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
 }
+
 .imgUE{
     width:320px;
-    height:160px;
 }
+
 .logoUE{
     text-align: right;
     position: absolute;
@@ -45,18 +69,25 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
 }
 
 .bloqueLogin{
     text-align: center;
     padding: 16px;
     margin: 0;
-    width: 280px;
+    width: auto;
     height: 100%;
     border: 1px solid var(--neutral-05);
     border-radius: 5px;
     background-color: var(--neutral-07);
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.13);
+}
+
+@media (min-width: 480px){
+    .bloqueLogin{
+        width: 280px;
+    }
 }
 
 input{
@@ -97,19 +128,10 @@ input:focus{
 }
 
 
-
-
-@media screen and (max-height:770px){
-    .bloqueLogin{
-        height:35vh;
-    }
-}
-
-
 /* En caso de que sea en móvil */
 @media screen and (max-width: 992px){
     body{
-        background-image: url(../img/img1.jpeg);
+        background-image: url(../img/red-white-photo-white-black-camera.jpg);
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
