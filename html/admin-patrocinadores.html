@@ -6,10 +6,56 @@
     <title>Patrocinadores</title>
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/styleAdmin.css">
+    <link rel="stylesheet" href="../css/admin-patrocinadores.css">
 </head>
 <body>
-    <menu-admin></menu-admin>
-    Patrocinadores Content
+    <div id="splash">
+        <img src="../img/logo1-loading.gif" alt="Cargando...">
+    </div>
+    <div class="admin-super-container">
+        <menu-admin></menu-admin>    
+        <div class="page">
+            <div class="cabeceraPagina">
+                <div class="tituloPagina">
+                    <h1> Gestión de Patrocinadores </h1>
+                    <div class="subtitle">Administra los participantes del evento </div>
+                </div>
+                <div class="botonAgregarPatrocinador">
+                    <span class="iconoAgregarPatrocinador"></span>
+                    <span>Agregar Patrocinador</span>
+                </div>
+            </div>
+            
+            <div class="cardsContainer">
+                <div class="cardPatrocinador">
+                    <div class="bodyCardPatrocinador">
+                        <div class="imagenPatrocinador">
+                            <img src="https://picsum.photos/400/400" class="img">
+                        </div>
+                        <div class="iconosPatrocinador">
+                            <div class="iconoEditar">
+                                <span class="iconoEditarPatrocinador"></span>
+                            </div>
+                            <div class="iconoBorrar">
+                                <span class="iconoBorrarPatrocinador"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footerCardPatrocinador">
+                        <span class="nombre">hola</span>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+
+
+
+
+    <script src="../js/constantes.js"></script>
+    <script src="../js/check-session.js"></script>
     <script src="../js/menu-admin.js"></script>
 </body>
 </html>
