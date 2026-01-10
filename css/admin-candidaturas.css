@@ -1,25 +1,25 @@
 :root {
-    --bg: #f5f6f8;
-    --card: #ffffff;
-    --border: #dddddd;
-    --text: #333;
-    --muted: #777;
-    --primary: #e53935;
+    --bg: var(--neutral-08);
+    --card: var(--neutral-09);
+    --border: var(--neutral-05);
+    --text: var(--neutral-02);
+    --muted: var(--neutral-03);
+    --primary: var(--primary-03);
 
-    --yellow-bg: #fff3cd;
-    --yellow-text: #856404;
+    --yellow-bg: var(--warning-04);
+    --yellow-text: var(--warning-01);
 
-    --green-bg: #d4edda;
-    --green-text: #155724;
+    --green-bg: var(--success-04);
+    --green-text: var(--success-01);
 
-    --red-bg: #f8d7da;
-    --red-text: #721c24;
+    --red-bg: var(--error-04);
+    --red-text: var(--error-01);
 
-    --blue-bg: #e3f2fd;
-    --blue-text: #0d47a1;
+    --blue-bg: var(--information-04);
+    --blue-text: var(--information-01);
 
-    --gold-bg: #ffe082;
-    --gold-text: #5d4037;
+    --gold-bg: var(--secondary-05);
+    --gold-text: var(--secondary-01);
 }
 
 body {
@@ -71,7 +71,7 @@ h1 {
     border-radius: 6px;
     border: 1px solid var(--border);
     font-size: 14px;
-    background: #fff;
+    background: var(--neutral-09);
     min-width: 0;
 }
 
@@ -84,12 +84,12 @@ h1 {
     margin-left: auto;
     color: var(--muted);
     border-color: var(--border);
-    background: #fafafa;
+    background: var(--neutral-07);
 }
 
 .filters .clear:hover {
-    background: #eee;
-    color: #333;
+    background: var(--neutral-06);
+    color: var(--neutral-02);
 }
 
 /* TABLE */
@@ -107,7 +107,7 @@ table {
 }
 
 thead {
-    background: #fafafa;
+    background: var(--neutral-07);
 }
 
 th,
@@ -120,7 +120,7 @@ td {
 th {
     font-size: 13px;
     font-weight: 600;
-    color: #555;
+    color: var(--neutral-04);
 }
 
 .participant {
@@ -134,7 +134,7 @@ th {
 
 .synopsis {
     font-size: 13px;
-    color: #555;
+    color: var(--neutral-04);
     max-width: 280px;
     word-break: break-word;
 }
@@ -216,7 +216,7 @@ th {
     font-size: 12px;
     border-radius: 5px;
     border: 1px solid var(--border);
-    background: #fff;
+    background: var(--neutral-09);
     cursor: pointer;
 }
 
@@ -239,13 +239,13 @@ th {
 /* Botón de eliminar (destructivo) */
 .btn.delete {
     background: var(--primary);
-    color: white;
+    color: var(--neutral-09);
     border: 1px solid var(--primary);
 }
 
 .btn.delete:hover {
-    background: #c62828;
-    border-color: #c62828;
+    background: var(--primary-02);
+    border-color: var(--primary-02);
 }
 
 /* FOOTER */
@@ -256,7 +256,7 @@ th {
     padding: 12px;
     font-size: 13px;
     color: var(--muted);
-    background: #fafafa;
+    background: var(--neutral-07);
     border-top: 1px solid var(--border);
 }
 
@@ -274,19 +274,19 @@ th {
     padding: 4px 8px;
     border-radius: 20px;
     border: 1px solid var(--border);
-    background: #fff;
+    background: var(--neutral-09);
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .pagination-btn:hover {
-    background: #eee;
+    background: var(--neutral-06);
 }
 
 .pagination-btn.active {
     background: var(--primary);
-    color: #fff;
+    color: var(--neutral-09);
     border-color: var(--primary);
 }
 
@@ -316,7 +316,7 @@ th {
     max-width: 90vw;
     max-height: 90vh;
     overflow-y: auto;
-    background: white;
+    background: var(--neutral-09);
     border-radius: 8px;
     position: relative;
     margin: 0 auto;
@@ -327,18 +327,18 @@ th {
     max-width: 440px;
     width: 90%;
     padding: 24px;
-    background: white;
+    background: var(--neutral-09);
     border-radius: 8px;
     position: relative;
 }
 
 #changeModal .modal-context {
-    background: #f9f9f9;
+    background: var(--neutral-07);
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 16px;
     font-size: 13px;
-    color: #555;
+    color: var(--neutral-04);
 }
 
 #changeModal .modal-context p {
@@ -373,7 +373,7 @@ th {
     max-width: 900px;
     width: 90%;
     padding: 20px;
-    background: white;
+    background: var(--neutral-09);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -385,7 +385,7 @@ th {
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--neutral-05);
 }
 
 .close-btn {
@@ -393,19 +393,19 @@ th {
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #666;
+    color: var(--neutral-04);
     transition: color 0.2s;
 }
 
 .close-btn:hover {
-    color: #333;
+    color: var(--neutral-02);
 }
 
 .tabs {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-    background: #f5f5f5;
+    background: var(--neutral-07);
     padding: 8px;
     border-radius: 8px;
     overflow-x: auto;
@@ -413,8 +413,8 @@ th {
 
 .tab-btn {
     padding: 8px 16px;
-    background: #fff;
-    border: 1px solid #ddd;
+    background: var(--neutral-09);
+    border: 1px solid var(--neutral-05);
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
@@ -422,9 +422,9 @@ th {
 }
 
 .tab-btn.active {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
+    background: var(--information-02);
+    color: var(--neutral-09);
+    border-color: var(--information-02);
 }
 
 .tab-content {
@@ -435,7 +435,7 @@ th {
     display: none;
     padding: 15px;
     border-radius: 8px;
-    background: #fafafa;
+    background: var(--neutral-07);
 }
 
 .tab-pane.active {
@@ -508,7 +508,7 @@ th {
     max-width: 800px;
     width: 90%;
     padding: 24px;
-    background: white;
+    background: var(--neutral-09);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -516,7 +516,7 @@ th {
 
 .detail-content {
     font-size: 14px;
-    color: #333;
+    color: var(--neutral-02);
 }
 
 .detail-row {
@@ -524,7 +524,7 @@ th {
     justify-content: space-between;
     margin-bottom: 20px;
     padding: 12px;
-    background: #fafafa;
+    background: var(--neutral-07);
     border-radius: 8px;
     gap: 10px;
 }
@@ -537,14 +537,14 @@ th {
 
 .detail-row strong {
     font-weight: 600;
-    color: #555;
+    color: var(--neutral-04);
 }
 
 .participant-info {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    background: #f9f9f9;
+    background: var(--neutral-07);
     padding: 16px;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -566,8 +566,8 @@ th {
 .synopsis-detail {
     margin-bottom: 20px;
     padding: 16px;
-    background: #fff;
-    border: 1px solid #eee;
+    background: var(--neutral-09);
+    border: 1px solid var(--neutral-05);
     border-radius: 8px;
 }
 
@@ -575,12 +575,12 @@ th {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #333;
+    color: var(--neutral-02);
 }
 
 .synopsis-detail p {
     line-height: 1.6;
-    color: #555;
+    color: var(--neutral-04);
     margin: 0;
 }
 
@@ -594,7 +594,7 @@ th {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    background: #f9f9f9;
+    background: var(--neutral-07);
     padding: 12px;
     border-radius: 8px;
     flex: 1;
@@ -614,13 +614,13 @@ th {
 .date-item strong {
     display: block;
     font-weight: 600;
-    color: #333;
+    color: var(--neutral-02);
     margin-bottom: 4px;
 }
 
 .date-item div:last-child {
     font-size: 13px;
-    color: #777;
+    color: var(--neutral-03);
 }
 
 /* Contenedor de acciones en modal de detalle */
@@ -636,7 +636,7 @@ th {
     max-width: 600px;
     width: 90%;
     padding: 20px;
-    background: white;
+    background: var(--neutral-09);
     border-radius: 12px;
     position: relative;
 }
@@ -644,7 +644,7 @@ th {
 .history-id {
     font-size: 14px;
     margin-bottom: 20px;
-    color: #555;
+    color: var(--neutral-04);
 }
 
 .timeline {
@@ -659,7 +659,7 @@ th {
     top: 0;
     bottom: 0;
     width: 2px;
-    background: #ddd;
+    background: var(--neutral-05);
 }
 
 .timeline-item {
@@ -674,33 +674,33 @@ th {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: #bbb;
-    border: 3px solid #fff;
+    background: var(--neutral-04);
+    border: 3px solid var(--neutral-09);
     z-index: 1;
 }
 
 .timeline-item.review .timeline-icon {
-    background: var(--yellow-text);
+    background: var(--warning-01);
 }
 
 .timeline-item.accepted .timeline-icon {
-    background: var(--green-text);
+    background: var(--success-01);
 }
 
 .timeline-item.rejected .timeline-icon {
-    background: var(--red-text);
+    background: var(--error-01);
 }
 
 .timeline-item.finalist .timeline-icon {
-    background: var(--blue-text);
+    background: var(--information-01);
 }
 
 .timeline-item.winner .timeline-icon {
-    background: var(--gold-text);
+    background: var(--secondary-01);
 }
 
 .timeline-content {
-    background: #fafafa;
+    background: var(--neutral-07);
     padding: 12px 14px;
     border-radius: 8px;
     font-size: 13px;
@@ -715,13 +715,13 @@ th {
 .timeline-date {
     display: block;
     font-size: 12px;
-    color: #777;
+    color: var(--neutral-03);
     margin-bottom: 6px;
 }
 
 .timeline-reason {
-    background: var(--red-bg);
-    color: var(--red-text);
+    background: var(--error-04);
+    color: var(--error-01);
     padding: 10px;
     border-radius: 6px;
     margin-top: 8px;
@@ -729,15 +729,15 @@ th {
 }
 
 .timeline-fix {
-    background: var(--blue-bg);
-    color: var(--blue-text);
+    background: var(--information-04);
+    color: var(--information-01);
     padding: 10px;
     border-radius: 6px;
     margin-top: 8px;
     font-size: 12px;
 }
 
-/* ✅ NUEVO BLOQUE RESPONSIVE: TARJETAS EN 2 COLUMNAS */
+/* Diseño responsive*/
 @media (max-width: 768px) {
     .page {
         padding: 12px;
@@ -826,7 +826,7 @@ th {
 
     .synopsis {
         font-size: 13px;
-        color: #555;
+        color: var(--neutral-04);
         word-break: break-word;
         line-height: 1.4;
         margin-bottom: 12px;
@@ -876,7 +876,7 @@ th {
 
     .btn.delete {
         background: var(--primary);
-        color: white;
+        color: var(--neutral-09);
         border: 1px solid var(--primary);
     }
 
@@ -903,7 +903,6 @@ th {
         border-radius: 16px;
     }
 
-    /* Modales */
     .modal-content {
         width: calc(100vw - 24px);
         max-width: none;
