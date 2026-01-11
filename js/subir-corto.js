@@ -290,10 +290,10 @@ function setupDropZone(zoneId, inputId, cardId, nameSpanId, sizeSpanId,
     };
 
     const clearFile = () => {
-        input.value = "";
+        input.value = '';
         card.classList.add('hidden-force');
         zone.classList.remove('hidden-force');
-        errorSpan.textContent = "";
+        errorSpan.textContent = '';
     };
 
     zone.addEventListener('click', () => input.click());

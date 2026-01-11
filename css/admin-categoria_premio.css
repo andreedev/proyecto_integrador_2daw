@@ -37,10 +37,7 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
   background-color: var(--neutral-08);
-  padding: 16px;
-  margin: 0;
 }
 
 .header {

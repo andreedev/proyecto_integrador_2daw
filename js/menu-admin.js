@@ -113,7 +113,7 @@ class MenuAdmin extends HTMLElement {
         });
 
         document.querySelector('#categoriasMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-categoriasPremios.html';
+            window.location.href = 'admin-categoria_premio.html';
         }); 
         document.querySelector('#patrocinadoresMenuLateral').addEventListener('click', () => {
             window.location.href = 'admin-patrocinadores.html';
