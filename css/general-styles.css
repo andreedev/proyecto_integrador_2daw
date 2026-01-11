@@ -46,6 +46,13 @@
     --error-02: #D50000;
     --error-03: #EC8A8A;
     --error-04: #F6CACA;
+    --shadow-01: 0 2px 5px 0 rgba(0, 0, 0, 0.20);
+    --premio-golden: linear-gradient(90deg, #ECC440 0%, #F5DF65 35.49%, #E9C53E 68.38%, #FFFF95 100%);
+    --premio-silver: linear-gradient(90deg, #C1C1C1 0%, #E0E0E0 17.03%, #D6D6D6 49.05%, #DADADA 55.29%, #BFBFBF 80.77%, #F5F5F5 98.65%);
+    --premio-bronze: linear-gradient(90deg, #A66221 0%, #E6B07E 20.19%, #FFEDDC 54.33%, #E6B07E 81.25%, #A66221 100%);
+    --gradient-01: linear-gradient(114deg, rgba(235, 69, 52, 1) 0%, rgba(138, 61, 222, 1) 55%, rgba(130, 65, 222, 1) 80%, rgba(84, 70, 221, 1) 100%);
+    --gradient-02: linear-gradient(133deg,rgba(84, 70, 221, 1) 0%, rgba(144, 61, 222, 1) 27%, rgba(145, 62, 210, 1) 40%, rgba(235, 52, 122, 1) 69%, rgba(235, 69, 52, 1) 100%);
+    --gradient-03: linear-gradient(91deg, #FFF 1.75%, #FED8D8 62.21%);
 }
 
 /* Eliminar estilos por defecto de elementos HTML */
