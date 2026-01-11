@@ -295,6 +295,13 @@ ul{
     }
 }
 
+.admin-page-content{
+    flex-grow: 1;
+    background-color: var(--neutral-09);
+    width: 100%;
+    padding: 24px;
+}
+
 
 .responsiveMenuAdmin{
     border-bottom: 1px solid var(--neutral-04);
