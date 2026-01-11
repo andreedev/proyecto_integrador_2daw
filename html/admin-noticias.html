@@ -66,24 +66,40 @@
                     <div class="modal-body">
                         <span class="labels">Título de la noticia:</span>
                         <input type="text" id="newsTitleInput" class="input-field" placeholder="Introduce el título de la noticia">
+                        <span class="error-news-title-input" id="errorNewsTitleInput"></span>
+
                         <span class="labels">Descripción:</span>
                         <textarea id="newsDescriptionInput" class="input-textArea" placeholder="Introduce la descripción de la noticia"></textarea>
+                        <span class="error-news-description-input" id="errorNewsDescriptionInput"></span>
+
                         <span class="labels">Fecha de publicación:</span>
                         <input type="text" id="newsDateInput" placeholder="DD/MM/AAAA" class="input-field">
+                        <span class="error-news-date-input" id="errorNewsDateInput"></span>
     
                         <div class="input-img-news">
                             <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
-                            <div id="posterDropZoneAdd" class="input-conteiner">
-                                <input type="file" id="newsImageInput" class="input-field hidden-force" name="newsImageInput" accept="image/png, image/jpeg">
+                            <div id="posterDropZoneAdd" class="input-container">
+                                <input type="file" id="newsImageInput" accept="image/png, image/jpeg, image/jpg" hidden>
                                 <div class="input-objects">
                                     <div class="input-icon-background">
                                         <span class="input-icon"></span>
                                     </div>
                                     <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
                                 </div>
-    
                             </div>
-    
+                            <div class="img-accepted hidden-force" id="imgAccepted">
+                                <div class="info-card">
+                                    <div class="icon-background">
+                                        <span class="icon-accepted"></span>
+                                    </div>
+                                    <div class="archive-data">
+                                        <span class="archive-name" id="imgName">archivo_ejemplo_JPG_500kB.j</span>
+                                        <span class="archive-size" id="imgSize">1.53MB</span>
+                                    </div>
+                                    <span class="icon-delete-img" id="deleteImg"></span>
+                                </div>
+                            </div>
+                            <span id="errorMessage" class="error-message"></span>                            
                         </div>
                         <div class="buttons-add-modal">
                             <button type="submit" class="cancel-modal-add" id="btnCancelModalAdd">Cancelar</button>
@@ -105,10 +121,14 @@
                     <div class="modal-body">
                         <span class="labels">Título de la noticia:</span>
                         <input type="text" id="newsTitleInput" class="input-field-edit" placeholder="Introduce el título de la noticia">
+                        <span class="error-news-title-input" id="errorNewsTitleInput"></span>
+
                         <span class="labels">Descripción:</span>
                         <textarea id="newsDescriptionInput" class="input-textArea-edit" placeholder="Introduce la descripción de la noticia"></textarea>
+                        <span class="error-news-description-input" id="errorNewsDescriptionInput"></span>
                         <span class="labels">Fecha de publicación:</span>
                         <input type="text" id="newsDateInput" placeholder="DD/MM/AAAA" class="input-field-edit">
+                        <span class="error-news-date-input" id="errorNewsDateInput"></span>
     
                         <div class="input-img-news-edit">
                             <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
@@ -120,9 +140,20 @@
                                     </div>
                                     <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
                                 </div>
-    
                             </div>
-    
+                            <div class="img-accepted hidden-force" id="imgAcceptedEdit">
+                                <div class="info-card">
+                                    <div class="icon-background">
+                                        <span class="icon-accepted"></span>
+                                    </div>
+                                    <div class="archive-data">
+                                        <span class="archive-name" id="imgName">archivo_ejemplo_JPG_500kB.jpg</span>
+                                        <span class="archive-size" id="imgSize">1.53MB</span>
+                                    </div>
+                                    <span class="icon-delete-img" id="deleteImgEdit"></span>
+                                </div>
+                            </div>
+                            <span id="errorMessageEdit" class="error-message"></span>      
                         </div>
                         <div class="buttons-edit-modal">
                             <button type="submit" class="cancel-modal-edit" id="btnCancelModalEdit">Cancelar</button>
