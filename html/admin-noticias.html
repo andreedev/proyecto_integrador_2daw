@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="splash">
-        <img src="../img/splash.png" alt="Cargando...">
+        <img src="../img/logo1-loading.gif" alt="Cargando...">
     </div>
     <div class="admin-super-container">
         <menu-admin></menu-admin>
@@ -19,18 +19,127 @@
                 <h1>Gestión de Noticias</h1>
                 <div class="subtitle">Administra las noticias  que se mostrará en la página principal del festival</div>
             </div>
+            <div class="search-bar-with-button">
+                <div class="search-bar-container">
+                    <div class="search-bar-icon-background">
+                        <span class="search-bar-icon"></span>
+                    </div>
+                    <input type="text" id="searchBar" placeholder="Buscar noticia...">
+                </div>
+                <div id="addNews" class="primary-button">+ Añadir Noticia</div>
+            </div>
+            <div class="news-container">
+                <div class="one-news">
+                    <div class="news-image">
+                        <img src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen de la noticia 1">
+                    </div>
+                    <div class="news-details">
+                        <div class="news-header">
+                            <h2 class="news-title">Convocatoria del Festival de Cortometrajes 2025</h2>
+                            <div class="news-actions">
+                                <span class="icon-edit-news" title="Editar noticia"></span>
+                                <span class="icon-delete-news" title="Eliminar noticia"></span>
+                            </div>
+                        </div>
+                        <div class="news-status-container">
+                            <span class="icon-calendar"></span>
+                            <span class="news-date">1 de diciembre de 2024</span>
+                            <div class="news-status">
+                                <span class="icon-status"></span>
+                                <span class="status">Publicado</span>
+                            </div>
+                        </div>
+                        <p class="news-paragraph">Se abre el plazo para presentar candidaturas al festival anual de cortometrajes. Podrán participar obras de ficción, documental y animación.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal agregar noticia -->
+
+            <div class="add-new-modal-container hidden-force" id="addModal">
+                <div class="add-new-modal-content">
+                    <div class="header">
+                        <h2>Añadir Noticia</h2>
+                        <span class="close-button" id="closeAddModal"></span>
+                    </div>
+    
+                    <div class="modal-body">
+                        <span class="labels">Título de la noticia:</span>
+                        <input type="text" id="newsTitleInput" class="input-field" placeholder="Introduce el título de la noticia">
+                        <span class="labels">Descripción:</span>
+                        <textarea id="newsDescriptionInput" class="input-textArea" placeholder="Introduce la descripción de la noticia"></textarea>
+                        <span class="labels">Fecha de publicación:</span>
+                        <input type="text" id="newsDateInput" placeholder="DD/MM/AAAA" class="input-field">
+    
+                        <div class="input-img-news">
+                            <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
+                            <div id="posterDropZoneAdd" class="input-conteiner">
+                                <input type="file" id="newsImageInput" class="input-field hidden-force" name="newsImageInput" accept="image/png, image/jpeg">
+                                <div class="input-objects">
+                                    <div class="input-icon-background">
+                                        <span class="input-icon"></span>
+                                    </div>
+                                    <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
+                                </div>
+    
+                            </div>
+    
+                        </div>
+                        <div class="buttons-add-modal">
+                            <button type="submit" class="cancel-modal-add" id="btnCancelModalAdd">Cancelar</button>
+                            <button type="submit" class="add-modal-add" id="btnAddModalAdd">Agregar noticia</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal editar noticia -->
+            <div class="edit-new-modal-container hidden-force" id="editModal">
+                <div class="edit-new-modal-content">
+                    <div class="header">
+                        <h2>Editar Noticia</h2>
+                        <span class="close-button" id="closeEditModal"></span>
+                    </div>
+    
+                    <div class="modal-body">
+                        <span class="labels">Título de la noticia:</span>
+                        <input type="text" id="newsTitleInput" class="input-field-edit" placeholder="Introduce el título de la noticia">
+                        <span class="labels">Descripción:</span>
+                        <textarea id="newsDescriptionInput" class="input-textArea-edit" placeholder="Introduce la descripción de la noticia"></textarea>
+                        <span class="labels">Fecha de publicación:</span>
+                        <input type="text" id="newsDateInput" placeholder="DD/MM/AAAA" class="input-field-edit">
+    
+                        <div class="input-img-news-edit">
+                            <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
+                            <div id="posterDropZoneEdit" class="input-conteiner">
+                                <input type="file" id="newsImageInputEdit" class="input-field-edit hidden-force" name="newsImageInput" accept="image/png, image/jpeg">
+                                <div class="input-objects-edit">
+                                    <div class="input-icon-background">
+                                        <span class="input-icon-edit"></span>
+                                    </div>
+                                    <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
+                                </div>
+    
+                            </div>
+    
+                        </div>
+                        <div class="buttons-edit-modal">
+                            <button type="submit" class="cancel-modal-edit" id="btnCancelModalEdit">Cancelar</button>
+                            <button type="submit" class="add-modal-edit" id="btnAddModalEdit">Editar noticia</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
-
-
-
-
-
 
 
     <script src="../js/menu-admin.js"></script>
     <script src="../js/constantes.js"></script>
     <script src="../js/check-session.js"></script>
-    <scrirpt src="../js/admin-noticias.js"></script>
+    <script src="../js/admin-noticias.js"></script>
 </body>
 </html>
