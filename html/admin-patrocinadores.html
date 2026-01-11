@@ -5,11 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patrocinadores</title>
     <link rel="stylesheet" href="../css/general-styles.css">
+    <link rel="stylesheet" href="../css/styleAdmin.css">
+    <link rel="stylesheet" href="../css/admin-patrocinadores.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
 </head>
 <body>
-    <menu-admin></menu-admin>
-    Patrocinadores Content
+    <div id="splash">
+        <img src="../img/logo1-loading.gif" alt="Cargando...">
+    </div>
+    <div class="admin-super-container">
+        <menu-admin></menu-admin>
+        <div class="page">
+            <div class="cabeceraPagina">
+                <div class="tituloPagina">
+                    <h1> Gestión de Patrocinadores </h1>
+                    <div class="subtitle">Administra los participantes del evento </div>
+                </div>
+                <div id="botonAgregarPatrocinador">
+                    <span class="iconoAgregarPatrocinador"></span>
+                    <span>Agregar Patrocinador</span>
+                </div>
+            </div>
+
+            <div id="cardPatrocinador">
+                <div class="bodyCardPatrocinador">
+                    <div class="imagenPatrocinador">
+                        <img src="https://picsum.photos/400/400" class="img">
+                    </div>
+                    <div class="iconosPatrocinador">
+                        <div class="iconoEditar">
+                            <span class="iconoEditarPatrocinador"></span>
+                        </div>
+                        <div class="iconoBorrar">
+                            <span class="iconoBorrarPatrocinador"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footerCardPatrocinador">
+                    <span class="nombre">hola</span>
+                </div>
+            </div>
+
+            <!-- Modal Editar Patrocinador -->
+            <div class="modalEditar hidden-force" >
+                <div class="contenedorModalEditar">
+                    <div class="header">
+                        <h1 class="editarPatrocinador">Editar Patrocinador</h1>
+                        <div class="cerrarModal">
+                            <span class="iconoCerrarModal"></span>
+                        </div>
+                    </div>
+                    <div class="datosEditarPatrocinador">
+                        <label for="nombrePatrocinador">Nombre del Patrocinador:</label>
+                        <input type="text" id="nombrePatrocinador" name="nombrePatrocinador" required>
+                        <label for="logoPatrocinador">Logo del Patrocinador:</label>
+                        <div id="posterDropZoneEdit" class="inputContenido">
+                            <input type="file" id="posterInputEdit" name="logoPatrocinador" accept="image/png, image/jpg, image/svg" hidden>
+                            <div class="contenidoInput">
+                                <div class="iconoImagen">
+                                    <span class="icono"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formatoAceptado">
+                            <span class="textoInfo">Formatos aceptados: PNG, JPG,SVG. Tamaño máximo:5MB</span>
+                        </div>
+                        <div id="archivoAceptadoEdit" class="archivo-aceptado hidden-force">
+                            <div class="infoCard">
+                                <div class="iconoContainer">
+                                    <span class="iconoAceptado"></span>
+                                </div>
+                                <div class="datosArchivo">
+                                    <span id="nombreArchivoEdit" class="archivo-nombre">archivo_ejemplo_JPG_500kB.jpg</span>
+                                    <span id="tamanioArchivoEdit" class="archivo-tamanio">1.53 MB</span>
+                                </div>
+                                <span class="icono-eliminar-archivo" id="iconoEliminarArchivoEdit"></span>
+                            </div>
+                        </div>
+                        <span id="mensajeErrorEdit" class="error-mensaje"></span>
+                        <div class="contenedorBotones">
+                            <button type="button" class="botonCancelarEdicion">Cancelar</button>
+                            <button type="submit" class="botonGuardarCambios">Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Agregar Patrocinador -->
+            <div class="modalAgregarPatrocinador hidden-force" >
+                <div class="contenedorModalAgregarPatrocinador">
+                    <div class="header">
+                        <h1 class="agregarPatrocinador">Agregar Patrocinador</h1>
+                        <div class="cerrarModal">
+                            <span class="iconoCerrarAgregarModal"></span>
+                        </div>
+                    </div>
+                    <div class="datosEditarPatrocinador">
+                        <label for="nombrePatrocinador">Nombre del Patrocinador:</label>
+                        <input type="text" id="nombrePatrocinador" name="nombrePatrocinador" required>
+                        <label for="logoPatrocinador">Logo del Patrocinador:</label>
+                        <div id="posterDropZone" class="inputContenido">
+                            <input type="file" id="posterInput" name="logoPatrocinador" accept="image/png, image/jpg, image/svg" hidden>
+                            <div class="contenidoInput">
+                                <div class="iconoImagen">
+                                    <span class="icono"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formatoAceptado">
+                            <span class="textoInfo">Formatos aceptados: PNG, JPG,SVG. Tamaño máximo:5MB</span>
+                        </div>
+                         <div id="archivoAceptado" class="archivo-aceptado hidden-force">
+                            <div class="infoCard">
+                                <div class="iconoContainer">
+                                    <span class="iconoAceptado"></span>
+                                </div>
+                                <div class="datosArchivo">
+                                    <span id="nombreArchivo" class="archivo-nombre">archivo_ejemplo_JPG_500kB.jpg</span>
+                                    <span id="tamanioArchivo" class="archivo-tamanio">1.53 MB</span>
+                                </div>
+                                <span class="icono-eliminar-archivo" id="iconoEliminarArchivo"></span>
+                            </div>
+                        </div>
+                        <span id="mensajeErrorAgregar" class="error-mensaje"></span>
+                        <div class="contenedorBotones">
+                            <button type="button" class="botonCancelarAgregarPatrocinador">Cancelar</button>
+                            <button type="submit" class="botonAgregarPatrocinador">Agregar Patrocinador</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="../js/constantes.js"></script>
+    <script src="../js/check-session.js"></script>
     <script src="../js/menu-admin.js"></script>
+    <script src="../js/admin-patrocinadores.js"></script>
 </body>
 </html>
