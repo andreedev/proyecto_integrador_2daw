@@ -56,7 +56,9 @@
                         </div>
                         <div class="datosEditarPatrocinador">
                             <label for="nombrePatrocinador">Nombre del Patrocinador:</label>
-                            <input type="text" id="logoPatrocinador" name="nombrePatrocinador" required>
+                            <input type="text" id="logoPatrocinador" class="nombrePatrocinador" name="nombrePatrocinador">
+                            <span class="mensajeErrorInputPatrocinador" id="mensajeErrorInput"></span>
+
                             <label for="logoPatrocinador">Logo del Patrocinador:</label>
                             <div id="posterDropZoneEdit" class="inputContenido">
                                 <input type="file" id="posterInputEdit" name="logoPatrocinador" accept="image/png, image/jpg, image/svg" hidden>
@@ -101,7 +103,9 @@
                         </div>
                         <div class="datosEditarPatrocinador">
                             <label for="nombrePatrocinador">Nombre del Patrocinador:</label>
-                            <input type="text" id="nombrePatrocinador" name="nombrePatrocinador" required>
+                            <input type="text" id="nombrePatrocinador" name="nombrePatrocinador" class="nombrePatrocinadorAgregar">
+                            <span class="mensajeErrorInputPatrocinador" id="mensajeErrorInputAgregar"></span>
+
                             <label for="logoPatrocinador">Logo del Patrocinador:</label>
                             <div id="posterDropZone" class="inputContenido">
                                 <input type="file" id="posterInput" name="logoPatrocinador" accept="image/png, image/jpg, image/svg" hidden>
