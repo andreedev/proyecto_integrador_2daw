@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
     <link rel="stylesheet" href="../css/admin-configuracion-web.css">
+    <link rel="stylesheet" href="../css/utils.css">
 </head>
 <body>
     <div id="splash">
@@ -23,9 +24,7 @@
                 </div>
             </div>
 
-            <!-- PRE-EVENTO -->
-
-            <div class="admin-content" id="preEventoContainer">
+            <div class="admin-content">
                 <div class="generic-cards-container">
                     <div class="generic-card">
                         <div class="mode-info-internal-card">
@@ -50,15 +49,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="main-action-container">
-                            <div class="admin-header-main-action-button fs-14px">
-                                <span class="icon-settings"></span>
-                                <span>Publicar cambios</span>
+                        <div class="d-flex justify-space-between main-action-buttons-container">
+                            <div class="main-action-left-side">
+                                <div class="admin-header-main-action-button disabled fs-14px" id="publishChangesButton">
+                                    <span class="icon-settings"></span>
+                                    <span>Publicar cambios</span>
+                                </div>
+                                <span class="text-warning fs-12px fw-500 hidden-force" id="unsavedChangesWarning">
+                                    ● Hay cambios sin publicar
+                                </span>
                             </div>
-
+                            <div class="main-action-right-side">
+                                <div class="secondary-button" id="sendToPreviousEditionsButton">
+                                    <span class="icon-archive"></span>
+                                    <span>Enviar a Ediciones Anteriores</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+
+                    <!-- Cards Pre-evento -->
                     <div class="generic-card preEventoCard">
                         <div class="card-header">
                             <div class="card-header-left-side">
@@ -180,6 +191,51 @@
                             <span class="helper-text-2">Los eventos se gestionan desde el módulo de Eventos. Los cambios se reflejarán automáticamente en la landing pública.</span>
                         </div>
                     </div>
+
+                    <!-- Cards Post-evento -->
+                    <div class="generic-card postEventoCard hidden-force">
+                        <div class="card-header">
+                            <div class="card-header-left-side">
+                                <div class="icon-container bg-primary-05">
+                                    <span class="icon-document bg-primary-03"></span>
+                                </div>
+                                <div class="card-header-title-container">
+                                    <span class="card-header-title">Resumen del evento</span>
+                                    <span class="card-header-subtitle">Texto descriptivo para la landing post-evento</span>
+                                </div>
+                            </div>
+                            <div class="card-header-right-side">
+                            </div>
+                        </div>
+                        <div class="large-input-group">
+                            <div class="large-input-group-header">
+                                <span class="large-input-group-label-text">Contenido</span>
+                            </div>
+                            <div class="large-input-group-body h-100px">
+                                <textarea id="postEventoResumen" class="textarea-input">La Gala de Cortometrajes 2026 fue un éxito rotundo...</textarea>
+                            </div>
+                            <span id="postEventoResumenErrorMessage" class="error-message"></span>
+                            <span class="helper-text">Describe los momentos destacados y el éxito del evento</span>
+                        </div>
+
+                    </div>
+                    <div class="generic-card postEventoCard hidden-force">
+                        <div class="card-header">
+                            <div class="card-header-left-side">
+                                <div class="icon-container bg-gradient-01">
+                                    <span class="icon-picture bg-neutral-09 w-20px h-20px"></span>
+                                </div>
+                                <div class="card-header-title-container">
+                                    <span class="card-header-title">Galería de imágenes</span>
+                                    <span class="card-header-subtitle">Sube y organiza las fotos del evento</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="secondary-card">
+                            <span class="helper-text-2">No hay imágenes subidas. Haz clic en el botón de arriba para añadir videos del evento.</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

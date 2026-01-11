@@ -1,0 +1,198 @@
+/** Clases utilitarias para estilos comunes **/
+/** Siempre debe ir al final de cualquier otro archivo CSS **/
+
+.d-flex{
+    display: flex;
+}
+
+.d-block{
+    display: block;
+}
+
+.d-block-force{
+    display: block !important;
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+.flex-row{
+    flex-direction: row;
+}
+
+.justify-content-center{
+    justify-content: center;
+}
+
+.justify-space-between{
+    justify-content: space-between;
+}
+
+.align-items-center{
+    align-items: center;
+}
+
+.gap-4px{
+    gap: 4px;
+}
+
+.gap-8px{
+    gap: 8px;
+}
+
+.gap-12px{
+    gap: 12px;
+}
+
+.gap-16px{
+    gap: 16px;
+}
+
+.gap-20px{
+    gap: 20px;
+}
+
+.gap-24px{
+    gap: 24px;
+}
+
+.bg-neutral-01{
+    background-color: var(--neutral-01);
+}
+
+.bg-neutral-02{
+    background-color: var(--neutral-02);
+}
+
+.bg-neutral-03{
+    background-color: var(--neutral-03);
+}
+
+.bg-neutral-04{
+    background-color: var(--neutral-04);
+}
+
+.bg-neutral-05{
+    background-color: var(--neutral-05);
+}
+
+.bg-neutral-06{
+    background-color: var(--neutral-06);
+}
+
+.bg-neutral-07{
+    background-color: var(--neutral-07);
+}
+
+.bg-neutral-08{
+    background-color: var(--neutral-08);
+}
+
+.bg-neutral-09{
+    background-color: var(--neutral-09);
+}
+
+.bg-gradient-01{
+    background: var(--gradient-01);
+}
+
+.bg-gradient-02{
+    background: var(--gradient-02);
+}
+
+.bg-gradient-03{
+    background: var(--gradient-03);
+}
+
+.bg-primary-03{
+    background-color: var(--primary-03);
+}
+
+.bg-primary-05{
+    background-color: var(--primary-05);
+}
+
+.w-16px{
+    width: 16px;
+}
+
+.w-20px{
+    width: 20px;
+}
+
+.w-24px{
+    width: 24px;
+}
+
+.w-28px{
+    width: 28px;
+}
+
+.w-32px{
+    width: 32px;
+}
+
+.w-36px{
+    width: 36px;
+}
+
+.h-16px{
+    height: 16px;
+}
+
+.h-20px{
+    height: 20px;
+}
+
+.h-24px{
+    height: 24px;
+}
+
+.h-28px{
+    height: 28px;
+}
+
+.h-32px{
+    height: 32px;
+}
+
+.h-100px{
+    height: 100px;
+}
+
+.text-warning{
+    color: var(--warning-01);
+}
+
+.fs-10px{
+    font-size: 10px;
+}
+
+.fs-12px{
+    font-size: 12px;
+}
+
+.fs-14px{
+    font-size: 14px;
+}
+
+.fw-300{
+    font-weight: 300;
+}
+
+.fw-400{
+    font-weight: 400;
+}
+
+.fw-500{
+    font-weight: 500;
+}
+
+.fw-600{
+    font-weight: 600;
+}
+
+.fw-700{
+    font-weight: 700;
+}

@@ -174,12 +174,16 @@
     transition: all 300ms ease;
 }
 
-.main-action-container{
+.main-action-buttons-container{
     display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.fs-14px{
-    font-size: 14px;
+@media (min-width: 768px) {
+    .main-action-buttons-container{
+        flex-direction: row;
+    }
 }
 
 .card-header{
@@ -412,7 +416,6 @@
         height: 160px;
     }
 }
-
 
 .large-input-group{
     display: flex;
@@ -716,16 +719,80 @@
     background-color: var(--neutral-05);
 }
 
-/** Utils at the end always **/
-
-.bg-gradient-01{
-    background: var(--gradient-01);
+.main-action-left-side{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
 }
 
-.bg-primary-03{
-    background-color: var(--primary-03);
+.main-action-right-side{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
 }
 
-.bg-primary-05{
-    background-color: var(--primary-05);
+.secondary-button{
+    background: var(--gradient-05);
+    color: var(--neutral-09);
+    border-radius: 6px;
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: min-content;
+    width: 100%;
+    gap: 8px;
+    transition: all 300ms ease;
+    border: 1px transparent solid;
+    font-size: 12px;
 }
+
+@media (min-width: 480px){
+    .secondary-button {
+        font-size: 14px;
+    }
+}
+
+.secondary-button:hover .icon-archive{
+    background-color: var(--secondary-02);
+    transition: all 300ms ease;
+}
+
+.secondary-button:hover{
+    background: var(--neutral-09);
+    color: var(--secondary-02);
+    border: 1px solid var(--secondary-02);
+    transition: all 300ms ease;
+}
+
+.icon-archive{
+    width: 16px;
+    height: 16px;
+    background-color: var(--neutral-09);
+    mask-image: url('../img/icon/ArchiveIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-picture{
+    mask-image: url('../img/icon/PictureThickIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+
+
+
+
+
+

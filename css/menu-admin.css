@@ -367,6 +367,11 @@ ul{
     background-color: var(--primary-02);
 }
 
+.admin-header-main-action-button.disabled{
+    background-color: var(--primary-04);
+    cursor: not-allowed;
+}
+
 .admin-content{
     background-color: var(--neutral-08);
     padding: 16px;
