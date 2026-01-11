@@ -22,30 +22,13 @@ h1{
 
 }
 
-#botonAgregarPatrocinador{
-    background-color: var(--primary-02);
-    color: var(--neutral-09);
-    border:none;
-    border-radius:8px;
-    padding:8px 16px;
-    font-size:14px;
-    cursor: pointer;
-    margin-top: 8px;
-}
-
-.botonAgregarPatrocinador:hover{
-    background-color: var(--primary-03);
-}
-
 #cardPatrocinador{
     width:344px;
     display: flex;
     flex-direction: column;
-    border:solid 1px var(--neutral-05);
     border-radius:8px;
-    margin-top:40px;
     background-color: var(--neutral-07);
-    border: solid 1px var(--neutral-01);
+    border: solid 1px var(--neutral-04);
     overflow: hidden;
 }
 
@@ -100,7 +83,7 @@ h1{
     background-color: var(--neutral-09);
     padding:8px;
     text-align: center;
-    border-top:solid 1px var(--neutral-01);
+    border-top:solid 1px var(--neutral-04);
 }
 
 @media (min-width: 768px){

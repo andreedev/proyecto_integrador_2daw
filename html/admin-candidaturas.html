@@ -14,36 +14,40 @@
     <div id="splash">
         <img src="../img/logo1-loading.gif" alt="Cargando...">
     </div>
+
     <div class="admin-super-container">
         <menu-admin></menu-admin>
-        <div class="page">
-
-            <h1>Gestión de Candidaturas</h1>
-            <div class="subtitle">Administra las candidaturas de los participantes</div>
-
-            <!-- FILTERS -->
-            <div class="filters">
-                <div class="filter-search">
-                    <input type="text" placeholder="Buscar por participante o sinopsis…">
+        <div class="admin-page-content">
+            <div class="admin-header">
+                <div class="admin-header-module-info-container">
+                    <p class="admin-module-name">Gestión de Candidaturas</p>
+                    <span class="admin-module-description">Administra las candidaturas de los participantes</span>
                 </div>
-                <div class="filter-status">
-                    <select>
-                        <option disabled selected>Todos los estados</option>
-                        <option>En revisión</option>
-                        <option>Aceptada</option>
-                        <option>Rechazada</option>
-                    </select>
-                </div>
-                <div class="filter-date">
-                    <input type="date">
-                </div>
-                <button class="clear">Limpiar filtros</button>
             </div>
+            <div class="admin-content">
+                <!-- FILTERS -->
+                <div class="filters">
+                    <div class="filter-search">
+                        <input type="text" placeholder="Buscar por participante o sinopsis…">
+                    </div>
+                    <div class="filter-status">
+                        <select>
+                            <option disabled selected>Todos los estados</option>
+                            <option>En revisión</option>
+                            <option>Aceptada</option>
+                            <option>Rechazada</option>
+                        </select>
+                    </div>
+                    <div class="filter-date">
+                        <input type="date">
+                    </div>
+                    <button class="clear">Limpiar filtros</button>
+                </div>
 
-            <!-- TABLE -->
-            <div class="table-wrapper">
-                <table>
-                    <thead>
+                <!-- TABLE -->
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
                         <tr>
                             <th>Participante</th>
                             <th>Sinopsis</th>
@@ -52,9 +56,9 @@
                             <th>Últ. actualización</th>
                             <th>Acciones</th>
                         </tr>
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
                         <!-- EN REVISIÓN -->
                         <tr>
                             <td data-label="Participante">
@@ -75,13 +79,13 @@
                             <td data-label="Acciones">
                                 <div class="actions">
                                     <button class="btn btn-detail"><img src="../img/icon/EyeIcon.svg"
-                                            alt="">Detalle</button>
+                                                                        alt="">Detalle</button>
                                     <button class="btn"><img src="../img/icon/DocumentIcon.svg"
-                                            alt="">Documentos</button>
+                                                             alt="">Documentos</button>
                                     <button class="btn"><img src="../img/icon/TimeBackIcon.svg"
-                                            alt="">Historial</button>
+                                                             alt="">Historial</button>
                                     <button class="btn change" data-estado="review"><img src="../img/icon/EditIcon.svg"
-                                            alt="">Cambiar</button>
+                                                                                         alt="">Cambiar</button>
                                 </div>
                             </td>
                         </tr>
@@ -106,11 +110,11 @@
                             <td data-label="Acciones">
                                 <div class="actions">
                                     <button class="btn btn-detail"><img src="../img/icon/EyeIcon.svg"
-                                            alt="">Detalle</button>
+                                                                        alt="">Detalle</button>
                                     <button class="btn"><img src="../img/icon/DocumentIcon.svg"
-                                            alt="">Documentos</button>
+                                                             alt="">Documentos</button>
                                     <button class="btn"><img src="../img/icon/TimeBackIcon.svg"
-                                            alt="">Historial</button>
+                                                             alt="">Historial</button>
                                     <button class="btn change" data-estado="accepted"><img
                                             src="../img/icon/EditIcon.svg" alt="">Cambiar</button>
                                 </div>
@@ -137,34 +141,34 @@
                             <td data-label="Acciones">
                                 <div class="actions">
                                     <button class="btn btn-detail"><img src="../img/icon/EyeIcon.svg"
-                                            alt="">Detalle</button>
+                                                                        alt="">Detalle</button>
                                     <button class="btn"><img src="../img/icon/DocumentIcon.svg"
-                                            alt="">Documentos</button>
+                                                             alt="">Documentos</button>
                                     <button class="btn"><img src="../img/icon/TimeBackIcon.svg"
-                                            alt="">Historial</button>
+                                                             alt="">Historial</button>
                                     <button class="btn change" data-estado="rejected"><img
                                             src="../img/icon/EditIcon.svg" alt="">Cambiar</button>
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                <div class="table-footer">
-                    <div class="pagination-info">
-                        Mostrando 10 de 25 candidaturas
+                    <div class="table-footer">
+                        <div class="pagination-info">
+                            Mostrando 10 de 25 candidaturas
+                        </div>
+                        <div class="pagination">
+                            <button class="pagination-btn"><span>Anterior</span></button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn"><span>Siguiente</span></button>
+                        </div>
                     </div>
-                    <div class="pagination">
-                        <button class="pagination-btn"><span>Anterior</span></button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <button class="pagination-btn"><span>Siguiente</span></button>
-                    </div>
+
                 </div>
-
             </div>
-
         </div>
     </div>
 
@@ -364,6 +368,7 @@
             </div>
         </div>
     </div>
+
     <script src="../js/constantes.js"></script>
     <script src="../js/check-session.js"></script>
     <script src="../js/admin-candidaturas.js"></script>

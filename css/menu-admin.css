@@ -13,6 +13,7 @@ ul{
     padding: 8px 0px 8px 8px;
     width: 17rem;
     border: 1px solid var(--neutral-04);
+    background-color: var(--neutral-05);
 
 }
 @media (min-width: 990px){
@@ -98,7 +99,7 @@ ul{
 }
 
 .menuLateral ul li span{
-    padding-left: 8px;
+    padding-left: 12px;
 }
 
 /* Iconos del menu lateral */
@@ -124,8 +125,8 @@ ul{
     margin: 6px 0px 0px 6px;
 }
 .iconoNoticias{
-    width:24px;
-    height:24px;
+    width:28px;
+    height:28px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/NewspaperIcon.svg');
     display: inline-block;
@@ -134,8 +135,8 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoCategorias{
-    width:24px;
-    height:24px;
+    width:20px;
+    height:20px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/TagsIcon.svg');
     display: inline-block;
@@ -144,28 +145,30 @@ ul{
     margin: 6px 0px 0px 6px;
 } 
 .iconoPatrocinadores{
-    width:24px;
-    height:24px;
+    width:20px;
+    height:20px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/HandshakeIcon.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
     margin: 6px 0px 0px 6px;
-} 
+}
+
 .iconoGala{
-    width:24px;
-    height:24px;
+    width:20px;
+    height:20px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/CinemaMovieIcon.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
     margin: 6px 0px 0px 6px;
-} 
+}
+
 .iconoEvento{
-    width:16px;
-    height:16px;
+    width:20px;
+    height:20px;
     background-color: var(--neutral-01);
     mask-image: url('../img/icon/CalendarIcon.svg');
     display: inline-block;
@@ -299,9 +302,106 @@ ul{
     flex-grow: 1;
     background-color: var(--neutral-09);
     width: 100%;
-    padding: 24px;
 }
 
+.admin-header{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--neutral-08);
+    padding: 16px 16px;
+    flex-direction: row;
+}
+
+@media (min-width: 768px){
+    .admin-header {
+        padding: 16px 32px;
+    }
+}
+
+.admin-header-module-info-container{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+    min-width: 250px;
+}
+
+.admin-header-module-actions-container{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.admin-header-main-action-button{
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: min-content;
+    width: 100%;
+}
+
+@media (min-width: 768px){
+    .admin-header-main-action-button {
+        width: auto;
+    }
+    .admin-header-module-actions-container {
+        width: auto;
+    }
+}
+
+.admin-header-main-action-button:hover{
+    background-color: var(--primary-02);
+}
+
+.admin-content{
+    background-color: var(--neutral-08);
+    padding: 16px 32px;
+    height: 100%;
+}
+
+.admin-module-name{
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--neutral-01);
+}
+
+@media (min-width: 768px){
+    .admin-module-name{
+        font-size: 24px;
+    }
+}
+
+.admin-module-description{
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--neutral-03);
+    margin-top: 4px;
+    margin-bottom: 0px;
+}
+
+.icono-agregar {
+    width: 24px;
+    height: 24px;
+    background-color: var(--neutral-09);
+    mask-image: url('../img/icon/PlusIcon.svg');
+    display: inline-block;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    margin: 0px 8px 0px 0px;
+}
 
 .responsiveMenuAdmin{
     border-bottom: 1px solid var(--neutral-04);
@@ -337,7 +437,6 @@ ul{
 }
 
 
-
 #botonCerrarSesionAdmin{
     width: 100%;
     color: var(--neutral-09);
@@ -348,6 +447,7 @@ ul{
     font-size: 16px;
     font-weight: 600;
 }
+
 #botonCerrarSesionAdmin:hover{
     background-color: var(--primary-03);
 }

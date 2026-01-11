@@ -27,7 +27,7 @@ class MenuAdmin extends HTMLElement {
 
                 <div class="menuLateral">
                     <ul>
-                        <li class="textoIcono active" id="candidaturasMenuLateral">
+                        <li class="textoIcono" id="candidaturasMenuLateral">
                             <div class="iconoCandidaturasMenuLateral">
                                 <span class="iconoCandidaturas"></span>
                             </div>
@@ -97,7 +97,7 @@ class MenuAdmin extends HTMLElement {
         `;
 
         document.querySelector('#configuracionWebMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-configuracionWeb.html';
+            window.location.href = 'admin-configuracion-web.html';
         });
 
         document.querySelector('#finalistasMenuLateral').addEventListener('click', () => {
@@ -150,6 +150,40 @@ class MenuAdmin extends HTMLElement {
             }
         }
 
+        const currentPage = window.location.pathname.split('/').pop();
+        const buttons = this.querySelectorAll('.textoIcono');
+        buttons.forEach((element) => {
+            element.classList.remove('active');
+        });
+
+        switch (currentPage) {
+            case 'admin-candidaturas.html':
+                document.querySelector('#candidaturasMenuLateral').classList.add('active');
+                break;
+            case 'admin-finalistas.html':
+                document.querySelector('#finalistasMenuLateral').classList.add('active');
+                break;
+            case 'admin-noticias.html':
+                document.querySelector('#noticiasMenuLateral').classList.add('active');
+                break;
+            case 'admin-categoria_premio.html':
+                document.querySelector('#categoriasMenuLateral').classList.add('active');
+                break;
+            case 'admin-patrocinadores.html':
+                document.querySelector('#patrocinadoresMenuLateral').classList.add('active');
+                break;
+            case 'admin-eventos.html':
+                document.querySelector('#eventoMenuLateral').classList.add('active');
+                break;
+            case 'admin-edicionesAnteriores.html':
+                document.querySelector('#edicionesAnterioresMenuLateral').classList.add('active');
+                break;
+            case 'admin-configuracion-web.html':
+                document.querySelector('#configuracionWebMenuLateral').classList.add('active');
+                break;
+            default:
+                break;
+        }
         
     }
 }
