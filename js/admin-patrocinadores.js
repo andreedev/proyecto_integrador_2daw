@@ -1,10 +1,13 @@
 const botonAgregarPatrocinador = document.getElementById('botonAgregarPatrocinador');
+const mensajeErrorInput = document.getElementById('mensajeErrorInput');
 
 const cardPatrocinador = document.getElementById('cardPatrocinador');
 const imagenPatrocinador = document.querySelector('.img');
 const iconoEditar = document.querySelector('.iconoEditarPatrocinador');
 const iconoEliminar = document.querySelector('.iconoBorrarPatrocinador');
-const nombrePatrocinador = document.querySelector('.nombre');
+const nombrePatrocinador = document.querySelector('.nombrePatrocinador');
+const nombrePatrocinadorAgregar = document.querySelector('.nombrePatrocinadorAgregar');
+const mensajeErrorInputPatrocinador = document.getElementById('mensajeErrorInputAgregar');
 
 const modalEditar = document.querySelector('.modalEditar');
 const cerrarModal = document.querySelector('.iconoCerrarModal');
@@ -20,6 +23,28 @@ const modalAgregarPatrocinador = document.querySelector('.modalAgregarPatrocinad
 const cerrarModalAgregar = document.querySelector('.iconoCerrarAgregarModal');
 const cancelarModalAgregar = document.querySelector('.botonCancelarAgregarPatrocinador');
 
+// Mensaje error cuando se pierde el foco
+nombrePatrocinador.addEventListener('blur', () => {
+    const titleValue = nombrePatrocinador.value.trim();
+    if (titleValue === '') {
+        mensajeErrorInput.textContent = 'El nombre del patrocinador no puede estar vacío.';
+    } else {
+        mensajeErrorInput.textContent = '';
+    }
+    
+});
+
+nombrePatrocinadorAgregar.addEventListener('blur', () => {
+    const titleValue = nombrePatrocinadorAgregar.value.trim();
+    if (titleValue === '') {
+        mensajeErrorInputAgregar.textContent = 'El nombre del patrocinador no puede estar vacío.';
+    } else {
+        mensajeErrorInputAgregar.textContent = '';
+    }
+});
+
+
+// Eventos para abrir y cerrar modales
 botonAgregarPatrocinador.addEventListener('click', () => {
     modalAgregarPatrocinador.classList.remove('hidden-force');
 });
@@ -30,27 +55,48 @@ iconoEditar.addEventListener('click', () => {
 });
 
 iconoEliminar.addEventListener('click', () => {
-    const confirmarEliminar = confirm(`¿Estás seguro de que deseas eliminar al patrocinador "${nombrePatrocinador.textContent}"?`);
-    if (confirmarEliminar) {
-        // Lógica para eliminar el patrocinador
-        alert(`Patrocinador "${nombrePatrocinador.textContent}" eliminado.`);
-    }   
+
 });
 
 cerrarModal.addEventListener('click', () => {
     modalEditar.classList.add('hidden-force');
+    // Limpiar los campos del formulario
+    nombrePatrocinador.value = '';
+    mensajeErrorInput.textContent = '';
+    posterInput.value = '';
+    archivoAceptado.classList.add('hidden-force');
+    document.getElementById('posterDropZoneEdit').classList.remove('hidden-force');
+    
 });
 
 botonCancelarEditar.addEventListener('click', () => {
     modalEditar.classList.add('hidden-force');
+    // Limpiar los campos del formulario
+    nombrePatrocinador.value = '';
+    mensajeErrorInput.textContent = '';
+    posterInput.value = '';
+    archivoAceptado.classList.add('hidden-force');
+    document.getElementById('posterDropZoneEdit').classList.remove('hidden-force');
 });
 
 cerrarModalAgregar.addEventListener('click', () => {
     modalAgregarPatrocinador.classList.add('hidden-force');
+    mensajeErrorInputAgregar.textContent = '';
+    // Limpiar los campos del formulario
+    nombrePatrocinador.value = '';
+    posterInput.value = '';
+    archivoAceptado.classList.add('hidden-force');
+    document.getElementById('posterDropZone').classList.remove('hidden-force');
 });
 
 cancelarModalAgregar.addEventListener('click', () => {
     modalAgregarPatrocinador.classList.add('hidden-force');
+    // Limpiar los campos del formulario
+    nombrePatrocinador.value = '';
+    mensajeErrorInputAgregar.textContent = '';
+    posterInput.value = '';
+    archivoAceptado.classList.add('hidden-force');
+    document.getElementById('posterDropZone').classList.remove('hidden-force');
 });
 
 

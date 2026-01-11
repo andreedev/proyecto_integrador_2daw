@@ -155,13 +155,30 @@ h1{
     padding: 16px;
 }
 
-#nombrePatrocinador{
+.nombrePatrocinador{
     padding: 8px;
-    border: solid 1px var(--neutral-04);
+    border: solid 1px var(--neutral-03);
     border-radius: 4px;
     background-color: var(--neutral-09);
     color: var(--text);
 }
+.nombrePatrocinador:focus{
+    color: var(--neutral-03);
+    border: 1px solid var(--neutral-03);
+}
+
+.nombrePatrocinadorAgregar{
+    padding: 8px;
+    border: solid 1px var(--neutral-03);
+    border-radius: 4px;
+    background-color: var(--neutral-09);
+    color: var(--text);
+}
+.nombrePatrocinadorAgregar:focus{
+    color: var(--neutral-03);
+    border: 1px solid var(--neutral-03);
+}
+
 
 .inputContenido{
     height:96px;
@@ -356,4 +373,16 @@ h1{
     top: 8px;
     right: 8px;
     margin-left:64px;
+}
+
+
+/* Estilos para mensajes de error */
+.mensajeErrorInputPatrocinador {
+    color: var(--error-03);
+    font-size: 12px;
+}
+
+.mensajeErrorInputPatrocinadorAgregar {
+    color: var(--error-03);
+    font-size: 12px;
 }
