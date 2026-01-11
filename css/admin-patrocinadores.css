@@ -3,11 +3,6 @@ body{
     color: var(--text);
 }
 
-.page{
-    width: 100%;
-    padding:24px;
-}
-
 h1{
     margin: 0 0 4px;
     font-size: 22px;
