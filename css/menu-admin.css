@@ -341,7 +341,7 @@ ul{
     color: var(--neutral-09);
     border: none;
     border-radius: 6px;
-    padding: 8px 16px;
+    padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -351,6 +351,7 @@ ul{
     justify-content: center;
     height: min-content;
     width: 100%;
+    gap: 8px;
 }
 
 @media (min-width: 768px){
@@ -368,8 +369,14 @@ ul{
 
 .admin-content{
     background-color: var(--neutral-08);
-    padding: 16px 32px;
+    padding: 16px;
     height: 100%;
+}
+
+@media (min-width: 768px){
+    .admin-content{
+        padding: 16px 32px;
+    }
 }
 
 .admin-module-name{

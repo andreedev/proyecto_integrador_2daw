@@ -22,9 +22,167 @@
                     <span class="admin-module-description">Gestiona el contenido público de la Gala para el sitio web</span>
                 </div>
             </div>
-            <div class="admin-content">
 
+            <!-- PRE-EVENTO -->
+
+            <div class="admin-content" id="preEventoContainer">
+                <div class="generic-cards-container">
+                    <div class="generic-card">
+                        <div class="mode-info-internal-card">
+                            <div class="mode-info-container">
+                               <span class="mode-info-text">Modo:</span>
+                               <div class="mode-buttons-container">
+                                    <div class="mode-button active" id="preEventoButton">Pre-evento</div>
+                                    <div class="mode-button" id="postEventoButton">Post-evento</div>
+                                </div>
+                            </div>
+                            <div class="last-updated-info-container">
+                                <div class="published-text-container">
+                                    <span class="icon-check"></span>
+                                    <span>Publicado</span>
+                                </div>
+                                <div class="last-modified-text-container">
+                                    <span class="last-modified-label">
+                                        <span class="icon-clock"></span>
+                                        Última modificación:
+                                    </span>
+                                    <span class="last-modified-date">10/01/2026 23:01</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main-action-container">
+                            <div class="admin-header-main-action-button fs-14px">
+                                <span class="icon-settings"></span>
+                                <span>Publicar cambios</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="generic-card preEventoCard">
+                        <div class="card-header">
+                            <div class="card-header-left-side">
+                                <div class="icon-container bg-gradient-01">
+                                    <span class="icon-document"></span>
+                                </div>
+                                <div class="card-header-title-container">
+                                    <span class="card-header-title">Información Principal</span>
+                                    <span class="card-header-subtitle">Datos generales del evento</span>
+                                </div>
+                            </div>
+                            <div class="card-header-right-side">
+                            </div>
+                        </div>
+                        <div class="generic-input-group">
+                            <span class="generic-input-label">Título del evento principal</span>
+                            <label class="generic-input-wrapper">
+                                <input id="tituloEventoInput" class="generic-input" value="Reunión de planificación" type="text">
+                            </label>
+                            <span id="tituloEventoMensaje" class="error-message"></span>
+                        </div>
+                        <div class="generic-input-groups-row">
+                            <div class="generic-input-group">
+                                <span class="generic-input-label">Fecha</span>
+                                <label class="generic-input-wrapper">
+                                    <input id="fechaEventoInput" class="generic-input" value="09/01/2026">
+                                    <span class="icon-calendar"></span>
+                                </label>
+                                <span id="fechaEventoMensaje" class="error-message"></span>
+                            </div>
+                            <div class="generic-input-group">
+                                <span class="generic-input-label">Hora</span>
+                                <label class="generic-input-wrapper">
+                                    <input id="horaEventoInput" class="generic-input" value="19:00" type="text">
+                                    <span class="icon-clock"></span>
+                                </label>
+                                <span id="horaEventoMensaje" class="error-message"></span>
+                            </div>
+                        </div>
+                        <div class="generic-input-group">
+                            <span class="generic-input-label">Ubicación</span>
+                            <label class="generic-input-wrapper">
+                                <span class="icon-location"></span>
+                                <input id="ubicacionEventoInput" class="generic-input" value="19:00" type="text">
+                            </label>
+                            <span id="tituloHoraEvento" class="error-message"></span>
+                        </div>
+                        <div class="large-input-group">
+                            <div class="large-input-group-header">
+                                <span class="large-input-group-label-text">Descripción</span>
+                            </div>
+                            <div class="large-input-group-body">
+                                <textarea id="descripcionInput" class="textarea-input" value="¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni. "></textarea>
+                            </div>
+                            <span id="descripcionMessage" class="error-message"></span>
+                            <span class="helper-text">Esta información aparecerá en la landing page pública</span>
+                        </div>
+                    </div>
+                    <div class="generic-card preEventoCard">
+                        <div class="card-header">
+                            <div class="card-header-left-side">
+                                <div class="icon-container bg-primary-05">
+                                    <span class="icon-live bg-primary-03"></span>
+                                </div>
+                                <div class="card-header-title-container">
+                                    <span class="card-header-title">Streaming en vivo</span>
+                                    <span class="card-header-subtitle">Habilita y configura el enlace de streaming</span>
+                                </div>
+                            </div>
+                            <div class="card-header-right-side">
+                            </div>
+                        </div>
+                        <div class="streaming-card" id="streamingToggleContainer">
+                            <div class="streaming-left-side">
+                                <div class="streaming-indicator">
+                                    <span class="icon-live icon"></span>
+                                    <span class="streaming-indicator-text" id="streamingIndicatorText">OFF</span>
+                                </div>
+                               <div class="streaming-text-container">
+                                   <span class="streaming-label-text">Mostrar enlace de streaming</span>
+                                   <span class="streaming-helper-text" id="streamingHelperText">El enlace estará oculto para los visitantes</span>
+                               </div>
+                            </div>
+                            <div class="streaming-right-side">
+                                <div class="streaming-toggle-button" id="streamingToggleButton">
+                                    <div class="toggle-button-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="generic-input-group hidden-force" id="urlStreamingContainer">
+                            <span class="generic-input-label">URL del streaming</span>
+                            <label class="generic-input-wrapper">
+                                <span class="icon-link"></span>
+                                <input id="urlStreamingInput" class="generic-input" type="text" placeholder="https://youtube.com/watch?v=...">
+                            </label>
+                            <span id="urlStreamingMensajeError" class="error-message"></span>
+                            <span class="helper-text">Introduce la URL completa del streaming (YouTube, TikTok, etc.)</span>
+                        </div>
+                    </div>
+                    <div class="generic-card preEventoCard">
+                        <div class="card-header">
+                            <div class="card-header-left-side">
+                                <div class="icon-container bg-gradient-01">
+                                    <span class="icon-calendar bg-neutral-09"></span>
+                                </div>
+                                <div class="card-header-title-container">
+                                    <span class="card-header-title">Itinerario del día</span>
+                                    <span class="card-header-subtitle">Eventos programados para la Gala</span>
+                                </div>
+                            </div>
+                            <div class="card-header-right-side">
+                                <a class="primary-button-02" href="admin-eventos.html">
+                                    <span class="icon-external"></span>
+                                    <span>Gestionar eventos</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="secondary-card">
+                            <span class="helper-text-2">Los eventos se gestionan desde el módulo de Eventos. Los cambios se reflejarán automáticamente en la landing pública.</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
     <script src="../js/constantes.js"></script>
