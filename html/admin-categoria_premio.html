@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de categorías y premios</title>
+    <link rel="stylesheet" href="../css/general-styles.css">
+    <link rel="stylesheet" href="../css/styleAdmin.css">
+    <link rel="stylesheet" href="../css/admin-categoria_premio.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <div>
+            <h1>Gestión de categorías y premios</h1>
+            <p>Administra las categorías y premios del festival de cortometraje</p>
+        </div>
+        <button class="btn-create">+ Crear categoría</button>
+    </div>
+
+    <div class="categories-grid">
+
+        <!-- Categoría 1 -->
+        <div class="category-card">
+            <div class="category-header">
+                <div class="category-title">Mejor cortometraje UE (alumno)</div>
+            </div>
+            <div class="prizes-list">
+                <div class="prize-item">
+                    <div class="prize-label">1° Primer premio</div>
+                    <div class="prize-value">600€</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-label">2° Segundo premio</div>
+                    <div class="prize-value">300€</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-label">3° Tercer premio</div>
+                    <div class="prize-value">100€</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoría 2 -->
+        <div class="category-card">
+            <div class="category-header">
+                <div class="category-title">Mejor cortometraje alumni</div>
+            </div>
+            <div class="prizes-list">
+                <div class="prize-item">
+                    <div class="prize-label">1° Primer premio</div>
+                    <div class="prize-value">700€</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-label">2° Segundo premio</div>
+                    <div class="prize-value">300€</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoría 3 -->
+        <div class="category-card">
+            <div class="category-header">
+                <div class="category-title">Premio honorífico</div>
+            </div>
+            <div class="prizes-list">
+                <div class="prize-item">
+                    <div class="prize-label">Reconocimiento Honorífico</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoría 4 -->
+        <div class="category-card">
+            <div class="category-header">
+                <div class="category-title">Animación</div>
+            </div>
+            <div class="prizes-list">
+                <div class="prize-item">
+                    <div class="prize-label">1° Primer premio</div>
+                    <div class="prize-value">700€</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-label">2° Segundo premio</div>
+                    <div class="prize-value">300€</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL DE EDICIÓN DE CATEGORÍA -->
+    <div id="editCategoryModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Categoría</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editCategoryForm">
+                    <div class="form-group">
+                        <label for="categoryName">Nombre de la categoría:</label>
+                        <input type="text" id="categoryName" name="categoryName" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Premios:</label>
+                        <button type="button" id="addPrizeBtn" class="btn-add">+ Añadir</button>
+                        <div id="prizesContainer">
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" id="cancelBtn" class="btn-cancel">Cancelar</button>
+                        <button type="submit" id="saveBtn" class="btn-save">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CREACIÓN DE CATEGORÍA -->
+    <div id="createCategoryModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nueva Categoría</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="createCategoryForm">
+                    <div class="form-group">
+                        <label for="newCategoryName">Nombre de la categoría:</label>
+                        <input type="text" id="newCategoryName" name="newCategoryName" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Premios:</label>
+                        <button type="button" id="addNewPrizeBtn" class="btn-add">+ Añadir</button>
+                        <div id="newPrizesContainer">
+                            <!-- Premio por defecto -->
+                            <div class="prize-item">
+                                <span class="prize-number">1</span>
+                                <input type="text" placeholder="Nuevo premio" value="Nuevo premio" required />
+                                <input type="number" placeholder="Valor €" value="100" min="0" step="10" />
+                                <button class="delete-btn">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" id="cancelCreateBtn" class="btn-cancel">Cancelar</button>
+                        <button type="submit" id="createBtn" class="btn-save">Crear Categoría</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/menu-admin.js"></script>
+    <script src="../js/constantes.js"></script>
+    <script src="../js/check-session.js"></script>
+    <script src="../js/admin-categoria_ganador.js"></script>
+</body>
+
+</html>
