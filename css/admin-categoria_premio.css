@@ -36,10 +36,6 @@
     --error-04: #F6CACA;
 }
 
-body {
-  background-color: var(--neutral-08);
-}
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -61,28 +57,6 @@ body {
   color: var(--neutral-03);
   margin: 4px 0 0 0;
   max-width: 100%;
-}
-
-.btn-create {
-  background-color: var(--primary-03);
-  border: 1px solid var(--primary-02);
-  color: white;
-  padding: 8px 14px;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  white-space: nowrap;
-  align-self: flex-start;
-}
-
-.btn-create:hover {
-  background-color: var(--primary-02); 
-  border-color: var(--primary-01);
-  color: var(--neutral-09);
 }
 
 .categories-grid {

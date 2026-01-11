@@ -18,85 +18,95 @@
     <div class="admin-super-container">
         <menu-admin></menu-admin>
         <div class="admin-page-content">
-            <div class="header">
-                <div>
-                    <h1>Gestión de categorías y premios</h1>
-                    <p>Administra las categorías y premios del festival de cortometraje</p>
+            <div class="admin-header">
+                <div class="admin-header-module-info-container">
+                    <p class="admin-module-name">Gestión de categorías y premios</p>
+                    <span class="admin-module-description">Administra las categorías y premios del festival de cortometraje</span>
                 </div>
-                <button class="btn-create">+ Crear categoría</button>
+                <div class="admin-header-module-actions-container">
+                    <div class="admin-header-main-action-button btn-create" >
+                        <span class="icono-agregar"></span>
+                        <span>Crear categoría</span>
+                    </div>
+                </div>
             </div>
-            <div class="categories-grid">
+            <div class="admin-content">
 
-                <!-- Categoría 1 -->
-                <div class="category-card">
-                    <div class="category-header">
-                        <div class="category-title">Mejor cortometraje UE (alumno)</div>
+                <div class="categories-grid">
+
+                    <!-- Categoría 1 -->
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-title">Mejor cortometraje UE (alumno)</div>
+                        </div>
+                        <div class="prizes-list">
+                            <div class="prize-item">
+                                <div class="prize-label">1° Primer premio</div>
+                                <div class="prize-value">600€</div>
+                            </div>
+                            <div class="prize-item">
+                                <div class="prize-label">2° Segundo premio</div>
+                                <div class="prize-value">300€</div>
+                            </div>
+                            <div class="prize-item">
+                                <div class="prize-label">3° Tercer premio</div>
+                                <div class="prize-value">100€</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="prizes-list">
-                        <div class="prize-item">
-                            <div class="prize-label">1° Primer premio</div>
-                            <div class="prize-value">600€</div>
+
+                    <!-- Categoría 2 -->
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-title">Mejor cortometraje alumni</div>
                         </div>
-                        <div class="prize-item">
-                            <div class="prize-label">2° Segundo premio</div>
-                            <div class="prize-value">300€</div>
-                        </div>
-                        <div class="prize-item">
-                            <div class="prize-label">3° Tercer premio</div>
-                            <div class="prize-value">100€</div>
+                        <div class="prizes-list">
+                            <div class="prize-item">
+                                <div class="prize-label">1° Primer premio</div>
+                                <div class="prize-value">700€</div>
+                            </div>
+                            <div class="prize-item">
+                                <div class="prize-label">2° Segundo premio</div>
+                                <div class="prize-value">300€</div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Categoría 3 -->
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-title">Premio honorífico</div>
+                        </div>
+                        <div class="prizes-list">
+                            <div class="prize-item">
+                                <div class="prize-label">Reconocimiento Honorífico</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categoría 4 -->
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-title">Animación</div>
+                        </div>
+                        <div class="prizes-list">
+                            <div class="prize-item">
+                                <div class="prize-label">1° Primer premio</div>
+                                <div class="prize-value">700€</div>
+                            </div>
+                            <div class="prize-item">
+                                <div class="prize-label">2° Segundo premio</div>
+                                <div class="prize-value">300€</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- Categoría 2 -->
-                <div class="category-card">
-                    <div class="category-header">
-                        <div class="category-title">Mejor cortometraje alumni</div>
-                    </div>
-                    <div class="prizes-list">
-                        <div class="prize-item">
-                            <div class="prize-label">1° Primer premio</div>
-                            <div class="prize-value">700€</div>
-                        </div>
-                        <div class="prize-item">
-                            <div class="prize-label">2° Segundo premio</div>
-                            <div class="prize-value">300€</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Categoría 3 -->
-                <div class="category-card">
-                    <div class="category-header">
-                        <div class="category-title">Premio honorífico</div>
-                    </div>
-                    <div class="prizes-list">
-                        <div class="prize-item">
-                            <div class="prize-label">Reconocimiento Honorífico</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Categoría 4 -->
-                <div class="category-card">
-                    <div class="category-header">
-                        <div class="category-title">Animación</div>
-                    </div>
-                    <div class="prizes-list">
-                        <div class="prize-item">
-                            <div class="prize-label">1° Primer premio</div>
-                            <div class="prize-value">700€</div>
-                        </div>
-                        <div class="prize-item">
-                            <div class="prize-label">2° Segundo premio</div>
-                            <div class="prize-value">300€</div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
+
+
     <!-- MODAL DE EDICIÓN DE CATEGORÍA -->
     <div id="editCategoryModal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -164,9 +174,9 @@
         </div>
     </div>
 
-    <script src="../js/menu-admin.js"></script>
     <script src="../js/constantes.js"></script>
     <script src="../js/check-session.js"></script>
+    <script src="../js/menu-admin.js"></script>
     <script src="../js/admin-categoria_ganador.js"></script>
 </body>
 
