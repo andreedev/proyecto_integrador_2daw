@@ -1,3 +1,35 @@
+// === FUNCIONES AUXILIARES PARA MODALES PERSONALIZADOS ===
+const confirmationModal = document.getElementById('confirmationModal');
+const notificationModal = document.getElementById('notificationModal');
+const confirmationMessage = document.getElementById('confirmationMessage');
+const notificationMessage = document.getElementById('notificationMessage');
+
+function showConfirmation(message, onConfirm) {
+    confirmationMessage.textContent = message;
+    confirmationModal.style.display = 'flex';
+    document.getElementById('confirmYes').onclick = () => {
+        confirmationModal.style.display = 'none';
+        if (typeof onConfirm === 'function') onConfirm();
+    };
+    document.getElementById('confirmNo').onclick = () => {
+        confirmationModal.style.display = 'none';
+    };
+    confirmationModal.querySelector('.modal-overlay').onclick = () => {
+        confirmationModal.style.display = 'none';
+    };
+}
+
+function showNotification(message) {
+    notificationMessage.textContent = message;
+    notificationModal.style.display = 'flex';
+    document.getElementById('closeNotification').onclick = () => {
+        notificationModal.style.display = 'none';
+    };
+    notificationModal.querySelector('.modal-overlay').onclick = () => {
+        notificationModal.style.display = 'none';
+    };
+}
+
 // MODAL: CAMBIAR ESTADO
 const changeModal = document.getElementById('changeModal');
 const reasonWrapper = document.getElementById('rejectReasonWrapper');
@@ -59,7 +91,7 @@ saveChangeBtn.addEventListener('click', () => {
     if (newStatus === 'rejected') {
         const reason = document.getElementById('rejectReason').value.trim();
         if (!reason) {
-            alert('Por favor, indique el motivo del rechazo.');
+            showNotification('Por favor, indique el motivo del rechazo.');
             return;
         }
         activeChangeRow.dataset.rejectReason = reason;
@@ -89,7 +121,7 @@ saveChangeBtn.addEventListener('click', () => {
             badge.textContent = displayText;
         }
     }
-    alert('Estado actualizado correctamente.');
+    showNotification('Estado actualizado correctamente.');
     closeChangeModal();
 });
 
@@ -181,11 +213,14 @@ detailModal.querySelector('.modal-overlay').addEventListener('click', () => {
 document.getElementById('deleteCandidatura').addEventListener('click', () => {
     if (!activeDetailRow) return;
 
-    if (confirm('¿Está seguro de que desea eliminar esta candidatura? Esta acción no se puede deshacer.')) {
-        activeDetailRow.remove();
-        detailModal.style.display = 'none';
-        alert('Candidatura eliminada correctamente.');
-    }
+    showConfirmation(
+        '¿Está seguro de que desea eliminar esta candidatura? Esta acción no se puede deshacer.',
+        () => {
+            activeDetailRow.remove();
+            detailModal.style.display = 'none';
+            showNotification('Candidatura eliminada correctamente.');
+        }
+    );
 });
 
 function getBadgeClass(status) {
