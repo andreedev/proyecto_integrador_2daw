@@ -113,140 +113,159 @@ function changeMode(newMode, pendingChanges) {
     }
 }
 
-tituloEventoInput.addEventListener('blur', () => validateTituloEvento());
-fechaEventoInput.addEventListener('blur', () => validateFechaEvento());
-horaEventoInput.addEventListener('blur', () => validateHoraEvento());
-ubicacionEventoInput.addEventListener('blur', () => validateUbicacionEvento());
-descripcionInput.addEventListener('blur', () => validateDescripcionEvento());
-urlStreamingInput.addEventListener('blur', () => validateUrlStreaming());
+tituloEventoInput.addEventListener('blur', () => validateTituloEvento(true));
+fechaEventoInput.addEventListener('blur', () => validateFechaEvento(true));
+horaEventoInput.addEventListener('blur', () => validateHoraEvento(true));
+ubicacionEventoInput.addEventListener('blur', () => validateUbicacionEvento(true));
+descripcionInput.addEventListener('blur', () => validateDescripcionEvento(true));
+urlStreamingInput.addEventListener('blur', () => validateUrlStreaming(true));
 
-postEventoResumenInput.addEventListener('blur', () => validatePostEventoResumen());
+postEventoResumenInput.addEventListener('blur', () => validatePostEventoResumen(true));
 
-yearEdicionInput.addEventListener('blur', () => validateYearEdicion());
-nroParticipantesInput.addEventListener('blur', () => validateNroParticipantes());
-fechaEnvioEmailInformativoInput.addEventListener('blur', () => validateFechaEnvioEmailInformativo());
-fechaBorradoDatosInput.addEventListener('blur', () => validateFechaBorradoDatos());
+yearEdicionInput.addEventListener('blur', () => validateYearEdicion(true));
+nroParticipantesInput.addEventListener('blur', () => validateNroParticipantes(true));
+fechaEnvioEmailInformativoInput.addEventListener('blur', () => validateFechaEnvioEmailInformativo(true));
+fechaBorradoDatosInput.addEventListener('blur', () => validateFechaBorradoDatos(true));
 
-function validateTituloEvento() {
+tituloEventoInput.addEventListener('keyup', ()=> validarFormularioPreEvento());
+
+function validateTituloEvento(messageOnError) {
     if (tituloEventoInput.value.trim() === '') {
-        tituloEventoErrorMessage.textContent = 'El título del evento no puede estar vacío';
-        tituloEventoErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) tituloEventoErrorMessage.textContent = 'El título del evento no puede estar vacío';
+        if (messageOnError) tituloEventoErrorMessage.classList.remove('hidden-force');
         return false;
     }
     tituloEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateFechaEvento() {
+function validateFechaEvento(messageOnError) {
     if (fechaEventoInput.value === '') {
-        fechaEventoErrorMessage.textContent = 'La fecha del evento no puede estar vacía';
-        fechaEventoErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) fechaEventoErrorMessage.textContent = 'La fecha del evento no puede estar vacía';
+        if (messageOnError) fechaEventoErrorMessage.classList.remove('hidden-force');
         return false;
     }
     fechaEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateHoraEvento() {
+function validateHoraEvento(messageOnError) {
     if (horaEventoInput.value === '') {
-        horaEventoErrorMessage.textContent = 'La hora del evento no puede estar vacía';
-        horaEventoErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) horaEventoErrorMessage.textContent = 'La hora del evento no puede estar vacía';
+        if (messageOnError) horaEventoErrorMessage.classList.remove('hidden-force');
         return false;
     }
     horaEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateUbicacionEvento() {
+function validateUbicacionEvento(messageOnError) {
     if (ubicacionEventoInput.value.trim() === '') {
-        ubicacionEventoErrorMessage.textContent = 'La ubicación del evento no puede estar vacía';
-        ubicacionEventoErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) ubicacionEventoErrorMessage.textContent = 'La ubicación del evento no puede estar vacía';
+        if (messageOnError) ubicacionEventoErrorMessage.classList.remove('hidden-force');
         return false;
     }
     ubicacionEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateDescripcionEvento() {
+function validateDescripcionEvento(messageOnError) {
     if (descripcionInput.value.trim() === '') {
-        descripcionErrorMessage.textContent = 'La descripción del evento no puede estar vacía';
-        descripcionErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) descripcionErrorMessage.textContent = 'La descripción del evento no puede estar vacía';
+        if (messageOnError) descripcionErrorMessage.classList.remove('hidden-force');
         return false;
     }
     descripcionErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateYearEdicion() {
+function validateYearEdicion(messageOnError) {
     if (yearEdicionInput.value.trim() === '' || isNaN(yearEdicionInput.value) || parseInt(yearEdicionInput.value) < 2000) {
-        yearEditionErrorMessage.textContent = 'Ingresa un año valido';
-        yearEditionErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) yearEditionErrorMessage.textContent = 'Ingresa un año valido';
+        if (messageOnError) yearEditionErrorMessage.classList.remove('hidden-force');
         return false;
     }
     yearEditionErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateNroParticipantes() {
+function validateNroParticipantes(messageOnError) {
     if (nroParticipantesInput.value.trim() === '' || isNaN(nroParticipantesInput.value) || parseInt(nroParticipantesInput.value) < 1) {
-        nroParticipantesErrorMessage.textContent = 'Ingresa un número válido';
-        nroParticipantesErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) nroParticipantesErrorMessage.textContent = 'Ingresa un número válido';
+        if (messageOnError) nroParticipantesErrorMessage.classList.remove('hidden-force');
         return false;
     }
     nroParticipantesErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateFechaEnvioEmailInformativo() {
+function validateFechaEnvioEmailInformativo(messageOnError) {
     if (fechaEnvioEmailInformativoInput.value === '') {
-        fechaEnvioEmailInformativoErrorMessage.textContent = 'La fecha no puede estar vacía';
-        fechaEnvioEmailInformativoErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) fechaEnvioEmailInformativoErrorMessage.textContent = 'La fecha no puede estar vacía';
+        if (messageOnError) fechaEnvioEmailInformativoErrorMessage.classList.remove('hidden-force');
         return false;
     }
     fechaEnvioEmailInformativoErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateFechaBorradoDatos() {
+function validateFechaBorradoDatos(messageOnError) {
     if (fechaBorradoDatosInput.value === '') {
-        fechaBorradoDatosInputErrorMessage.textContent = 'La fecha no puede estar vacía';
-        fechaBorradoDatosInputErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) fechaBorradoDatosInputErrorMessage.textContent = 'La fecha no puede estar vacía';
+        if (messageOnError) fechaBorradoDatosInputErrorMessage.classList.remove('hidden-force');
         return false;
     }
     fechaBorradoDatosInputErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validateUrlStreaming() {
+function validateUrlStreaming(messageOnError) {
     if (urlStreamingInput.value.trim() === '') {
-        urlStreamingErrorMessage.textContent = 'Ingresa una URL válida';
-        urlStreamingErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) urlStreamingErrorMessage.textContent = 'Ingresa una URL válida';
+        if (messageOnError) urlStreamingErrorMessage.classList.remove('hidden-force');
         return false;
     }
     urlStreamingErrorMessage.classList.add('hidden-force');
     return true;
 }
 
-function validatePostEventoResumen() {
+function validatePostEventoResumen(messageOnError) {
     if (postEventoResumenInput.value.trim() === '') {
-        postEventoResumenErrorMessage.textContent = 'El resumen del evento no puede estar vacío';
-        postEventoResumenErrorMessage.classList.remove('hidden-force');
+        if (messageOnError) postEventoResumenErrorMessage.textContent = 'El resumen del evento no puede estar vacío';
+        if (messageOnError) postEventoResumenErrorMessage.classList.remove('hidden-force');
         return false;
     }
     postEventoResumenErrorMessage.classList.add('hidden-force');
     return true;
 }
 
+function validarFormularioPreEvento(){
+    const isTituloValid = validateTituloEvento(false);
+    const isFechaValid = validateFechaEvento(false);
+    const isHoraValid = validateHoraEvento(false);
+    const isUbicacionValid = validateUbicacionEvento(false);
+    const isDescripcionValid = validateDescripcionEvento(false);
+    const isUrlStreamingValid = validateUrlStreaming(false);
+
+    if (isTituloValid && isFechaValid && isHoraValid && isUbicacionValid && isDescripcionValid && isUrlStreamingValid) {
+        publishChangesButton.classList.remove('disabled');
+        pendingChanges = true;
+        unsavedChangesWarning.classList.remove('hidden-force');
+    } else {
+        publishChangesButton.classList.add('disabled');
+    }
+}
+
 publishChangesButton.addEventListener('click', () => publishChanges());
 
 async function publishChanges() {
     if (modo === 'pre-evento') {
-        const isTituloValid = validateTituloEvento();
-        const isFechaValid = validateFechaEvento();
-        const isHoraValid = validateHoraEvento();
-        const isUbicacionValid = validateUbicacionEvento();
-        const isDescripcionValid = validateDescripcionEvento();
-        const isUrlStreamingValid = validateUrlStreaming();
+        const isTituloValid = validateTituloEvento(true);
+        const isFechaValid = validateFechaEvento(true);
+        const isHoraValid = validateHoraEvento(true);
+        const isUbicacionValid = validateUbicacionEvento(true);
+        const isDescripcionValid = validateDescripcionEvento(true);
+        const isUrlStreamingValid = validateUrlStreaming(true);
 
         if (isTituloValid && isFechaValid && isHoraValid && isUbicacionValid && isDescripcionValid && isUrlStreamingValid) {
             pendingChanges = false;
@@ -254,15 +273,15 @@ async function publishChanges() {
             unsavedChangesWarning.classList.add('hidden-force');
         }
 
-        await guardarConfiguracion();
+        await actualizarConfiguracionWeb();
         publishChangesButton.classList.add('disabled');
 
     } else if (modo === 'post-evento') {
-        const isResumenValid = validatePostEventoResumen();
-        const isYearValid = validateYearEdicion();
-        const isNroParticipantesValid = validateNroParticipantes();
-        const isFechaEnvioEmailValid = validateFechaEnvioEmailInformativo();
-        const isFechaBorradoDatosValid = validateFechaBorradoDatos();
+        const isResumenValid = validatePostEventoResumen(true);
+        const isYearValid = validateYearEdicion(true);
+        const isNroParticipantesValid = validateNroParticipantes(true);
+        const isFechaEnvioEmailValid = validateFechaEnvioEmailInformativo(true);
+        const isFechaBorradoDatosValid = validateFechaBorradoDatos(true);
 
         if (isResumenValid && isYearValid && isNroParticipantesValid && isFechaEnvioEmailValid && isFechaBorradoDatosValid) {
             pendingChanges = false;
@@ -270,7 +289,7 @@ async function publishChanges() {
             unsavedChangesWarning.classList.add('hidden-force');
         }
 
-        await guardarConfiguracion();
+        await actualizarConfiguracionWeb();
         publishChangesButton.classList.add('disabled');
     }
 }
@@ -561,8 +580,6 @@ closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
     });
 });
 
-changeMode('pre-evento', false);
-
 async function cargarConfiguracionWeb() {
     const formData = new FormData();
     formData.append('action', 'obtenerConfiguracionWeb');
@@ -572,67 +589,74 @@ async function cargarConfiguracionWeb() {
         body: formData
     }).then(response => response.json())
         .then(data => {
-            actualizarInterfazConConfiguracion(data.data);
+            updateUI(data.data);
         })
         .catch(error => {
             console.error('Error al cargar la configuración web:', error);
         });
 }
 
+function updateUI(config) {
+    if (!config) return;
 
-function actualizarInterfazConConfiguracion(config) {
-    if (config.modo_concurso === 'pre-evento') {
+    if (config.modo === 'pre-evento') {
         changeMode('pre-evento', false);
-    } else if (config.modo_concurso === 'post-evento') {
-        changeMode('pre-evento', false);
+    } else if (config.modo === 'post-evento') {
+        changeMode('post-evento', false);
     }
 
-    tituloEventoInput.value = config.gala_titulo_evento_principal;
-    fechaEventoInput.value = config.gala_fecha_evento_principal;
-    horaEventoInput.value = config.gala_hora_evento_principal;
-    ubicacionEventoInput.value = config.gala_ubicacion_evento;
-    descripcionInput.value = config.gala_descripcion_evento_principal;
+    tituloEventoInput.value = config.galaPreEventoTitulo || '';
+    fechaEventoInput.value = config.galaPreEventoFecha || '';
+    horaEventoInput.value = config.galaPreEventoHora || '';
+    ubicacionEventoInput.value = config.galaPreEventoUbicacion || '';
+    descripcionInput.value = config.galaDescripcionEventoPrincipal || '';
 
-    if (config.gala_streaming_activo === 'true') {
-        streamingToggleContainer.classList.add('enabled');
-        streamingIndicatorText.textContent = 'EN VIVO';
-        streamingHelperText.textContent = 'El enlace será visible en la landing pública';
+    const isStreaming = config.galaPreEventoStreamingActivo === 'true';
+    streamingToggleContainer.classList.toggle('enabled', isStreaming);
+    streamingIndicatorText.textContent = isStreaming ? 'EN VIVO' : 'OFF';
+
+    if (isStreaming) {
         urlStreamingContainer.classList.remove('hidden-force');
     } else {
-        streamingToggleContainer.classList.remove('enabled');
-        streamingIndicatorText.textContent = 'OFF';
-        streamingHelperText.textContent = 'El enlace estará oculto para los visitantes';
         urlStreamingContainer.classList.add('hidden-force');
     }
-    urlStreamingInput.value = config.gala_streaming_url;
+    urlStreamingInput.value = config.galaStreamingUrl || '';
 
-    postEventoResumenInput.value = config.gala_post_evento_resumen;
+    postEventoResumenInput.value = config.galaPostEventoResumen || '';
 
-    const imagenes = JSON.parse(config.gala_post_evento_galeria_imagenes);
-    const videos = JSON.parse(config.gala_post_evento_galeria_videos);
+    try {
+        imageGalleryContainer.innerHTML = '';
+        videoGalleryContainer.innerHTML = '';
 
-    imagenes.forEach(imgSrc => {
-        createGalleryItem(imgSrc);
-    });
+        const imagenes = JSON.parse(config.galaPostEventoGaleriaImagenes || '[]');
+        const videos = JSON.parse(config.galaPostEventoGaleriaVideos || '[]');
 
-    videos.forEach(videoSrc => {
-        createVideoItem(videoSrc.url, videoSrc.name);
-    });
+        imagenes.forEach(imgSrc => {
+            if (imgSrc) createGalleryItem(imgSrc);
+        });
+
+        videos.forEach(videoObj => {
+            if (videoObj.url) {
+                createVideoItem(videoObj.url, videoObj.name || 'Video');
+            }
+        });
+    } catch (e) {
+        console.error("Error parsing gallery data:", e);
+    }
 }
 
-async function guardarConfiguracion() {
-
+async function actualizarConfiguracionWeb() {
     const formData = new FormData();
-    formData.append('action', 'guardarConfiguracionWeb');
+    formData.append('action', 'actualizarConfiguracionWeb');
     formData.append('modo', modo);
     if (modo === 'pre-evento') {
-        formData.append('galaTituloEventoPrincipal', tituloEventoInput.value.trim());
-        formData.append('galaFechaEventoPrincipal', fechaEventoInput.value);
-        formData.append('galaHoraEventoPrincipal', horaEventoInput.value);
-        formData.append('galaUbicacionEvento', ubicacionEventoInput.value.trim());
-        formData.append('galaDescripcionEventoPrincipal', descripcionInput.value.trim());
-        formData.append('galaStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
-        formData.append('galaStreamingUrl', urlStreamingInput.value.trim());
+        formData.append('galaPreEventoTitulo', tituloEventoInput.value.trim());
+        formData.append('galaPreEventoFecha', fechaEventoInput.value);
+        formData.append('galaPreEventoHoral', horaEventoInput.value);
+        formData.append('galaPreEventoUbicacion', ubicacionEventoInput.value.trim());
+        formData.append('galaPreEventoDescripcion', descripcionInput.value.trim());
+        formData.append('galaPreEventoStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
+        formData.append('galaPreEventoStreamingUrl', urlStreamingInput.value.trim());
     }
     if (modo === 'post-evento') {
         formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
@@ -649,7 +673,7 @@ async function guardarConfiguracion() {
         const result = await response.json();
 
         if (result.status === 'success') {
-
+            publishChangesButton.classList.add('disabled');
         } else {
             console.error('Error:', result.message);
         }
@@ -657,6 +681,23 @@ async function guardarConfiguracion() {
         console.error('Error de red:', error);
     }
 }
+
+
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 
 new AirDatepicker(fechaEventoInput, {
     minDate: new Date(),
@@ -687,7 +728,7 @@ new AirDatepicker(fechaEventoInput, {
         'clear'
     ],
     onSelect({date}) {
-        // console.log("Nueva fecha seleccionada:", date);
+        validarFormularioPreEvento();
     }
 });
 

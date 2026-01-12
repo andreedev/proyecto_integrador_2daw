@@ -171,46 +171,51 @@ function obtenerConfiguracionWeb(){
 function actualizarConfiguracionWeb(){
     global $conexion;
 
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-    $mapping = [
-        'modo' => 'modo',
-        'galaTituloEventoPrincipal' => 'gala_titulo_evento_principal',
-        'galaFechaEventoPrincipal' => 'gala_fecha_evento_principal',
-        'galaHoraEventoPrincipal' => 'gala_hora_evento_principal',
-        'galaUbicacionEvento' => 'gala_ubicacion_evento',
-        'galaDescripcionEventoPrincipal' => 'gala_descripcion_evento_principal',
-        'galaStreamingActivo' => 'gala_streaming_activo',
-        'galaStreamingUrl' => 'gala_streaming_url',
-        'galaPostEventoResumen' => 'gala_post_evento_resumen',
-        'galaPostEventoGaleriaImagenes' => 'gala_post_evento_galeria_imagenes',
-        'galaPostEventoGaleriaVideos' => 'gala_post_evento_galeria_videos'
+    $camposPermitidos = [
+        'modo',
+        'minCandidaturas',
+        'maxCandidaturas',
+        'galaProximaFecha',
+        'galaPreEventoTitulo',
+        'galaPreEventoFecha',
+        'galaPreEventoHora',
+        'galaPreEventoUbicacion',
+        'galaPreEventoDescripcion',
+        'galaPreEventoStreamingActivo',
+        'galaPreEventoStreamingUrl',
+        'galaPostEventoResumen',
+        'galaPostEventoGaleriaImagenes',
+        'galaPostEventoGaleriaVideos'
     ];
 
     try {
-
-        $stmt = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
+        $stmt = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ? AND id_organizador = 1");
         $actualizados = 0;
 
-        foreach ($mapping as $jsKey => $dbNombre) {
-            if (isset($_POST[$jsKey])) {
-                $valor = $_POST[$jsKey];
+        foreach ($camposPermitidos as $campo) {
+            if (isset($_POST[$campo])) {
+                $valor = $_POST[$campo];
 
-                $stmt->bind_param("ss", $valor, $dbNombre);
+                $stmt->bind_param("ss", $valor, $campo);
                 $stmt->execute();
-                $actualizados++;
+
+                if ($stmt->affected_rows > 0) {
+                    $actualizados++;
+                }
             }
         }
 
         echo json_encode([
             "status" => "success",
-            "message" => "Configuración actualizada correctamente",
-            "actualizados" => $actualizados
+            "message" => "Proceso finalizado",
+            "campos_detectados" => $actualizados
         ]);
+
     } catch (Exception $e) {
+        http_response_code(500);
         echo json_encode([
             "status" => "error",
-            "message" => "Error al actualizar la configuración: " . $e->getMessage()
+            "message" => "Error: " . $e->getMessage()
         ]);
     }
 }
