@@ -132,3 +132,14 @@ p{
 .hidden-force {
     display: none !important;
 }
+
+.air-datepicker {
+    --adp-day-name-color: var(--neutral-02) !important;
+    --adp-accent-color: var(--neutral-01) !important;
+    --adp-bg-color: var(--neutral-09) !important;
+    --adp-border-color: var(--neutral-05) !important;
+    --adp-hover-bg-color: var(--neutral-07) !important;
+    --adp-text-color: var(--neutral-01) !important;
+    --adp-cell-background-color-selected: var(--primary-03) !important;
+    --adp-cell-background-color-selected-hover: var(--primary-02) !important;
+}

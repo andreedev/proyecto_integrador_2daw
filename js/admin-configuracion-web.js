@@ -622,22 +622,21 @@ async function guardarConfiguracion() {
 
     const formData = new FormData();
     formData.append('action', 'guardarConfiguracionWeb');
+    formData.append('modo', modo);
+    formData.append('galaTituloEventoPrincipal', tituloEventoInput.value.trim());
+    formData.append('galaFechaEventoPrincipal', fechaEventoInput.value);
+    formData.append('galaHoraEventoPrincipal', horaEventoInput.value);
+    formData.append('galaUbicacionEvento', ubicacionEventoInput.value.trim());
+    formData.append('galaDescripcionEventoPrincipal', descripcionInput.value.trim());
+    formData.append('galaStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
+    formData.append('galaStreamingUrl', urlStreamingInput.value.trim());
+    formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
+    formData.append('galaPostEventoGaleriaImagenes', JSON.stringify(Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img')).map(img => img.src)));
+    formData.append('galaPostEventoGaleriaVideos', JSON.stringify(Array.from(videoGalleryContainer.querySelectorAll('.video-item video')).map(video => ({
+        url: video.src,
+        name: video.getAttribute('data-filename') || 'video'
+    }))));
 
-    const datosConfig = {
-        modo_concurso: modo,
-        gala_titulo_evento_principal: tituloEventoInput.value.trim(),
-        gala_fecha_evento_principal: fechaEventoInput.value,
-        gala_hora_evento_principal: horaEventoInput.value,
-        gala_ubicacion_evento: ubicacionEventoInput.value.trim(),
-        gala_descripcion_evento_principal: descripcionInput.value.trim(),
-        gala_streaming_activo: streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false',
-        gala_streaming_url: urlStreamingInput.value.trim(),
-        gala_post_evento_resumen: postEventoResumenInput.value.trim()
-    };
-
-    for (const [key, value] of Object.entries(datosConfig)) {
-        formData.append(`configuracion[${key}]`, value);
-    }
 
     try {
         const response = await fetch(URL_API, {
@@ -658,3 +657,99 @@ async function guardarConfiguracion() {
 }
 
 cargarConfiguracionWeb();
+
+new AirDatepicker(fechaEventoInput, {
+    minDate: new Date(),
+    autoClose: true,
+    dateFormat: 'dd/MM/yyyy',
+    buttons: ['today', 'clear'],
+    locale: {
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        daysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        today: 'Hoy',
+        clear: 'Limpiar',
+        firstDay: 1
+    },
+    buttons: [
+        {
+            content: 'Hoy',
+            className: 'custom-today-button',
+            onClick: (dp) => {
+                let date = new Date();
+                dp.selectDate(date);
+                dp.setViewDate(date);
+                dp.hide();
+            }
+        },
+        'clear'
+    ],
+    onSelect({date}) {
+        // console.log("Nueva fecha seleccionada:", date);
+    }
+});
+
+
+new AirDatepicker(horaEventoInput, {
+    timepicker: true,
+    onlyTimepicker: true,
+    minHours: 7,
+    maxHours: 22,
+    timeFormat: 'HH:mm',
+    minutesStep: 15,
+    buttons: [
+        {
+            content: 'Ahora',
+            onClick: (dp) => {
+                let now = new Date();
+                let currentHour = now.getHours();
+
+                if (currentHour >= 8 && currentHour <= 20) {
+                    dp.selectDate(now);
+                } else {
+                    let startRange = new Date();
+                    startRange.setHours(8, 0);
+                    dp.selectDate(startRange);
+                }
+                dp.hide();
+            }
+        },
+        {
+            content: 'Limpiar',
+            onClick: (dp) => {
+                dp.clear();
+                dp.hide();
+            }
+        }
+    ],
+    onlyTimepicker: true,
+    onSelect({date, formattedDate}) {
+
+    }
+});
+
+
+new AirDatepicker(yearEdicionInput, {
+    view: 'years',
+    minView: 'years', // Prevents the user from clicking into months
+    dateFormat: 'yyyy', // Only shows the year in the input
+    autoClose: true,
+
+    // Optional: Set a range of years
+    minDate: new Date('2010-01-01'),
+    maxDate: new Date('2030-12-31'),
+
+    buttons: [
+        {
+            content: 'Año Actual',
+            onClick: (dp) => {
+                let now = new Date();
+                dp.selectDate(now);
+                dp.hide();
+            }
+        },
+        'clear'
+    ]
+});

@@ -172,19 +172,6 @@ function actualizarConfiguracionWeb(){
     global $conexion;
 
     $configuracion = $_POST['configuracion'] ?? null;
-    if (!$configuracion || !is_array($configuracion)) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Datos de configuración inválidos"
-        ]);
-        return;
-    }
-
-    $stmt = $conexion->prepare("REPLACE INTO configuracion (nombre, valor) VALUES (?, ?)");
-    foreach ($configuracion as $nombre => $valor) {
-        $stmt->bind_param("ss", $nombre, $valor);
-        $stmt->execute();
-    }
 
     echo json_encode([
         "status" => "success",
