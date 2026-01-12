@@ -23,7 +23,7 @@
                     <span class="admin-module-description">Gestiona el itinerario de eventos</span>
                 </div>
                 <div class="admin-header-module-actions-container">
-                    <div class="admin-header-main-action-button btn-create" >
+                    <div class="admin-header-main-action-button" id="btnCrearEvento">
                         <span class="icono-agregar"></span>
                         <span>Crear evento</span>
                     </div>
@@ -50,7 +50,7 @@
                         <span class="date">Viernes  9 de enero de 2026</span>
                     </div>
                 </div>
-                <div class="event-row">
+                <div class="event-row" data-evento-id="1">
                     <div class="event-start-duration">
                         <span class="event-start-time fw-500">10:00</span>
                         <span class="event-duration">2h</span>
@@ -82,7 +82,7 @@
     </div>
 
 
-    <dialog class="modal-ver-detalle-container hidden-force" id="modalVerDetalleEvento">
+    <dialog class="modal-ver-detalle-container" id="modalVerDetalleEvento">
         <div class="modal-ver-detalle-content">
             <div class="modal-ver-detalle-header">
                 <h2 class="modal-ver-detalle-title">Detalle de evento</h2>

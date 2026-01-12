@@ -1,6 +1,5 @@
-const modalVerDetalleEvento = document.querySelector('#modalVerDetalleEvento');
-
-const closeModalList = modalVerDetalleEvento.querySelectorAll('.close-modal');
+const modalVerDetalleEvento = document.getElementById('modalVerDetalleEvento');
+const closeModalList = document.querySelectorAll('.close-modal');
 
 closeModalList.forEach(closeModal => {
     closeModal.addEventListener('click', () => {
@@ -8,4 +7,13 @@ closeModalList.forEach(closeModal => {
         dialog.close();
     });
 });
+
+const eventRows = document.querySelectorAll('.event-row');
+eventRows.forEach(row => {
+    row.addEventListener('click', () => {
+        const idEvento = row.getAttribute('data-evento-id');
+        modalVerDetalleEvento.showModal();
+    });
+});
+
 
