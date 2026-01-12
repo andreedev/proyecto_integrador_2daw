@@ -153,6 +153,14 @@
     background-color: var(--primary-05);
 }
 
+.bg-success-01{
+    background-color: var(--success-01);
+}
+
+.bg-error-01{
+    background-color: var(--error-01);
+}
+
 .w-16px{
     width: 16px;
 }
@@ -319,4 +327,125 @@
 
 .border-primary-03{
     border-color: var(--primary-03);
+}
+
+.icon-trophy{
+    mask-image: url('../img/icon/TrophyIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-picture{
+    mask-image: url('../img/icon/PictureThickIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-drag{
+    mask-image: url('../img/icon/DragIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-close{
+    mask-image: url('../img/icon/CloseIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-camera-movie{
+    mask-image: url('../img/icon/CameraMovieIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-clock{
+    mask-image: url('../img/icon/ClockIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-settings{
+    mask-image: url('../img/icon/SettingsIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-document{
+    mask-image: url('../img/icon/DocumentIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-calendar{
+    mask-image: url('../img/icon/CalendarIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-location{
+    mask-image: url('../img/icon/LocationThickIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-link{
+    mask-image: url('../img/icon/LinkIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-live{
+    mask-image: url('../img/icon/LiveIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-external{
+    mask-image: url('../img/icon/ExternalIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-archive{
+    mask-image: url('../img/icon/ArchiveIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-check {
+    mask-image: url('../img/icon/CheckIcon.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+    border-radius: 5px;
 }

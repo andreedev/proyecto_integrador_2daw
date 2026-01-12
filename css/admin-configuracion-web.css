@@ -106,18 +106,6 @@
     justify-content: center;
 }
 
-.icon-check {
-    width: 20px;
-    height: 20px;
-    background-color: var(--success-01);
-    mask-image: url('../img/icon/CheckIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-    border-radius: 5px;
-}
-
 .last-modified-text-container{
     width: 100%;
     display: flex;
@@ -141,17 +129,6 @@
     }
 }
 
-.icon-clock{
-    width: 20px;
-    height: 20px;
-    background-color: var(--neutral-02);
-    mask-image: url('../img/icon/ClockIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
 .last-modified-label{
     display: flex;
     flex-direction: row;
@@ -161,17 +138,6 @@
 
 .last-modified-date{
     font-weight: 600;
-}
-
-.icon-settings{
-    width: 16px;
-    height: 16px;
-    background-color: var(--neutral-09);
-    mask-image: url('../img/icon/SettingsIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
 }
 
 .main-action-buttons-container{
@@ -225,17 +191,6 @@
     width: 36px;
     height: 36px;
     border-radius: 8px;
-}
-
-.icon-document{
-    width: 24px;
-    height: 24px;
-    background-color: var(--neutral-09);
-    mask-image: url('../img/icon/DocumentIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
 }
 
 .card-header-title-container{
@@ -340,32 +295,6 @@
 .error-message{
     font-size: 12px;
     color: var(--error-02);
-}
-
-.icon-calendar{
-    width: 24px;
-    height: 24px;
-    background-color: var(--neutral-03);
-    mask-image: url('../img/icon/CalendarIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
-.bg-neutral-09{
-    background-color: var(--neutral-09);
-}
-
-.icon-location{
-    width: 20px;
-    height: 20px;
-    background-color: var(--neutral-03);
-    mask-image: url('../img/icon/LocationThickIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
 }
 
 
@@ -478,28 +407,6 @@
     transition: all 300ms ease;
 }
 
-.icon-link{
-    width: 20px;
-    height: 20px;
-    background-color: var(--neutral-03);
-    mask-image: url('../img/icon/LinkIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
-.icon-live{
-    width: 24px;
-    height: 24px;
-    background-color: var(--neutral-03);
-    mask-image: url('../img/icon/LiveIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
 .secondary-card{
     transition: 0.3s;
     border-radius: 12px;
@@ -555,17 +462,6 @@
 
 .primary-button-02:hover .icon-external {
     background-color: var(--neutral-09);
-    transition: all 300ms ease;
-}
-
-.icon-external{
-    width: 16px;
-    height: 16px;
-    background-color: var(--primary-03);
-    mask-image: url('../img/icon/ExternalIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
     transition: all 300ms ease;
 }
 
@@ -760,25 +656,6 @@
     transition: all 300ms ease;
 }
 
-.icon-archive{
-    width: 16px;
-    height: 16px;
-    background-color: var(--neutral-09);
-    mask-image: url('../img/icon/ArchiveIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
-.icon-picture{
-    mask-image: url('../img/icon/PictureThickIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
 .drop-zone-icon-container{
     display: flex;
     align-items: center;
@@ -843,22 +720,6 @@
     height: auto;
     display: block;
     object-fit: cover;
-}
-
-.icon-drag{
-    mask-image: url('../img/icon/DragIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
-.icon-close{
-    mask-image: url('../img/icon/CloseIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
 }
 
 .icon-container-2{
@@ -934,13 +795,6 @@ remove-btn {
     border: 2px dashed var(--primary-03);
 }
 
-.icon-camera-movie{
-    mask-image: url('../img/icon/CameraMovieIcon.svg');
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
 
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
@@ -1008,3 +862,4 @@ remove-btn {
 .video-item:active {
     cursor: grabbing;
 }
+

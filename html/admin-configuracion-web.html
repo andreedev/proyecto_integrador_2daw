@@ -26,6 +26,7 @@
 
             <div class="admin-content">
                 <div class="generic-cards-container">
+
                     <div class="generic-card">
                         <div class="mode-info-internal-card">
                             <div class="mode-info-container">
@@ -37,12 +38,12 @@
                             </div>
                             <div class="last-updated-info-container">
                                 <div class="published-text-container">
-                                    <span class="icon-check"></span>
+                                    <span class="icon-check w-20px h-20px bg-success-01"></span>
                                     <span>Publicado</span>
                                 </div>
                                 <div class="last-modified-text-container">
                                     <span class="last-modified-label">
-                                        <span class="icon-clock"></span>
+                                        <span class="icon-clock w-20px h-20px bg-neutral-02"></span>
                                         Última modificación:
                                     </span>
                                     <span class="last-modified-date">10/01/2026 23:01</span>
@@ -52,7 +53,7 @@
                         <div class="d-flex justify-space-between main-action-buttons-container">
                             <div class="main-action-left-side">
                                 <div class="admin-header-main-action-button disabled fs-14px" id="publishChangesButton">
-                                    <span class="icon-settings"></span>
+                                    <span class="icon-settings w-16px h-16px bg-neutral-09"></span>
                                     <span>Publicar cambios</span>
                                 </div>
                                 <span class="text-warning-01 fs-12px fw-500 hidden-force" id="unsavedChangesWarning">
@@ -61,7 +62,7 @@
                             </div>
                             <div class="main-action-right-side">
                                 <div class="secondary-button" id="sendToPreviousEditionsButton">
-                                    <span class="icon-archive"></span>
+                                    <span class="icon-archive w-16px h-16px bg-neutral-09"></span>
                                     <span>Enviar a Ediciones Anteriores</span>
                                 </div>
                             </div>
@@ -70,11 +71,11 @@
 
 
                     <!-- Cards Pre-evento -->
-                    <div class="generic-card preEventoCard">
+                    <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
                             <div class="card-header-left-side">
                                 <div class="icon-container bg-gradient-01">
-                                    <span class="icon-document"></span>
+                                    <span class="icon-document w-24px h-24px bg-neutral-09"></span>
                                 </div>
                                 <div class="card-header-title-container">
                                     <span class="card-header-title">Información Principal</span>
@@ -96,7 +97,7 @@
                                 <span class="generic-input-label">Fecha</span>
                                 <label class="generic-input-wrapper">
                                     <input id="fechaEventoInput" class="generic-input" value="09/01/2026">
-                                    <span class="icon-calendar w-20px h-20px"></span>
+                                    <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
                                 </label>
                                 <span id="fechaEventoMensaje" class="error-message"></span>
                             </div>
@@ -112,7 +113,7 @@
                         <div class="generic-input-group">
                             <span class="generic-input-label">Ubicación</span>
                             <label class="generic-input-wrapper">
-                                <span class="icon-location"></span>
+                                <span class="icon-location w-20px h-20px bg-neutral-03"></span>
                                 <input id="ubicacionEventoInput" class="generic-input" value="19:00" type="text">
                             </label>
                             <span id="tituloHoraEvento" class="error-message"></span>
@@ -128,11 +129,11 @@
                             <span class="helper-text">Esta información aparecerá en la landing page pública</span>
                         </div>
                     </div>
-                    <div class="generic-card preEventoCard">
+                    <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
                             <div class="card-header-left-side">
                                 <div class="icon-container bg-primary-05">
-                                    <span class="icon-live bg-primary-03"></span>
+                                    <span class="icon-live w-24px h-24px bg-primary-03"></span>
                                 </div>
                                 <div class="card-header-title-container">
                                     <span class="card-header-title">Streaming en vivo</span>
@@ -145,7 +146,7 @@
                         <div class="streaming-card" id="streamingToggleContainer">
                             <div class="streaming-left-side">
                                 <div class="streaming-indicator">
-                                    <span class="icon-live icon"></span>
+                                    <span class="icon-live w-24px h-24px bg-neutral-03 icon"></span>
                                     <span class="streaming-indicator-text" id="streamingIndicatorText">OFF</span>
                                 </div>
                                <div class="streaming-text-container">
@@ -162,14 +163,14 @@
                         <div class="generic-input-group hidden-force" id="urlStreamingContainer">
                             <span class="generic-input-label">URL del streaming</span>
                             <label class="generic-input-wrapper">
-                                <span class="icon-link"></span>
+                                <span class="icon-link w-20px h-20px bg-neutral-03"></span>
                                 <input id="urlStreamingInput" class="generic-input" type="text" placeholder="https://youtube.com/watch?v=...">
                             </label>
                             <span id="urlStreamingMensajeError" class="error-message"></span>
                             <span class="helper-text">Introduce la URL completa del streaming (YouTube, TikTok, etc.)</span>
                         </div>
                     </div>
-                    <div class="generic-card preEventoCard">
+                    <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
                             <div class="card-header-left-side">
                                 <div class="icon-container bg-gradient-01">
@@ -182,7 +183,7 @@
                             </div>
                             <div class="card-header-right-side">
                                 <a class="primary-button-02" href="admin-eventos.html">
-                                    <span class="icon-external"></span>
+                                    <span class="icon-external w-16px h-16px bg-primary-03"></span>
                                     <span>Gestionar eventos</span>
                                 </a>
                             </div>
@@ -192,12 +193,13 @@
                         </div>
                     </div>
 
+
                     <!-- Cards Post-evento -->
                     <div class="generic-card postEventoCard hidden-force">
                         <div class="card-header">
                             <div class="card-header-left-side">
                                 <div class="icon-container bg-primary-05">
-                                    <span class="icon-document bg-primary-03"></span>
+                                    <span class="icon-document w-24px h-24px bg-primary-03"></span>
                                 </div>
                                 <div class="card-header-title-container">
                                     <span class="card-header-title">Resumen del evento</span>
@@ -218,6 +220,7 @@
                             <span class="helper-text">Describe los momentos destacados y el éxito del evento</span>
                         </div>
                     </div>
+
                     <div class="generic-card postEventoCard hidden-force">
                         <div class="card-header">
                             <div class="card-header-left-side">
@@ -252,7 +255,6 @@
                             <span class="helper-text-2">No hay imágenes subidas. Haz clic en el botón de arriba para añadir videos del evento.</span>
                         </div>
                     </div>
-
 
                     <div class="generic-card postEventoCard hidden-force">
                         <div class="card-header">
@@ -289,6 +291,29 @@
 
                         <div class="secondary-card" id="noVideosHelperText">
                             <span class="helper-text-2">No hay videos subidos. Haz clic en el botón de arriba para añadir videos del evento.</span>
+                        </div>
+                    </div>
+
+                    <div class="generic-card postEventoCard hidden-force">
+                        <div class="card-header">
+                            <div class="card-header-left-side">
+                                <div class="icon-container bg-gradient-01">
+                                    <span class="icon-trophy bg-neutral-09 w-20px h-20px"></span>
+                                </div>
+                                <div class="card-header-title-container">
+                                    <span class="card-header-title">Ganadores del evento</span>
+                                    <span class="card-header-subtitle">Lista de ganadores por categoría</span>
+                                </div>
+                            </div>
+                            <div class="card-header-right-side">
+                                <a class="primary-button-02" href="admin-finalistas.html">
+                                    <span class="icon-external"></span>
+                                    <span>Gestionar ganadores</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="secondary-card">
+                            <span class="helper-text-2">Los ganadores se gestionan desde el módulo de Finalistas. Los cambios se reflejarán automáticamente en la landing pública.</span>
                         </div>
                     </div>
 
