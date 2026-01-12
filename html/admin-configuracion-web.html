@@ -55,7 +55,7 @@
                                     <span class="icon-settings"></span>
                                     <span>Publicar cambios</span>
                                 </div>
-                                <span class="text-warning fs-12px fw-500 hidden-force" id="unsavedChangesWarning">
+                                <span class="text-warning-01 fs-12px fw-500 hidden-force" id="unsavedChangesWarning">
                                     ● Hay cambios sin publicar
                                 </span>
                             </div>
@@ -96,7 +96,7 @@
                                 <span class="generic-input-label">Fecha</span>
                                 <label class="generic-input-wrapper">
                                     <input id="fechaEventoInput" class="generic-input" value="09/01/2026">
-                                    <span class="icon-calendar"></span>
+                                    <span class="icon-calendar w-20px h-20px"></span>
                                 </label>
                                 <span id="fechaEventoMensaje" class="error-message"></span>
                             </div>
@@ -231,8 +231,43 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="secondary-card">
+                        <div id="imageDropZone" class="large-input-group-body bg-neutral-09 border-dashed border-primary-03">
+                            <input type="file" id="imageInput" class="file-input" accept="image/*" hidden multiple>
+                            <div class="upload-content">
+                                <div class="drop-zone-icon-container bg-primary-05">
+                                    <span class="icon-picture bg-primary-03 w-20px h-20px"></span>
+                                </div>
+                                <p class="upload-text">Arrastra tu imagen o haz clic para seleccionar</p>
+                                <p class="upload-subtext">JPG, JPEG, PNG, máximo 20MB</p>
+                            </div>
+                        </div>
+                        <div class="image-gallery-container">
+                            <div class="d-flex justify-space-between">
+                                <span class="fw-500 fs-14px">Imágenes subidas (<span id="uploadedImagesCount">0</span>)</span>
+                                <span class="fw-500 fs-14px text-neutral-04">Arrasta para reordenar</span>
+                            </div>
+                            <div class="image-gallery-items-container" id="imageGalleryContainer">
+                            </div>
+                        </div>
+                        <div class="secondary-card hidden-force" id="noImagesHelperText">
                             <span class="helper-text-2">No hay imágenes subidas. Haz clic en el botón de arriba para añadir videos del evento.</span>
+                        </div>
+                    </div>
+                    <div class="generic-card postEventoCard hidden-force">
+                        <div class="card-header">
+                            <div class="card-header-left-side">
+                                <div class="icon-container bg-gradient-01">
+                                    <span class="icon-picture bg-neutral-09 w-20px h-20px"></span>
+                                </div>
+                                <div class="card-header-title-container">
+                                    <span class="card-header-title">Galería de imágenes</span>
+                                    <span class="card-header-subtitle">Sube y organiza las fotos del evento</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="secondary-card" id="noVideosHelperText">
+                            <span class="helper-text-2">No hay videos subidos. Haz clic en el botón de arriba para añadir videos del evento.</span>
                         </div>
                     </div>
 
@@ -244,6 +279,7 @@
     <script src="../js/constantes.js"></script>
     <script src="../js/check-session.js"></script>
     <script src="../js/menu-admin.js"></script>
+    <script src="../js/libraries/Sortable.min.js"></script>
     <script src="../js/admin-configuracion-web.js"></script>
 </body>
 </html>

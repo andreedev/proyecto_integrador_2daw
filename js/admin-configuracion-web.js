@@ -14,6 +14,12 @@ const urlStreamingContainer = document.getElementById('urlStreamingContainer');
 
 const sendToPreviousEditionsButton = document.getElementById('sendToPreviousEditionsButton');
 
+const imageDropZone = document.getElementById('imageDropZone');
+const imageInput = document.getElementById('imageInput');
+const imageGalleryContainer = document.getElementById('imageGalleryContainer');
+const noImagesHelperText = document.getElementById('noImagesHelperText');
+const uploadedImagesCount = document.getElementById('uploadedImagesCount');
+
 let modo = 'pre-evento';
 let pendingChanges = false;
 
@@ -70,3 +76,96 @@ function changeMode(newMode, pendingChanges) {
 }
 
 changeMode('post-evento', false);
+
+const sortable = new Sortable(imageGalleryContainer, {
+    animation: 300,
+    handle: '.drag-handle',
+    ghostClass: 'sortable-ghost',
+    onEnd: () => {
+        updateOrderNumbers();
+    }
+});
+
+imageDropZone.addEventListener('click', () => imageInput.click());
+
+imageDropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    imageDropZone.classList.add('border-primary-01');
+});
+
+imageDropZone.addEventListener('dragleave', () => {
+    imageDropZone.classList.remove('border-primary-01');
+});
+
+imageDropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    imageDropZone.classList.remove('border-primary-01');
+    handleFiles(e.dataTransfer.files);
+});
+
+imageInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+});
+
+function handleFiles(files) {
+    const fileArray = Array.from(files);
+
+    fileArray.forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            createGalleryItem(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+const updateOrderNumbers = () => {
+    const items = imageGalleryContainer.querySelectorAll('.gallery-item');
+    items.forEach((item, index) => {
+        item.querySelector('.order-badge').textContent = index + 1;
+    });
+    uploadedImagesCount.textContent = items.length;
+    if (items.length > 0) {
+        noImagesHelperText.classList.add('hidden-force');
+    } else {
+        noImagesHelperText.classList.remove('hidden-force');
+    }
+};
+
+imageGalleryContainer.addEventListener('click', (e) => {
+    const closeBtn = e.target.closest('.btn-remove');
+    if (closeBtn) {
+        closeBtn.closest('.gallery-item').remove();
+        updateOrderNumbers();
+    }
+});
+
+function createGalleryItem(src) {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.innerHTML = `
+        <div class="order-badge">0</div>
+        <img src="${src}" class="gallery-item-image" alt="Uploaded">
+        
+        <div class="gallery-item-overlay">
+            <div class="icon-container-2 bg-neutral-05 drag-handle">
+                <div class="icon-drag w-16px h-16px bg-neutral-01"></div>
+            </div>
+            
+            <div class="icon-container-2 bg-neutral-05 btn-remove">
+                <div class="icon-close w-16px h-16px bg-neutral-01"></div>
+            </div>
+        </div>
+    `;
+    imageGalleryContainer.appendChild(item);
+    updateOrderNumbers();
+}
+
+createGalleryItem('../img/red-white-photo-white-black-camera.jpg');
+createGalleryItem('../img/Foto_corto.png');
+createGalleryItem('../img/red-white-photo-white-black-camera.jpg');
+createGalleryItem('../img/Foto_corto.png');
+createGalleryItem('../img/red-white-photo-white-black-camera.jpg');
+createGalleryItem('../img/Foto_corto.png');
