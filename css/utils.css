@@ -29,6 +29,14 @@
     flex-direction: row;
 }
 
+.flex-wrap{
+    flex-wrap: wrap;
+}
+
+.flex-nowrap{
+    flex-wrap: nowrap;
+}
+
 .justify-content-center{
     justify-content: center;
 }
@@ -299,6 +307,14 @@
 
 .border-dashed{
     border: 1px dashed transparent;
+}
+
+.border-primary-01{
+    border-color: var(--primary-01);
+}
+
+.border-primary-02{
+    border-color: var(--primary-02);
 }
 
 .border-primary-03{
