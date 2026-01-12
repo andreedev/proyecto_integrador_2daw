@@ -13,6 +13,49 @@ const addNewPrizeBtn = document.getElementById('addNewPrizeBtn');
 const createCategoryForm = document.getElementById('createCategoryForm');
 const cancelCreateBtn = document.getElementById('cancelCreateBtn');
 
+const categoryCardAnimacion = document.querySelector('.category-card-animacion');
+const deleteIcon = document.querySelector('.delete-icono');
+
+const deleteCard = document.querySelector('.confirmation-delete-card-container');
+const btnCancelDelete = deleteCard.querySelector('.btn-cancel-delete');
+const btnConfirmDelete = deleteCard.querySelector('.btn-confirm-delete');
+
+const nombreDelPremioInput = document.querySelector('.nombreDelPremio');
+
+const errorMessage = document.querySelector(".error-message");
+
+
+newCategoryNameInput.addEventListener("blur", () => {
+    if (newCategoryNameInput.value.trim() === "") {
+        errorMessage.textContent = "El nombre de la categoría es obligatorio.";
+    } else {
+        errorMessage.textContent = "";
+    }
+});
+
+nombreDelPremioInput.addEventListener("blur", () => {
+    if (nombreDelPremioInput.value.trim() === "") {
+        errorMessage.textContent = "El nombre del premio es obligatorio.";
+    } else {
+        errorMessage.textContent = "";
+    }
+});
+
+deleteIcon.addEventListener('click', (e) => {
+    e.stopPropagation();
+    deleteCard.classList.remove('hidden-force');
+
+    btnCancelDelete.addEventListener('click', () => {
+        deleteCard.classList.add('hidden-force');
+    });
+
+    btnConfirmDelete.addEventListener('click', () => {
+        //Eliminamos la tarjeta
+        categoryCardAnimacion.remove();
+        deleteCard.classList.add('hidden-force');
+    });
+});
+
 // Variables globales
 let currentCategoryId = null;
 

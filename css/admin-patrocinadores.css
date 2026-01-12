@@ -3,6 +3,14 @@ body{
     color: var(--text);
 }
 
+.admin-content{
+    background-color: var(--neutral-09);
+}
+
+.admin-header{
+    background-color: var(--neutral-09);
+}
+
 h1{
     margin: 0 0 4px;
     font-size: 22px;
@@ -385,4 +393,58 @@ h1{
 .mensajeErrorInputPatrocinadorAgregar {
     color: var(--error-03);
     font-size: 12px;
+}
+
+
+/* Estilos para la confirmación de eliminación */
+.deleteConfirmation{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--neutral-09);
+    border: solid 1px var(--neutral-04);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 480px;
+    text-align: center;
+}
+.deleteConfirmation .textoConfirmacion{
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--text);
+}
+.deleteConfirmation .botonesConfirmacion{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 16px;
+}
+.deleteConfirmation .botonCancelarEliminar,
+.deleteConfirmation .botonConfirmarEliminar{
+    flex: 1;
+    padding: 8px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+.deleteConfirmation .botonCancelarEliminar{
+    background-color: var(--neutral-09);
+    color: var(--primary-03);
+    border: 1px solid var(--primary-03);
+}
+.deleteConfirmation .botonCancelarEliminar:hover{
+    background-color: var(--primary-05);
+}
+.deleteConfirmation .botonConfirmarEliminar{
+    background-color: var(--error-02);
+    border: 1px solid var(--error-02);
+    color: var(--neutral-09);
+}
+.deleteConfirmation .botonConfirmarEliminar:hover{
+    background-color: var(--neutral-09);
+    color:var(--primary-02)
 }
