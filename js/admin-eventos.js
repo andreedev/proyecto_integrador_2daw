@@ -1,6 +1,5 @@
-const modalVerDetalleEvento = document.querySelector('#modalVerDetalleEvento');
-
-const closeModalList = modalVerDetalleEvento.querySelectorAll('.close-modal');
+const modalVerDetalleEvento = document.getElementById('modalVerDetalleEvento');
+const closeModalList = document.querySelectorAll('.close-modal');
 
 const eventoContainer = document.querySelector('.event-row');
 const btnEliminarEvento = document.querySelector('.neutral-button');
@@ -18,6 +17,7 @@ closeModalList.forEach(closeModal => {
 });
 
 
+
 eventoContainer.addEventListener('click', () => {
     modalVerDetalleEvento.classList.remove('hidden-force');
     modalVerDetalleEvento.showModal();
@@ -29,3 +29,13 @@ btnEliminarEvento.addEventListener('click', () => {
     eventoContainer.remove();
     modalVerDetalleEvento.close();
 });
+
+const eventRows = document.querySelectorAll('.event-row');
+eventRows.forEach(row => {
+    row.addEventListener('click', () => {
+        const idEvento = row.getAttribute('data-evento-id');
+        modalVerDetalleEvento.showModal();
+    });
+});
+
+
