@@ -288,7 +288,7 @@ th {
 }
 
 .modal-content {
-    width: 100%;
+    width: 40%;
     max-width: 90vw;
     max-height: 90vh;
     overflow-y: auto;
@@ -296,6 +296,7 @@ th {
     border-radius: 8px;
     position: relative;
     margin: 0 auto;
+    padding: 8px 8px;
 }
 
 /* Estilos específicos para el modal de CAMBIAR ESTADO */
@@ -713,6 +714,7 @@ th {
     font-size: 12px;
 }
 
+/* Botones en modales de confirmación y notificación */
 #confirmationModal .btn,
 #notificationModal .btn {
     padding: 6px 12px;
@@ -721,10 +723,27 @@ th {
     cursor: pointer;
 }
 
-#confirmationModal .btn:last-child,
+/* Botón "Cancelar" en confirmación: neutro */
+#confirmNo {
+    background: var(--neutral-07);
+    color: var(--neutral-02);
+    border: 1px solid var(--neutral-05);
+}
+
+#confirmNo:hover {
+    background: var(--neutral-06);
+}
+
+/* Botón "Aceptar" en confirmación y botón en notificación: rojo primario */
+#confirmYes,
 #notificationModal .btn {
     background-color: var(--primary-03, #d32f2f);
     color: white;
+}
+
+#confirmYes:hover,
+#notificationModal .btn:hover {
+    background-color: var(--primary-02, #b71c1c);
 }
 
 /* Diseño responsive*/

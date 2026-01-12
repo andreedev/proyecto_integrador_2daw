@@ -213,14 +213,14 @@ detailModal.querySelector('.modal-overlay').addEventListener('click', () => {
 document.getElementById('deleteCandidatura').addEventListener('click', () => {
     if (!activeDetailRow) return;
 
-    showConfirmation(
-        '¿Está seguro de que desea eliminar esta candidatura? Esta acción no se puede deshacer.',
-        () => {
-            activeDetailRow.remove();
-            detailModal.style.display = 'none';
-            showNotification('Candidatura eliminada correctamente.');
-        }
-    );
+    const participantName = activeDetailRow.querySelector('.participant')?.textContent || 'el participante';
+    const message = `¿Está seguro de que desea eliminar la candidatura de ${participantName}? Esta acción no se puede deshacer.`;
+
+    showConfirmation(message, () => {
+        activeDetailRow.remove();
+        detailModal.style.display = 'none';
+        showNotification('Candidatura eliminada correctamente.');
+    });
 });
 
 function getBadgeClass(status) {
