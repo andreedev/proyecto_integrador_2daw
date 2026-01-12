@@ -3,6 +3,17 @@ const postEventoCards = document.querySelectorAll('.postEventoCard');
 const preEventoButton = document.getElementById('preEventoButton');
 const postEventoButton = document.getElementById('postEventoButton');
 
+const tituloEventoInput = document.getElementById('tituloEventoInput');
+const tituloEventoErrorMessage = document.getElementById('tituloEventoErrorMessage');
+const fechaEventoInput = document.getElementById('fechaEventoInput');
+const fechaEventoErrorMessage = document.getElementById('fechaEventoErrorMessage');
+const horaEventoInput = document.getElementById('horaEventoInput');
+const horaEventoErrorMessage = document.getElementById('horaEventoErrorMessage');
+const ubicacionEventoInput = document.getElementById('ubicacionEventoInput');
+const ubicacionEventoErrorMessage = document.getElementById('ubicacionEventoErrorMessage');
+const descripcionInput = document.getElementById('descripcionInput');
+const descripcionErrorMessage = document.getElementById('descripcionErrorMessage');
+
 const publishChangesButton = document.getElementById('publishChangesButton');
 const unsavedChangesWarning = document.getElementById('unsavedChangesWarning');
 
