@@ -239,7 +239,7 @@ function validatePostEventoResumen() {
 
 publishChangesButton.addEventListener('click', () => publishChanges());
 
-function publishChanges() {
+async function publishChanges() {
     if (modo === 'pre-evento') {
         const isTituloValid = validateTituloEvento();
         const isFechaValid = validateFechaEvento();
@@ -254,7 +254,9 @@ function publishChanges() {
             unsavedChangesWarning.classList.add('hidden-force');
         }
 
-        guardarConfiguracion();
+        await guardarConfiguracion();
+        publishChangesButton.classList.add('disabled');
+
     } else if (modo === 'post-evento') {
         const isResumenValid = validatePostEventoResumen();
         const isYearValid = validateYearEdicion();
@@ -268,7 +270,8 @@ function publishChanges() {
             unsavedChangesWarning.classList.add('hidden-force');
         }
 
-        guardarConfiguracion();
+        await guardarConfiguracion();
+        publishChangesButton.classList.add('disabled');
     }
 }
 
@@ -618,25 +621,24 @@ function actualizarInterfazConConfiguracion(config) {
 }
 
 async function guardarConfiguracion() {
-    return;
 
     const formData = new FormData();
     formData.append('action', 'guardarConfiguracionWeb');
     formData.append('modo', modo);
-    formData.append('galaTituloEventoPrincipal', tituloEventoInput.value.trim());
-    formData.append('galaFechaEventoPrincipal', fechaEventoInput.value);
-    formData.append('galaHoraEventoPrincipal', horaEventoInput.value);
-    formData.append('galaUbicacionEvento', ubicacionEventoInput.value.trim());
-    formData.append('galaDescripcionEventoPrincipal', descripcionInput.value.trim());
-    formData.append('galaStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
-    formData.append('galaStreamingUrl', urlStreamingInput.value.trim());
-    formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
-    formData.append('galaPostEventoGaleriaImagenes', JSON.stringify(Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img')).map(img => img.src)));
-    formData.append('galaPostEventoGaleriaVideos', JSON.stringify(Array.from(videoGalleryContainer.querySelectorAll('.video-item video')).map(video => ({
-        url: video.src,
-        name: video.getAttribute('data-filename') || 'video'
-    }))));
-
+    if (modo === 'pre-evento') {
+        formData.append('galaTituloEventoPrincipal', tituloEventoInput.value.trim());
+        formData.append('galaFechaEventoPrincipal', fechaEventoInput.value);
+        formData.append('galaHoraEventoPrincipal', horaEventoInput.value);
+        formData.append('galaUbicacionEvento', ubicacionEventoInput.value.trim());
+        formData.append('galaDescripcionEventoPrincipal', descripcionInput.value.trim());
+        formData.append('galaStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
+        formData.append('galaStreamingUrl', urlStreamingInput.value.trim());
+    }
+    if (modo === 'post-evento') {
+        formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
+        formData.append('galaPostEventoGaleriaImagenes', JSON.stringify(Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img')).map(img => img.src)));
+        formData.append('galaPostEventoGaleriaVideos', JSON.stringify(Array.from(videoGalleryContainer.querySelectorAll('.video-item video')).map(video => video.src)));
+    }
 
     try {
         const response = await fetch(URL_API, {
@@ -647,7 +649,7 @@ async function guardarConfiguracion() {
         const result = await response.json();
 
         if (result.status === 'success') {
-            alert('¡Configuración guardada!');
+
         } else {
             console.error('Error:', result.message);
         }
@@ -655,8 +657,6 @@ async function guardarConfiguracion() {
         console.error('Error de red:', error);
     }
 }
-
-cargarConfiguracionWeb();
 
 new AirDatepicker(fechaEventoInput, {
     minDate: new Date(),
@@ -732,24 +732,43 @@ new AirDatepicker(horaEventoInput, {
 
 
 new AirDatepicker(yearEdicionInput, {
-    view: 'years',
-    minView: 'years', // Prevents the user from clicking into months
-    dateFormat: 'yyyy', // Only shows the year in the input
-    autoClose: true,
-
-    // Optional: Set a range of years
-    minDate: new Date('2010-01-01'),
-    maxDate: new Date('2030-12-31'),
-
+    timepicker: true,
+    onlyTimepicker: true,
+    minHours: 7,
+    maxHours: 22,
+    timeFormat: 'HH:mm',
+    minutesStep: 15,
     buttons: [
         {
-            content: 'Año Actual',
+            content: 'Ahora',
             onClick: (dp) => {
                 let now = new Date();
-                dp.selectDate(now);
+                let currentHour = now.getHours();
+
+                if (currentHour >= 8 && currentHour <= 20) {
+                    dp.selectDate(now);
+                } else {
+                    let startRange = new Date();
+                    startRange.setHours(8, 0);
+                    dp.selectDate(startRange);
+                }
                 dp.hide();
             }
         },
-        'clear'
-    ]
+        {
+            content: 'Limpiar',
+            onClick: (dp) => {
+                dp.clear();
+                dp.hide();
+            }
+        }
+    ],
+    onlyTimepicker: true,
+    onSelect({date, formattedDate}) {
+
+    }
 });
+
+
+
+cargarConfiguracionWeb();

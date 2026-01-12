@@ -171,12 +171,48 @@ function obtenerConfiguracionWeb(){
 function actualizarConfiguracionWeb(){
     global $conexion;
 
-    $configuracion = $_POST['configuracion'] ?? null;
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-    echo json_encode([
-        "status" => "success",
-        "message" => "Configuración actualizada correctamente"
-    ]);
+    $mapping = [
+        'modo' => 'modo',
+        'galaTituloEventoPrincipal' => 'gala_titulo_evento_principal',
+        'galaFechaEventoPrincipal' => 'gala_fecha_evento_principal',
+        'galaHoraEventoPrincipal' => 'gala_hora_evento_principal',
+        'galaUbicacionEvento' => 'gala_ubicacion_evento',
+        'galaDescripcionEventoPrincipal' => 'gala_descripcion_evento_principal',
+        'galaStreamingActivo' => 'gala_streaming_activo',
+        'galaStreamingUrl' => 'gala_streaming_url',
+        'galaPostEventoResumen' => 'gala_post_evento_resumen',
+        'galaPostEventoGaleriaImagenes' => 'gala_post_evento_galeria_imagenes',
+        'galaPostEventoGaleriaVideos' => 'gala_post_evento_galeria_videos'
+    ];
+
+    try {
+
+        $stmt = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
+        $actualizados = 0;
+
+        foreach ($mapping as $jsKey => $dbNombre) {
+            if (isset($_POST[$jsKey])) {
+                $valor = $_POST[$jsKey];
+
+                $stmt->bind_param("ss", $valor, $dbNombre);
+                $stmt->execute();
+                $actualizados++;
+            }
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Configuración actualizada correctamente",
+            "actualizados" => $actualizados
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al actualizar la configuración: " . $e->getMessage()
+        ]);
+    }
 }
 
 function cerrarSesion(){
