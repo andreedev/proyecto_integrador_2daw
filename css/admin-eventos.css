@@ -340,8 +340,6 @@ dialog{
 }
 
 .modal-ver-detalle-container{
-    display: flex;
-    flex-direction: column;
     color:var(--neutral-01);
 }
 

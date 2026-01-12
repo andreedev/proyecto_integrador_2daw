@@ -1,6 +1,9 @@
 const modalVerDetalleEvento = document.querySelector('#modalVerDetalleEvento');
 
-modalVerDetalleEvento.close();
-modalVerDetalleEvento.showModal();
-
+closeModalList.forEach(closeModal => {
+    closeModal.addEventListener('click', () => {
+        const dialog = closeModal.closest('dialog');
+        dialog.close();
+});
+});
 
