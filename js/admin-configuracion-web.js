@@ -13,6 +13,8 @@ const ubicacionEventoInput = document.getElementById('ubicacionEventoInput');
 const ubicacionEventoErrorMessage = document.getElementById('ubicacionEventoErrorMessage');
 const descripcionInput = document.getElementById('descripcionInput');
 const descripcionErrorMessage = document.getElementById('descripcionErrorMessage');
+const urlStreamingInput = document.getElementById('urlStreamingInput');
+const urlStreamingErrorMessage = document.getElementById('urlStreamingErrorMessage');
 
 const publishChangesButton = document.getElementById('publishChangesButton');
 const unsavedChangesWarning = document.getElementById('unsavedChangesWarning');
@@ -38,6 +40,9 @@ const videoInput = document.getElementById('videoInput');
 const videoGalleryContainer = document.getElementById('videoGalleryContainer');
 const uploadedVideosCount = document.getElementById('uploadedVideosCount');
 const noVideosHelperText = document.getElementById('noVideosHelperText');
+
+const postEventoResumenInput = document.getElementById('postEventoResumenInput');
+const postEventoResumenErrorMessage = document.getElementById('postEventoResumenErrorMessage');
 
 const yearEdicionInput = document.getElementById('yearEdicionInput');
 const yearEditionErrorMessage = document.getElementById('yearEditionErrorMessage');
@@ -108,6 +113,184 @@ function changeMode(newMode, pendingChanges) {
     }
 }
 
+tituloEventoInput.addEventListener('blur', () => validateTituloEvento());
+fechaEventoInput.addEventListener('blur', () => validateFechaEvento());
+horaEventoInput.addEventListener('blur', () => validateHoraEvento());
+ubicacionEventoInput.addEventListener('blur', () => validateUbicacionEvento());
+descripcionInput.addEventListener('blur', () => validateDescripcionEvento());
+urlStreamingInput.addEventListener('blur', () => validateUrlStreaming());
+
+postEventoResumenInput.addEventListener('blur', () => validatePostEventoResumen());
+
+yearEdicionInput.addEventListener('blur', () => validateYearEdicion());
+nroParticipantesInput.addEventListener('blur', () => validateNroParticipantes());
+fechaEnvioEmailInformativoInput.addEventListener('blur', () => validateFechaEnvioEmailInformativo());
+fechaBorradoDatosInput.addEventListener('blur', () => validateFechaBorradoDatos());
+
+function validateTituloEvento() {
+    if (tituloEventoInput.value.trim() === '') {
+        tituloEventoErrorMessage.textContent = 'El título del evento no puede estar vacío';
+        tituloEventoErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    tituloEventoErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateFechaEvento() {
+    if (fechaEventoInput.value === '') {
+        fechaEventoErrorMessage.textContent = 'La fecha del evento no puede estar vacía';
+        fechaEventoErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    fechaEventoErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateHoraEvento() {
+    if (horaEventoInput.value === '') {
+        horaEventoErrorMessage.textContent = 'La hora del evento no puede estar vacía';
+        horaEventoErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    horaEventoErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateUbicacionEvento() {
+    if (ubicacionEventoInput.value.trim() === '') {
+        ubicacionEventoErrorMessage.textContent = 'La ubicación del evento no puede estar vacía';
+        ubicacionEventoErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    ubicacionEventoErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateDescripcionEvento() {
+    if (descripcionInput.value.trim() === '') {
+        descripcionErrorMessage.textContent = 'La descripción del evento no puede estar vacía';
+        descripcionErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    descripcionErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateYearEdicion() {
+    if (yearEdicionInput.value.trim() === '' || isNaN(yearEdicionInput.value) || parseInt(yearEdicionInput.value) < 2000) {
+        yearEditionErrorMessage.textContent = 'Ingresa un año valido';
+        yearEditionErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    yearEditionErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateNroParticipantes() {
+    if (nroParticipantesInput.value.trim() === '' || isNaN(nroParticipantesInput.value) || parseInt(nroParticipantesInput.value) < 1) {
+        nroParticipantesErrorMessage.textContent = 'Ingresa un número válido';
+        nroParticipantesErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    nroParticipantesErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateFechaEnvioEmailInformativo() {
+    if (fechaEnvioEmailInformativoInput.value === '') {
+        fechaEnvioEmailInformativoErrorMessage.textContent = 'La fecha no puede estar vacía';
+        fechaEnvioEmailInformativoErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    fechaEnvioEmailInformativoErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateFechaBorradoDatos() {
+    if (fechaBorradoDatosInput.value === '') {
+        fechaBorradoDatosInputErrorMessage.textContent = 'La fecha no puede estar vacía';
+        fechaBorradoDatosInputErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    fechaBorradoDatosInputErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validateUrlStreaming() {
+    if (urlStreamingInput.value.trim() === '') {
+        urlStreamingErrorMessage.textContent = 'Ingresa una URL válida';
+        urlStreamingErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    urlStreamingErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+function validatePostEventoResumen() {
+    if (postEventoResumenInput.value.trim() === '') {
+        postEventoResumenErrorMessage.textContent = 'El resumen del evento no puede estar vacío';
+        postEventoResumenErrorMessage.classList.remove('hidden-force');
+        return false;
+    }
+    postEventoResumenErrorMessage.classList.add('hidden-force');
+    return true;
+}
+
+publishChangesButton.addEventListener('click', () => publishChanges());
+
+function publishChanges() {
+    if (modo === 'pre-evento') {
+        const isTituloValid = validateTituloEvento();
+        const isFechaValid = validateFechaEvento();
+        const isHoraValid = validateHoraEvento();
+        const isUbicacionValid = validateUbicacionEvento();
+        const isDescripcionValid = validateDescripcionEvento();
+        const isUrlStreamingValid = validateUrlStreaming();
+
+        if (isTituloValid && isFechaValid && isHoraValid && isUbicacionValid && isDescripcionValid && isUrlStreamingValid) {
+            pendingChanges = false;
+            publishChangesButton.classList.add('disabled');
+            unsavedChangesWarning.classList.add('hidden-force');
+        }
+
+        guardarConfiguracion();
+    } else if (modo === 'post-evento') {
+        const isResumenValid = validatePostEventoResumen();
+        const isYearValid = validateYearEdicion();
+        const isNroParticipantesValid = validateNroParticipantes();
+        const isFechaEnvioEmailValid = validateFechaEnvioEmailInformativo();
+        const isFechaBorradoDatosValid = validateFechaBorradoDatos();
+
+        if (isResumenValid && isYearValid && isNroParticipantesValid && isFechaEnvioEmailValid && isFechaBorradoDatosValid) {
+            pendingChanges = false;
+            publishChangesButton.classList.add('disabled');
+            unsavedChangesWarning.classList.add('hidden-force');
+        }
+
+        guardarConfiguracion();
+    }
+}
+
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 
 /**
  * Manejo de la carga de imágenes mediante arrastrar y soltar o selección de archivos
@@ -375,17 +558,103 @@ closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
     });
 });
 
+changeMode('pre-evento', false);
 
-createGalleryItem('../img/red-white-photo-white-black-camera.jpg');
-createGalleryItem('../img/Foto_corto.png');
-createGalleryItem('../img/red-white-photo-white-black-camera.jpg');
-createGalleryItem('../img/Foto_corto.png');
-createGalleryItem('../img/red-white-photo-white-black-camera.jpg');
-createGalleryItem('../img/Foto_corto.png');
+async function cargarConfiguracionWeb() {
+    const formData = new FormData();
+    formData.append('action', 'obtenerConfiguracionWeb');
 
-createVideoItem('../video/file_example_MP4_480_1_5MG.mp4', 'file_example_MP4_480_1_5MG.mp4');
-createVideoItem('../video/file_example_MP4_480_1_5MG.mp4', 'file_example_MP4_480_1_5MG.mp4');
-createVideoItem('../video/file_example_MP4_480_1_5MG.mp4', 'file_example_MP4_480_1_5MG.mp4');
+    const response = await fetch(URL_API, {
+        method: 'POST',
+        body: formData
+    }).then(response => response.json())
+        .then(data => {
+            actualizarInterfazConConfiguracion(data.data);
+        })
+        .catch(error => {
+            console.error('Error al cargar la configuración web:', error);
+        });
+}
 
-changeMode('post-evento', false);
-modalEnviarEdicionesAnteriores.showModal();
+
+function actualizarInterfazConConfiguracion(config) {
+    if (config.modo_concurso === 'pre-evento') {
+        changeMode('pre-evento', false);
+    } else if (config.modo_concurso === 'post-evento') {
+        changeMode('pre-evento', false);
+    }
+
+    tituloEventoInput.value = config.gala_titulo_evento_principal;
+    fechaEventoInput.value = config.gala_fecha_evento_principal;
+    horaEventoInput.value = config.gala_hora_evento_principal;
+    ubicacionEventoInput.value = config.gala_ubicacion_evento;
+    descripcionInput.value = config.gala_descripcion_evento_principal;
+
+    if (config.gala_streaming_activo === 'true') {
+        streamingToggleContainer.classList.add('enabled');
+        streamingIndicatorText.textContent = 'EN VIVO';
+        streamingHelperText.textContent = 'El enlace será visible en la landing pública';
+        urlStreamingContainer.classList.remove('hidden-force');
+    } else {
+        streamingToggleContainer.classList.remove('enabled');
+        streamingIndicatorText.textContent = 'OFF';
+        streamingHelperText.textContent = 'El enlace estará oculto para los visitantes';
+        urlStreamingContainer.classList.add('hidden-force');
+    }
+    urlStreamingInput.value = config.gala_streaming_url;
+
+    postEventoResumenInput.value = config.gala_post_evento_resumen;
+
+    const imagenes = JSON.parse(config.gala_post_evento_galeria_imagenes);
+    const videos = JSON.parse(config.gala_post_evento_galeria_videos);
+
+    imagenes.forEach(imgSrc => {
+        createGalleryItem(imgSrc);
+    });
+
+    videos.forEach(videoSrc => {
+        createVideoItem(videoSrc.url, videoSrc.name);
+    });
+}
+
+async function guardarConfiguracion() {
+    return;
+
+    const formData = new FormData();
+    formData.append('action', 'guardarConfiguracionWeb');
+
+    const datosConfig = {
+        modo_concurso: modo,
+        gala_titulo_evento_principal: tituloEventoInput.value.trim(),
+        gala_fecha_evento_principal: fechaEventoInput.value,
+        gala_hora_evento_principal: horaEventoInput.value,
+        gala_ubicacion_evento: ubicacionEventoInput.value.trim(),
+        gala_descripcion_evento_principal: descripcionInput.value.trim(),
+        gala_streaming_activo: streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false',
+        gala_streaming_url: urlStreamingInput.value.trim(),
+        gala_post_evento_resumen: postEventoResumenInput.value.trim()
+    };
+
+    for (const [key, value] of Object.entries(datosConfig)) {
+        formData.append(`configuracion[${key}]`, value);
+    }
+
+    try {
+        const response = await fetch(URL_API, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            alert('¡Configuración guardada!');
+        } else {
+            console.error('Error:', result.message);
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+    }
+}
+
+cargarConfiguracionWeb();

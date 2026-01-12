@@ -192,21 +192,20 @@ function crearBaseDatosSiNoExiste() {
                 ;
                 
                 INSERT INTO configuracion (nombre, valor, id_organizador) VALUES
-                ('modo_concurso', 'pre-evento', 1), -- pre-evento, post-evento
-                ('min_candidaturas', '2', 1),
-                ('max_candidaturas', '5', 1),
-                ('gala_titulo_evento_principal', 'Festival de Cine 2026', 1),
-                ('gala_fecha_evento_principal', '2026-12-20', 1),
-                ('gala_hora_evento_principal', '15:00', 1),
-                ('gala_descripcion_evento_principal', '¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni', 1),
-                ('gala_ubicacion_evento', 'Auditorio Principal', 1),
-                ('gala_proxima_fecha', '2027-12-21', 1),
-                ('gala_streaming_activo', 'true', 1),
-                ('gala_streaming_url', 'https://streaming.ejemplo.com/gala2026', 1),
-                ('gala_post_evento_resumen', 'Gracias por asistir a la Gala de Cortometrajes 2026. Fue una noche inolvidable llena de talento y creatividad.', 1),
-                ('gala_post_evento_galeria_imagenes', '[]', 1),
-                ('gala_post_evento_galeria_videos', '[]', 1)
-                ;
+                    ('modo_concurso', 'pre-evento', 1),
+                    ('min_candidaturas', '2', 1),
+                    ('max_candidaturas', '5', 1),
+                    ('gala_titulo_evento_principal', 'Festival de Cine 2026', 1),
+                    ('gala_fecha_evento_principal', '2026-12-20', 1),
+                    ('gala_hora_evento_principal', '15:00', 1),
+                    ('gala_descripcion_evento_principal', '¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni', 1),
+                    ('gala_ubicacion_evento', 'Auditorio Principal', 1),
+                    ('gala_proxima_fecha', '2027-12-21', 1),
+                    ('gala_streaming_activo', 'true', 1),
+                    ('gala_streaming_url', 'https://streaming.ejemplo.com/gala2026', 1),
+                    ('gala_post_evento_resumen', 'Gracias por asistir a la Gala de Cortometrajes 2026. Fue una noche inolvidable llena de talento y creatividad.', 1),
+                    ('gala_post_evento_galeria_imagenes', '[\"../img/red-white-photo-white-black-camera.jpg\", \"../img/Foto_corto.png\", \"../img/red-white-photo-white-black-camera.jpg\", \"../img/Foto_corto.png\", \"../img/red-white-photo-white-black-camera.jpg\", \"../img/Foto_corto.png\"]', 1),
+                    ('gala_post_evento_galeria_videos', '[{\"url\": \"../video/file_example_MP4_480_1_5MG.mp4\", \"name\": \"file_example_MP4_480_1_5MG.mp4\"}, {\"url\": \"../video/file_example_MP4_480_1_5MG.mp4\", \"name\": \"file_example_MP4_480_1_5MG.mp4\"}, {\"url\": \"../video/file_example_MP4_480_1_5MG.mp4\", \"name\": \"file_example_MP4_480_1_5MG.mp4\"}]', 1);
                 
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador) VALUES
                 ('Inicio inscripciones', 'Se abre el plazo', CURRENT_DATE, 1),

@@ -90,7 +90,7 @@
                             <label class="generic-input-wrapper">
                                 <input id="tituloEventoInput" class="generic-input" value="Reunión de planificación" type="text">
                             </label>
-                            <span id="tituloEventoMessageError" class="error-message"></span>
+                            <span id="tituloEventoErrorMessage" class="error-message"></span>
                         </div>
                         <div class="generic-input-groups-row">
                             <div class="generic-input-group">
@@ -99,7 +99,7 @@
                                     <input id="fechaEventoInput" class="generic-input" value="09/01/2026">
                                     <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
                                 </label>
-                                <span id="fechaEventoMessageError" class="error-message"></span>
+                                <span id="fechaEventoErrorMessage" class="error-message"></span>
                             </div>
                             <div class="generic-input-group">
                                 <span class="generic-input-label">Hora</span>
@@ -107,14 +107,14 @@
                                     <input id="horaEventoInput" class="generic-input" value="19:00" type="text">
                                     <span class="icon-clock"></span>
                                 </label>
-                                <span id="horaEventoMessageError" class="error-message"></span>
+                                <span id="horaEventoErrorMessage" class="error-message"></span>
                             </div>
                         </div>
                         <div class="generic-input-group">
                             <span class="generic-input-label">Ubicación</span>
                             <label class="generic-input-wrapper">
                                 <span class="icon-location w-20px h-20px bg-neutral-03"></span>
-                                <input id="ubicacionEventoInput" class="generic-input" value="19:00" type="text">
+                                <input id="ubicacionEventoInput" class="generic-input" value="Auditorio principal" type="text">
                             </label>
                             <span id="ubicacionEventoErrorMessage" class="error-message"></span>
                         </div>
@@ -166,7 +166,7 @@
                                 <span class="icon-link w-20px h-20px bg-neutral-03"></span>
                                 <input id="urlStreamingInput" class="generic-input" type="text" placeholder="https://youtube.com/watch?v=...">
                             </label>
-                            <span id="urlStreamingMensajeError" class="error-message"></span>
+                            <span id="urlStreamingErrorMessage" class="error-message"></span>
                             <span class="helper-text">Introduce la URL completa del streaming (YouTube, TikTok, etc.)</span>
                         </div>
                     </div>
@@ -174,7 +174,7 @@
                         <div class="card-header">
                             <div class="card-header-left-side">
                                 <div class="icon-container bg-gradient-01">
-                                    <span class="icon-calendar bg-neutral-09"></span>
+                                    <span class="icon-calendar w-20px h-20px bg-neutral-09"></span>
                                 </div>
                                 <div class="card-header-title-container">
                                     <span class="card-header-title">Itinerario del día</span>
@@ -214,7 +214,7 @@
                                 <span class="large-input-group-label-text">Contenido</span>
                             </div>
                             <div class="large-input-group-body h-100px">
-                                <textarea id="postEventoResumen" class="textarea-input">La Gala de Cortometrajes 2026 fue un éxito rotundo...</textarea>
+                                <textarea id="postEventoResumenInput" class="textarea-input">La Gala de Cortometrajes 2026 fue un éxito rotundo...</textarea>
                             </div>
                             <span id="postEventoResumenErrorMessage" class="error-message"></span>
                             <span class="helper-text">Describe los momentos destacados y el éxito del evento</span>
@@ -345,7 +345,7 @@
                     <span id="yearEditionErrorMessage" class="error-message"></span>
                 </div>
                 <div class="generic-input-group">
-                    <span class="generic-input-label">Hora</span>
+                    <span class="generic-input-label">Número de participantes</span>
                     <label class="generic-input-wrapper">
                         <span class="icon-user-thick w-16px h-16px bg-neutral-03"></span>
                         <input id="nroParticipantesInput" class="generic-input" value="150" type="text">
@@ -360,7 +360,7 @@
                     <input id="fechaEnvioEmailInformativoInput" class="generic-input  text-neutral-02" value="09/01/2026">
                     <span class="icon-calendar w-20px h-20px bg-neutral-02"></span>
                 </label>
-                <span id="fechaEnvioEmailInformativoInputErrorMessage" class="error-message"></span>
+                <span id="fechaEnvioEmailInformativoErrorMessage" class="error-message"></span>
                 <span class="helper-text">Se enviará un email a todos los participantes informando del archivo de esta edición</span>
             </div>
             <div class="generic-input-group">

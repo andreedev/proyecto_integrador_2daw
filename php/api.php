@@ -26,6 +26,14 @@ if(isset($_POST['action'])){
         case 'cerrarSesion':
             cerrarSesion(); 
             break;
+        case 'obtenerConfiguracionWeb':
+            validarRol(['organizador', 'participante']);
+            obtenerConfiguracionWeb();
+            break;
+        case 'actualizarConfiguracionWeb':
+            validarRol(['organizador']);
+            actualizarConfiguracionWeb();
+            break;
         default:
             break;
     }
@@ -119,6 +127,69 @@ function login() {
             "message" => "Usuario o contraseña incorrectos"
         ]);
     }
+}
+
+
+/**
+ * Valida si el rol de la sesión actual está permitido
+ */
+function validarRol($rolesPermitidos) {
+    if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Sesión no iniciada"
+        ]);
+        exit;
+    }
+
+    if (!in_array($_SESSION['rol'], $rolesPermitidos)) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Acceso denegado para el rol actual"
+        ]);
+        exit;
+    }
+}
+
+function obtenerConfiguracionWeb(){
+    global $conexion;
+
+    $query = "SELECT nombre, valor FROM configuracion";
+    $resultado = $conexion->query($query);
+    $configuracion = [];
+    if ($resultado && $resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $configuracion[$fila['nombre']] = $fila['valor'];
+        }
+    }
+    echo json_encode([
+        "status" => "success",
+        "data" => $configuracion
+    ]);
+}
+
+function actualizarConfiguracionWeb(){
+    global $conexion;
+
+    $configuracion = $_POST['configuracion'] ?? null;
+    if (!$configuracion || !is_array($configuracion)) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Datos de configuración inválidos"
+        ]);
+        return;
+    }
+
+    $stmt = $conexion->prepare("REPLACE INTO configuracion (nombre, valor) VALUES (?, ?)");
+    foreach ($configuracion as $nombre => $valor) {
+        $stmt->bind_param("ss", $nombre, $valor);
+        $stmt->execute();
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Configuración actualizada correctamente"
+    ]);
 }
 
 function cerrarSesion(){
