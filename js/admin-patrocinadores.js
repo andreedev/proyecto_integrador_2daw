@@ -23,6 +23,27 @@ const modalAgregarPatrocinador = document.querySelector('.modalAgregarPatrocinad
 const cerrarModalAgregar = document.querySelector('.iconoCerrarAgregarModal');
 const cancelarModalAgregar = document.querySelector('.botonCancelarAgregarPatrocinador');
 
+const deleteConfirmation = document.querySelector('.deleteConfirmation');
+const botonCancelarEliminar = document.querySelector('.botonCancelarEliminar');
+const botonConfirmarEliminar = document.querySelector('.botonConfirmarEliminar');
+
+
+iconoEliminar.addEventListener('click', () => {
+    deleteConfirmation.classList.remove('hidden-force');
+
+    botonCancelarEliminar.addEventListener('click', () => {
+        deleteConfirmation.classList.add('hidden-force');
+    });
+
+    botonConfirmarEliminar.addEventListener('click', () => {
+        cardPatrocinador.remove();
+        deleteConfirmation.classList.add('hidden-force');
+    });
+});
+
+
+
+
 // Mensaje error cuando se pierde el foco
 nombrePatrocinador.addEventListener('blur', () => {
     const titleValue = nombrePatrocinador.value.trim();

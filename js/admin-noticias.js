@@ -12,9 +12,6 @@ const iconStatus = document.querySelector('.icon-status');
 const status = document.querySelector('status');
 const newsParagraph = document.querySelector('.news-paragraph');
 
-const newsTitleInput = document.getElementById('newsTitleInput');
-const newsDescriptionInput = document.getElementById('newsDescriptionInput');
-const newsDateInput = document.getElementById('newsDateInput');
 
 /*  Modal Agregar Noticia  */
 const modalAgregarNoticia = document.getElementById('addModal');
@@ -27,6 +24,13 @@ const posterInput= document.getElementById('newsImageInput');
 const imagenAceptadaCard= document.getElementById('imgAccepted');
 const mensajeError = document.getElementById('errorMessage');
 
+const errorNewsTitleInput = document.getElementById('errorNewsTitleInput');
+const errorNewsDescriptionInput = document.getElementById('errorNewsDescriptionInput');
+const errorNewsDateInput = document.getElementById('errorNewsDateInput');
+
+const newsTitleInput = document.getElementById('newsTitleInput');
+const newsDescriptionInput = document.getElementById('newsDescriptionInput');
+const newsDateInput = document.getElementById('newsDateInput');
 
 /*  Eventos Modal Editar Noticia  */
 const modalEditarNoticia = document.getElementById('editModal');
@@ -39,39 +43,74 @@ const poesterInputEdit= document.getElementById('newsImageInputEdit');
 const imagenAceptadaCardEdit= document.getElementById('imgAcceptedEdit');
 const mensajeErrorEdit = document.getElementById('errorMessageEdit');
 
+const errorNewsTitleInputEdit = document.getElementById('errorNewsTitleInputEdit');
+const errorNewsDescriptionInputEdit = document.getElementById('errorNewsDescriptionInputEdit');
+const errorNewsDateInputEdit = document.getElementById('errorNewsDateInputEdit');
 
-//Validaciones
+const newsTitleInputEdit = document.getElementById('newsTitleInputEdit');
+const newsDescriptionInputEdit = document.getElementById('newsDescriptionInputEdit');
+const newsDateInputEdit = document.getElementById('newsDateInputEdit');
+
+
+
+//Validaciones para Agregar
 
 newsTitleInput.addEventListener('blur', () => {
     const titleValue = newsTitleInput.value.trim();
-    const errorSpan = document.getElementById('errorNewsTitleInput');
     if (titleValue === '') {
-        errorSpan.textContent = 'El título de la noticia no puede estar vacío.';
+        errorNewsTitleInput.textContent = 'El título de la noticia no puede estar vacío.';
     } else {
-        errorSpan.textContent = '';
+        errorNewsTitleInput.textContent = '';
     }
 });
 
 newsDescriptionInput.addEventListener('blur', () => {
     const descriptionValue = newsDescriptionInput.value.trim();
-    const errorSpan = document.getElementById('errorNewsDescriptionInput');
     if (descriptionValue === '') {
-        errorSpan.textContent = 'La descripción de la noticia no puede estar vacía.';
+        errorNewsDescriptionInput.textContent = 'La descripción de la noticia no puede estar vacía.';
     } else {
-        errorSpan.textContent = '';
+        errorNewsDescriptionInput.textContent = '';
     }
 });
 
 newsDateInput.addEventListener('blur', () => {
     const dateValue = newsDateInput.value.trim();
-    const errorSpan = document.getElementById('errorNewsDateInput');    
     if (dateValue === '') {
-        errorSpan.textContent = 'La fecha de la noticia no puede estar vacía.';
+        errorNewsDateInput.textContent = 'La fecha de la noticia no puede estar vacía.';
     } else {
-        errorSpan.textContent = '';
+        errorNewsDateInput.textContent = '';
     }
 });
 
+//Validaciones para Editar
+newsTitleInputEdit.addEventListener('blur', () => {
+    const titleValue = newsTitleInputEdit.value.trim();
+    if (titleValue === '') {
+        errorNewsTitleInputEdit.textContent = 'El título de la noticia no puede estar vacío.';
+    } else {
+        errorNewsTitleInputEdit.textContent = '';
+    }
+});
+
+newsDescriptionInputEdit.addEventListener('blur', () => {
+    const descriptionValue = newsDescriptionInputEdit.value.trim();
+    if (descriptionValue === '') {
+        errorNewsDescriptionInputEdit.textContent = 'La descripción de la noticia no puede estar vacía.';
+    } else {
+        errorNewsDescriptionInputEdit.textContent = '';
+    }   
+});
+newsDateInputEdit.addEventListener('blur', () => {
+    const dateValue = newsDateInputEdit.value.trim();
+    if (dateValue === '') {
+        errorNewsDateInputEdit.textContent = 'La fecha de la noticia no puede estar vacía.';
+    } else {
+        errorNewsDateInputEdit.textContent = '';
+    }
+});
+
+
+//Validación para la imagen de noticia en Agregar
 posterInput.addEventListener('change', () => {
     if (posterInput.files.length === 0) {
         mensajeError.textContent = 'Debes seleccionar una imagen para la noticia.';

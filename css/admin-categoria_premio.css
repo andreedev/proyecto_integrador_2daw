@@ -1,41 +1,3 @@
-:root {
-    --primary-01: #801914;
-    --primary-02: #BF261E;
-    --primary-03: #FF2E23;
-    --primary-04: #FF8C87;
-    --primary-05: #FFE6E5;
-    --secondary-01: #6E1F7B;
-    --secondary-02: #A730BB;
-    --secondary-03: #E040FB;
-    --secondary-04: #E874FC;
-    --secondary-05: #F1A7FD;
-    --neutral-01: #272727;
-    --neutral-02: #393A3B;
-    --neutral-03: #707273;
-    --neutral-04: #A6A9AC;
-    --neutral-05: #DDE1E4;
-    --neutral-06: #E5E5E5;
-    --neutral-07: #F3F3F5;
-    --neutral-08: #F6F7F8;
-    --neutral-09: #FFFFFF;
-    --warning-01: #8A7400;
-    --warning-02: #FFD600;
-    --warning-03: #FFEC8A;
-    --warning-04: #FFFAE0;
-    --information-01: #004E7E;
-    --information-02: #0091EA;
-    --information-03: #8ACCF5;
-    --information-04: #E0F2FD;
-    --success-01: #006C2D;
-    --success-02: #00C853;
-    --success-03: #CEF7D8;
-    --success-04: #E0F8EA;
-    --error-01: #7C0000;
-    --error-02: #D50000;
-    --error-03: #EC8A8A;
-    --error-04: #F6CACA;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -72,6 +34,13 @@
   overflow: hidden;
 }
 
+.category-card-animacion{
+  background: var(--neutral-09);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
 .category-header {
   display: flex;
   align-items: center;
@@ -102,6 +71,87 @@
   font-weight: bold;
   color: var(--neutral-01);
   word-break: break-word;
+}
+
+.category-icons {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-icono{
+  width: 16px;
+  height: 16px;
+  mask-image: url("../img/icon/PencilIcon.svg");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  cursor: pointer;
+  background-color: var(--neutral-01);
+}
+
+.delete-icono{
+  width: 20px;
+  height: 20px;
+  mask-image: url("../img/icon/TrashIcon.svg");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  cursor: pointer;
+  background-color: var(--primary-03);
+}
+
+.confirmation-delete-card-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--neutral-01);
+}
+
+.confirmation-delete-card {
+  padding: 14px;
+  background: var(--neutral-09);
+}
+.question {
+  font-size: 14px;
+  color: var(--neutral-01);
+  margin-bottom: 16px;
+}
+
+.action-delete-card{
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btn-cancel-delete{
+  padding: 8px;
+  width: 100%;
+  background: var(--neutral-06);
+  border: solid 1px var(--neutral-05);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--neutral-01);
+}
+
+.btn-cancel-delete:hover{
+  background: var(--neutral-07);
+}
+
+.btn-confirm-delete{
+  padding: 8px;
+  width: 100%;
+  background: var(--primary-03);
+  border: solid 1px var(--primary-03);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--neutral-09);
 }
 
 .prizes-list {
@@ -265,9 +315,16 @@
   color: var(--neutral-01);
 }
 
+.label-plus-button-add {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 .btn-add {
-  background: var(--warning-02);
-  border: none;
+  background-color: var(--neutral-05);
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -278,7 +335,7 @@
 }
 
 .btn-add:hover {
-  background: var(--warning-03);
+  background: var(--neutral-06);
 }
 
 #prizesContainer .prize-item,
@@ -356,16 +413,17 @@
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
 }
 
 .btn-cancel,
 .btn-save {
   padding: 10px 20px;
-  border: none;
+  border: 1px solid var(--primary-03);
+  width:100%;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
@@ -376,21 +434,22 @@
 }
 
 .btn-cancel {
-  background: var(--neutral-02);
-  color: white;
+  background-color: var(--neutral-09);
+  color: var(--primary-03);
 }
 
 .btn-cancel:hover {
-  background: var(--neutral-01);
+  background: var(--primary-05);
 }
 
 .btn-save {
-  background: var(--success-02);
-  color: white;
+  background-color: var(--primary-03);
+  color: var(--neutral-09);
 }
 
 .btn-save:hover {
-  background: var(--success-01);
+  background-color: var(--neutral-09);
+  color:var(--primary-03);
 }
 
 #newPrizesContainer {
@@ -440,4 +499,11 @@
     flex: 1;
     min-width: auto;
   }
+}
+
+
+.error-message {
+  color: var(--error-02);
+  font-size: 12px;
+  margin-top: 4px;
 }

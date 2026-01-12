@@ -85,9 +85,13 @@
                     </div>
 
                     <!-- Categoría 4 -->
-                    <div class="category-card">
+                    <div class="category-card-animacion">
                         <div class="category-header">
                             <div class="category-title">Animación</div>
+                            <div class="category-icons">
+                                <span class="edit-icono"></span>
+                                <span class="delete-icono"></span>
+                            </div>
                         </div>
                         <div class="prizes-list">
                             <div class="prize-item">
@@ -97,6 +101,15 @@
                             <div class="prize-item">
                                 <div class="prize-label">2° Segundo premio</div>
                                 <div class="prize-value">300€</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="confirmation-delete-card-container hidden-force">
+                        <div class="confirmation-delete-card">
+                            <p class="question">¿Estás seguro de que deseas eliminar la categoría "Animación"?</p>
+                            <div class="action-delete-card">
+                                <button class="btn-cancel-delete">Cancelar</button>
+                                <button class="btn-confirm-delete">Eliminar</button>
                             </div>
                         </div>
                     </div>
@@ -122,8 +135,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Premios:</label>
-                        <button type="button" id="addPrizeBtn" class="btn-add">+ Añadir</button>
+                        <div class="label-plus-button-add">
+                            <label>Premios:</label>
+                            <button type="button" id="addPrizeBtn" class="btn-add">+ Añadir</button>
+                        </div>
                         <div id="prizesContainer">
                         </div>
                     </div>
@@ -148,7 +163,8 @@
                 <form id="createCategoryForm">
                     <div class="form-group">
                         <label for="newCategoryName">Nombre de la categoría:</label>
-                        <input type="text" id="newCategoryName" name="newCategoryName" required />
+                        <input type="text" id="newCategoryName" name="newCategoryName" />
+                        <span class="error-message"></span>
                     </div>
 
                     <div class="form-group">
@@ -158,9 +174,10 @@
                             <!-- Premio por defecto -->
                             <div class="prize-item">
                                 <span class="prize-number">1</span>
-                                <input type="text" placeholder="Nuevo premio" value="Nuevo premio" required />
+                                <input type="text" class="nombreDelPremio" placeholder="Nuevo premio" value="Nuevo premio"/>
                                 <input type="number" placeholder="Valor €" value="100" min="0" step="10" />
                                 <button class="delete-btn">Eliminar</button>
+                                <span class="error-message"></span>
                             </div>
                         </div>
                     </div>
@@ -177,7 +194,7 @@
     <script src="../js/constantes.js"></script>
     <script src="../js/check-session.js"></script>
     <script src="../js/menu-admin.js"></script>
-    <script src="../js/admin-categoria_ganador.js"></script>
+    <script src="../js/admin-categoria_premio.js"></script>
 </body>
 
 </html>
