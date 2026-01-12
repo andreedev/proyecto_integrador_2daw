@@ -319,9 +319,68 @@
 
                 </div>
             </div>
-
         </div>
     </div>
+
+
+    <dialog id="modalEnviarEdicionesAnteriores" class="generic-modal bg-neutral-08">
+        <div class="modal-header d-flex justify-space-between align-center">
+            <div class="modal-header-left-side">
+                <span class="modal-header-title">Enviar a Ediciones Anteriores</span>
+                <span class="modal-header-subtitle">Crea una nueva entrada en el histórico de ediciones</span>
+            </div>
+            <div class="modal-header-right-side">
+                <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer closeEnviarEdicionesAnterioresModal"></span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <p class="fw-600">Información básica de la Edición</p>
+            <div class="generic-input-groups-row">
+                <div class="generic-input-group">
+                    <span class="generic-input-label">Año de edición</span>
+                    <label class="generic-input-wrapper">
+                        <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
+                        <input id="yearEdicionInput" class="generic-input" value="2026">
+                    </label>
+                    <span id="yearEditionErrorMessage" class="error-message"></span>
+                </div>
+                <div class="generic-input-group">
+                    <span class="generic-input-label">Hora</span>
+                    <label class="generic-input-wrapper">
+                        <span class="icon-user-thick w-16px h-16px bg-neutral-03"></span>
+                        <input id="nroParticipantesInput" class="generic-input" value="150" type="text">
+                    </label>
+                    <span id="nroParticipantesErrorMessage" class="error-message"></span>
+                </div>
+            </div>
+            <p class="fw-600">Acciones programadas</p>
+            <div class="generic-input-group">
+                <span class="generic-input-label">Envío de email informativo</span>
+                <label class="generic-input-wrapper">
+                    <input id="fechaEnvioEmailInformativoInput" class="generic-input  text-neutral-02" value="09/01/2026">
+                    <span class="icon-calendar w-20px h-20px bg-neutral-02"></span>
+                </label>
+                <span id="fechaEnvioEmailInformativoInputErrorMessage" class="error-message"></span>
+                <span class="helper-text">Se enviará un email a todos los participantes informando del archivo de esta edición</span>
+            </div>
+            <div class="generic-input-group">
+                <span class="generic-input-label">Borrado de datos no ganadores</span>
+                <label class="generic-input-wrapper">
+                    <input id="fechaBorradoDatosInput" class="generic-input  text-neutral-02" value="09/01/2026">
+                    <span class="icon-calendar w-20px h-20px bg-neutral-02"></span>
+                </label>
+                <span id="fechaBorradoDatosInputErrorMessage" class="error-message"></span>
+                <span class="helper-text">Se eliminarán automáticamente las candidaturas que no sean ganadoras</span>
+            </div>
+
+            <span class="divider-line"></span>
+            <div class="d-flex-two-columns-responsive">
+                <div class="neutral-button modal-close-button closeEnviarEdicionesAnterioresModal">Cancelar</div>
+                <div class="primary-button" id="confirmEnviarEdicionesAnterioresButton">Continuar</div>
+            </div>
+        </div>
+    </dialog>
+
     <script src="../js/constantes.js"></script>
     <script src="../js/check-session.js"></script>
     <script src="../js/menu-admin.js"></script>

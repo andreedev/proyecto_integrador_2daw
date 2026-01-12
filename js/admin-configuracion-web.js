@@ -13,6 +13,8 @@ const streamingIndicatorText = document.getElementById('streamingIndicatorText')
 const urlStreamingContainer = document.getElementById('urlStreamingContainer');
 
 const sendToPreviousEditionsButton = document.getElementById('sendToPreviousEditionsButton');
+const modalEnviarEdicionesAnteriores = document.getElementById('modalEnviarEdicionesAnteriores');
+const closeEnviarEdicionesAnterioresModalButtons = document.querySelectorAll('.closeEnviarEdicionesAnterioresModal');
 
 const imageDropZone = document.getElementById('imageDropZone');
 const imageInput = document.getElementById('imageInput');
@@ -25,6 +27,15 @@ const videoInput = document.getElementById('videoInput');
 const videoGalleryContainer = document.getElementById('videoGalleryContainer');
 const uploadedVideosCount = document.getElementById('uploadedVideosCount');
 const noVideosHelperText = document.getElementById('noVideosHelperText');
+
+const yearEdicionInput = document.getElementById('yearEdicionInput');
+const yearEditionErrorMessage = document.getElementById('yearEditionErrorMessage');
+const nroParticipantesInput = document.getElementById('nroParticipantesInput');
+const nroParticipantesErrorMessage = document.getElementById('nroParticipantesErrorMessage');
+const fechaEnvioEmailInformativoInput = document.getElementById('fechaEnvioEmailInformativoInput');
+const fechaEnvioEmailInformativoErrorMessage = document.getElementById('fechaEnvioEmailInformativoErrorMessage');
+const fechaBorradoDatosInput = document.getElementById('fechaBorradoDatosInput');
+const fechaBorradoDatosInputErrorMessage = document.getElementById('fechaBorradoDatosInputErrorMessage');
 
 let modo = 'pre-evento';
 let pendingChanges = false;
@@ -330,6 +341,29 @@ videoGalleryContainer.addEventListener('click', (e) => {
     }
 });
 
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+sendToPreviousEditionsButton.addEventListener('click', () => {
+    modalEnviarEdicionesAnteriores.showModal();
+});
+
+closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        modalEnviarEdicionesAnteriores.close();
+    });
+});
+
 
 createGalleryItem('../img/red-white-photo-white-black-camera.jpg');
 createGalleryItem('../img/Foto_corto.png');
@@ -343,3 +377,4 @@ createVideoItem('../video/file_example_MP4_480_1_5MG.mp4', 'file_example_MP4_480
 createVideoItem('../video/file_example_MP4_480_1_5MG.mp4', 'file_example_MP4_480_1_5MG.mp4');
 
 changeMode('post-evento', false);
+modalEnviarEdicionesAnteriores.showModal();
