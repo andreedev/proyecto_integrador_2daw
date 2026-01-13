@@ -1,7 +1,5 @@
 <?php
 
-define('BASE_URL', 'http://localhost/DWES/proyecto_integrador_2daw/');
-
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
@@ -36,6 +34,10 @@ if(isset($_POST['action'])){
             validarRol(['organizador']);
             actualizarConfiguracionWeb();
             break;
+        case 'procesarGaleriaPostEvento':
+            validarRol(['organizador']);
+            procesarGaleriaPostEvento();
+            break;
         case 'subirArchivo':
             validarRol(['organizador', 'participante']);
             subirArchivo();
@@ -66,6 +68,18 @@ function revisarSesion()
         "status" => "active",
         "rol" => $_SESSION['rol'] ?? '',
         "id" => $_SESSION['id'] ?? ''
+    ]);
+}
+
+/**
+ * Cerrar sesión
+ */
+function cerrarSesion(){
+    session_unset();
+    session_destroy();
+    echo json_encode([
+        "status" => "success",
+        "message" => "Sesión cerrada correctamente"
     ]);
 }
 
@@ -164,17 +178,47 @@ function validarRol($rolesPermitidos) {
 function obtenerConfiguracionWeb(){
     global $conexion;
 
-    $query = "SELECT nombre, valor FROM configuracion";
-    $resultado = $conexion->query($query);
-    $configuracion = [];
-    if ($resultado && $resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            $configuracion[$fila['nombre']] = $fila['valor'];
+    $sqlConfig = "SELECT nombre, valor FROM configuracion";
+    $resultConfig = $conexion->query($sqlConfig);
+
+    $config = [];
+    $baseUrl = '';
+
+    while ($row = $resultConfig->fetch_assoc()) {
+        $config[$row['nombre']] = $row['valor'];
+        if ($row['nombre'] === 'baseUrl') {
+            $baseUrl = $row['valor'];
         }
     }
+
+    $sqlGallery = "SELECT orden, tipo, ruta FROM post_evento_archivos ORDER BY orden ASC";
+    $resultGallery = $conexion->query($sqlGallery);
+
+    $galeriaImagenesPostEvento = [];
+    $galeriaVideosPostEvento = [];
+
+    while ($item = $resultGallery->fetch_assoc()) {
+        $urlCompleta = $baseUrl . $item['ruta'];
+
+        if ($item['tipo'] === 'imagen') {
+            $galeriaImagenesPostEvento[] = $urlCompleta;
+        } else {
+            $galeriaVideosPostEvento[] = [
+                "url" => $urlCompleta,
+                "orden" => $item['orden']
+            ];
+        }
+    }
+
+    $configuracionCompleta = [
+        "galeriaImagenesPostEvento" => $galeriaImagenesPostEvento,
+        "galeriaVideosPostEvento" => $galeriaVideosPostEvento,
+        "configuracion" => $config
+    ];
+
     echo json_encode([
         "status" => "success",
-        "data" => $configuracion
+        "data" => $configuracionCompleta
     ]);
 }
 
@@ -196,9 +240,7 @@ function actualizarConfiguracionWeb(){
         'galaPreEventoDescripcion',
         'galaPreEventoStreamingActivo',
         'galaPreEventoStreamingUrl',
-        'galaPostEventoResumen',
-        'galaPostEventoGaleriaImagenes',
-        'galaPostEventoGaleriaVideos'
+        'galaPostEventoResumen'
     ];
 
     try {
@@ -244,15 +286,43 @@ function actualizarConfiguracionWeb(){
 }
 
 /**
- * Cerrar sesión
+ * Guarda un archivo en la tabla post_evento_archivos
  */
-function cerrarSesion(){
-    session_unset();
-    session_destroy();
-    echo json_encode([
-        "status" => "success",
-        "message" => "Sesión cerrada correctamente"
-    ]);
+function procesarGaleriaPostEvento(){
+    global $conexion;
+
+    try{
+        $conexion->query("TRUNCATE TABLE post_evento_archivos");
+
+        if (!isset($_POST['archivos'])){
+            echo json_encode(["status" => "error", "message" => "Faltan datos de archivos"]);
+            return;
+        }
+
+        $archivos = json_decode($_POST['archivos'], true);
+
+        $stmt = $conexion->prepare("INSERT INTO post_evento_archivos (tipo, ruta, orden) VALUES (?, ?, ?)");
+
+        foreach ($archivos as $archivo) {
+            $tipo = $archivo['tipo'];
+            $ruta = $archivo['ruta'];
+            $orden = $archivo['orden'];
+            $stmt->bind_param("ssi", $tipo, $ruta, $orden);
+            $stmt->execute();
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Galería actualizada correctamente"
+        ]);
+
+    } catch (Exception $e){
+        http_response_code(500);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error en el servidor: " . $e->getMessage()
+        ]);
+    }
 }
 
 /**
@@ -263,6 +333,7 @@ function cerrarSesion(){
 function subirArchivo(){
     $privado = isset($_POST['privado']) && $_POST['privado'] === 'true';
     $directorioSubida = $privado ? './../uploads/private/' : './../uploads/public/';
+
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
 
         $fileTmpPath = $_FILES['file']['tmp_name'];
@@ -275,17 +346,16 @@ function subirArchivo(){
             mkdir($directorioSubida, 0777, true);
         }
 
-        // uniqid()
         $rutaArchivo = $directorioSubida . '_' . basename($fileName);
 
 
         if (move_uploaded_file($fileTmpPath, $rutaArchivo)) {
-            $rutaArchivo = str_replace('./..', '', $rutaArchivo);
+            $rutaRelativa = str_replace('./..', '', $rutaArchivo);
 
             echo json_encode([
                 "status" => "success",
                 "message" => "Archivo subido correctamente",
-                "rutaArchivo" => $rutaArchivo
+                "rutaArchivo" => $rutaRelativa
             ]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido"]);
@@ -307,7 +377,6 @@ function borrarArchivo(){
         return;
     }
 
-    // LA RUTA SERA asi uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg
     $rutaAbsoluta = __DIR__ . '/..' . $rutaArchivo;
 
     if (file_exists($rutaAbsoluta)) {

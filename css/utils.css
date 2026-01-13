@@ -285,6 +285,22 @@
     color: var(--error-02);
 }
 
+.text-success-01{
+    color: var(--success-01);
+}
+
+.text-success-02{
+    color: var(--success-02);
+}
+
+.text-information-01{
+    color: var(--information-01);
+}
+
+.text-information-02{
+    color: var(--information-02);
+}
+
 .fs-10px{
     font-size: 10px;
 }

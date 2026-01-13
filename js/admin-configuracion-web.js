@@ -3,7 +3,7 @@ const postEventoCards = document.querySelectorAll('.postEventoCard');
 const preEventoButton = document.getElementById('preEventoButton');
 const postEventoButton = document.getElementById('postEventoButton');
 
-const generalErrorMessage = document.getElementById('generalErrorMessage');
+const generalMessage = document.getElementById('generalMessage');
 const tituloEventoInput = document.getElementById('tituloEventoInput');
 const tituloEventoErrorMessage = document.getElementById('tituloEventoErrorMessage');
 const fechaEventoInput = document.getElementById('fechaEventoInput');
@@ -407,11 +407,11 @@ async function publishChanges() {
         const isUrlStreamingValid = validateUrlStreaming(true);
 
         if (!isTituloValid || !isFechaValid || !isHoraValid || !isUbicacionValid || !isDescripcionValid || !isUrlStreamingValid) {
-            generalErrorMessage.textContent = 'Por favor, corrige los errores antes de publicar los cambios';
+            updateGeneralMessage('Por favor, corrige los errores antes de publicar los cambios', 'text-error-01');
             return;
         }
-
-    } else if (modo === 'post-evento') {
+    }
+    if (modo === 'post-evento') {
         const isResumenValid = validatePostEventoResumen(true);
         const isYearValid = validateYearEdicion(true);
         const isNroParticipantesValid = validateNroParticipantes(true);
@@ -419,32 +419,69 @@ async function publishChanges() {
         const isFechaBorradoDatosValid = validateFechaBorradoDatos(true);
 
         if (!isResumenValid || !isYearValid || !isNroParticipantesValid || !isFechaEnvioEmailValid || !isFechaBorradoDatosValid) {
-            generalErrorMessage.textContent = 'Por favor, corrige los errores antes de publicar los cambios';
+            updateGeneralMessage('Por favor, corrige los errores antes de publicar los cambios', 'text-error-01');
             return;
         }
     }
 
     unsavedChangesWarning.classList.add('hidden-force');
-    generalErrorMessage.textContent = '';
-    // subir imagenes primero
-    const imageItems = Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img'))
+    // remove all classes
+    updateGeneralMessage('Guardando cambios', 'text-information-01');
 
-    const fileArray = [];
-    for (const file of fileArray) {
-        if (!file.type.startsWith('video/')) continue;
+    const archivosParaGuardar = [];
+    let ordenContador = 1;
+
+    const imageGalleryItems = Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img'));
+    for (const img of imageGalleryItems) {
+        let path = "";
+        if (img.dataset.isNew === "true" && img.filePayload) {
+            try {
+                path = await subirArchivo(img.filePayload);
+            } catch (error) {
+                updateGeneralMessage('Error subiendo imagen', 'text-error-01');
+                return;
+            }
+        } else {
+            path = img.src.includes('uploads/') ? 'uploads/' + img.src.split('uploads/')[1] : img.src;
+        }
+
+        archivosParaGuardar.push({ tipo: 'imagen', ruta: path, orden: ordenContador++ });
+    }
+
+    const videoGalleryItems = Array.from(videoGalleryContainer.querySelectorAll('.video-item video'));
+    for (const vid of videoGalleryItems) {
+        let path = "";
+        if (vid.dataset.isNew === "true" && vid.filePayload) {
+            path = await subirArchivo(vid.filePayload);
+        } else {
+            let cleanUrl = vid.src.split('#')[0].split('?')[0];
+            path = cleanUrl.includes('uploads/') ? 'uploads/' + cleanUrl.split('uploads/')[1] : cleanUrl;
+        }
+
+        archivosParaGuardar.push({ tipo: 'video', ruta: path, orden: ordenContador++ });
+    }
+
+    if (modo === 'post-evento') {
         try {
-            const rutaArchivo = await subirArchivo(file);
-            rutasArchivosSubidos.push(rutaArchivo);
+            await guardarPostEventoArchivo(archivosParaGuardar);
         } catch (error) {
-            console.error('Error al subir el archivo:', error);
-            triggerShakeError(videoDropZone);
+            console.log(error);
+            generalMessage.textContent = "Error al organizar la galería en la base de datos";
+            return;
         }
     }
 
     await actualizarConfiguracionWeb();
+    updateGeneralMessage('Cambios guardados exitosamente', 'text-success-01');
 }
 
-function renderizarUI(config) {
+function updateGeneralMessage(message, className) {
+    generalMessage.classList.remove('text-error-01', 'text-success-01', 'text-information-01');
+    generalMessage.classList.add(className);
+    generalMessage.textContent = message;
+}
+
+function renderizarUI(config, imagenesGaleriaPostEvento, videosGaleriaPostEvento) {
     if (!config) return;
 
     if (config.modo === 'pre-evento') {
@@ -487,16 +524,13 @@ function renderizarUI(config) {
         imageGalleryContainer.innerHTML = '';
         videoGalleryContainer.innerHTML = '';
 
-        const imagenes = JSON.parse(config.galaPostEventoGaleriaImagenes || '[]');
-        const videos = JSON.parse(config.galaPostEventoGaleriaVideos || '[]');
-
-        imagenes.forEach(imgSrc => {
+        imagenesGaleriaPostEvento.forEach(imgSrc => {
             if (imgSrc) createGalleryItem(imgSrc);
         });
 
-        videos.forEach(videoObj => {
+        videosGaleriaPostEvento.forEach(videoObj => {
             if (videoObj.url) {
-                createVideoItem(videoObj.url, videoObj.name || 'Video');
+                createVideoItem(videoObj.url);
             }
         });
     } catch (e) {
@@ -551,7 +585,7 @@ function revisarSiHayCambios() {
     }
 
     if (hasChanges) {
-        console.log("Cambios detectados en:", reasons);
+        // console.log("Cambios detectados en:", reasons);
         unsavedChangesWarning.classList.remove('hidden-force');
     } else {
         unsavedChangesWarning.classList.add('hidden-force');
@@ -577,19 +611,6 @@ function revisarSiHayCambios() {
  *
  *
  */
-/**
- * Convierte una fecha en formato DD/MM/YYYY a ISO YYYY-MM-DD
- */
-function convertToISO(dateString) {
-    if (!dateString || dateString.trim() === "") return "";
-    if (dateString.includes('-')) return dateString;
-
-    const parts = dateString.split('/');
-    if (parts.length !== 3) return "";
-
-    const [day, month, year] = parts;
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-}
 
 /**
  * Convierte DD/MM/YYYY a un objeto Date
@@ -673,7 +694,17 @@ imageDropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files) 
 /**
  * Evento al recibir archivos desde el input de archivo
  */
-imageInput.addEventListener('change', (e) => handleFiles(e.target.files) );
+imageInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach(file => {
+        const objectUrl = URL.createObjectURL(file);
+
+        const imgElement = createGalleryItem(objectUrl);
+
+        imgElement.dataset.isNew = "true";
+        imgElement.filePayload = file;
+    });
+});
 
 /**
  * Maneja los archivos cargados y los agrega a la galería
@@ -742,12 +773,12 @@ imageGalleryContainer.addEventListener('click', (e) => {
 /**
  * Crea un nuevo elemento de galería con la imagen proporcionada
  */
-function createGalleryItem(src) {
+function createGalleryItem(url) {
     const item = document.createElement('div');
     item.className = 'gallery-item';
     item.innerHTML = `
         <div class="order-badge">0</div>
-        <img src="${src}" class="gallery-item-image" alt="Uploaded">
+        <img src="${url}" class="gallery-item-image" alt="Uploaded">
         
         <div class="gallery-item-overlay">
             <div class="icon-container-2 bg-neutral-05 drag-handle">
@@ -838,13 +869,13 @@ function handleVideoFiles(files) {
             return;
         }
         const url = URL.createObjectURL(file);
-        createVideoItem(url, file.name);
+        createVideoItem(url);
     });
 
     if (hasError) triggerShakeError(videoDropZone);
 }
 
-function createVideoItem(src, fileName) {
+function createVideoItem(src) {
     const item = document.createElement('div');
     item.className = 'video-item';
     item.innerHTML = `
@@ -944,7 +975,7 @@ async function cargarConfiguracionWeb() {
     }).then(response => response.json())
         .then(data => {
             configuracionActual = data.data;
-            renderizarUI(data.data);
+            renderizarUI(data.data.configuracion, data.data.galeriaImagenesPostEvento, data.data.galeriaVideosPostEvento);
         })
         .catch(error => {
             console.error('Error al cargar la configuración web:', error);
@@ -969,14 +1000,6 @@ async function actualizarConfiguracionWeb() {
     }
     if (modo === 'post-evento') {
         formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
-
-        listaImagenes = [{
-            rutaArchivo: '',
-            orden: 0
-        }];
-
-        formData.append('galaPostEventoGaleriaImagenes', listaImagenes);
-        formData.append('galaPostEventoGaleriaVideos', JSON.stringify(Array.from(videoGalleryContainer.querySelectorAll('.video-item video')).map(video => video.src)));
     }
 
     try {
@@ -996,6 +1019,21 @@ async function actualizarConfiguracionWeb() {
     } catch (error) {
         console.error('Error de red:', error);
     }
+}
+
+async function guardarPostEventoArchivo(archivos){
+    const formData = new FormData();
+    formData.append('action', 'procesarGaleriaPostEvento');
+    formData.append('archivos', JSON.stringify(archivos));
+
+    const response = await fetch(URL_API, {
+        method: 'POST',
+        body: formData
+    });
+
+    const result = await response.json();
+    if (result.status !== 'success') throw new Error(result.message);
+    return result;
 }
 
 async function subirArchivo(file) {

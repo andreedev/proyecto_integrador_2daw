@@ -1,2 +1,5 @@
 #/uploads/private/*
 #/uploads/public/*
+/vendor/*
+!/vendor/autoload.php
+/node_modules/*
