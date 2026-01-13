@@ -530,3 +530,11 @@ dialog {
     flex: 1;
     min-width: 0;
 }
+
+.box-shadow-01{
+    box-shadow: var(--shadow-01);
+}
+
+.box-shadow-02{
+    box-shadow: var(--shadow-02);
+}
