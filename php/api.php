@@ -1,5 +1,7 @@
 <?php
 
+define('BASE_URL', 'http://localhost/DWES/proyecto_integrador_2daw/');
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
@@ -33,6 +35,14 @@ if(isset($_POST['action'])){
         case 'actualizarConfiguracionWeb':
             validarRol(['organizador']);
             actualizarConfiguracionWeb();
+            break;
+        case 'subirArchivo':
+            validarRol(['organizador', 'participante']);
+            subirArchivo();
+            break;
+        case 'borrarArchivo':
+            validarRol(['organizador', 'participante']);
+            borrarArchivo();
             break;
         default:
             break;
@@ -168,6 +178,9 @@ function obtenerConfiguracionWeb(){
     ]);
 }
 
+/**
+ * Actualiza la configuración web
+ */
 function actualizarConfiguracionWeb(){
     global $conexion;
 
@@ -189,7 +202,7 @@ function actualizarConfiguracionWeb(){
     ];
 
     try {
-        $stmt = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ? AND id_organizador = 1");
+        $stmt = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
         $actualizados = 0;
 
         foreach ($camposPermitidos as $campo) {
@@ -205,10 +218,20 @@ function actualizarConfiguracionWeb(){
             }
         }
 
+        // Actualizar la fecha de última modificación si hubo cambios
+        if($actualizados > 0){
+            $stmtFecha = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
+            $fechaActual = date("d/m/Y H:i");
+            $nombreCampoFecha = 'fechaUltimaModificacionConfiguracion';
+
+            $stmtFecha->bind_param("ss", $fechaActual, $nombreCampoFecha);
+            $stmtFecha->execute();
+        }
+
         echo json_encode([
             "status" => "success",
             "message" => "Proceso finalizado",
-            "campos_detectados" => $actualizados
+            "camposActualizados" => $actualizados
         ]);
 
     } catch (Exception $e) {
@@ -220,6 +243,9 @@ function actualizarConfiguracionWeb(){
     }
 }
 
+/**
+ * Cerrar sesión
+ */
 function cerrarSesion(){
     session_unset();
     session_destroy();
@@ -227,6 +253,72 @@ function cerrarSesion(){
         "status" => "success",
         "message" => "Sesión cerrada correctamente"
     ]);
+}
+
+/**
+ * Subir archivo, guardar en carpeta y devolver ruta
+ * Si es publico lo guarda en ./../uploads/public/
+ * Si es privado lo guarda en ./../uploads/private/
+ */
+function subirArchivo(){
+    $privado = isset($_POST['privado']) && $_POST['privado'] === 'true';
+    $directorioSubida = $privado ? './../uploads/private/' : './../uploads/public/';
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+
+        $fileTmpPath = $_FILES['file']['tmp_name'];
+        $fileName = $_FILES['file']['name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileType = $_FILES['file']['type'];
+
+        // Crear el directorio si no existe
+        if (!is_dir($directorioSubida)) {
+            mkdir($directorioSubida, 0777, true);
+        }
+
+        // uniqid()
+        $rutaArchivo = $directorioSubida . '_' . basename($fileName);
+
+
+        if (move_uploaded_file($fileTmpPath, $rutaArchivo)) {
+            $rutaArchivo = str_replace('./..', '', $rutaArchivo);
+
+            echo json_encode([
+                "status" => "success",
+                "message" => "Archivo subido correctamente",
+                "rutaArchivo" => $rutaArchivo
+            ]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido"]);
+        }
+    } else {
+        $errorCode = $_FILES['file']['error'] ?? 'No file uploaded';
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error en la subida del archivo: " . $errorCode
+        ]);
+    }
+}
+
+function borrarArchivo(){
+    $rutaArchivo = $_POST['rutaArchivo'] ?? '';
+
+    if (empty($rutaArchivo)) {
+        echo json_encode(["status" => "error", "message" => "Falta la ruta del archivo"]);
+        return;
+    }
+
+    // LA RUTA SERA asi uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg
+    $rutaAbsoluta = __DIR__ . '/..' . $rutaArchivo;
+
+    if (file_exists($rutaAbsoluta)) {
+        if (unlink($rutaAbsoluta)) {
+            echo json_encode(["status" => "success", "message" => "Archivo borrado"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al borrar el archivo"]);
+        }
+    } else {
+        echo json_encode(["status" => "error", "message" => "El archivo no existe"]);
+    }
 }
 
 

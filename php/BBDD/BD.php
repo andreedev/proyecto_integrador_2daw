@@ -196,7 +196,6 @@ function crearBaseDatosSiNoExiste() {
                     ('minCandidaturas', '2', 1),
                     ('maxCandidaturas', '5', 1),
                     ('galaProximaFecha', '2027-12-21', 1),
-                    
                     ('galaPreEventoTitulo', 'Festival de Cine 2026', 1),
                     ('galaPreEventoFecha', '2026-12-20', 1),
                     ('galaPreEventoHora', '15:00', 1),
@@ -205,8 +204,10 @@ function crearBaseDatosSiNoExiste() {
                     ('galaPreEventoStreamingActivo', 'true', 1),
                     ('galaPreEventoStreamingUrl', 'https://streaming.ejemplo.com/gala2026', 1),
                     ('galaPostEventoResumen', 'Gracias por asistir a la Gala de Cortometrajes 2026. Fue una noche inolvidable llena de talento y creatividad.', 1),
-                    ('galaPostEventoGaleriaImagenes', '[\"../img/red-white-photo-white-black-camera.jpg\", \"../img/Foto_corto.png\", \"../img/red-white-photo-white-black-camera.jpg\", \"../img/Foto_corto.png\", \"../img/red-white-photo-white-black-camera.jpg\", \"../img/Foto_corto.png\"]', 1),
-                    ('galaPostEventoGaleriaVideos', '[{\"url\": \"../video/file_example_MP4_480_1_5MG.mp4\", \"name\": \"file_example_MP4_480_1_5MG.mp4\"}, {\"url\": \"../video/file_example_MP4_480_1_5MG.mp4\", \"name\": \"file_example_MP4_480_1_5MG.mp4\"}, {\"url\": \"../video/file_example_MP4_480_1_5MG.mp4\", \"name\": \"file_example_MP4_480_1_5MG.mp4\"}]', 1);
+                    ('galaPostEventoGaleriaImagenes', '[]', 1),
+                    ('galaPostEventoGaleriaVideos', '[]', 1),
+                    ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
+                    ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                 
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador) VALUES
                 ('Inicio inscripciones', 'Se abre el plazo', CURRENT_DATE, 1),

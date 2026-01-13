@@ -3,6 +3,7 @@ const postEventoCards = document.querySelectorAll('.postEventoCard');
 const preEventoButton = document.getElementById('preEventoButton');
 const postEventoButton = document.getElementById('postEventoButton');
 
+const generalErrorMessage = document.getElementById('generalErrorMessage');
 const tituloEventoInput = document.getElementById('tituloEventoInput');
 const tituloEventoErrorMessage = document.getElementById('tituloEventoErrorMessage');
 const fechaEventoInput = document.getElementById('fechaEventoInput');
@@ -15,6 +16,7 @@ const descripcionInput = document.getElementById('descripcionInput');
 const descripcionErrorMessage = document.getElementById('descripcionErrorMessage');
 const urlStreamingInput = document.getElementById('urlStreamingInput');
 const urlStreamingErrorMessage = document.getElementById('urlStreamingErrorMessage');
+const fechaUltimaModificacionText = document.getElementById('fechaUltimaModificacionText');
 
 const publishChangesButton = document.getElementById('publishChangesButton');
 const unsavedChangesWarning = document.getElementById('unsavedChangesWarning');
@@ -53,8 +55,152 @@ const fechaEnvioEmailInformativoErrorMessage = document.getElementById('fechaEnv
 const fechaBorradoDatosInput = document.getElementById('fechaBorradoDatosInput');
 const fechaBorradoDatosInputErrorMessage = document.getElementById('fechaBorradoDatosInputErrorMessage');
 
+
 let modo = 'pre-evento';
-let pendingChanges = false;
+let configuracionActual = null;
+let loadingConfiguracion = true;
+let rutasArchivosSubidos = [];
+
+/**
+ * Inicialización de los DateTimePickers
+ */
+const fechaEventoDateTimePicker = new AirDatepicker(fechaEventoInput, {
+    minDate: new Date(),
+    autoClose: true,
+    dateFormat: 'dd/MM/yyyy',
+    buttons: ['today', 'clear'],
+    locale: {
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        daysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        today: 'Hoy',
+        clear: 'Limpiar',
+        firstDay: 1
+    },
+    buttons: [
+        {
+            content: 'Hoy',
+            className: 'custom-today-button',
+            onClick: (dp) => {
+                let date = new Date();
+                dp.selectDate(date);
+                dp.setViewDate(date);
+                dp.hide();
+            }
+        },
+        'clear'
+    ],
+    onSelect({date}) {
+        console.log('fechaEventoDateTimePicker changed');
+        revisarSiHayCambios()
+    }
+});
+const horaEventoDateTimePicker = new AirDatepicker(horaEventoInput, {
+    timepicker: true,
+    onlyTimepicker: true,
+    startDate: new Date().setHours(8, 0, 0),
+    minHours: 7,
+    maxHours: 22,
+    timeFormat: 'HH:mm',
+    minutesStep: 15,
+    buttons: [
+        {
+            content: 'Ahora',
+            onClick: (dp) => {
+                let now = new Date();
+                let currentHour = now.getHours();
+
+                if (currentHour >= 8 && currentHour <= 20) {
+                    dp.selectDate(now);
+                } else {
+                    let startRange = new Date();
+                    startRange.setHours(8, 0);
+                    dp.selectDate(startRange);
+                }
+                dp.hide();
+            }
+        },
+        {
+            content: 'Limpiar',
+            onClick: (dp) => {
+                dp.clear();
+                dp.hide();
+            }
+        }
+    ],
+    onlyTimepicker: true,
+    onSelect({date, formattedDate}) {
+        console.log('horaEventoDateTimePicker changed');
+        revisarSiHayCambios()
+    }
+});
+const yearEdicionDateTimePicker = new AirDatepicker(yearEdicionInput, {
+    timepicker: true,
+    onlyTimepicker: true,
+    minHours: 7,
+    maxHours: 22,
+    timeFormat: 'HH:mm',
+    minutesStep: 15,
+    buttons: [
+        {
+            content: 'Ahora',
+            onClick: (dp) => {
+                let now = new Date();
+                let currentHour = now.getHours();
+
+                if (currentHour >= 8 && currentHour <= 20) {
+                    dp.selectDate(now);
+                } else {
+                    let startRange = new Date();
+                    startRange.setHours(8, 0);
+                    dp.selectDate(startRange);
+                }
+                dp.hide();
+            }
+        },
+        {
+            content: 'Limpiar',
+            onClick: (dp) => {
+                dp.clear();
+                dp.hide();
+            }
+        }
+    ],
+    onlyTimepicker: true,
+    onSelect({date, formattedDate}) {
+        console.log('yearEdicionDateTimePicker changed');
+        revisarSiHayCambios()
+    }
+});
+
+
+/**
+ *
+ *
+ *
+ *
+ * Listeners
+ *
+ *
+ *
+ */
+
+/**
+ * Monitoreo de cambios en los inputs
+ */
+tituloEventoInput.addEventListener('input', revisarSiHayCambios);
+fechaEventoInput.addEventListener('input', revisarSiHayCambios);
+horaEventoInput.addEventListener('input', revisarSiHayCambios);
+ubicacionEventoInput.addEventListener('input', revisarSiHayCambios);
+descripcionInput.addEventListener('input', revisarSiHayCambios);
+urlStreamingInput.addEventListener('input', revisarSiHayCambios);
+postEventoResumenInput.addEventListener('input', revisarSiHayCambios);
+yearEdicionInput.addEventListener('input', revisarSiHayCambios);
+nroParticipantesInput.addEventListener('input', revisarSiHayCambios);
+fechaEnvioEmailInformativoInput.addEventListener('input', revisarSiHayCambios);
+fechaBorradoDatosInput.addEventListener('input', revisarSiHayCambios);
 
 /**
  * Manejo del toggle de streaming
@@ -71,47 +217,18 @@ streamingToggleButton.addEventListener('click', () => {
         streamingHelperText.textContent = 'El enlace será visible en la landing pública';
         urlStreamingContainer.classList.remove('hidden-force');
     }
+    revisarSiHayCambios();
 });
 
 preEventoButton.addEventListener('click', () => {
-    changeMode('pre-evento', true);
+    cambiarModo('pre-evento');
+    revisarSiHayCambios()
 });
 
 postEventoButton.addEventListener('click', () => {
-    changeMode('post-evento', true);
+    cambiarModo('post-evento');
+    revisarSiHayCambios();
 });
-
-/**
- * Cambia el modo de la interfaz entre 'pre-evento' y 'post-evento'
- */
-function changeMode(newMode, pendingChanges) {
-    if (newMode === 'pre-evento') {
-        preEventoCards.forEach(card => card.classList.remove('hidden-force'));
-        postEventoCards.forEach(card => card.classList.add('hidden-force'));
-
-        preEventoButton.classList.add('active');
-        postEventoButton.classList.remove('active');
-
-        sendToPreviousEditionsButton.classList.add('hidden-force');
-
-        modo = 'pre-evento';
-    } else if (newMode === 'post-evento') {
-        preEventoCards.forEach(card => card.classList.add('hidden-force'));
-        postEventoCards.forEach(card => card.classList.remove('hidden-force'));
-
-        postEventoButton.classList.add('active');
-        preEventoButton.classList.remove('active');
-
-        sendToPreviousEditionsButton.classList.remove('hidden-force');
-
-        modo = 'post-evento';
-    }
-    if (pendingChanges) {
-        publishChangesButton.classList.remove('disabled');
-        pendingChanges = true;
-        unsavedChangesWarning.classList.remove('hidden-force');
-    }
-}
 
 tituloEventoInput.addEventListener('blur', () => validateTituloEvento(true));
 fechaEventoInput.addEventListener('blur', () => validateFechaEvento(true));
@@ -127,7 +244,48 @@ nroParticipantesInput.addEventListener('blur', () => validateNroParticipantes(tr
 fechaEnvioEmailInformativoInput.addEventListener('blur', () => validateFechaEnvioEmailInformativo(true));
 fechaBorradoDatosInput.addEventListener('blur', () => validateFechaBorradoDatos(true));
 
-tituloEventoInput.addEventListener('keyup', ()=> validarFormularioPreEvento());
+publishChangesButton.addEventListener('click', () => publishChanges());
+
+/**
+ *
+ *
+ *
+ *
+ * Funciones
+ *
+ *
+ *
+ *
+ *
+ */
+
+/**
+ * Cambia el modo de la interfaz entre 'pre-evento' y 'post-evento'
+ */
+function cambiarModo(newMode) {
+    modo = newMode;
+    if (newMode === 'pre-evento') {
+        preEventoCards.forEach(card => card.classList.remove('hidden-force'));
+        postEventoCards.forEach(card => card.classList.add('hidden-force'));
+
+        preEventoButton.classList.add('active');
+        postEventoButton.classList.remove('active');
+
+        sendToPreviousEditionsButton.classList.add('hidden-force');
+
+    } else if (newMode === 'post-evento') {
+        preEventoCards.forEach(card => card.classList.add('hidden-force'));
+        postEventoCards.forEach(card => card.classList.remove('hidden-force'));
+
+        postEventoButton.classList.add('active');
+        preEventoButton.classList.remove('active');
+
+        sendToPreviousEditionsButton.classList.remove('hidden-force');
+
+        modo = 'post-evento';
+    }
+}
+
 
 function validateTituloEvento(messageOnError) {
     if (tituloEventoInput.value.trim() === '') {
@@ -239,25 +397,6 @@ function validatePostEventoResumen(messageOnError) {
     return true;
 }
 
-function validarFormularioPreEvento(){
-    const isTituloValid = validateTituloEvento(false);
-    const isFechaValid = validateFechaEvento(false);
-    const isHoraValid = validateHoraEvento(false);
-    const isUbicacionValid = validateUbicacionEvento(false);
-    const isDescripcionValid = validateDescripcionEvento(false);
-    const isUrlStreamingValid = validateUrlStreaming(false);
-
-    if (isTituloValid && isFechaValid && isHoraValid && isUbicacionValid && isDescripcionValid && isUrlStreamingValid) {
-        publishChangesButton.classList.remove('disabled');
-        pendingChanges = true;
-        unsavedChangesWarning.classList.remove('hidden-force');
-    } else {
-        publishChangesButton.classList.add('disabled');
-    }
-}
-
-publishChangesButton.addEventListener('click', () => publishChanges());
-
 async function publishChanges() {
     if (modo === 'pre-evento') {
         const isTituloValid = validateTituloEvento(true);
@@ -267,14 +406,10 @@ async function publishChanges() {
         const isDescripcionValid = validateDescripcionEvento(true);
         const isUrlStreamingValid = validateUrlStreaming(true);
 
-        if (isTituloValid && isFechaValid && isHoraValid && isUbicacionValid && isDescripcionValid && isUrlStreamingValid) {
-            pendingChanges = false;
-            publishChangesButton.classList.add('disabled');
-            unsavedChangesWarning.classList.add('hidden-force');
+        if (!isTituloValid || !isFechaValid || !isHoraValid || !isUbicacionValid || !isDescripcionValid || !isUrlStreamingValid) {
+            generalErrorMessage.textContent = 'Por favor, corrige los errores antes de publicar los cambios';
+            return;
         }
-
-        await actualizarConfiguracionWeb();
-        publishChangesButton.classList.add('disabled');
 
     } else if (modo === 'post-evento') {
         const isResumenValid = validatePostEventoResumen(true);
@@ -283,16 +418,190 @@ async function publishChanges() {
         const isFechaEnvioEmailValid = validateFechaEnvioEmailInformativo(true);
         const isFechaBorradoDatosValid = validateFechaBorradoDatos(true);
 
-        if (isResumenValid && isYearValid && isNroParticipantesValid && isFechaEnvioEmailValid && isFechaBorradoDatosValid) {
-            pendingChanges = false;
-            publishChangesButton.classList.add('disabled');
-            unsavedChangesWarning.classList.add('hidden-force');
+        if (!isResumenValid || !isYearValid || !isNroParticipantesValid || !isFechaEnvioEmailValid || !isFechaBorradoDatosValid) {
+            generalErrorMessage.textContent = 'Por favor, corrige los errores antes de publicar los cambios';
+            return;
         }
+    }
 
-        await actualizarConfiguracionWeb();
-        publishChangesButton.classList.add('disabled');
+    unsavedChangesWarning.classList.add('hidden-force');
+    generalErrorMessage.textContent = '';
+    await actualizarConfiguracionWeb();
+}
+
+function renderizarUI(config) {
+    if (!config) return;
+
+    if (config.modo === 'pre-evento') {
+        cambiarModo('pre-evento');
+    } else if (config.modo === 'post-evento') {
+        cambiarModo('post-evento');
+    }
+
+    fechaUltimaModificacionText.textContent = config.fechaUltimaModificacionConfiguracion;
+
+    tituloEventoInput.value = config.galaPreEventoTitulo || '';
+
+    if (config.galaPreEventoFecha) {
+        let date = convertToDate(config.galaPreEventoFecha);
+        fechaEventoDateTimePicker.selectDate(date, { silent: true });
+    }
+
+    if (config.galaPreEventoHora) {
+        let date = convertTimeToDate(config.galaPreEventoHora);
+        horaEventoDateTimePicker.selectDate(date, { silent: true });
+    }
+
+    ubicacionEventoInput.value = config.galaPreEventoUbicacion || '';
+    descripcionInput.value = config.galaPreEventoDescripcion || '';
+
+    const isStreaming = config.galaPreEventoStreamingActivo === 'true';
+    streamingToggleContainer.classList.toggle('enabled', isStreaming);
+    streamingIndicatorText.textContent = isStreaming ? 'EN VIVO' : 'OFF';
+
+    if (isStreaming) {
+        urlStreamingContainer.classList.remove('hidden-force');
+    } else {
+        urlStreamingContainer.classList.add('hidden-force');
+    }
+    urlStreamingInput.value = config.galaPreEventoStreamingUrl || '';
+
+    postEventoResumenInput.value = config.galaPostEventoResumen || '';
+
+    try {
+        imageGalleryContainer.innerHTML = '';
+        videoGalleryContainer.innerHTML = '';
+
+        const imagenes = JSON.parse(config.galaPostEventoGaleriaImagenes || '[]');
+        const videos = JSON.parse(config.galaPostEventoGaleriaVideos || '[]');
+
+        imagenes.forEach(imgSrc => {
+            if (imgSrc) createGalleryItem(imgSrc);
+        });
+
+        videos.forEach(videoObj => {
+            if (videoObj.url) {
+                createVideoItem(videoObj.url, videoObj.name || 'Video');
+            }
+        });
+    } catch (e) {
+        console.error("Error al parsear las galerías:", e);
+    }
+
+    setTimeout(() => {
+        loadingConfiguracion = false;
+    }, 50);
+}
+
+/**
+ * Revisa si hay cambios en el formulario y muestra u oculta el aviso correspondiente
+ */
+function revisarSiHayCambios() {
+    if (loadingConfiguracion || !configuracionActual) return;
+
+    let hasChanges = false;
+    let reasons = [];
+
+    if (modo !== configuracionActual.modo) {
+        reasons.push(`Modo: UI(${modo}) vs DB(${configuracionActual.modo})`);
+        hasChanges = true;
+    }
+
+    let checks = {};
+    if (modo === 'pre-evento') {
+        checks = {
+            titulo: [tituloEventoInput.value.trim(), configuracionActual.galaPreEventoTitulo || ''],
+            fecha: [fechaEventoInput.value, configuracionActual.galaPreEventoFecha || ''],
+            hora: [horaEventoInput.value, configuracionActual.galaPreEventoHora || ''],
+            ubicacion: [ubicacionEventoInput.value.trim(), configuracionActual.galaPreEventoUbicacion || ''],
+            descripcion: [descripcionInput.value.trim(), configuracionActual.galaPreEventoDescripcion || ''],
+            streaming: [streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', configuracionActual.galaPreEventoStreamingActivo || 'false'],
+            url: [urlStreamingInput.value.trim(), configuracionActual.galaPreEventoStreamingUrl || '']
+        };
+
+
+    }else if (modo === 'post-evento') {
+        checks = {
+            resumen: [postEventoResumenInput.value.trim(), configuracionActual.galaPostEventoResumen || ''],
+            imagenes: [JSON.stringify(Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img')).map(img => img.src)), configuracionActual.galaPostEventoGaleriaImagenes || '[]'],
+            videos: [JSON.stringify(Array.from(videoGalleryContainer.querySelectorAll('.video-item video')).map(video => ({ url: video.src }))), configuracionActual.galaPostEventoGaleriaVideos || '[]']
+        };
+    }
+
+    for (const [key, [valUI, valDB]] of Object.entries(checks)) {
+        if (valUI !== valDB) {
+            reasons.push(`${key}: UI("${valUI}") vs DB("${valDB}")`);
+            hasChanges = true;
+        }
+    }
+
+    if (hasChanges) {
+        console.log("Cambios detectados en:", reasons);
+        unsavedChangesWarning.classList.remove('hidden-force');
+    } else {
+        unsavedChangesWarning.classList.add('hidden-force');
     }
 }
+
+
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *  Utils
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+/**
+ * Convierte una fecha en formato DD/MM/YYYY a ISO YYYY-MM-DD
+ */
+function convertToISO(dateString) {
+    if (!dateString || dateString.trim() === "") return "";
+    if (dateString.includes('-')) return dateString;
+
+    const parts = dateString.split('/');
+    if (parts.length !== 3) return "";
+
+    const [day, month, year] = parts;
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+}
+
+/**
+ * Convierte DD/MM/YYYY a un objeto Date
+ */
+function convertToDate(string) {
+    if (!string || string.trim() === "") return null;
+    const parts = string.split('/');
+    if (parts.length !== 3) return null;
+
+    const [day, month, year] = parts;
+    return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+}
+
+/**
+ * Convierte HH:mm a un objeto Date
+ */
+function convertTimeToDate(timeString) {
+    if (!timeString || timeString.trim() === "") return null;
+    const parts = timeString.split(':');
+    if (parts.length !== 2) return null;
+
+    const [hours, minutes] = parts;
+    const date = new Date();
+    date.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    return date;
+}
+
 
 /**
  *
@@ -371,6 +680,18 @@ function handleFiles(files) {
     });
 
     if (hasError) triggerShakeError(imageDropZone);
+
+    // Subir los archivos al servidor
+    fileArray.forEach(async (file) => {
+        if (!file.type.startsWith('image/')) return;
+        try {
+            const rutaArchivo = await subirArchivo(file);
+            rutasArchivosSubidos.push(rutaArchivo);
+        } catch (error) {
+            console.error('Error al subir el archivo:', error);
+            triggerShakeError(imageDropZone);
+        }
+    });
 }
 
 /**
@@ -409,6 +730,9 @@ imageGalleryContainer.addEventListener('click', (e) => {
     if (closeBtn) {
         closeBtn.closest('.gallery-item').remove();
         updateOrderNumbers();
+        revisarSiHayCambios();
+        // Borrar archivo del servidor
+        let archivoSrc = closeBtn.closest('.gallery-item').querySelector('img').src;
     }
 });
 
@@ -434,6 +758,7 @@ function createGalleryItem(src) {
     `;
     imageGalleryContainer.appendChild(item);
     updateOrderNumbers();
+    revisarSiHayCambios();
 }
 
 
@@ -453,14 +778,20 @@ const videoSortable = new Sortable(videoGalleryContainer, {
     ghostClass: 'sortable-ghost',
     filter: '.btn-remove-video',
     preventOnFilter: false,
-    onEnd: updateVideoOrder
+    onEnd: () => {
+        updateVideoOrder();
+        revisarSiHayCambios();
+    }
 });
 const imageSortable = new Sortable(imageGalleryContainer, {
     animation: 300,
     ghostClass: 'sortable-ghost',
     filter: '.btn-remove',
     preventOnFilter: false,
-    onEnd: updateOrderNumbers
+    onEnd: () => {
+        updateOrderNumbers();
+        revisarSiHayCambios();
+    }
 });
 
 /**
@@ -486,7 +817,6 @@ const imageSortable = new Sortable(imageGalleryContainer, {
 });
 videoDropZone.addEventListener('click', () => videoInput.click());
 videoDropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
     handleVideoFiles(e.dataTransfer.files);
 });
 videoInput.addEventListener('change', (e) => handleVideoFiles(e.target.files));
@@ -509,6 +839,17 @@ function handleVideoFiles(files) {
     });
 
     if (hasError) triggerShakeError(videoDropZone);
+
+    fileArray.forEach(async (file) => {
+        if (!file.type.startsWith('video/')) return;
+        try {
+            const rutaArchivo = await subirArchivo(file);
+            rutasArchivosSubidos.push(rutaArchivo);
+        } catch (error) {
+            console.error('Error al subir el archivo:', error);
+            triggerShakeError(videoDropZone);
+        }
+    });
 }
 
 function createVideoItem(src, fileName) {
@@ -531,6 +872,7 @@ function createVideoItem(src, fileName) {
     `;
     videoGalleryContainer.appendChild(item);
     updateVideoOrder();
+    revisarSiHayCambios();
 }
 
 function updateVideoOrder() {
@@ -554,6 +896,7 @@ videoGalleryContainer.addEventListener('click', (e) => {
     if (btn) {
         btn.closest('.video-item').remove();
         updateVideoOrder();
+        revisarSiHayCambios();
     }
 });
 
@@ -580,6 +923,25 @@ closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
     });
 });
 
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *  Llamadas a la API
+ *
+ *
+ *
+ *
+ *
+
+ */
+
+/**
+ * Carga la configuración web desde el servidor
+ */
 async function cargarConfiguracionWeb() {
     const formData = new FormData();
     formData.append('action', 'obtenerConfiguracionWeb');
@@ -589,62 +951,17 @@ async function cargarConfiguracionWeb() {
         body: formData
     }).then(response => response.json())
         .then(data => {
-            updateUI(data.data);
+            configuracionActual = data.data;
+            renderizarUI(data.data);
         })
         .catch(error => {
             console.error('Error al cargar la configuración web:', error);
         });
 }
 
-function updateUI(config) {
-    if (!config) return;
-
-    if (config.modo === 'pre-evento') {
-        changeMode('pre-evento', false);
-    } else if (config.modo === 'post-evento') {
-        changeMode('post-evento', false);
-    }
-
-    tituloEventoInput.value = config.galaPreEventoTitulo || '';
-    fechaEventoInput.value = config.galaPreEventoFecha || '';
-    horaEventoInput.value = config.galaPreEventoHora || '';
-    ubicacionEventoInput.value = config.galaPreEventoUbicacion || '';
-    descripcionInput.value = config.galaDescripcionEventoPrincipal || '';
-
-    const isStreaming = config.galaPreEventoStreamingActivo === 'true';
-    streamingToggleContainer.classList.toggle('enabled', isStreaming);
-    streamingIndicatorText.textContent = isStreaming ? 'EN VIVO' : 'OFF';
-
-    if (isStreaming) {
-        urlStreamingContainer.classList.remove('hidden-force');
-    } else {
-        urlStreamingContainer.classList.add('hidden-force');
-    }
-    urlStreamingInput.value = config.galaStreamingUrl || '';
-
-    postEventoResumenInput.value = config.galaPostEventoResumen || '';
-
-    try {
-        imageGalleryContainer.innerHTML = '';
-        videoGalleryContainer.innerHTML = '';
-
-        const imagenes = JSON.parse(config.galaPostEventoGaleriaImagenes || '[]');
-        const videos = JSON.parse(config.galaPostEventoGaleriaVideos || '[]');
-
-        imagenes.forEach(imgSrc => {
-            if (imgSrc) createGalleryItem(imgSrc);
-        });
-
-        videos.forEach(videoObj => {
-            if (videoObj.url) {
-                createVideoItem(videoObj.url, videoObj.name || 'Video');
-            }
-        });
-    } catch (e) {
-        console.error("Error parsing gallery data:", e);
-    }
-}
-
+/**
+ * Actualiza la configuración web en el servidor
+ */
 async function actualizarConfiguracionWeb() {
     const formData = new FormData();
     formData.append('action', 'actualizarConfiguracionWeb');
@@ -652,7 +969,7 @@ async function actualizarConfiguracionWeb() {
     if (modo === 'pre-evento') {
         formData.append('galaPreEventoTitulo', tituloEventoInput.value.trim());
         formData.append('galaPreEventoFecha', fechaEventoInput.value);
-        formData.append('galaPreEventoHoral', horaEventoInput.value);
+        formData.append('galaPreEventoHora', horaEventoInput.value);
         formData.append('galaPreEventoUbicacion', ubicacionEventoInput.value.trim());
         formData.append('galaPreEventoDescripcion', descripcionInput.value.trim());
         formData.append('galaPreEventoStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
@@ -660,7 +977,13 @@ async function actualizarConfiguracionWeb() {
     }
     if (modo === 'post-evento') {
         formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
-        formData.append('galaPostEventoGaleriaImagenes', JSON.stringify(Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img')).map(img => img.src)));
+
+        listaImagenes = [{
+            rutaArchivo: '',
+            orden: 0
+        }];
+
+        formData.append('galaPostEventoGaleriaImagenes', listaImagenes);
         formData.append('galaPostEventoGaleriaVideos', JSON.stringify(Array.from(videoGalleryContainer.querySelectorAll('.video-item video')).map(video => video.src)));
     }
 
@@ -673,13 +996,48 @@ async function actualizarConfiguracionWeb() {
         const result = await response.json();
 
         if (result.status === 'success') {
-            publishChangesButton.classList.add('disabled');
+            await cargarConfiguracionWeb();
+            unsavedChangesWarning.classList.add('hidden-force');
         } else {
             console.error('Error:', result.message);
         }
     } catch (error) {
         console.error('Error de red:', error);
     }
+}
+
+async function subirArchivo(file) {
+    const formData = new FormData();
+    formData.append('action', 'subirArchivo');
+    formData.append('file', file);
+
+    const response = await fetch(URL_API, {
+        method: 'POST',
+        body: formData
+    });
+
+    const result = await response.json();
+    if (result.status === 'success') {
+        return result.rutaArchivo;
+    }
+    throw new Error('Error al subir el archivo');
+}
+
+async function borrarArchivo(rutaArchivo) {
+    const formData = new FormData();
+    formData.append('action', 'borrarArchivo');
+    formData.append('rutaArchivo', rutaArchivo);
+
+    const response = await fetch(URL_API, {
+        method: 'POST',
+        body: formData
+    });
+
+    const result = await response.json();
+    if (result.status === 'success') {
+        return true;
+    }
+    throw new Error('Error al borrar el archivo');
 }
 
 
@@ -698,117 +1056,6 @@ async function actualizarConfiguracionWeb() {
  *
  *
  */
-
-new AirDatepicker(fechaEventoInput, {
-    minDate: new Date(),
-    autoClose: true,
-    dateFormat: 'dd/MM/yyyy',
-    buttons: ['today', 'clear'],
-    locale: {
-        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        daysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-        daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        today: 'Hoy',
-        clear: 'Limpiar',
-        firstDay: 1
-    },
-    buttons: [
-        {
-            content: 'Hoy',
-            className: 'custom-today-button',
-            onClick: (dp) => {
-                let date = new Date();
-                dp.selectDate(date);
-                dp.setViewDate(date);
-                dp.hide();
-            }
-        },
-        'clear'
-    ],
-    onSelect({date}) {
-        validarFormularioPreEvento();
-    }
-});
-
-
-new AirDatepicker(horaEventoInput, {
-    timepicker: true,
-    onlyTimepicker: true,
-    minHours: 7,
-    maxHours: 22,
-    timeFormat: 'HH:mm',
-    minutesStep: 15,
-    buttons: [
-        {
-            content: 'Ahora',
-            onClick: (dp) => {
-                let now = new Date();
-                let currentHour = now.getHours();
-
-                if (currentHour >= 8 && currentHour <= 20) {
-                    dp.selectDate(now);
-                } else {
-                    let startRange = new Date();
-                    startRange.setHours(8, 0);
-                    dp.selectDate(startRange);
-                }
-                dp.hide();
-            }
-        },
-        {
-            content: 'Limpiar',
-            onClick: (dp) => {
-                dp.clear();
-                dp.hide();
-            }
-        }
-    ],
-    onlyTimepicker: true,
-    onSelect({date, formattedDate}) {
-
-    }
-});
-
-
-new AirDatepicker(yearEdicionInput, {
-    timepicker: true,
-    onlyTimepicker: true,
-    minHours: 7,
-    maxHours: 22,
-    timeFormat: 'HH:mm',
-    minutesStep: 15,
-    buttons: [
-        {
-            content: 'Ahora',
-            onClick: (dp) => {
-                let now = new Date();
-                let currentHour = now.getHours();
-
-                if (currentHour >= 8 && currentHour <= 20) {
-                    dp.selectDate(now);
-                } else {
-                    let startRange = new Date();
-                    startRange.setHours(8, 0);
-                    dp.selectDate(startRange);
-                }
-                dp.hide();
-            }
-        },
-        {
-            content: 'Limpiar',
-            onClick: (dp) => {
-                dp.clear();
-                dp.hide();
-            }
-        }
-    ],
-    onlyTimepicker: true,
-    onSelect({date, formattedDate}) {
-
-    }
-});
 
 
 
