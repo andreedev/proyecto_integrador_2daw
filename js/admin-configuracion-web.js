@@ -31,17 +31,11 @@ const sendToPreviousEditionsButton = document.getElementById('sendToPreviousEdit
 const modalEnviarEdicionesAnteriores = document.getElementById('modalEnviarEdicionesAnteriores');
 const closeEnviarEdicionesAnterioresModalButtons = document.querySelectorAll('.closeEnviarEdicionesAnterioresModal');
 
-const imageDropZone = document.getElementById('imageDropZone');
-const imageInput = document.getElementById('imageInput');
-const imageGalleryContainer = document.getElementById('imageGalleryContainer');
-const noImagesHelperText = document.getElementById('noImagesHelperText');
-const uploadedImagesCount = document.getElementById('uploadedImagesCount');
-
-const videoDropZone = document.getElementById('videoDropZone');
-const videoInput = document.getElementById('videoInput');
-const videoGalleryContainer = document.getElementById('videoGalleryContainer');
-const uploadedVideosCount = document.getElementById('uploadedVideosCount');
-const noVideosHelperText = document.getElementById('noVideosHelperText');
+const filesDropZone = document.getElementById('fileDropZone');
+const fileInput = document.getElementById('fileInput');
+const galleryContainer = document.getElementById('galleryContainer');
+const noFilesHelperText = document.getElementById('noFilesHelperText');
+const uploadedFilesCount = document.getElementById('uploadedFilesCount');
 
 const postEventoResumenInput = document.getElementById('postEventoResumenInput');
 const postEventoResumenErrorMessage = document.getElementById('postEventoResumenErrorMessage');
@@ -59,11 +53,7 @@ const fechaBorradoDatosInputErrorMessage = document.getElementById('fechaBorrado
 let modo = 'pre-evento';
 let configuracionActual = null;
 let loadingConfiguracion = true;
-let rutasArchivosSubidos = [];
 
-/**
- * Inicialización de los DateTimePickers
- */
 const fechaEventoDateTimePicker = new AirDatepicker(fechaEventoInput, {
     minDate: new Date(),
     autoClose: true,
@@ -175,21 +165,6 @@ const yearEdicionDateTimePicker = new AirDatepicker(yearEdicionInput, {
     }
 });
 
-
-/**
- *
- *
- *
- *
- * Listeners
- *
- *
- *
- */
-
-/**
- * Monitoreo de cambios en los inputs
- */
 tituloEventoInput.addEventListener('input', revisarSiHayCambios);
 fechaEventoInput.addEventListener('input', revisarSiHayCambios);
 horaEventoInput.addEventListener('input', revisarSiHayCambios);
@@ -202,9 +177,6 @@ nroParticipantesInput.addEventListener('input', revisarSiHayCambios);
 fechaEnvioEmailInformativoInput.addEventListener('input', revisarSiHayCambios);
 fechaBorradoDatosInput.addEventListener('input', revisarSiHayCambios);
 
-/**
- * Manejo del toggle de streaming
- */
 streamingToggleButton.addEventListener('click', () => {
     const isActive = streamingToggleContainer.classList.contains('enabled');
     streamingToggleContainer.classList.toggle('enabled');
@@ -244,24 +216,8 @@ nroParticipantesInput.addEventListener('blur', () => validateNroParticipantes(tr
 fechaEnvioEmailInformativoInput.addEventListener('blur', () => validateFechaEnvioEmailInformativo(true));
 fechaBorradoDatosInput.addEventListener('blur', () => validateFechaBorradoDatos(true));
 
-publishChangesButton.addEventListener('click', () => publishChanges());
+publishChangesButton.addEventListener('click', () => publicarCambios());
 
-/**
- *
- *
- *
- *
- * Funciones
- *
- *
- *
- *
- *
- */
-
-/**
- * Cambia el modo de la interfaz entre 'pre-evento' y 'post-evento'
- */
 function cambiarModo(newMode) {
     modo = newMode;
     if (newMode === 'pre-evento') {
@@ -285,8 +241,6 @@ function cambiarModo(newMode) {
         modo = 'post-evento';
     }
 }
-
-
 function validateTituloEvento(messageOnError) {
     if (tituloEventoInput.value.trim() === '') {
         if (messageOnError) tituloEventoErrorMessage.textContent = 'El título del evento no puede estar vacío';
@@ -296,7 +250,6 @@ function validateTituloEvento(messageOnError) {
     tituloEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateFechaEvento(messageOnError) {
     if (fechaEventoInput.value === '') {
         if (messageOnError) fechaEventoErrorMessage.textContent = 'La fecha del evento no puede estar vacía';
@@ -306,7 +259,6 @@ function validateFechaEvento(messageOnError) {
     fechaEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateHoraEvento(messageOnError) {
     if (horaEventoInput.value === '') {
         if (messageOnError) horaEventoErrorMessage.textContent = 'La hora del evento no puede estar vacía';
@@ -316,7 +268,6 @@ function validateHoraEvento(messageOnError) {
     horaEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateUbicacionEvento(messageOnError) {
     if (ubicacionEventoInput.value.trim() === '') {
         if (messageOnError) ubicacionEventoErrorMessage.textContent = 'La ubicación del evento no puede estar vacía';
@@ -326,7 +277,6 @@ function validateUbicacionEvento(messageOnError) {
     ubicacionEventoErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateDescripcionEvento(messageOnError) {
     if (descripcionInput.value.trim() === '') {
         if (messageOnError) descripcionErrorMessage.textContent = 'La descripción del evento no puede estar vacía';
@@ -336,7 +286,6 @@ function validateDescripcionEvento(messageOnError) {
     descripcionErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateYearEdicion(messageOnError) {
     if (yearEdicionInput.value.trim() === '' || isNaN(yearEdicionInput.value) || parseInt(yearEdicionInput.value) < 2000) {
         if (messageOnError) yearEditionErrorMessage.textContent = 'Ingresa un año valido';
@@ -346,7 +295,6 @@ function validateYearEdicion(messageOnError) {
     yearEditionErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateNroParticipantes(messageOnError) {
     if (nroParticipantesInput.value.trim() === '' || isNaN(nroParticipantesInput.value) || parseInt(nroParticipantesInput.value) < 1) {
         if (messageOnError) nroParticipantesErrorMessage.textContent = 'Ingresa un número válido';
@@ -356,7 +304,6 @@ function validateNroParticipantes(messageOnError) {
     nroParticipantesErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateFechaEnvioEmailInformativo(messageOnError) {
     if (fechaEnvioEmailInformativoInput.value === '') {
         if (messageOnError) fechaEnvioEmailInformativoErrorMessage.textContent = 'La fecha no puede estar vacía';
@@ -366,7 +313,6 @@ function validateFechaEnvioEmailInformativo(messageOnError) {
     fechaEnvioEmailInformativoErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateFechaBorradoDatos(messageOnError) {
     if (fechaBorradoDatosInput.value === '') {
         if (messageOnError) fechaBorradoDatosInputErrorMessage.textContent = 'La fecha no puede estar vacía';
@@ -376,7 +322,6 @@ function validateFechaBorradoDatos(messageOnError) {
     fechaBorradoDatosInputErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validateUrlStreaming(messageOnError) {
     if (urlStreamingInput.value.trim() === '') {
         if (messageOnError) urlStreamingErrorMessage.textContent = 'Ingresa una URL válida';
@@ -386,7 +331,6 @@ function validateUrlStreaming(messageOnError) {
     urlStreamingErrorMessage.classList.add('hidden-force');
     return true;
 }
-
 function validatePostEventoResumen(messageOnError) {
     if (postEventoResumenInput.value.trim() === '') {
         if (messageOnError) postEventoResumenErrorMessage.textContent = 'El resumen del evento no puede estar vacío';
@@ -397,7 +341,7 @@ function validatePostEventoResumen(messageOnError) {
     return true;
 }
 
-async function publishChanges() {
+async function publicarCambios() {
     if (modo === 'pre-evento') {
         const isTituloValid = validateTituloEvento(true);
         const isFechaValid = validateFechaEvento(true);
@@ -425,49 +369,44 @@ async function publishChanges() {
     }
 
     unsavedChangesWarning.classList.add('hidden-force');
-    // remove all classes
     updateGeneralMessage('Guardando cambios', 'text-information-01');
 
     const archivosParaGuardar = [];
-    let ordenContador = 1;
+    const items = Array.from(galleryContainer.querySelectorAll(".gallery-item"));
 
-    const imageGalleryItems = Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img'));
-    for (const img of imageGalleryItems) {
-        let path = "";
-        if (img.dataset.isNew === "true" && img.filePayload) {
+    for (const item of items) {
+        const img = item.querySelector("img");
+        const vid = item.querySelector("video");
+        const media = img || vid;
+
+        if (!media) continue;
+
+        let finalId = null;
+
+        if (media.dataset.isNew === "true" && media.filePayload) {
             try {
-                path = await subirArchivo(img.filePayload);
-            } catch (error) {
-                updateGeneralMessage('Error subiendo imagen', 'text-error-01');
-                return;
+                const uploadRes = await subirArchivo(media.filePayload);
+                finalId = uploadRes.id; // Get the new ID from server
+            } catch (err) {
+                console.error(err);
+                return updateGeneralMessage("Error subiendo archivo", "text-error-01");
             }
-        } else {
-            path = img.src.includes('uploads/') ? 'uploads/' + img.src.split('uploads/')[1] : img.src;
+        }
+        else if (media.dataset.idArchivo) {
+            finalId = media.dataset.idArchivo;
         }
 
-        archivosParaGuardar.push({ tipo: 'imagen', ruta: path, orden: ordenContador++ });
-    }
-
-    const videoGalleryItems = Array.from(videoGalleryContainer.querySelectorAll('.video-item video'));
-    for (const vid of videoGalleryItems) {
-        let path = "";
-        if (vid.dataset.isNew === "true" && vid.filePayload) {
-            path = await subirArchivo(vid.filePayload);
-        } else {
-            let cleanUrl = vid.src.split('#')[0].split('?')[0];
-            path = cleanUrl.includes('uploads/') ? 'uploads/' + cleanUrl.split('uploads/')[1] : cleanUrl;
+        if (finalId) {
+            archivosParaGuardar.push({ id: finalId });
         }
-
-        archivosParaGuardar.push({ tipo: 'video', ruta: path, orden: ordenContador++ });
     }
 
     if (modo === 'post-evento') {
         try {
-            await guardarPostEventoArchivo(archivosParaGuardar);
+            await actualizarGaleriaEdicionActual(archivosParaGuardar);
         } catch (error) {
-            console.log(error);
-            generalMessage.textContent = "Error al organizar la galería en la base de datos";
-            return;
+            console.error(error);
+            return updateGeneralMessage("Error al organizar la galería", "text-error-01");
         }
     }
 
@@ -481,24 +420,26 @@ function updateGeneralMessage(message, className) {
     generalMessage.textContent = message;
 }
 
-function renderizarUI(config, imagenesGaleriaPostEvento, videosGaleriaPostEvento) {
+function renderizarUI(data) {
+    let config = data.configuracion;
+    let archivos = data.archivosPostEvento;
+    let edicionActual = data.edicionActual;
     if (!config) return;
 
-    if (config.modo === 'pre-evento') {
+    const modo = config.modo;
+    if (modo === 'pre-evento') {
         cambiarModo('pre-evento');
-    } else if (config.modo === 'post-evento') {
+    } else {
         cambiarModo('post-evento');
     }
 
     fechaUltimaModificacionText.textContent = config.fechaUltimaModificacionConfiguracion;
-
     tituloEventoInput.value = config.galaPreEventoTitulo || '';
 
     if (config.galaPreEventoFecha) {
         let date = convertToDate(config.galaPreEventoFecha);
         fechaEventoDateTimePicker.selectDate(date, { silent: true });
     }
-
     if (config.galaPreEventoHora) {
         let date = convertTimeToDate(config.galaPreEventoHora);
         horaEventoDateTimePicker.selectDate(date, { silent: true });
@@ -517,26 +458,17 @@ function renderizarUI(config, imagenesGaleriaPostEvento, videosGaleriaPostEvento
         urlStreamingContainer.classList.add('hidden-force');
     }
     urlStreamingInput.value = config.galaPreEventoStreamingUrl || '';
+    postEventoResumenInput.value = edicionActual.resumen_evento;
+    yearEdicionInput.value = edicionActual.anio_edicion || '';
+    nroParticipantesInput.value = edicionActual.nro_participantes || '';
 
-    postEventoResumenInput.value = config.galaPostEventoResumen || '';
-
-    try {
-        imageGalleryContainer.innerHTML = '';
-        videoGalleryContainer.innerHTML = '';
-
-        imagenesGaleriaPostEvento.forEach(imgSrc => {
-            if (imgSrc) createGalleryItem(imgSrc);
+    galleryContainer.innerHTML = "";
+    if (archivos && Array.isArray(archivos)) {
+        archivos.forEach(file => {
+            createGalleryItem(file.url, file.tipo, file.id);
         });
-
-        videosGaleriaPostEvento.forEach(videoObj => {
-            if (videoObj.url) {
-                createVideoItem(videoObj.url);
-            }
-        });
-    } catch (e) {
-        console.error("Error al parsear las galerías:", e);
     }
-
+    updateOrderNumbers();
     setTimeout(() => {
         loadingConfiguracion = false;
     }, 50);
@@ -551,30 +483,46 @@ function revisarSiHayCambios() {
     let hasChanges = false;
     let reasons = [];
 
-    if (modo !== configuracionActual.modo) {
-        reasons.push(`Modo: UI(${modo}) vs DB(${configuracionActual.modo})`);
+    const dbConfig = configuracionActual.configuracion || configuracionActual;
+    const dbFiles = configuracionActual.archivosPostEvento || [];
+
+    if (modo !== dbConfig.modo) {
+        reasons.push(`Modo: UI(${modo}) vs DB(${dbConfig.modo})`);
         hasChanges = true;
     }
 
     let checks = {};
+
     if (modo === 'pre-evento') {
         checks = {
-            titulo: [tituloEventoInput.value.trim(), configuracionActual.galaPreEventoTitulo || ''],
-            fecha: [fechaEventoInput.value, configuracionActual.galaPreEventoFecha || ''],
-            hora: [horaEventoInput.value, configuracionActual.galaPreEventoHora || ''],
-            ubicacion: [ubicacionEventoInput.value.trim(), configuracionActual.galaPreEventoUbicacion || ''],
-            descripcion: [descripcionInput.value.trim(), configuracionActual.galaPreEventoDescripcion || ''],
-            streaming: [streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', configuracionActual.galaPreEventoStreamingActivo || 'false'],
-            url: [urlStreamingInput.value.trim(), configuracionActual.galaPreEventoStreamingUrl || '']
+            titulo: [tituloEventoInput.value.trim(), dbConfig.galaPreEventoTitulo || ''],
+            fecha: [fechaEventoInput.value, dbConfig.galaPreEventoFecha || ''],
+            hora: [horaEventoInput.value, dbConfig.galaPreEventoHora || ''],
+            ubicacion: [ubicacionEventoInput.value.trim(), dbConfig.galaPreEventoUbicacion || ''],
+            descripcion: [descripcionInput.value.trim(), dbConfig.galaPreEventoDescripcion || ''],
+            streaming: [streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', dbConfig.galaPreEventoStreamingActivo || 'false'],
+            url: [urlStreamingInput.value.trim(), dbConfig.galaPreEventoStreamingUrl || '']
         };
 
+    } else if (modo === 'post-evento') {
 
-    }else if (modo === 'post-evento') {
+        const uiFiles = Array.from(galleryContainer.querySelectorAll('.gallery-item')).map(item => {
+            const img = item.querySelector('img');
+            const video = item.querySelector('video');
+            const media = img || video;
+
+            if (!media) return null;
+
+            return media.src.split('#')[0].split('?')[0];
+        }).filter(src => src !== null); // Remove any nulls
+
+        const dbFileUrls = dbFiles.map(file => file.url);
+
         checks = {
-            resumen: [postEventoResumenInput.value.trim(), configuracionActual.galaPostEventoResumen || ''],
-            imagenes: [JSON.stringify(Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img')).map(img => img.src)), configuracionActual.galaPostEventoGaleriaImagenes || '[]'],
-            videos: [JSON.stringify(Array.from(videoGalleryContainer.querySelectorAll('.video-item video')).map(video => ({ url: video.src }))), configuracionActual.galaPostEventoGaleriaVideos || '[]']
+            resumen: [postEventoResumenInput.value.trim(), dbConfig.galaPostEventoResumen || ''],
+            galeria: [JSON.stringify(uiFiles), JSON.stringify(dbFileUrls)]
         };
+
     }
 
     for (const [key, [valUI, valDB]] of Object.entries(checks)) {
@@ -585,32 +533,13 @@ function revisarSiHayCambios() {
     }
 
     if (hasChanges) {
-        // console.log("Cambios detectados en:", reasons);
+        // console.log("Cambios detectados:", reasons);
         unsavedChangesWarning.classList.remove('hidden-force');
     } else {
         unsavedChangesWarning.classList.add('hidden-force');
     }
 }
 
-
-/**
- *
- *
- *
- *
- *
- *
- *  Utils
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
 
 /**
  * Convierte DD/MM/YYYY a un objeto Date
@@ -639,100 +568,32 @@ function convertTimeToDate(timeString) {
 }
 
 
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
-
-/**
- * Manejo de la carga de imágenes mediante arrastrar y soltar o selección de archivos
- */
-imageDropZone.addEventListener('click', () => imageInput.click());
-
-/**
- * Eventos de dragenter, dragover, dragleave y drop
- *
- */
-['dragenter', 'dragover'].forEach(eventName => {
-    imageDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        const isFile = e.dataTransfer.types.includes('Files');
-        if (isFile) {
-            imageDropZone.classList.add('drag-over');
-        } else {
-            triggerShakeError(imageDropZone);
-        }
-    });
-});
-['dragleave', 'drop'].forEach(eventName => {
-    imageDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        imageDropZone.classList.remove('drag-over');
-    });
-});
-
-/**
- * Evento de drop para el área de arrastre
- */
-imageDropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files) );
-
-/**
- * Evento al recibir archivos desde el input de archivo
- */
-imageInput.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    files.forEach(file => {
-        const objectUrl = URL.createObjectURL(file);
-
-        const imgElement = createGalleryItem(objectUrl);
-
-        imgElement.dataset.isNew = "true";
-        imgElement.filePayload = file;
-    });
-});
-
-/**
- * Maneja los archivos cargados y los agrega a la galería
- */
 function handleFiles(files) {
     const fileArray = Array.from(files);
-    let hasError = false;
+    let invalidFiles = false;
 
     fileArray.forEach(file => {
-        if (!file.type.startsWith('image/')) {
-            hasError = true;
+        const isImage = file.type.startsWith('image/');
+        const isVideo = file.type.startsWith('video/');
+
+        if (!isImage && !isVideo) {
+            invalidFiles = true;
             return;
         }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            createGalleryItem(e.target.result);
-        };
-        reader.readAsDataURL(file);
+
+        const objectUrl = URL.createObjectURL(file);
+        const type = isImage ? 'imagen' : 'video';
+
+        const mediaElement = createGalleryItem(objectUrl, type);
+        mediaElement.dataset.isNew = "true";
+        mediaElement.filePayload = file;
     });
 
-    if (hasError) triggerShakeError(imageDropZone);
+    if (invalidFiles) triggerShakeError(filesDropZone);
 }
 
-/**
- * Genera una animación de error
- */
 function triggerShakeError(element) {
-    const target = element || imageDropZone;
+    const target = element || filesDropZone;
 
     target.classList.add('shake-error');
     setTimeout(() => {
@@ -740,84 +601,62 @@ function triggerShakeError(element) {
     }, 400);
 }
 
-/**
- * Actualiza los números de orden de las imágenes en la galería
- */
 const updateOrderNumbers = () => {
-    const items = imageGalleryContainer.querySelectorAll('.gallery-item');
+    const items = galleryContainer.querySelectorAll('.gallery-item');
     items.forEach((item, index) => {
         item.querySelector('.order-badge').textContent = index + 1;
     });
-    uploadedImagesCount.textContent = items.length;
+    uploadedFilesCount.textContent = items.length;
     if (items.length > 0) {
-        noImagesHelperText.classList.add('hidden-force');
+        noFilesHelperText.classList.add('hidden-force');
     } else {
-        noImagesHelperText.classList.remove('hidden-force');
+        noFilesHelperText.classList.remove('hidden-force');
     }
 };
 
-/**
- * Manejo del evento de clic para eliminar imágenes de la galería
- */
-imageGalleryContainer.addEventListener('click', (e) => {
-    const closeBtn = e.target.closest('.btn-remove-image');
-    if (closeBtn) {
-        closeBtn.closest('.gallery-item').remove();
-        updateOrderNumbers();
-        revisarSiHayCambios();
-        // Borrar archivo del servidor
-        let archivoSrc = closeBtn.closest('.gallery-item').querySelector('img').src;
-    }
-});
+function createGalleryItem(url, tipo, id=null) {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
 
-/**
- * Crea un nuevo elemento de galería con la imagen proporcionada
- */
-function createGalleryItem(url) {
-    const item = document.createElement('div');
-    item.className = 'gallery-item';
-    item.innerHTML = `
+    let mediaHtml = '';
+    if (tipo === 'video') {
+        const videoSrc = url.includes('#') ? url : url + '#t=0.5';
+        mediaHtml = `<video src="${videoSrc}" class="gallery-item-image" preload="metadata"></video>`;
+    } else {
+        mediaHtml = `<img src="${url}" class="gallery-item-image" alt="Uploaded">`;
+    }
+
+    div.innerHTML = `
         <div class="order-badge">0</div>
-        <img src="${url}" class="gallery-item-image" alt="Uploaded">
-        
+        ${mediaHtml}
         <div class="gallery-item-overlay">
             <div class="icon-container-2 bg-neutral-05 drag-handle">
                 <div class="icon-drag w-16px h-16px bg-neutral-01"></div>
             </div>
-            
-            <div class="icon-container-2 bg-neutral-05 btn-remove-image">
+            <div class="icon-container-2 bg-neutral-05 btn-remove-file">
                 <div class="icon-close w-16px h-16px bg-neutral-01"></div>
             </div>
         </div>
     `;
-    imageGalleryContainer.appendChild(item);
+
+    const mediaElement = div.querySelector('img, video');
+
+    if (id) {
+        mediaElement.dataset.idArchivo = id;
+    }
+
+    galleryContainer.appendChild(div);
     updateOrderNumbers();
-    revisarSiHayCambios();
+
+    if (!loadingConfiguracion) {
+        revisarSiHayCambios();
+    }
+
+    return mediaElement;
 }
 
 
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- */
-
-const videoSortable = new Sortable(videoGalleryContainer, {
-    animation: 300,
-    ghostClass: 'sortable-ghost',
-    filter: '.btn-remove-video',
-    preventOnFilter: false,
-    onEnd: () => {
-        updateVideoOrder();
-        revisarSiHayCambios();
-    }
-});
-const imageSortable = new Sortable(imageGalleryContainer, {
+const fileSortable = new Sortable(galleryContainer, {
     animation: 300,
     ghostClass: 'sortable-ghost',
     filter: '.btn-remove',
@@ -827,53 +666,6 @@ const imageSortable = new Sortable(imageGalleryContainer, {
         revisarSiHayCambios();
     }
 });
-
-/**
- * Eventos dragenter, dragover, dragleave y drop para vídeos
- */
-['dragenter', 'dragover'].forEach(eventName => {
-    videoDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        const isFile = e.dataTransfer.types.includes('Files');
-        if (isFile) {
-            videoDropZone.classList.add('drag-over');
-        } else {
-            triggerShakeError(videoDropZone);
-        }
-    });
-});
-
-['dragleave', 'drop'].forEach(eventName => {
-    videoDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        videoDropZone.classList.remove('drag-over');
-    });
-});
-videoDropZone.addEventListener('click', () => videoInput.click());
-videoDropZone.addEventListener('drop', (e) => {
-    handleVideoFiles(e.dataTransfer.files);
-});
-videoInput.addEventListener('change', (e) => handleVideoFiles(e.target.files));
-
-/**
- * Maneja los archivos de vídeo cargados
- *
- */
-function handleVideoFiles(files) {
-    const fileArray = Array.from(files);
-    let hasError = false;
-
-    fileArray.forEach(file => {
-        if (!file.type.startsWith('video/')) {
-            hasError = true;
-            return;
-        }
-        const url = URL.createObjectURL(file);
-        createVideoItem(url);
-    });
-
-    if (hasError) triggerShakeError(videoDropZone);
-}
 
 function createVideoItem(src) {
     const item = document.createElement('div');
@@ -893,78 +685,27 @@ function createVideoItem(src) {
             </div>
         </div>
     `;
-    videoGalleryContainer.appendChild(item);
+    galleryContainer.appendChild(item);
     updateVideoOrder();
     revisarSiHayCambios();
 }
 
 function updateVideoOrder() {
-    const items = videoGalleryContainer.querySelectorAll('.video-item');
+    const items = galleryContainer.querySelectorAll('.video-item');
     items.forEach((item, index) => {
         const badge = item.querySelector('.order-badge');
         if(badge) badge.textContent = index + 1;
     });
 
-    uploadedVideosCount.textContent = items.length;
+    uploadedFilesCount.textContent = items.length;
 
     if (items.length > 0) {
-        noVideosHelperText.classList.add('hidden-force');
+        noFilesHelperText.classList.add('hidden-force');
     } else {
-        noVideosHelperText.classList.remove('hidden-force');
+        noFilesHelperText.classList.remove('hidden-force');
     }
 }
 
-videoGalleryContainer.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn-remove-video');
-    if (btn) {
-        btn.closest('.video-item').remove();
-        updateVideoOrder();
-        revisarSiHayCambios();
-    }
-});
-
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
-
-sendToPreviousEditionsButton.addEventListener('click', () => {
-    modalEnviarEdicionesAnteriores.showModal();
-});
-
-closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        modalEnviarEdicionesAnteriores.close();
-    });
-});
-
-/**
- *
- *
- *
- *
- *
- *
- *  Llamadas a la API
- *
- *
- *
- *
- *
-
- */
-
-/**
- * Carga la configuración web desde el servidor
- */
 async function cargarConfiguracionWeb() {
     const formData = new FormData();
     formData.append('action', 'obtenerConfiguracionWeb');
@@ -973,18 +714,15 @@ async function cargarConfiguracionWeb() {
         method: 'POST',
         body: formData
     }).then(response => response.json())
-        .then(data => {
-            configuracionActual = data.data;
-            renderizarUI(data.data.configuracion, data.data.galeriaImagenesPostEvento, data.data.galeriaVideosPostEvento);
+        .then(result => {
+            configuracionActual = result.data;
+            renderizarUI(result.data);
         })
         .catch(error => {
             console.error('Error al cargar la configuración web:', error);
         });
 }
 
-/**
- * Actualiza la configuración web en el servidor
- */
 async function actualizarConfiguracionWeb() {
     const formData = new FormData();
     formData.append('action', 'actualizarConfiguracionWeb');
@@ -1007,33 +745,30 @@ async function actualizarConfiguracionWeb() {
             method: 'POST',
             body: formData
         });
-
         const result = await response.json();
+        if (result.status !== 'success') throw new Error(result.message);
 
-        if (result.status === 'success') {
-            await cargarConfiguracionWeb();
-            unsavedChangesWarning.classList.add('hidden-force');
-        } else {
-            console.error('Error:', result.message);
-        }
+        await cargarConfiguracionWeb();
+        unsavedChangesWarning.classList.add('hidden-force');
     } catch (error) {
-        console.error('Error de red:', error);
+        console.error("Error:", error);
     }
 }
 
-async function guardarPostEventoArchivo(archivos){
+async function actualizarGaleriaEdicionActual(archivos){
     const formData = new FormData();
-    formData.append('action', 'procesarGaleriaPostEvento');
+    formData.append('action', 'actualizarGaleriaEdicionActual');
     formData.append('archivos', JSON.stringify(archivos));
 
-    const response = await fetch(URL_API, {
-        method: 'POST',
-        body: formData
-    });
-
-    const result = await response.json();
-    if (result.status !== 'success') throw new Error(result.message);
-    return result;
+    const response = await fetch(URL_API, { method: 'POST', body: formData });
+    const text = await response.text();
+    try {
+        const result = JSON.parse(text);
+        if (result.status !== 'success') throw new Error(result.message);
+        return result;
+    } catch (e) {
+        throw new Error("Error: " + text);
+    }
 }
 
 async function subirArchivo(file) {
@@ -1048,7 +783,7 @@ async function subirArchivo(file) {
 
     const result = await response.json();
     if (result.status === 'success') {
-        return result.rutaArchivo;
+        return result;
     }
     throw new Error('Error al subir el archivo');
 }
@@ -1070,23 +805,54 @@ async function borrarArchivo(rutaArchivo) {
     throw new Error('Error al borrar el archivo');
 }
 
+galleryContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-remove-video');
+    if (btn) {
+        btn.closest('.video-item').remove();
+        updateVideoOrder();
+        revisarSiHayCambios();
+    }
+});
 
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
+filesDropZone.addEventListener('click', () => fileInput.click());
 
+['dragenter', 'dragover'].forEach(eventName => {
+    filesDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        filesDropZone.classList.add('drag-over');
+    });
+});
+['dragleave', 'drop'].forEach(eventName => {
+    filesDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        filesDropZone.classList.remove('drag-over');
+    });
+});
 
+filesDropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files) );
+
+fileInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+    e.target.value = '';
+});
+
+galleryContainer.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.btn-remove-file');
+    if (removeBtn) {
+        removeBtn.closest('.gallery-item').remove();
+        updateOrderNumbers();
+        revisarSiHayCambios();
+    }
+});
+
+sendToPreviousEditionsButton.addEventListener('click', () => {
+    modalEnviarEdicionesAnteriores.showModal();
+});
+
+closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        modalEnviarEdicionesAnteriores.close();
+    });
+});
 
 cargarConfiguracionWeb();

@@ -231,69 +231,31 @@
                                     <span class="icon-picture bg-neutral-09 w-20px h-20px"></span>
                                 </div>
                                 <div class="card-header-title-container">
-                                    <span class="card-header-title">Galería de imágenes</span>
-                                    <span class="card-header-subtitle">Sube y organiza las fotos del evento</span>
+                                    <span class="card-header-title">Galería de imágenes y vídeos</span>
+                                    <span class="card-header-subtitle">Sube las fotos y vídeos del evento</span>
                                 </div>
                             </div>
                         </div>
-                        <div id="imageDropZone" class="large-input-group-body bg-neutral-09 border-dashed border-primary-03">
-                            <input type="file" id="imageInput" class="file-input" accept="image/*" hidden multiple>
+                        <div id="fileDropZone" class="large-input-group-body bg-neutral-09 border-dashed border-primary-03">
+                            <input type="file" id="fileInput" class="file-input" hidden multiple>
                             <div class="upload-content">
                                 <div class="drop-zone-icon-container bg-primary-05">
                                     <span class="icon-picture bg-primary-03 w-20px h-20px"></span>
                                 </div>
-                                <p class="upload-text">Arrastra tu imagen o haz clic para seleccionar</p>
-                                <p class="upload-subtext">JPG, JPEG, PNG, máximo 20MB</p>
+                                <p class="upload-text">Arrastra tu imagen o vídeo o haz clic para seleccionar</p>
+                                <p class="upload-subtext">MP4, WebM, JPG, JPEG, PNG, máximo 500MB</p>
                             </div>
                         </div>
                         <div class="image-gallery-container">
                             <div class="d-flex justify-space-between flex-wrap gap-8px">
-                                <span class="fw-500 fs-14px">Imágenes subidas (<span id="uploadedImagesCount">0</span>)</span>
+                                <span class="fw-500 fs-14px">Archivos subidos (<span id="uploadedFilesCount">0</span>)</span>
                                 <span class="fw-500 fs-14px text-neutral-04">Arrastra para reordenar</span>
                             </div>
-                            <div class="image-gallery-items-container" id="imageGalleryContainer">
+                            <div class="image-gallery-items-container" id="galleryContainer">
                             </div>
                         </div>
-                        <div class="secondary-card hidden-force" id="noImagesHelperText">
-                            <span class="helper-text-2">No hay imágenes subidas. Haz clic en el botón de arriba para añadir videos del evento.</span>
-                        </div>
-                    </div>
-
-                    <div class="generic-card postEventoCard hidden-force">
-                        <div class="card-header">
-                            <div class="card-header-left-side">
-                                <div class="icon-container bg-gradient-01">
-                                    <span class="icon-camera-movie bg-neutral-09 w-20px h-20px"></span>
-                                </div>
-                                <div class="card-header-title-container">
-                                    <span class="card-header-title">Galería de vídeos</span>
-                                    <span class="card-header-subtitle">Sube y organiza las vídeos del evento</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="videoDropZone" class="large-input-group-body bg-neutral-09 border-dashed border-primary-03">
-                            <input type="file" id="videoInput" class="file-input" accept="video/*" hidden multiple>
-                            <div class="upload-content">
-                                <div class="drop-zone-icon-container bg-primary-05">
-                                    <span class="icon-camera-movie bg-primary-03 w-20px h-20px"></span>
-                                </div>
-                                <p class="upload-text">Arrastra tu vídeo o haz clic para seleccionar</p>
-                                <p class="upload-subtext">MP4, WebM, máximo 100MB</p>
-                            </div>
-                        </div>
-
-                        <div class="image-gallery-container">
-                            <div class="d-flex justify-space-between flex-wrap gap-8px">
-                                <span class="fw-500 fs-14px">Vídeos subidos (<span id="uploadedVideosCount">0</span>)</span>
-                                <span class="fw-500 fs-14px text-neutral-04">Arrastra para reordenar</span>
-                            </div>
-                            <div class="video-list-container" id="videoGalleryContainer">
-                            </div>
-                        </div>
-
-                        <div class="secondary-card" id="noVideosHelperText">
-                            <span class="helper-text-2">No hay videos subidos. Haz clic en el botón de arriba para añadir videos del evento.</span>
+                        <div class="secondary-card hidden-force" id="noFilesHelperText">
+                            <span class="helper-text-2">No hay imágenes o vídeos subidos. Haz clic en el botón de arriba para añadir videos del evento.</span>
                         </div>
                     </div>
 

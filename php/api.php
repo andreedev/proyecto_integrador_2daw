@@ -7,14 +7,9 @@ require_once "./BBDD/BD.php";
 require_once "./BBDD/conection.php";
 
 abrirConexion();
-
 crearBaseDatosSiNoExiste();
-
 session_start();
 
-/**
- * Manejo de acciones enviadas por POST
- */
 if(isset($_POST['action'])){
     switch($_POST['action']){
         case 'revisarSesion':
@@ -34,9 +29,9 @@ if(isset($_POST['action'])){
             validarRol(['organizador']);
             actualizarConfiguracionWeb();
             break;
-        case 'procesarGaleriaPostEvento':
+        case 'actualizarGaleriaEdicionActual':
             validarRol(['organizador']);
-            procesarGaleriaPostEvento();
+            actualizarGaleriaEdicionActual();
             break;
         case 'subirArchivo':
             validarRol(['organizador', 'participante']);
@@ -51,10 +46,6 @@ if(isset($_POST['action'])){
     }
 }
 
-
-/**
- * Funcion para revisar si la sesión está iniciada
- */
 function revisarSesion()
 {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
@@ -71,9 +62,6 @@ function revisarSesion()
     ]);
 }
 
-/**
- * Cerrar sesión
- */
 function cerrarSesion(){
     session_unset();
     session_destroy();
@@ -83,9 +71,6 @@ function cerrarSesion(){
     ]);
 }
 
-/**
- * Intenta validar las credenciales en una tabla específica
- */
 function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad) {
     global $conexion;
 
@@ -109,10 +94,6 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
     return false;
 }
 
-/**
- * Función principal de inicio de sesión
- * Intenta autenticar al usuario como Participante o Organizador
- */
 function login() {
     $numIdentidad = $_POST['numExpediente'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -154,9 +135,6 @@ function login() {
 }
 
 
-/**
- * Valida si el rol de la sesión actual está permitido
- */
 function validarRol($rolesPermitidos) {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
@@ -191,29 +169,47 @@ function obtenerConfiguracionWeb(){
         }
     }
 
-    $sqlGallery = "SELECT orden, tipo, ruta FROM post_evento_archivos ORDER BY orden ASC";
+    $sqlGallery = "SELECT a.id_archivo, a.ruta 
+                   FROM archivo a
+                   INNER JOIN edicion_archivos ea ON a.id_archivo = ea.id_archivo
+                   INNER JOIN edicion e ON ea.id_edicion = e.id_edicion
+                   WHERE e.tipo = 'actual'
+                   ORDER BY ea.id ASC";
+
     $resultGallery = $conexion->query($sqlGallery);
 
-    $galeriaImagenesPostEvento = [];
-    $galeriaVideosPostEvento = [];
+    $archivosPostEvento = [];
+    $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
 
-    while ($item = $resultGallery->fetch_assoc()) {
-        $urlCompleta = $baseUrl . $item['ruta'];
+    if ($resultGallery) {
+        while ($item = $resultGallery->fetch_assoc()) {
+            $idArchivo = $item['id_archivo'];
+            $rutaRelativa = $item['ruta'];
+            $ext = strtolower(pathinfo($rutaRelativa, PATHINFO_EXTENSION));
 
-        if ($item['tipo'] === 'imagen') {
-            $galeriaImagenesPostEvento[] = $urlCompleta;
-        } else {
-            $galeriaVideosPostEvento[] = [
-                "url" => $urlCompleta,
-                "orden" => $item['orden']
+            $tipo = in_array($ext, $videoExtensions) ? 'video' : 'imagen';
+
+            $archivosPostEvento[] = [
+                "id" => $idArchivo,
+                "url" => $baseUrl . $rutaRelativa,
+                "ruta_relativa" => $rutaRelativa,
+                "tipo" => $tipo
             ];
         }
     }
 
+    // obtener datos de la edicion actual
+    $sqlEdicion = "SELECT * FROM edicion WHERE tipo = 'actual' LIMIT 1";
+    $resultadoEdicion = $conexion->query($sqlEdicion);
+    $edicionActual = null;
+    if ($resultadoEdicion && $resultadoEdicion->num_rows > 0) {
+        $edicionActual = $resultadoEdicion->fetch_assoc();
+    }
+
     $configuracionCompleta = [
-        "galeriaImagenesPostEvento" => $galeriaImagenesPostEvento,
-        "galeriaVideosPostEvento" => $galeriaVideosPostEvento,
-        "configuracion" => $config
+        "archivosPostEvento" => $archivosPostEvento,
+        "configuracion" => $config,
+        "edicionActual" => $edicionActual
     ];
 
     echo json_encode([
@@ -222,9 +218,6 @@ function obtenerConfiguracionWeb(){
     ]);
 }
 
-/**
- * Actualiza la configuración web
- */
 function actualizarConfiguracionWeb(){
     global $conexion;
 
@@ -285,48 +278,9 @@ function actualizarConfiguracionWeb(){
     }
 }
 
-/**
- * Guarda un archivo en la tabla post_evento_archivos
- */
-function procesarGaleriaPostEvento(){
-    global $conexion;
-
-    try{
-        $conexion->query("TRUNCATE TABLE post_evento_archivos");
-
-        if (!isset($_POST['archivos'])){
-            echo json_encode(["status" => "error", "message" => "Faltan datos de archivos"]);
-            return;
-        }
-
-        $archivos = json_decode($_POST['archivos'], true);
-
-        $stmt = $conexion->prepare("INSERT INTO post_evento_archivos (tipo, ruta, orden) VALUES (?, ?, ?)");
-
-        foreach ($archivos as $archivo) {
-            $tipo = $archivo['tipo'];
-            $ruta = $archivo['ruta'];
-            $orden = $archivo['orden'];
-            $stmt->bind_param("ssi", $tipo, $ruta, $orden);
-            $stmt->execute();
-        }
-
-        echo json_encode([
-            "status" => "success",
-            "message" => "Galería actualizada correctamente"
-        ]);
-
-    } catch (Exception $e){
-        http_response_code(500);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error en el servidor: " . $e->getMessage()
-        ]);
-    }
-}
 
 /**
- * Subir archivo, guardar en carpeta y devolver ruta
+ * Subir archivo, guardar en carpeta, guardar en BD y devolver id
  * Si es publico lo guarda en ./../uploads/public/
  * Si es privado lo guarda en ./../uploads/private/
  */
@@ -338,8 +292,6 @@ function subirArchivo(){
 
         $fileTmpPath = $_FILES['file']['tmp_name'];
         $fileName = $_FILES['file']['name'];
-        $fileSize = $_FILES['file']['size'];
-        $fileType = $_FILES['file']['type'];
 
         // Crear el directorio si no existe
         if (!is_dir($directorioSubida)) {
@@ -350,12 +302,21 @@ function subirArchivo(){
 
 
         if (move_uploaded_file($fileTmpPath, $rutaArchivo)) {
+            // Limpiar la ruta para almacenar en la base de datos
             $rutaRelativa = str_replace('./..', '', $rutaArchivo);
+            $rutaAbsoluta = __DIR__ . '/..' . $rutaRelativa;
+
+            global $conexion;
+            $stmt = $conexion->prepare("INSERT INTO archivo (ruta) VALUES (?)");
+            $stmt->bind_param("s", $rutaRelativa);
+            $stmt->execute();
+            $idArchivo = $stmt->insert_id;
 
             echo json_encode([
                 "status" => "success",
                 "message" => "Archivo subido correctamente",
-                "rutaArchivo" => $rutaRelativa
+                "id" => $idArchivo,
+                "ruta" => $rutaRelativa
             ]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido"]);
@@ -388,6 +349,43 @@ function borrarArchivo(){
     } else {
         echo json_encode(["status" => "error", "message" => "El archivo no existe"]);
     }
+}
+function actualizarGaleriaEdicionActual(){
+    global $conexion;
+
+    if (!isset($_POST['archivos'])) {
+        echo json_encode(["status" => "error", "message" => "No se recibieron archivos"]);
+        return;
+    }
+
+    $queryEdicion = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
+    $resEdicion = $conexion->query($queryEdicion);
+
+    if (!$resEdicion || $resEdicion->num_rows === 0) {
+        echo json_encode(["status" => "error", "message" => "No se encontró una edición actual"]);
+        return;
+    }
+    $idEdicion = $resEdicion->fetch_assoc()['id_edicion'];
+
+    $stmtDel = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
+    $stmtDel->bind_param("i", $idEdicion);
+    $stmtDel->execute();
+
+    $archivos = json_decode($_POST['archivos'], true);
+
+    if (count($archivos) > 0) {
+        $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
+
+        foreach ($archivos as $archivo) {
+            $idArchivo = $archivo['id'];
+            if ($idArchivo) {
+                $stmtInsertRel->bind_param("ii", $idArchivo, $idEdicion);
+                $stmtInsertRel->execute();
+            }
+        }
+    }
+
+    echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
 }
 
 
