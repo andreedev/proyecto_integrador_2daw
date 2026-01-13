@@ -347,7 +347,7 @@ dialog{
 .modal-ver-detalle-content{
     background-color: var(--neutral-09);
     border-radius: 8px;
-    width: fit-content;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -621,3 +621,577 @@ dialog{
     height: 1px;
     background-color: var(--neutral-05);
 }
+
+/*Modal agregar evento*/
+@media (min-width: 768px) {
+    .modal-agregar-evento{
+        max-width: 612px;
+    }
+}
+
+.modal-agregar-evento-header{
+    padding: 8px 16px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    align-self:stretch;
+    border-bottom: 2px solid var(--neutral-06);
+}
+
+.modal-agregar-evento-title{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.close-modal-agregar-evento{
+    cursor: pointer;
+    width:36px;
+    height:36px;
+    mask-image: url("../img/icon/CloseIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-03);
+    padding: 0 8px;
+}
+
+.modal-agregar-evento-body{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 24px;
+}
+
+.nombre-evento-agregar-input{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.modal-agregar-evento-label{
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    color:var(--neutral-01);
+}
+
+.modal-agregar-evento-input{
+    display:flex;
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    gap:10px;
+    align-items: stretch;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+
+}
+
+.nombre-error-message-agregar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.fecha-evento-agregar-input{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.input-e-icono-calendario-agregar-evento{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap:8px;
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+
+}
+
+.icono-calendario-agregar-evento{
+    width:24px;
+    height:24px;
+    mask-image: url("../img/icon/CalendarIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.fecha-error-message-agregar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.hora-evento-agregar-input{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.hora-inicio-evento-agregar{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width:100%;
+}
+
+.hora-fin-evento-agregar{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width:100%;
+}
+
+.hora-fin-error-message-agregar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.hora-inicio-error-message-agregar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+
+.modal-agregar-evento-hora-inicio-input{
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+}
+.modal-agregar-evento-hora-fin-input{
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+}
+
+.ubicacion-evento-agregar-input{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.input-e-icono-location-agregar-evento{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    gap:8px;
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+
+}
+
+.icono-ubicacion-agregar-evento{
+    width:16px;
+    height:16px;
+    mask-image: url("../img/icon/LocationThickIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-04);
+}
+
+.modal-agregar-evento-input-ubicacion{
+    width:100%;
+}
+
+.ubicacion-error-message-agregar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.descripcion-evento-agregar-input{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.modal-agregar-evento-textarea{
+    width:100%;
+    height:80px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+    resize: vertical;
+}
+
+.descripcion-error-message-agregar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.img-evento-agregar-container{
+    display:flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--neutral-06);
+}
+
+.modal-agregar-evento-file-input-background-drop-zone{
+    width:100%;
+    height:120px;
+    border: 1px dashed var(--primary-03);
+    border-radius: 8px;
+    background-color: var(--neutral-09);
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.icono-subir-imagen-agregar-evento-background{
+    width:48px;
+    height:48px;
+    padding:8px;
+    background-color: var(--primary-05);
+    border-radius: 24px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom:8px;
+}
+
+.icono-subir-imagen-agregar-evento{
+    width:32px;
+    height:32px;
+    mask-image: url("../img/icon/UploadIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--primary-03);
+}
+
+.modal-agregar-evento-file-input-text{
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--neutral-01);
+}
+
+.img-error-message-agregar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*Modal editar evento*/
+
+.modal-editar-evento-header{
+    padding: 8px 16px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    align-self:stretch;
+    border-bottom: 2px solid var(--neutral-06);
+}
+
+.modal-editar-evento-title{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.close-modal-editar-evento{
+    cursor: pointer;
+    width:36px;
+    height:36px;
+    mask-image: url("../img/icon/CloseIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-03);
+    padding: 0 8px;
+}
+
+.modal-editar-evento-body{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 24px;
+}
+
+.modal-editar-evento-label{
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    color:var(--neutral-01);
+}
+
+.modal-editar-evento-input{
+    width: 100%;
+    height:36px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+
+}
+
+.nombre-error-message-editar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.input-e-icono-calendario-editar-evento{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+        justify-content: space-between;
+    gap:8px;
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+
+}
+
+.icono-calendario-editar-evento{
+    width:24px;
+    height:24px;
+    mask-image: url("../img/icon/CalendarIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.fecha-error-message-editar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.hora-evento-editar-input{
+    display: flex;
+    flex-direction: row;
+    align-items:flex-start;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.hora-inicio-evento-editar{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width:100%;
+}
+
+.hora-fin-evento-editar{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width:100%;
+}
+
+.hora-fin-error-message-editar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.hora-inicio-error-message-editar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.modal-editar-evento-hora-inicio-input{
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+}
+.modal-editar-evento-hora-fin-input{
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+}
+
+.ubicacion-evento-editar-input{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.input-e-icono-location-editar-evento{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    gap:8px;
+    height:36px;
+    width:100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+
+}
+
+.icono-ubicacion-editar-evento{
+    width:16px;
+    height:16px;
+    mask-image: url("../img/icon/LocationThickIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-04);
+}
+
+.modal-editar-evento-input-ubicacion{
+    width:100%;
+}
+
+.ubicacion-error-message-editar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.descripcion-evento-editar-input{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.modal-editar-evento-textarea{
+    width:100%;
+    height:80px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--neutral-06);
+    background-color: var(--neutral-09);
+    resize: vertical;
+}
+
+.descripcion-error-message-editar-evento{
+    font-size:12px;
+    color: var(--error-03);
+    height:14px;
+}
+
+.img-evento-editar-container{
+    display:flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--neutral-06);
+}
+
+.modal-editar-evento-file-input-background{
+    width:100%;
+    height:120px;
+    border-radius: 8px;
+    background-color: var(--neutral-09);
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position:relative;
+    overflow: hidden;
+}
+
+.img-preview-editar-evento{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    height:auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.icono-cambiar-imagen-editar-evento-background{
+    position:absolute;
+    right:5px;
+    top:5px;
+    width:48px;
+    height:48px;
+    padding:8px;
+    background-color: var(--neutral-09);
+    border-radius: 8px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom:8px;
+}
+
+.icono-cambiar-imagen-editar-evento{
+    width:32px;
+    height:32px;
+    mask-image: url("../img/icon/ReplaceIcon.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-03);
+}
+
+/*Focus de todos los input*/
+.modal-editar-evento-input:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+.modal-agregar-evento-input:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+.modal-editar-evento-textarea:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+.modal-agregar-evento-textarea:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+.modal-editar-evento-hora-inicio-input:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+.modal-agregar-evento-hora-inicio-input:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+.modal-editar-evento-hora-fin-input:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+.modal-agregar-evento-hora-fin-input:focus{
+    border: 1px solid var(--neutral-04);
+}
+
+

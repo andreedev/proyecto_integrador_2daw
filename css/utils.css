@@ -173,6 +173,10 @@
     background-color: var(--warning-01);
 }
 
+.w-100{
+    width: 100%;
+}
+
 .w-16px{
     width: 16px;
 }

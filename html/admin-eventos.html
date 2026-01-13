@@ -22,10 +22,9 @@
                     <p class="admin-module-name">Eventos</p>
                     <span class="admin-module-description">Gestiona el itinerario de eventos</span>
                 </div>
-                    <div class="admin-header-main-action-button" id="btnCrearEvento">
-                        <span class="icono-agregar"></span>
-                        <span>Crear evento</span>
-                    </div>
+                <div class="admin-header-main-action-button" id="btnAgregarEvento">
+                    <span class="icono-agregar"></span>
+                    <span>Crear evento</span>
                 </div>
             </div>
             <div class="admin-content">
@@ -80,8 +79,8 @@
         </div>
     </div>
 
-
-    <dialog class="modal-ver-detalle-container hidden-force" id="modalVerDetalleEvento">
+    <!-- Modal ver detalle evento -->
+    <dialog class="modal-ver-detalle-container" id="modalVerDetalleEvento">
         <div class="modal-ver-detalle-content">
             <div class="modal-ver-detalle-header">
                 <h2 class="modal-ver-detalle-title">Detalle de evento</h2>
@@ -142,6 +141,155 @@
 
         </div>
     </dialog>
+
+
+    <!-- Modal agregar evento -->
+    <dialog class="modal-agregar-evento w-100" id="modalAgregarEvento">
+        <div class="modal-ver-detalle-content">
+            <div class="modal-agregar-evento-header">
+                <p class="modal-agregar-evento-title">Agregar nuevo evento</p>
+                <span class="close-modal-agregar-evento close-modal"fin></span>
+            </div>
+            <div class="modal-agregar-evento-body">
+    
+                <div class="nombre-evento-agregar-input">
+                    <label for="event-name" class="modal-agregar-evento-label">Nombre del evento</label>
+                    <input type="text" id="eventNameAgregar" class="modal-agregar-evento-input" placeholder="Ingrese el nombre del evento">
+                    <span class="nombre-error-message-agregar-evento"></span>
+                </div>
+    
+                <div class="fecha-evento-agregar-input">
+                    <label for="event-date" class="modal-agregar-evento-label">Fecha</label>
+                    <div class="input-e-icono-calendario-agregar-evento">
+                        <input type="text" id="eventDateAgregar" class="modal-agregar-evento-input-fecha" placeholder="DD/MM/AAAA">
+                        <span class="icono-calendario-agregar-evento"></span>
+                    </div>
+                    <span class="fecha-error-message-agregar-evento"></span>
+                </div>
+    
+                <div class="hora-evento-agregar-input">
+                    <div class="hora-inicio-evento-agregar">
+                        <label for="event-start-time" class="modal-agregar-evento-label">Hora de inicio</label>
+                        <input type="time" id="eventStartTimeAgregar" class="modal-agregar-evento-hora-inicio-input">
+                        <span class="hora-inicio-error-message-agregar-evento"></span>
+                    </div>
+                    <div class="hora-fin-evento-agregar">
+                        <label for="event-end-time" class="modal-agregar-evento-label">Hora de finalización</label>
+                        <input type="time" id="eventEndTimeAgregar" class="modal-agregar-evento-hora-fin-input">
+                        <span class="hora-fin-error-message-agregar-evento"></span>
+                    </div>
+                </div>
+    
+                <div class="ubicacion-evento-agregar-input">
+                    <label for="event-location" class="modal-agregar-evento-label">Ubicación</label>
+                    <div class="input-e-icono-location-agregar-evento">
+                        <span class="icono-ubicacion-agregar-evento"></span>
+                        <input type="text" id="eventLocationAgregar" class="modal-agregar-evento-input-ubicacion" placeholder="Ingrese la ubicación del evento">
+                    </div>
+                    <span class="ubicacion-error-message-agregar-evento"></span>
+                </div>
+    
+                <div class="descripcion-evento-agregar-input">
+                    <label for="event-description" class="modal-agregar-evento-label">Descripción</label>
+                    <textarea id="eventDescriptionAgregar" class="modal-agregar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
+                    <span class="descripcion-error-message-agregar-evento"></span>
+                </div>
+    
+                <div class="img-evento-agregar-container">
+                    <label for="event-image" class="modal-agregar-evento-label">Imagen del evento</label>
+    
+                    <div class="modal-agregar-evento-file-input-background-drop-zone" id="imgAgregarEventoDropZone">
+                        <input type="file" id="eventImageAgregar" class="modal-agregar-evento-file-input hidden-force" accept="image/*">
+                        <div class="icono-subir-imagen-agregar-evento-background">
+                            <span class="icono-subir-imagen-agregar-evento"></span>
+                        </div>
+                        <span class="modal-agregar-evento-file-input-text">Arrastra tu imagen o haz click para seleccionar</span>
+                    </div>
+                    <span class="img-error-message-agregar-evento"></span>
+                </div>
+                
+                <div class="acciones-agregar-evento">
+                    <span class="icono-boton-agregar-evento"></span>
+                    <span class="boton-agregar-evento primary-button cursor-pointer" id="btnAgregarEventoFinal">Agregar evento</span>
+                </div>
+            </div>
+        </div>
+    </dialog>
+    
+    
+    <!-- Modal editar evento -->
+    <dialog class="modal-editar-evento w-100" id="modalEditarEvento">
+        <div class="modal-ver-detalle-content">
+            <div class="modal-editar-evento-header">
+                <p class="modal-editar-evento-title">Editar evento</p>
+                <span class="close-modal-editar-evento close-modal"></span>
+            </div>
+            <div class="modal-editar-evento-body">
+    
+                <div class="nombre-evento-editar-input">
+                    <label for="event-name" class="modal-editar-evento-label">Nombre del evento</label>
+                    <input type="text" id="eventNameEditar" class="modal-editar-evento-input" placeholder="Ingrese el nombre del evento">
+                    <span class="nombre-error-message-editar-evento"></span>
+                </div>
+    
+                <div class="fecha-evento-editar-input">
+                    <label for="event-date" class="modal-editar-evento-label">Fecha</label>
+                    <div class="input-e-icono-calendario-editar-evento">
+                        <input type="text" id="eventDateEditar" class="modal-editar-evento-input-fecha" placeholder="DD/MM/AAAA">
+                        <span class="icono-calendario-editar-evento"></span>
+                    </div>
+                    <span class="fecha-error-message-editar-evento"></span>
+                </div>
+    
+                <div class="hora-evento-editar-input">
+                    <div class="hora-inicio-evento-editar">
+                        <label for="event-start-time" class="modal-editar-evento-label">Hora de inicio</label>
+                        <input type="time" id="eventStartTimeEditar" class="modal-editar-evento-hora-inicio-input">
+                        <span class="hora-inicio-error-message-editar-evento"></span>
+                    </div>
+                    <div class="hora-fin-evento-editar">
+                        <label for="event-end-time" class="modal-editar-evento-label">Hora de finalización</label>
+                        <input type="time" id="eventEndTimeEditar" class="modal-editar-evento-hora-fin-input">
+                        <span class="hora-fin-error-message-editar-evento"></span>
+                    </div>
+                </div>
+    
+                <div class="ubicacion-evento-editar-input">
+                    <label for="event-location" class="modal-editar-evento-label">Ubicación</label>
+                    <div class="input-e-icono-location-editar-evento">
+                        <span class="icono-ubicacion-editar-evento"></span>
+                        <input type="text" id="eventLocationEditar" class="modal-editar-evento-input-ubicacion" placeholder="Ingrese la ubicación del evento">
+                    </div>
+                    <span class="ubicacion-error-message-editar-evento"></span>
+                </div>
+    
+                <div class="descripcion-evento-editar-input">
+                    <label for="event-description" class="modal-editar-evento-label">Descripción</label>
+                    <textarea id="eventDescriptionEditar" class="modal-editar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
+                    <span class="descripcion-error-message-editar-evento"></span>
+                </div>
+    
+                <div class="img-evento-editar-container">
+                    <label for="event-image" class="modal-editar-evento-label">Imagen del evento</label>
+    
+                    <div class="modal-editar-evento-file-input-background" id="imgEditarEvento">
+                        <input type="file" id="eventImageEditar" class="modal-editar-evento-file-input hidden-force" accept="image/*">
+                        <img class="img-preview-editar-evento" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen del evento">
+                        <div class="icono-cambiar-imagen-editar-evento-background">
+                            <span class="icono-cambiar-imagen-editar-evento"></span>
+                        </div>
+                    </div>
+                    <span class="img-error-message-editar-evento"></span>
+                </div>
+    
+                <div class="acciones-editar-evento">
+                    <span class="icono-boton-editar-evento"></span>
+                    <span class="boton-editar-evento primary-button cursor-pointer" id="btnEditarEventoFinal">Guardar cambios</span>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
 
     <script src="../js/constantes.js"></script>
     <script src="../js/check-session.js"></script>
