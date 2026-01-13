@@ -426,6 +426,21 @@ async function publishChanges() {
 
     unsavedChangesWarning.classList.add('hidden-force');
     generalErrorMessage.textContent = '';
+    // subir imagenes primero
+    const imageItems = Array.from(imageGalleryContainer.querySelectorAll('.gallery-item img'))
+
+    const fileArray = [];
+    for (const file of fileArray) {
+        if (!file.type.startsWith('video/')) continue;
+        try {
+            const rutaArchivo = await subirArchivo(file);
+            rutasArchivosSubidos.push(rutaArchivo);
+        } catch (error) {
+            console.error('Error al subir el archivo:', error);
+            triggerShakeError(videoDropZone);
+        }
+    }
+
     await actualizarConfiguracionWeb();
 }
 
@@ -680,18 +695,6 @@ function handleFiles(files) {
     });
 
     if (hasError) triggerShakeError(imageDropZone);
-
-    // Subir los archivos al servidor
-    fileArray.forEach(async (file) => {
-        if (!file.type.startsWith('image/')) return;
-        try {
-            const rutaArchivo = await subirArchivo(file);
-            rutasArchivosSubidos.push(rutaArchivo);
-        } catch (error) {
-            console.error('Error al subir el archivo:', error);
-            triggerShakeError(imageDropZone);
-        }
-    });
 }
 
 /**
@@ -839,17 +842,6 @@ function handleVideoFiles(files) {
     });
 
     if (hasError) triggerShakeError(videoDropZone);
-
-    fileArray.forEach(async (file) => {
-        if (!file.type.startsWith('video/')) return;
-        try {
-            const rutaArchivo = await subirArchivo(file);
-            rutasArchivosSubidos.push(rutaArchivo);
-        } catch (error) {
-            console.error('Error al subir el archivo:', error);
-            triggerShakeError(videoDropZone);
-        }
-    });
 }
 
 function createVideoItem(src, fileName) {
