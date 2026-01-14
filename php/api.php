@@ -4,7 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
 require_once "./BBDD/BD.php";
-require_once "./BBDD/conection.php";
+require_once "./BBDD/connection.php";
 
 abrirConexion();
 crearBaseDatosSiNoExiste();

@@ -1,5 +1,5 @@
 <?php
-require_once "conection.php";
+require_once "connection.php";
 
 function crearBaseDatosSiNoExiste() {
     global $conexion, $db;
@@ -149,6 +149,13 @@ function crearBaseDatosSiNoExiste() {
                     FOREIGN KEY (id_archivo_video) REFERENCES archivo(id_archivo)
                 );
                 
+                CREATE TABLE patrocinador (
+                    id_patrocinador INT AUTO_INCREMENT PRIMARY KEY,,
+                    nombre VARCHAR(100),
+                    id_archivo_logo INT,
+                    FOREIGN KEY (id_archivo_logo) REFERENCES archivo(id_archivo)
+                );
+                
                 -- =========================
                 -- INSERTS
                 
@@ -237,6 +244,9 @@ function crearBaseDatosSiNoExiste() {
                 ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', '2024-06-01', '19:00', '21:00', 1, 2),
                 ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', '2024-06-05', '10:00', '13:00', 1, 4),
                 ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', '2024-06-10', '20:00', '22:00', 1, 6);
+                
+                INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
+                ('Canon', 1);
         
             ";
 
