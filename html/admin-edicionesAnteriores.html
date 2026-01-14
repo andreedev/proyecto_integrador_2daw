@@ -88,133 +88,169 @@
 
     <!-- Modal Crear Edicion Anterior -->
 
-    <div class="modal-crear-edicion w-100" id="modalCrearEdicionAnterior">
-        <div class="modal-crear-edicion-content">
-            <div class="-modal-crear-edicion-header">
-                <div class="modal-crear-edicion-text">
-                    <h2 class="modal-crear-edicion-title">Crear Edición Anterior</h2>
-                    <span class="modal-crear-edicion-subtitle">Crea una nueva entrada en el histórico de ediciones</span>
+    <dialog class="modal w-100" id="modalCrearEdicionAnterior">
+        <div class="modal-content">
+            <div class="-modal-header">
+                <div class="modal-text">
+                    <h2 class="modal-title">Crear Edición Anterior</h2>
+                    <span class="modal-subtitle">Crea una nueva entrada en el histórico de ediciones</span>
                 </div>
-                <span class="close-modal-crear-edicion"></span>
+                <span class="close-modal"></span>
             </div>
 
-            <div class="modal-crear-edicion-body">
+            <div class="modal-body">
 
-                <div class="modal-crear-edicion-basic-info">
-                    <div class="basic-info-header-crear-edicion">
-                        <div class="icono-documento-crear-edicion-background">
-                            <span class="icono-documento-crear-edicion"></span>
+                <div class="modal-basic-info">
+                    <div class="basic-info-header">
+                        <div class="icono-documento-background">
+                            <span class="icono-documento"></span>
                         </div>
-                        <h2 class="basic-info-title-crear-edicion">Información Básica</h2>
-                        <span class="basic-info-subtitle-crear-edicion">Información sobre la edición</span>
+                        <h2 class="basic-info-title">Información Básica</h2>
+                        <span class="basic-info-subtitle">Información sobre la edición</span>
                     </div>
 
-                    <div class="datos-crear-edicion">
-                        <div class="year-edicion-crear-edicion">
-                            <label for="label-year-crear-edicion">Año de la edición</label>
-                            <div class="input-year-crear-edicion-background">
-                                <span class="icon-calendar-crear-edicion"></span>
-                                <input type="text" class="input-year-crear-edicion" id="inputYearEdicion" placeholder="yyyy">
+                    <div class="datos">
+                        <div class="year-edicion">
+                            <label for="label-year">Año de la edición</label>
+                            <div class="input-year-background">
+                                <span class="icon-calendar"></span>
+                                <input type="text" class="input-year" id="inputYearEdicion" placeholder="yyyy">
                             </div>
                         </div>
 
-                        <div class="number-contestant-crear-edicion">
-                            <label for="label-number-contestant-crear-edicion">Número de participantes</label>
-                            <div class="input-number-contestant-crear-edicion-background">
-                                <span class="icono-participantes-crear-edicion"></span>
-                                <input type="text" class="input-number-contestant-crear-edicion" id="inputNumberContestantEdicion" placeholder="Número de participantes">
+                        <div class="number-contestant">
+                            <label for="label-number-contestant">Número de participantes</label>
+                            <div class="input-number-contestant-background">
+                                <span class="icono-participantes"></span>
+                                <input type="text" class="input-number-contestant" id="inputNumberContestantEdicion" placeholder="Número de participantes">
                             </div>
                         </div>
 
-                        <div class="resumen-edicion-crear-edicion">
-                            <label for="label-resumen-crear-edicion">Resumen de la edición</label>
-                            <textarea id="inputResumenCrearEdicion" class="input-resumen-crear-edicion" placeholder="Escribe una breve descripción de la edición..."></textarea>
+                        <div class="resumen-edicion">
+                            <label for="label-resumen">Resumen de la edición</label>
+                            <textarea id="inputResumenCrearEdicion" class="input-resumen" placeholder="Escribe una breve descripción de la edición..."></textarea>
                         </div>
                     </div>
-                    <p class="description-resumen-crear-edicion">Describe los momentos destacados y el éxito del evento</p>
+                    <p class="description-resumen">Describe los momentos destacados y el éxito del evento</p>
                 </div>
 
-                <div class="modal-crear-edicion-multimedia">
-                    <div class="multimedia-header-crear-edicion">
-                        <div class="icono-multimedia-crear-edicion-background">
-                            <span class="icono-multimedia-crear-edicion"></span>
+                <div class="modal-multimedia">
+                    <div class="multimedia-header">
+                        <div class="icono-multimedia-background">
+                            <span class="icono-multimedia"></span>
                         </div>
-                        <h2 class="multimedia-title-crear-edicion">Galería de imágenes y vídeos</h2>
-                        <span class="multimedia-subtitle-crear-edicion">Sube las fotos y videos de esta edición</span>
+                        <h2 class="multimedia-title">Galería de imágenes y vídeos</h2>
+                        <span class="multimedia-subtitle">Sube las fotos y videos de esta edición</span>
                     </div>
 
-                    <div class="drop-zone-crear-edicion" id="dropZoneCrearEdicion">
-                        <input type="file" id="fileInputCrearEdicion" class="crear-edicion-anterior-file hidden-force" accept="image/*">
-                        <div class="icono-cambiar-imagen-crear-edicion-background">
-                            <span class="icono-cambiar-imagen-crear-edicion"></span>
+                    <div class="drop-zone" id="dropZoneCrearEdicion">
+                        <input type="file" id="fileInputCrearEdicion" class=-anterior-file hidden-force" accept="image/*">
+                        <div class="icono-cambiar-imagen-background">
+                            <span class="icono-cambiar-imagen"></span>
                         </div>
-                        <p class="drop-zone-text-crear-edicion">Arrastra tu imagen o video haz clic para seleccionar</p>
+                        <p class="drop-zone-text">Arrastra tu imagen o video haz clic para seleccionar</p>
                     </div>
-                    <div class="preview-multimedia-crear-edicion">
-                        <p class="preview-multimedia-title-crear-edicion">No hay imágenes o vídeos subidos. Haz click en el botón de arriba para añadir videos</p>
+                    <div class="preview-multimedia">
+                        <p class="preview-multimedia-title">No hay imágenes o vídeos subidos. Haz click en el botón de arriba para añadir videos</p>
                     </div>
                 </div>
 
-                <div class="modal-crear-edicion-ganadores">
-                    <div class="ganadores-header-crear-edicion">
-                        <div class="icono-ganadores-crear-edicion-background">
-                            <span class="icono-ganadores-crear-edicion"></span>
+                <div class="modal-ganadores">
+                    <div class="ganadores-header">
+                        <div class="icono-ganadores-background">
+                            <span class="icono-ganadores"></span>
                         </div>
-                        <div class="ganadores-text-crear-edicion">
-                            <h2 class="ganadores-title-crear-edicion">Ganadores de esta edición</h2>
-                            <span class="ganadores-subtitle-crear-edicion">1 ganador registrado</span>
+                        <div class="ganadores-text">
+                            <h2 class="ganadores-title">Ganadores de esta edición</h2>
+                            <span class="ganadores-subtitle">1 ganador registrado</span>
                         </div>
-                        <div class="boton-agregar-ganador-crear-edicion">
-                            <span class="icono-agregar-ganador-crear-edicion"></span>
-                            <span class="boton-text-agregar-ganador-crear-edicion">Agregar ganador</span>
+                        <div class="boton-agregar-ganador">
+                            <span class="icono-agregar-ganador"></span>
+                            <span class="boton-text-agregar-ganador">Agregar ganador</span>
                         </div>
                     </div>
 
-                    <div class="ganador-card-crear-edicion">
-                        <div class="datos-ganador-crear-edicion">
-                            <div class="nombre-ganador-crear-edicion">
-                                <span class="icono-ganador-crear-edicion"></span>
-                                <span class="nombre-ganador-crear-edicion">Juan Carlos del Prado</span>
+                    <div class="ganador-card">
+                        <div class="datos-ganador">
+                            <div class="nombre-ganador">
+                                <span class="icono-ganador"></span>
+                                <span class="nombre-ganador">Juan Carlos del Prado</span>
                             </div>
 
-                            <div class="categoría-ganador-crear-edicion">
-                                <span class="icono-categoria-ganador-crear-edicion"></span>
-                                <span class="categoria-ganador-crear-edicion">Mejor Cortometraje Alumno</span>
+                            <div class="categoría-ganador">
+                                <span class="icono-categoria-ganador"></span>
+                                <span class="categoria-ganador">Mejor Cortometraje Alumno</span>
                             </div>
                             
-                            <div class="puesto-ganador-crear-edicion">
-                                <span class="icono-puesto-ganador-crear-edicion"></span>
-                                <span class="puesto-ganador-crear-edicion">Segundo puesto 100€</span>
+                            <div class="puesto-ganador">
+                                <span class="icono-puesto-ganador"></span>
+                                <span class="puesto-ganador">Segundo puesto 100€</span>
                             </div>
 
-                            <div class="video-ganador-crear-edicion">
-                                <span class="icono-video-ganador-crear-edicion"></span>
-                                <div class="nombre-video-ganador-crear-edicion">
-                                    <span class="video-ganador-crear-edicion">Cortometraje:</span>
-                                    <span class="nombre-video-crear-edicion">nombre_video.mp4</span>
+                            <div class="video-ganador">
+                                <span class="icono-video-ganador"></span>
+                                <div class="nombre-video-ganador">
+                                    <span class="video-ganador">Cortometraje:</span>
+                                    <span class="nombre-video">nombre_video.mp4</span>
                                 </div>
                             </div>
 
                         </div>
-                        <span class="icon-eliminar-ganador-crear-edicion"></span>
+                        <span class="icon-eliminar-ganador"></span>
                     </div>
 
-                    <div class="agregar-ganador-crear-edicion">
+                    <div class="agregar-ganador">
 
+                        <div class="agregar-ganador-header">
+                            <span class="agregar-ganador-text">Agregar ganador</span>
+                            <span class="icono-cancelar-agregar-ganador"></span>
+                        </div>
+
+                        <div class="agregar-ganador-body">
+                            <div class="nombre-ganador">
+                                <label for="label-nombre-ganador">Nombre</label>
+                                <div class="input-nombre-ganador-background">
+                                    <span class="icono-ganador"></span>
+                                    <input type="text" class="input-nombre-ganador" id="inputNombreGanador" placeholder="Nombre completo del ganador">
+                                </div>
+                            </div>
+
+                            <div class="categoria-puesto-ganador">
+                                <div class="categoria-ganador">
+                                    <label for="label-categoria-ganador">Categoría</label>
+                                    <div class="input-categoria-ganador-background">
+                                        <span class="icono-categoria-ganador"></span>
+                                        <input type="text" class="input-categoria-ganador" id="inputCategoriaGanador" placeholder="Categoría del premio">
+                                    </div>
+                                </div>
+                                <div class="puesto-ganador">
+                                    <label for="label-puesto-ganador">Premio</label>
+                                    <div class="input-puesto-ganador-background">
+                                        <span class="icono-puesto-ganador"></span>
+                                        <input type="text" class="input-puesto-ganador" id="inputPuestoGanador" placeholder="Puesto del ganador">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="video-gandor">
+                                <label for="label-video-ganador">Video del ganador</label>
+                                <div class="input-video-ganador-background">
+                                    <span class="icono-video-ganador"></span>
+                                    <input type="text" class="input-video-ganador" id="inputVideoGanador" placeholder="Enlace al video del ganador">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="modal-crear-edicion-actions">
-                <button class="btn-cancelar-modal-crear-edicion">Cancelar</button>
-                <button class="btn-guardar-modal-crear-edicion">Continuar</button>
+            <div class="modal-actions">
+                <button class="btn-cancelar-modal">Cancelar</button>
+                <button class="btn-guardar-modal">Guardar</button>
             </div>
         </div>
 
-    </div>
-
-
-    <!-- Modal Editar Edicion Anterior -->
+    </dialog>
 
 
 
