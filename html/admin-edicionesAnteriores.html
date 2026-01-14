@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
     <link rel="stylesheet" href="../css/admin-edicionesAnteriores.css">
+    <link rel="stylesheet" href="../css/utils.css">
 </head>
 
 <body>
@@ -19,8 +20,8 @@
         <div class="admin-page-content">
             <div class="admin-header">
                 <div class="admin-header-module-info-container">
-                    <p class="admin-module-name">Ediciones Anteriores</p>
-                    <span class="admin-module-description">Gestiona las ediciones anteriores</span>
+                    <p class="admin-module-name">Gala - Ediciones Anteriores</p>
+                    <span class="admin-module-description">Administra los eventos del festival</span>
                 </div>
                 <div class="admin-header-module-actions-container">
                     <div class="admin-header-main-action-button btn-create" >
@@ -30,102 +31,53 @@
                 </div>
             </div>
             <div class="admin-content">
-                <div class="editions-grid">
-                    <!-- Edición 2025 -->
-                    <div class="edition-card">
-                        <div class="edition-header">
-                            <h2 class="edition-title">Edición 2025</h2>
-                            <div class="edition-actions">
-                                <button title="Editar"><span class="icon-users"><img src="../img/icon/PencilIcon.svg"></span></button>
-                                <button title="Eliminar"><span class="icon-trophy"><img src="../img/icon/TrashIcon.svg"></span></button>
-                            </div>
-                        </div>
-                        <div class="stats-grid">
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/UserIcon.svg" alt="Participantes">
-                                </div>
-                                <div>
-                                    <div class="stat-label">Participantes</div>
-                                    <div class="stat-value">45</div>
-                                </div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/TrophyIcon.svg" alt="Ganadores">
-                                </div>
-                                <div>
-                                    <div class="stat-label">Ganadores</div>
-                                    <div class="stat-value">2</div>
-                                </div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/ImageIcon.svg" alt="Imágenes">
-                                </div>
-                                <div>
-                                    <div class="stat-label">Imágenes</div>
-                                    <div class="stat-value">3</div>
-                                </div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/TablerMovieIcon.svg" alt="Videos">
-                                </div>
-                                <div>
-                                    <div class="stat-label">Videos</div>
-                                    <div class="stat-value">2</div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="admin-content-body">
+                    <div class="all-editions">
+                        <p class="all-editions-title">Todas las ediciones anteriores</p>
+                        <p class="all-editions-subtitle">4 ediciones registradas</p>
                     </div>
-
-                    <!-- Edición 2024 -->
-                    <div class="edition-card">
-                        <div class="edition-header">
-                            <h2 class="edition-title">Edición 2024</h2>
-                            <div class="edition-actions">
-                                <button title="Editar"><span class="icon-users"><img src="../img/icon/PencilIcon.svg"></span></button>
-                                <button title="Eliminar"><span class="icon-trophy"><img src="../img/icon/TrashIcon.svg"></span></button>
-                            </div>
-                        </div>
-                        <div class="stats-grid">
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/UserIcon.svg" alt="Participantes">
+                    <div class="card-ediciones-body">
+                        <div class="editions-grid">
+                            <!-- Edición 2025 -->
+                            <div class="edition-card">
+                                <div class="edition-header">
+                                    <h2 class="edition-title">Edición 2025</h2>
+                                    <div class="edition-actions">
+                                        <span class="icon-editar"></span>
+                                        <span class="icon-eliminar"></span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="stat-label">Participantes</div>
-                                    <div class="stat-value">38</div>
-                                </div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/TrophyIcon.svg" alt="Ganadores">
-                                </div>
-                                <div>
-                                    <div class="stat-label">Ganadores</div>
-                                    <div class="stat-value">1</div>
-                                </div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/ImageIcon.svg" alt="Imágenes">
-                                </div>
-                                <div>
-                                    <div class="stat-label">Imágenes</div>
-                                    <div class="stat-value">12</div>
-                                </div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-icon">
-                                    <img src="../img/icon/TablerMovieIcon.svg" alt="Videos">
-                                </div>
-                                <div>
-                                    <div class="stat-label">Videos</div>
-                                    <div class="stat-value">12</div>
+                                <div class="stats-grid">
+                                    <div class="stat-box participantes">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/UserIcon.svg" alt="Participantes">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Participantes</div>
+                                            <div class="stat-value">45</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-box ganadores">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/TrophyIcon.svg" alt="Ganadores">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Ganadores</div>
+                                            <div class="stat-value">2</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-box imagenes">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/ImageIcon.svg" alt="Imágenes">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Imágenes</div>
+                                            <div class="stat-value">3</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+        
                         </div>
                     </div>
                 </div>
@@ -133,6 +85,140 @@
         </div>
 
     </div>
+
+    <!-- Modal Crear Edicion Anterior -->
+
+    <div class="modal-crear-edicion w-100" id="modalCrearEdicionAnterior">
+        <div class="modal-crear-edicion-content">
+            <div class="-modal-crear-edicion-header">
+                <div class="modal-crear-edicion-text">
+                    <h2 class="modal-crear-edicion-title">Crear Edición Anterior</h2>
+                    <span class="modal-crear-edicion-subtitle">Crea una nueva entrada en el histórico de ediciones</span>
+                </div>
+                <span class="close-modal-crear-edicion"></span>
+            </div>
+
+            <div class="modal-crear-edicion-body">
+
+                <div class="modal-crear-edicion-basic-info">
+                    <div class="basic-info-header-crear-edicion">
+                        <div class="icono-documento-crear-edicion-background">
+                            <span class="icono-documento-crear-edicion"></span>
+                        </div>
+                        <h2 class="basic-info-title-crear-edicion">Información Básica</h2>
+                        <span class="basic-info-subtitle-crear-edicion">Información sobre la edición</span>
+                    </div>
+
+                    <div class="datos-crear-edicion">
+                        <div class="year-edicion-crear-edicion">
+                            <label for="label-year-crear-edicion">Año de la edición</label>
+                            <div class="input-year-crear-edicion-background">
+                                <span class="icon-calendar-crear-edicion"></span>
+                                <input type="text" class="input-year-crear-edicion" id="inputYearEdicion" placeholder="yyyy">
+                            </div>
+                        </div>
+
+                        <div class="number-contestant-crear-edicion">
+                            <label for="label-number-contestant-crear-edicion">Número de participantes</label>
+                            <div class="input-number-contestant-crear-edicion-background">
+                                <span class="icono-participantes-crear-edicion"></span>
+                                <input type="text" class="input-number-contestant-crear-edicion" id="inputNumberContestantEdicion" placeholder="Número de participantes">
+                            </div>
+                        </div>
+
+                        <div class="resumen-edicion-crear-edicion">
+                            <label for="label-resumen-crear-edicion">Resumen de la edición</label>
+                            <textarea id="inputResumenCrearEdicion" class="input-resumen-crear-edicion" placeholder="Escribe una breve descripción de la edición..."></textarea>
+                        </div>
+                    </div>
+                    <p class="description-resumen-crear-edicion">Describe los momentos destacados y el éxito del evento</p>
+                </div>
+
+                <div class="modal-crear-edicion-multimedia">
+                    <div class="multimedia-header-crear-edicion">
+                        <div class="icono-multimedia-crear-edicion-background">
+                            <span class="icono-multimedia-crear-edicion"></span>
+                        </div>
+                        <h2 class="multimedia-title-crear-edicion">Galería de imágenes y vídeos</h2>
+                        <span class="multimedia-subtitle-crear-edicion">Sube las fotos y videos de esta edición</span>
+                    </div>
+
+                    <div class="drop-zone-crear-edicion" id="dropZoneCrearEdicion">
+                        <input type="file" id="fileInputCrearEdicion" class="crear-edicion-anterior-file hidden-force" accept="image/*">
+                        <div class="icono-cambiar-imagen-crear-edicion-background">
+                            <span class="icono-cambiar-imagen-crear-edicion"></span>
+                        </div>
+                        <p class="drop-zone-text-crear-edicion">Arrastra tu imagen o video haz clic para seleccionar</p>
+                    </div>
+                    <div class="preview-multimedia-crear-edicion">
+                        <p class="preview-multimedia-title-crear-edicion">No hay imágenes o vídeos subidos. Haz click en el botón de arriba para añadir videos</p>
+                    </div>
+                </div>
+
+                <div class="modal-crear-edicion-ganadores">
+                    <div class="ganadores-header-crear-edicion">
+                        <div class="icono-ganadores-crear-edicion-background">
+                            <span class="icono-ganadores-crear-edicion"></span>
+                        </div>
+                        <div class="ganadores-text-crear-edicion">
+                            <h2 class="ganadores-title-crear-edicion">Ganadores de esta edición</h2>
+                            <span class="ganadores-subtitle-crear-edicion">1 ganador registrado</span>
+                        </div>
+                        <div class="boton-agregar-ganador-crear-edicion">
+                            <span class="icono-agregar-ganador-crear-edicion"></span>
+                            <span class="boton-text-agregar-ganador-crear-edicion">Agregar ganador</span>
+                        </div>
+                    </div>
+
+                    <div class="ganador-card-crear-edicion">
+                        <div class="datos-ganador-crear-edicion">
+                            <div class="nombre-ganador-crear-edicion">
+                                <span class="icono-ganador-crear-edicion"></span>
+                                <span class="nombre-ganador-crear-edicion">Juan Carlos del Prado</span>
+                            </div>
+
+                            <div class="categoría-ganador-crear-edicion">
+                                <span class="icono-categoria-ganador-crear-edicion"></span>
+                                <span class="categoria-ganador-crear-edicion">Mejor Cortometraje Alumno</span>
+                            </div>
+                            
+                            <div class="puesto-ganador-crear-edicion">
+                                <span class="icono-puesto-ganador-crear-edicion"></span>
+                                <span class="puesto-ganador-crear-edicion">Segundo puesto 100€</span>
+                            </div>
+
+                            <div class="video-ganador-crear-edicion">
+                                <span class="icono-video-ganador-crear-edicion"></span>
+                                <div class="nombre-video-ganador-crear-edicion">
+                                    <span class="video-ganador-crear-edicion">Cortometraje:</span>
+                                    <span class="nombre-video-crear-edicion">nombre_video.mp4</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <span class="icon-eliminar-ganador-crear-edicion"></span>
+                    </div>
+
+                    <div class="agregar-ganador-crear-edicion">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-crear-edicion-actions">
+                <button class="btn-cancelar-modal-crear-edicion">Cancelar</button>
+                <button class="btn-guardar-modal-crear-edicion">Continuar</button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Modal Editar Edicion Anterior -->
+
+
+
+
 
     <script src="../js/constantes.js"></script>
     <script src="../js/menu-admin.js"></script>
