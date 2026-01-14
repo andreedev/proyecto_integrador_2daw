@@ -41,6 +41,10 @@ if(isset($_POST['action'])){
             validarRol(['organizador', 'participante']);
             borrarArchivo();
             break;
+        case 'listarCandidaturas':
+            validarRol(['organizador', 'participante']);
+            listarCandidaturas();
+            break;
         default:
             break;
     }
@@ -386,6 +390,29 @@ function actualizarGaleriaEdicionActual(){
     }
 
     echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
+}
+
+function listarCandidaturas(){
+    global $conexion;
+
+    $query = "SELECT c.id_candidatura as idCandidatura, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, c.fecha_ultima_modificacion as fechaUltimaModificacion, a.ruta AS ruta_archivo_video as rutaArchivoVideo, pc.nombre AS nombre_participante, pc.correo as correoParticipante
+              FROM candidatura c
+              INNER JOIN participante pc ON c.id_participante = pc.id_participante
+              INNER JOIN archivo a ON c.id_archivo_video = a.id_archivo";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $candidaturas = [];
+    while ($row = $result->fetch_assoc()) {
+        $candidaturas[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $candidaturas
+    ]);
 }
 
 

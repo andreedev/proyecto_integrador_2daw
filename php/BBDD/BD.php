@@ -46,7 +46,7 @@ function crearBaseDatosSiNoExiste() {
                     id_participante INT NOT NULL,
                     estado VARCHAR(50),
                     fecha_presentacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    fecha_actualizada TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    fecha_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     sinopsis TEXT,
                     id_archivo_video INT comment 'Archivo del video del cortometraje',
                     id_archivo_ficha INT comment 'Archivo de la ficha técnica del cortometraje',
@@ -150,7 +150,7 @@ function crearBaseDatosSiNoExiste() {
                 );
                 
                 CREATE TABLE patrocinador (
-                    id_patrocinador INT AUTO_INCREMENT PRIMARY KEY,,
+                    id_patrocinador INT AUTO_INCREMENT PRIMARY KEY,
                     nombre VARCHAR(100),
                     id_archivo_logo INT,
                     FOREIGN KEY (id_archivo_logo) REFERENCES archivo(id_archivo)
