@@ -95,3 +95,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id_noticia !== null && isset($_POS
 // Si llega aquí sin hacer nada, responder con error
 http_response_code(400);
 echo json_encode(['error' => 'Solicitud no válida. Proporcione los datos necesarios.']);
+?>
