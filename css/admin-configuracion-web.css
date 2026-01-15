@@ -64,13 +64,15 @@
     width: 100%;
     padding: 8px 16px;
     border: none;
-    box-shadow: var(--shadow-01);
-    border-radius: 10px;
     background-color: var(--neutral-09);
     color: var(--neutral-03);
     cursor: pointer;
     transition: all 0.3s;
     text-align: center;
+}
+
+.mode-button:hover{
+    filter: brightness(0.9);
 }
 
 @media (min-width: 480px) {
@@ -253,7 +255,6 @@
     flex-direction: row;
     gap: 12px;
     align-items: center;
-    border-radius: 4px;
     border: 1px solid var(--neutral-05);
     background-color: var(--neutral-09);
     padding: 12px 12px;
@@ -282,7 +283,6 @@
 }
 
 .generic-input-wrapper:has(.generic-input:focus) {
-    box-shadow: 0 0 4px 3px rgba(197, 203, 204, 0.23);
     border: 1px solid var(--neutral-04);
 }
 
@@ -431,7 +431,6 @@
     background-color: var(--neutral-09);
     border: 1px solid var(--primary-03);
     color: var(--primary-03);
-    border-radius: 6px;
     padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;
@@ -621,7 +620,6 @@
 .secondary-button{
     background: var(--gradient-05);
     color: var(--neutral-09);
-    border-radius: 6px;
     padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;

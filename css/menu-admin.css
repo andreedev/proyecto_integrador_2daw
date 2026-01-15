@@ -331,7 +331,6 @@ ul{
     background-color: var(--primary-03);
     color: var(--neutral-09);
     border: none;
-    border-radius: 6px;
     padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;
