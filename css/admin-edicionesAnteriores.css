@@ -253,3 +253,23 @@ dialog{
 
 /* Modal Crear Edicion Anterior */
 
+.modal-header {
+    border-bottom: 2px solid var(--neutral-06);
+    padding:8px 6px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-text{
+    font-size:20px;
+    font-weight: 600;
+}
+
+.modal-subtitle{
+    font-size:14px;
+    font-weight: 400;
+    color: var(--neutral-04);
+}
+
