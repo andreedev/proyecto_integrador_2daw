@@ -78,9 +78,8 @@
 }
 
 .header-logo-image{
-    width: 85px;
+    width: 65px;
     height: auto;
-    border-radius: 50%;
 }
 
 .header-buttons-desktop-container {
@@ -99,12 +98,12 @@
 .header-button{
     width: auto;
     padding: 8px 32px;
-    border-radius: 32px;
     background-color: var(--neutral-09);
     font-size: 12px;
     font-weight: 600;
-    transition: background-color 300ms ease;
+    transition: all 300ms ease;
     box-sizing: border-box;
+    border-bottom: 1px solid transparent;
 }
 
 @media (min-width: 1200px) {
@@ -115,9 +114,8 @@
 }
 
 .header-button:hover {
-    background-color: var(--neutral-07);
-    outline: 1px solid var(--neutral-05);
-    color: var(--neutral-01);
+    transition: all 300ms ease;
+    border-bottom: 1px solid var(--neutral-01);
 }
 
 .header-primary-action-button{
