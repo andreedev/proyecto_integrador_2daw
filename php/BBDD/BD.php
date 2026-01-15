@@ -127,7 +127,9 @@ function crearBaseDatosSiNoExiste() {
                     nro_participantes INT,
                     fecha_envio_email_informativo DATE,
                     fecha_borrado_datos DATE,
-                    tipo ENUM('anterior', 'actual') DEFAULT 'actual'
+                    tipo ENUM('anterior', 'actual') DEFAULT 'actual',
+                    id_organizador INT,
+                    FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador)
                 );
                 
                 CREATE TABLE edicion_archivos (
@@ -218,9 +220,9 @@ function crearBaseDatosSiNoExiste() {
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                     
-                INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo) VALUES
-                    (2023, 'Resumen 2023', 150, 'anterior'),
-                    (2024, 'Resumen 2024', 200, 'actual');
+                INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador) VALUES
+                    (2023, 'Resumen 2023', 150, 'anterior', 1),
+                    (2024, 'Resumen 2024', 200, 'actual', 1);
                 
                 INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
                     (1, 'Documental', 'Juan Pérez', 'Mejor Documental', 1),
