@@ -6,17 +6,22 @@ class HomeHeader extends HTMLElement {
         super();
     }
 
-    connectedCallback() {
+    async connectedCallback() {
+        console.log("Header: Waiting for session check...");
+        await window.sessionReady;
+        console.log("Header: Session check complete. Rendering.");
+
         this.render();
     }
 
     render() {
         const sesionIniciada = sessionStorage.getItem('sesionIniciada') === 'true';
+        console.log('Sesión iniciada:', sesionIniciada);
         let botonesAccion = '';
 
         if (sesionIniciada) {
             botonesAccion = `
-                <a href="./mis-candidaturas.html" class="header-button header-primary-action-button">Candidaturas</a>
+                <a href="./candidaturas.html" class="header-button header-primary-action-button">Candidaturas</a>
                 <a href="#" id="logout-btn" class="header-button header-secondary-action-button">Cerrar sesión</a>
             `;
         } else {
@@ -73,3 +78,4 @@ class HomeHeader extends HTMLElement {
 }
 
 customElements.define('home-header', HomeHeader);
+

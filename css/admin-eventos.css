@@ -33,7 +33,6 @@
     background-color: var(--neutral-09);
     color:var(--primary-03);
     border: 1px solid var(--primary-03);
-    border-radius: 8px;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -226,7 +225,6 @@
     object-fit: contain;
     width:100%;
     height: auto;
-    border-radius: 16px;
 }
 
 .event-info{

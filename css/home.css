@@ -33,21 +33,22 @@
 }
 
 .primary-btn {
-    background: #ff2d2d;
-    color: #ffffff;
+    background: var(--primary-03);
+    color: var(--neutral-09);
     border: none;
     padding: 0.8rem 2.4rem;
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
     margin-top: 1rem;
-    transition: background 0.2s ease, transform 0.1s ease;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
 }
+
 .primary-btn:hover {
-    background: #f7f5f5;
-    color: #ff2d2d;
-    border: 1px solid #ff2d2d;
-    transform: translateY(-2px);
+    background: var(--neutral-09);
+    color: var(--primary-03);
+    border: 1px solid var(--primary-03);
 }
 
 
@@ -134,7 +135,6 @@
 .event-day {
     background: #ff2d2d;
     color: #fff;
-    border-radius: 50%;
 }
 
 /* ---------------- NOTICIAS ---------------- */
