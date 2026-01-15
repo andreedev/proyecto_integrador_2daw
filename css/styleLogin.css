@@ -94,7 +94,6 @@ input{
     margin:8px;
     width: 216px;
     height: 35px;
-    border-radius: 5px;
     font-size: 16px;
     padding: 8px 12px;
 }
@@ -106,7 +105,6 @@ input:focus{
 .btnLogin{
     width: 100%;
     padding: 6px 0px;
-    border-radius: 5px;
     background-color: var(--neutral-01);
     color: white;
     font-size: 16px;
