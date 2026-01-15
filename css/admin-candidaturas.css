@@ -190,7 +190,6 @@ th {
     align-items: center;
     padding: 4px 8px;
     font-size: 12px;
-    border-radius: 5px;
     border: 1px solid var(--neutral-05);
     background: var(--neutral-09);
     cursor: pointer;
@@ -248,7 +247,6 @@ th {
 
 .pagination-btn {
     padding: 4px 8px;
-    border-radius: 20px;
     border: 1px solid var(--neutral-05);
     background: var(--neutral-09);
     font-size: 13px;

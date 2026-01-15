@@ -425,4 +425,4 @@ function validateStep2Form() {
 }
 
 
-switchStep(2);
+switchStep(1);

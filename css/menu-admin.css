@@ -14,7 +14,8 @@ ul{
     width: 17rem;
     border: 1px solid var(--neutral-04);
     background-color: var(--neutral-05);
-
+    align-items: center;
+    gap: 12px;
 }
 @media (min-width: 990px){
     .cabeceraMenuLateral{
@@ -41,16 +42,8 @@ ul{
     margin: 4px 0px 0px 4px;
 } 
 .cabeceraMenuLateral h1{
-    margin: 8px 8px 8px 8px;
     font-size: 20px;
     color: var(--neutral-01);
-
-}
-
-@media (min-width: 990px){
-    .cabeceraMenuLateral h1{
-        margin: 16px 8px 8px 8px;
-    }
 }
 
 /*Menu lateral*/
@@ -200,7 +193,6 @@ ul{
 .textoIcono:hover{
     background-color: var(--neutral-04);
     color: var(--neutral-01);
-    border-radius: 6px;
     transition: all 300ms ease;
 }
 
@@ -208,7 +200,6 @@ ul{
 .textoIcono.active {
     background-color: var(--neutral-02);
     color: var(--neutral-09);
-    border-radius: 6px;
 }
 
 .textoIcono.active div span{

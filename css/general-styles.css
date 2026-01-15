@@ -1,28 +1,50 @@
 /** Estilos generales del proyecto */
 
-/** Fuentes Google Sans Variable */
 @font-face {
-    font-family: 'Open Sans';
-    src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype-variations');
-    font-weight: 300 700;
+    font-family: 'Hellix';
+    src: local('Hellix Regular'), local('Hellix-Regular'),
+    url('./fonts/Hellix-Regular.woff2') format('woff2'),
+    url('./fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Open Sans';
-    src: url('./fonts/OpenSans-Italic-VariableFont_wdth,wght.ttf') format('truetype-variations');
-    font-weight: 300 700;
-    font-style: italic;
+    font-family: 'Hellix';
+    src: local('Hellix Medium'), local('Hellix-Medium'),
+    url('./fonts/Hellix-Medium.woff2') format('woff2'),
+    url('./fonts/Hellix-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
     font-display: swap;
 }
 
-/*@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');*/
+@font-face {
+    font-family: 'Hellix';
+    src: local('Hellix SemiBold'), local('Hellix-SemiBold'),
+    url('./fonts/Hellix-SemiBold.woff2') format('woff2'),
+    url('./fonts/Hellix-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: local('Hellix Bold'), local('Hellix-Bold'),
+    url('./fonts/Hellix-Bold.woff2') format('woff2'),
+    url('./fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 /** Reset general */
 *{
     box-sizing: border-box;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Hellix', Helvetica, Arial, sans-serif;
     font-optical-sizing: auto;
     scroll-behavior: smooth;
 }
