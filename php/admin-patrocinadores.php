@@ -10,19 +10,6 @@ if (!$conexion || !($conexion instanceof mysqli)) {
     exit;
 }
 
-// Solo organizadores autenticados pueden gestionar patrocinadores
-if (!isset($_SESSION['id_organizador'])) {
-    http_response_code(401);
-    echo json_encode(["error" => "Usuario no autenticado"]);
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(["error" => "Método no permitido"]);
-    exit;
-}
-
 $nombre = trim($_POST['nombre'] ?? '');
 $id_archivo_logo = !empty($_POST['id_archivo_logo']) ? (int)$_POST['id_archivo_logo'] : null;
 
@@ -93,9 +80,7 @@ if ($id_patrocinador !== null && isset($_POST['editar'])) {
     }
 }
 
-// ================================
 // 3. Eliminar patrocinador
-// ================================
 if ($id_patrocinador !== null && isset($_POST['eliminar'])) {
     try {
         $stmt = $conexion->prepare("DELETE FROM patrocinador WHERE id_patrocinador = ?");
@@ -103,7 +88,7 @@ if ($id_patrocinador !== null && isset($_POST['eliminar'])) {
         $stmt->execute();
 
         if ($stmt->errno) {
-            // Por ejemplo, si hay FK en otra tabla (aunque en tu esquema no hay ninguna)
+            //No puede eliminarlo porque hay una FK que lo intercepta
             if ($stmt->errno == 1451) {
                 throw new Exception("No se puede eliminar: el patrocinador está en uso.");
             }

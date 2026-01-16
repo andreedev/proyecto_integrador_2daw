@@ -10,19 +10,6 @@ if (!$conexion || !($conexion instanceof mysqli)) {
     exit;
 }
 
-// Verificar autenticación (asumiendo que solo organizadores pueden gestionar ganadores)
-if (!isset($_SESSION['id_organizador'])) {
-    http_response_code(401);
-    echo json_encode(["error" => "Usuario no autenticado"]);
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(["error" => "Método no permitido"]);
-    exit;
-}
-
 // Datos comunes
 $id_edicion = $_POST['id_edicion'] ?? null;
 $categoria = trim($_POST['categoria'] ?? '');
