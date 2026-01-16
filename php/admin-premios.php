@@ -1,6 +1,6 @@
 <?php
 session_start();
-require('./BBDD/connection.php'); // Debe definir $conn como mysqli
+require('./BBDD/connection.php');
 require_once('./BBDD/BD.php');
 header("Content-Type: application/json; charset=UTF-8");
 
