@@ -198,7 +198,7 @@
     display: inline-block;
     width: 24px;
     height: 23px;
-    mask-image: url('../img/icon/PencilIcon.svg');
+    mask-image: url('../img/icon/icon-pencil.svg');
     mask-size: contain;
     mask-repeat: no-repeat;
     cursor: pointer;
@@ -210,7 +210,7 @@
     display: inline-block;
     width: 24px;
     height: 24px;
-    mask-image: url('../img/icon/TrashIcon.svg');
+    mask-image: url('../img/icon/icon-trash.svg');
     mask-size: contain;
     mask-repeat: no-repeat;
     cursor: pointer;

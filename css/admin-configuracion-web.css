@@ -643,14 +643,14 @@
 }
 
 .secondary-button:hover .icon-archive{
-    background-color: var(--secondary-02);
+    background-color: var(--neutral-09);
     transition: all 300ms ease;
 }
 
 .secondary-button:hover{
     background: var(--neutral-09);
-    color: var(--secondary-02);
-    border: 1px solid var(--secondary-02);
+    color: var(--primary-02);
+    border: 1px solid var(--primary-02);
     transition: all 300ms ease;
 }
 

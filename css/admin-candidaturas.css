@@ -152,8 +152,8 @@ th {
 }
 
 .winner {
-    background: var(--secondary-05);
-    color: var(--secondary-01);
+    background: var(--primary-01);
+    color: var(--neutral-09);
 }
 
 /* Badge icon filters */
@@ -671,7 +671,7 @@ th {
 }
 
 .timeline-item.winner .timeline-icon {
-    background: var(--secondary-01);
+    background: var(--primary-03);
 }
 
 .timeline-content {

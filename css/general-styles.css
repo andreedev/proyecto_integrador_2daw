@@ -40,13 +40,12 @@
     font-display: swap;
 }
 
-
 /** Reset general */
 *{
-    box-sizing: border-box;
     font-family: 'Hellix', Helvetica, Arial, sans-serif;
     font-optical-sizing: auto;
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -59,31 +58,26 @@ h1, h2, h3, h4, h5, h6{
 :root{
     --primary-01: #801914;
     --primary-02: #BF261E;
-    --primary-03: #FF2E23;
+    --primary-03: #FF3228;
     --primary-04: #FF8C87;
     --primary-05: #FFE6E5;
-    --secondary-01: #6E1F7B;
-    --secondary-02: #A730BB;
-    --secondary-03: #E040FB;
-    --secondary-04: #E874FC;
-    --secondary-05: #F1A7FD;
-    --neutral-01: #272727;
+    --neutral-01: #1e1e1e;
     --neutral-02: #393A3B;
     --neutral-03: #707273;
     --neutral-04: #A6A9AC;
     --neutral-05: #DDE1E4;
     --neutral-06: #E5E5E5;
-    --neutral-07: #F3F3F5;
+    --neutral-07: #F5F5F5;
     --neutral-08: #F6F7F8;
     --neutral-09: #FFFFFF;
-    --warning-01: #8A7400;
-    --warning-02: #FFD600;
-    --warning-03: #FFEC8A;
-    --warning-04: #FFFAE0;
-    --information-01: #004E7E;
-    --information-02: #0091EA;
-    --information-03: #8ACCF5;
-    --information-04: #E0F2FD;
+    --warning-01: #916E04;
+    --warning-02: #FFC107;
+    --warning-03: #FFD556;
+    --warning-04: #FFE9A6;
+    --information-01: #138496;
+    --information-02: #17A2B8;
+    --information-03: #51B9CA;
+    --information-04: #8BD1DC;
     --success-01: #006C2D;
     --success-02: #00C853;
     --success-03: #CEF7D8;
@@ -92,17 +86,8 @@ h1, h2, h3, h4, h5, h6{
     --error-02: #D50000;
     --error-03: #EC8A8A;
     --error-04: #F6CACA;
-    --shadow-01: 0 2px 5px 0 rgba(0, 0, 0, 0.20);
-    --shadow-02: 0 2px 5px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
-    --premio-golden: linear-gradient(90deg, #ECC440 0%, #F5DF65 35.49%, #E9C53E 68.38%, #FFFF95 100%);
-    --premio-silver: linear-gradient(90deg, #C1C1C1 0%, #E0E0E0 17.03%, #D6D6D6 49.05%, #DADADA 55.29%, #BFBFBF 80.77%, #F5F5F5 98.65%);
-    --premio-bronze: linear-gradient(90deg, #A66221 0%, #E6B07E 20.19%, #FFEDDC 54.33%, #E6B07E 81.25%, #A66221 100%);
-    --gradient-01: linear-gradient(114deg, rgba(235, 69, 52, 1) 0%, rgba(138, 61, 222, 1) 55%, rgba(130, 65, 222, 1) 80%, rgba(84, 70, 221, 1) 100%);
-    --gradient-02: linear-gradient(133deg,rgba(84, 70, 221, 1) 0%, rgba(144, 61, 222, 1) 27%, rgba(145, 62, 210, 1) 40%, rgba(235, 52, 122, 1) 69%, rgba(235, 69, 52, 1) 100%);
-    --gradient-03: linear-gradient(91deg, #FFF 1.75%, #FED8D8 62.21%);
-    --gradient-04: linear-gradient(92deg, #FFF 2.49%, #F1E6FF 64.02%);
-    --gradient-05: linear-gradient(92deg, #A730BB 0%, #6E1F7B 100%);
-    --gradient-06: linear-gradient(92deg, #FFF 2.49%, #F1E6FF 64.02%);
+    --shadow-01: 0 2px 5px 0 rgba(40, 40, 40, 0.10);
+    --shadow-02: 0 2px 20px 0 rgba(40, 40, 40, 0.12);
 }
 
 /* Eliminar estilos por defecto de elementos HTML */

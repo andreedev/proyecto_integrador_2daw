@@ -35,7 +35,7 @@ ul{
     width: 32px;
     height: 32px;
     background-color: var(--neutral-09);
-    mask-image: url('../img/icon/AdminPanelIcon.svg');
+    mask-image: url('../img/icon/icon-landingglobalgrid.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -101,7 +101,7 @@ ul{
     width:24px;
     height:24px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/DocumentIcon.svg');
+    mask-image: url('../img/icon/icon-document.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -111,7 +111,7 @@ ul{
     width:24px;
     height:24px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/TrophyIcon.svg');
+    mask-image: url('../img/icon/icon-trophy.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -121,7 +121,7 @@ ul{
     width:28px;
     height:28px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/NewspaperIcon.svg');
+    mask-image: url('../img/icon/icon-news.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -131,7 +131,7 @@ ul{
     width:20px;
     height:20px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/TagsIcon.svg');
+    mask-image: url('../img/icon/icon-tags.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -141,7 +141,7 @@ ul{
     width:20px;
     height:20px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/HandshakeIcon.svg');
+    mask-image: url('../img/icon/icon-network.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -152,7 +152,7 @@ ul{
     width:20px;
     height:20px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/CinemaMovieIcon.svg');
+    mask-image: url('../img/icon/icon-video.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -163,7 +163,7 @@ ul{
     width:20px;
     height:20px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/CalendarIcon.svg');
+    mask-image: url('../img/icon/icon-calendar.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -173,7 +173,7 @@ ul{
     width:16px;
     height:16px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/ClockIcon.svg');
+    mask-image: url('../img/icon/icon-sandclock.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -183,7 +183,7 @@ ul{
     width:16px;
     height:16px;
     background-color: var(--neutral-01);
-    mask-image: url('../img/icon/SettingsIcon.svg');
+    mask-image: url('../img/icon/icon-settings.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -254,7 +254,7 @@ ul{
         width:40px;
         height:40px;
         background-color: var(--neutral-09);
-        mask-image: url('../img/icon/MenuBarsIcon.svg');
+        mask-image: url('../img/icon/icon-bars.svg');
         display: inline-block;
         mask-repeat: no-repeat;
         mask-size: contain;
@@ -398,7 +398,7 @@ ul{
     width: 24px;
     height: 24px;
     background-color: var(--neutral-09);
-    mask-image: url('../img/icon/PlusIcon.svg');
+    mask-image: url('../img/icon/icon-plus.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -431,7 +431,7 @@ ul{
     width:24px;
     height:24px;
     background-color: var(--neutral-09);
-    mask-image: url('../img/icon/LogoutIcon.svg');
+    mask-image: url('../img/icon/icon-logout.svg');
     display: inline-block;
     mask-repeat: no-repeat;
     mask-size: contain;

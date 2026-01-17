@@ -95,31 +95,18 @@ saveChangeBtn.addEventListener('click', () => {
             return;
         }
         activeChangeRow.dataset.rejectReason = reason;
-        // Actualizar visualmente el badge
         const badge = activeChangeRow.querySelector('.badge');
         badge.className = 'badge rejected';
-        badge.innerHTML = '<img src="../img/icon/CloseOutlineIcon.svg" alt=""> Rechazada';
+        badge.innerHTML = 'Rechazada';
     } else {
         // Si se cambia a otro estado, eliminar el motivo
         delete activeChangeRow.dataset.rejectReason;
 
-        // Definir icono según el estado
-        const iconMap = {
-            review: '../img/icon/ClockIcon.svg',
-            accepted: '../img/icon/DocumentCheckIcon.svg',
-            finalist: '../img/icon/StarIcon.svg'
-        };
-
-        const iconSrc = iconMap[newStatus] || '';
         const displayText = statusLabels[newStatus] || newStatus;
 
         const badge = activeChangeRow.querySelector('.badge');
         badge.className = 'badge ' + newStatus;
-        if (iconSrc) {
-            badge.innerHTML = `<img src="${iconSrc}" alt=""> ${displayText}`;
-        } else {
-            badge.textContent = displayText;
-        }
+        badge.textContent = displayText;
     }
     showNotification('Estado actualizado correctamente.');
     closeChangeModal();

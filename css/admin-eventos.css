@@ -85,7 +85,7 @@
 .left-arrow{
     width:24px;
     height:24px;
-    mask-image: url("../img/icon/LeftArrowIcon.svg");
+    mask-image: url("../img/icon/icon-leftchevron.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-03);
@@ -111,7 +111,7 @@
 .icon-calendar{
     width:24px;
     height:24px;
-    mask-image: url("../img/icon/CalendarIcon.svg");
+    mask-image: url("../img/icon/icon-calendar.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-03);
@@ -120,7 +120,7 @@
 .right-arrow{
     width:24px;
     height:24px;
-    mask-image: url("../img/icon/RightArrowIcon2.svg");
+    mask-image: url("../img/icon/icon-rightchevron.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-03);

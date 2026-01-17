@@ -9,7 +9,7 @@ class HomeFooter extends HTMLElement {
                 <div class="footer-content">
                     <div class="footer-container-1">
                         <img src="./../img/canon-logo.png" alt="Logo" class="footer-image">
-                        <img src="./../img/logo1.png" alt="Logo" class="footer-image">
+                        <img src="./../img/logo.svg" alt="Logo" class="footer-image">
                     </div>
                     <div class="footer-container-2">
                         <p class="footer-text">C/Tajo, s/n, 28670</p>
