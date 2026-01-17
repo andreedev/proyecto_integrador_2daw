@@ -34,7 +34,6 @@ h1{
     width:344px;
     display: flex;
     flex-direction: column;
-    border-radius:8px;
     background-color: var(--neutral-07);
     border: solid 1px var(--neutral-04);
     overflow: hidden;

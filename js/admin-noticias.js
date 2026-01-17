@@ -3,8 +3,7 @@ const searchBar = document.getElementById('searchBar');
 const btnAgregarNoticia = document.getElementById('addNews');
 const noticiaContainer = document.querySelector('.one-news');
 const imagenNoticia = document.querySelector('.news-image img');
-const newsTitle = document.querySelector('.news-title');
-const btnEditarNoticia = document.querySelector('.icon-edit-news');
+const newsTitle = document.querySelector('.news-title')
 const btnEliminarNoticia = document.querySelector('.icon-delete-news');
 const newsDate = document.querySelector('.news-date');
 const newsStatus = document.querySelector('.news-status');
@@ -31,26 +30,6 @@ const errorNewsDateInput = document.getElementById('errorNewsDateInput');
 const newsTitleInput = document.getElementById('newsTitleInput');
 const newsDescriptionInput = document.getElementById('newsDescriptionInput');
 const newsDateInput = document.getElementById('newsDateInput');
-
-/*  Eventos Modal Editar Noticia  */
-const modalEditarNoticia = document.getElementById('editModal');
-const cerrarModalEdit = document.getElementById('closeEditModal');
-const btnCancelModalEdit = document.getElementById('btnCancelModalEdit');
-const btnAddModalEdit = document.getElementById('btnAddModalEdit');
-const iconoDeleteImgEdit = document.getElementById('deleteImgEdit');
-
-const poesterInputEdit= document.getElementById('newsImageInputEdit');
-const imagenAceptadaCardEdit= document.getElementById('imgAcceptedEdit');
-const mensajeErrorEdit = document.getElementById('errorMessageEdit');
-
-const errorNewsTitleInputEdit = document.getElementById('errorNewsTitleInputEdit');
-const errorNewsDescriptionInputEdit = document.getElementById('errorNewsDescriptionInputEdit');
-const errorNewsDateInputEdit = document.getElementById('errorNewsDateInputEdit');
-
-const newsTitleInputEdit = document.getElementById('newsTitleInputEdit');
-const newsDescriptionInputEdit = document.getElementById('newsDescriptionInputEdit');
-const newsDateInputEdit = document.getElementById('newsDateInputEdit');
-
 
 
 //Validaciones para Agregar
@@ -82,51 +61,6 @@ newsDateInput.addEventListener('blur', () => {
     }
 });
 
-//Validaciones para Editar
-newsTitleInputEdit.addEventListener('blur', () => {
-    const titleValue = newsTitleInputEdit.value.trim();
-    if (titleValue === '') {
-        errorNewsTitleInputEdit.textContent = 'El título de la noticia no puede estar vacío.';
-    } else {
-        errorNewsTitleInputEdit.textContent = '';
-    }
-});
-
-newsDescriptionInputEdit.addEventListener('blur', () => {
-    const descriptionValue = newsDescriptionInputEdit.value.trim();
-    if (descriptionValue === '') {
-        errorNewsDescriptionInputEdit.textContent = 'La descripción de la noticia no puede estar vacía.';
-    } else {
-        errorNewsDescriptionInputEdit.textContent = '';
-    }   
-});
-newsDateInputEdit.addEventListener('blur', () => {
-    const dateValue = newsDateInputEdit.value.trim();
-    if (dateValue === '') {
-        errorNewsDateInputEdit.textContent = 'La fecha de la noticia no puede estar vacía.';
-    } else {
-        errorNewsDateInputEdit.textContent = '';
-    }
-});
-
-
-//Validación para la imagen de noticia en Agregar
-posterInput.addEventListener('change', () => {
-    if (posterInput.files.length === 0) {
-        mensajeError.textContent = 'Debes seleccionar una imagen para la noticia.';
-    } else {
-        mensajeError.textContent = '';
-    }
-});
-
-poesterInputEdit.addEventListener('change', () => {
-    if (poesterInputEdit.files.length === 0) {
-        mensajeErrorEdit.textContent = 'Debes seleccionar una imagen para la noticia.';
-    } else {
-        mensajeErrorEdit.textContent = '';
-    }
-});
-
 
 
 
@@ -134,12 +68,12 @@ poesterInputEdit.addEventListener('change', () => {
 // Lógica para abrir y cerrar modales
 
 btnAgregarNoticia.addEventListener('click', () => {
-    modalAgregarNoticia.classList.remove('hidden-force');
+    modalAgregarNoticia.showModal()
 });
 
 
 cerrarModal.addEventListener('click', () => {
-    modalAgregarNoticia.classList.add('hidden-force');
+    modalAgregarNoticia.close()
     // Limpiar campos y errores al cerrar el modal
     newsTitleInput.value = '';
     newsDescriptionInput.value = '';
@@ -150,7 +84,7 @@ cerrarModal.addEventListener('click', () => {
 });
 
 btnCancelModal.addEventListener('click', () => {
-    modalAgregarNoticia.classList.add('hidden-force');
+    modalAgregarNoticia.showModal()
     // Limpiar campos y errores al cancelar el modal
     newsTitleInput.value = '';
     newsDescriptionInput.value = '';
@@ -172,42 +106,11 @@ btnEliminarNoticia.addEventListener('click', () => {
 });
 
 
-btnEditarNoticia.addEventListener('click', () => {
-    modalEditarNoticia.classList.remove('hidden-force');
-});
-
-cerrarModalEdit.addEventListener('click', () => {
-    modalEditarNoticia.classList.add('hidden-force');
-    // Limpiar campos y errores al cerrar el modal
-    newsTitleInput.value = '';
-    newsDescriptionInput.value = '';
-    newsDateInput.value = '';
-    document.getElementById('errorNewsTitleInput').textContent = '';
-    document.getElementById('errorNewsDescriptionInput').textContent = '';
-    document.getElementById('errorNewsDateInput').textContent = '';
-});
-
-btnCancelModalEdit.addEventListener('click', () => {
-    modalEditarNoticia.classList.add('hidden-force');
-    // Limpiar campos y errores al cancelar el modal
-    newsTitleInput.value = '';
-    newsDescriptionInput.value = '';
-    newsDateInput.value = '';
-    document.getElementById('errorNewsTitleInput').textContent = '';
-    document.getElementById('errorNewsDescriptionInput').textContent = '';
-    document.getElementById('errorNewsDateInput').textContent = '';
-});
 
 iconoDeleteImg.addEventListener('click', () => {
     imagenAceptadaCard.src = '';
     imagenAceptadaCard.classList.add('hidden-force');
     posterInput.value = '';
-});
-
-iconoDeleteImgEdit.addEventListener('click', () => {
-    imagenAceptadaCardEdit.src = '';
-    imagenAceptadaCardEdit.classList.add('hidden-force');
-    poesterInputEdit.value = '';
 });
 
 // Lógica para el input personalizado del logo del patrocinador
@@ -327,15 +230,4 @@ setupDropZone(
     5 * 1024 * 1024 
 );
 
-/*Para el modal de editar noticia*/
-setupDropZone(
-    'posterDropZoneEdit',   
-    'newsImageInputEdit',
-    'imgAcceptedEdit',
-    'imgNameEdit',
-    'imgSizeEdit',  
-    'deleteImgEdit',
-    'errorMessageEdit',
-    ['png', '.jpg', '.jpeg'],
-    5 * 1024 * 1024 
-);  
+modalAgregarNoticia.showModal()

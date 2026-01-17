@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
     <link rel="stylesheet" href="../css/admin-noticias.css">
+    <link rel="stylesheet" href="../css/utils.css">
 </head>
 <body>
     <div id="splash">
@@ -55,118 +56,63 @@
                 </div>
             </div>
 
-            <!-- Modal agregar noticia -->
-
-            <div class="add-new-modal-container hidden-force" id="addModal">
-                <div class="add-new-modal-content">
-                    <div class="header">
-                        <h2>Añadir Noticia</h2>
-                        <span class="close-button" id="closeAddModal"></span>
-                    </div>
-    
-                    <div class="modal-body">
-                        <span class="labels">Título de la noticia:</span>
-                        <input type="text" id="newsTitleInput" class="input-field" placeholder="Introduce el título de la noticia">
-                        <span class="error-news-title-input" id="errorNewsTitleInput"></span>
-
-                        <span class="labels">Descripción:</span>
-                        <textarea id="newsDescriptionInput" class="input-textArea" placeholder="Introduce la descripción de la noticia"></textarea>
-                        <span class="error-news-description-input" id="errorNewsDescriptionInput"></span>
-
-                        <span class="labels">Fecha de publicación:</span>
-                        <input type="text" id="newsDateInput" placeholder="DD/MM/AAAA" class="input-field">
-                        <span class="error-news-date-input" id="errorNewsDateInput"></span>
-    
-                        <div class="input-img-news">
-                            <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
-                            <div id="posterDropZoneAdd" class="input-container">
-                                <input type="file" id="newsImageInput" accept="image/png, image/jpeg, image/jpg" hidden>
-                                <div class="input-objects">
-                                    <div class="input-icon-background">
-                                        <span class="input-icon"></span>
-                                    </div>
-                                    <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
-                                </div>
-                            </div>
-                            <div class="img-accepted hidden-force" id="imgAccepted">
-                                <div class="info-card">
-                                    <div class="icon-background">
-                                        <span class="icon-accepted"></span>
-                                    </div>
-                                    <div class="archive-data">
-                                        <span class="archive-name" id="imgName">archivo_ejemplo_JPG_500kB.j</span>
-                                        <span class="archive-size" id="imgSize">1.53MB</span>
-                                    </div>
-                                    <span class="icon-delete-img" id="deleteImg"></span>
-                                </div>
-                            </div>
-                            <span id="errorMessage" class="error-message"></span>                            
-                        </div>
-                        <div class="buttons-add-modal">
-                            <button type="submit" class="cancel-modal-add" id="btnCancelModalAdd">Cancelar</button>
-                            <button type="submit" class="add-modal-add" id="btnAddModalAdd">Agregar noticia</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Modal editar noticia -->
-            <div class="edit-new-modal-container hidden-force" id="editModal">
-                <div class="edit-new-modal-content">
-                    <div class="header">
-                        <h2>Editar Noticia</h2>
-                        <span class="close-button" id="closeEditModal"></span>
-                    </div>
-    
-                    <div class="modal-body">
-                        <span class="labels">Título de la noticia:</span>
-                        <input type="text" id="newsTitleInputEdit" class="input-field-edit" placeholder="Introduce el título de la noticia">
-                        <span class="error-news-title-input-edit" id="errorNewsTitleInputEdit"></span>
-
-                        <span class="labels">Descripción:</span>
-                        <textarea id="newsDescriptionInputEdit" class="input-textArea-edit" placeholder="Introduce la descripción de la noticia"></textarea>
-                        <span class="error-news-description-input-edit" id="errorNewsDescriptionInputEdit"></span>
-                        <span class="labels">Fecha de publicación:</span>
-                        <input type="text" id="newsDateInputEdit" placeholder="DD/MM/AAAA" class="input-field-edit">
-                        <span class="error-news-date-input-edit" id="errorNewsDateInputEdit"></span>
-    
-                        <div class="input-img-news-edit">
-                            <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
-                            <div id="posterDropZoneEdit" class="input-conteiner">
-                                <input type="file" id="newsImageInputEdit" class="input-field-edit hidden-force" name="newsImageInput" accept="image/png, image/jpeg">
-                                <div class="input-objects-edit">
-                                    <div class="input-icon-background">
-                                        <span class="input-icon-edit"></span>
-                                    </div>
-                                    <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
-                                </div>
-                            </div>
-                            <div class="img-accepted hidden-force" id="imgAcceptedEdit">
-                                <div class="info-card">
-                                    <div class="icon-background">
-                                        <span class="icon-accepted"></span>
-                                    </div>
-                                    <div class="archive-data">
-                                        <span class="archive-name" id="imgName">archivo_ejemplo_JPG_500kB.jpg</span>
-                                        <span class="archive-size" id="imgSize">1.53MB</span>
-                                    </div>
-                                    <span class="icon-delete-img" id="deleteImgEdit"></span>
-                                </div>
-                            </div>
-                            <span id="errorMessageEdit" class="error-message"></span>      
-                        </div>
-                        <div class="buttons-edit-modal">
-                            <button type="submit" class="cancel-modal-edit" id="btnCancelModalEdit">Cancelar</button>
-                            <button type="submit" class="add-modal-edit" id="btnAddModalEdit">Editar noticia</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
     </div>
+
+    <dialog id="addModal" class="generic-modal bg-neutral-08">
+        <div class="modal-header d-flex justify-space-between align-center">
+            <div class="modal-header-left-side">
+                <span class="modal-header-title">Añadir Noticia</span>
+                <span class="modal-header-subtitle">Añade una noticia</span>
+            </div>
+            <div class="modal-header-right-side">
+                <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer" id="closeAddModal"></span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <span class="labels">Título de la noticia:</span>
+            <input type="text" id="newsTitleInput" class="input-field" placeholder="Introduce el título de la noticia">
+            <span class="error-news-title-input" id="errorNewsTitleInput"></span>
+
+            <span class="labels">Descripción:</span>
+            <textarea id="newsDescriptionInput" class="input-textArea" placeholder="Introduce la descripción de la noticia"></textarea>
+            <span class="error-news-description-input" id="errorNewsDescriptionInput"></span>
+
+            <span class="labels">Fecha de publicación:</span>
+            <input type="text" id="newsDateInput" placeholder="DD/MM/AAAA" class="input-field">
+            <span class="error-news-date-input" id="errorNewsDateInput"></span>
+
+            <div class="input-img-news">
+                <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
+                <div id="posterDropZoneAdd" class="input-container">
+                    <input type="file" id="newsImageInput" accept="image/png, image/jpeg, image/jpg" hidden>
+                    <div class="input-objects">
+                        <div class="input-icon-background">
+                            <span class="input-icon"></span>
+                        </div>
+                        <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
+                    </div>
+                </div>
+                <div class="img-accepted hidden-force" id="imgAccepted">
+                    <div class="info-card">
+                        <div class="icon-background">
+                            <span class="icon-accepted"></span>
+                        </div>
+                        <div class="archive-data">
+                            <span class="archive-name" id="imgName">archivo_ejemplo_JPG_500kB.j</span>
+                            <span class="archive-size" id="imgSize">1.53MB</span>
+                        </div>
+                        <span class="icon-delete-img" id="deleteImg"></span>
+                    </div>
+                </div>
+                <span id="errorMessage" class="error-message"></span>                            
+            </div>
+            <div class="buttons-add-modal">
+                <button type="submit" class="cancel-modal-add" id="btnCancelModalAdd">Cancelar</button>
+                <button type="submit" class="add-modal-add" id="btnAddModalAdd">Agregar noticia</button>
+            </div>
+        </div>
+    </dialog>
 
 
     <script src="../js/menu-admin.js"></script>
