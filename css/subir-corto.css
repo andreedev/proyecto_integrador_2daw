@@ -529,7 +529,6 @@
 }
 
 .upload-short-film-large-input-group-body.poster{
-    border: 1px dashed var(--secondary-04);
     background: var(--gradient-04);
 }
 
@@ -541,7 +540,6 @@
 
 .upload-short-film-large-input-group-body.poster.drag-over {
     border-style: solid;
-    border: 1px dashed var(--secondary-03);
     transform: scale(1.02);
 }
 
@@ -623,7 +621,6 @@
 }
 
 .upload-short-film-large-input-group-body.poster{
-    border: 1px dashed var(--secondary-03);
     background: var(--gradient-06);
 }
 

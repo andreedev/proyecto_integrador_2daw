@@ -157,6 +157,7 @@ function validarRol($rolesPermitidos) {
     }
 }
 
+//Esta parte es del pre/post-evento de la BBDD
 function obtenerConfiguracionWeb(){
     global $conexion;
 

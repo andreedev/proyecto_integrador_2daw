@@ -1,25 +1,12 @@
 <?php
 session_start();
-require('./BBDD/connection.php'); // Debe definir $conn como mysqli
+require('./BBDD/connection.php');
 require_once('./BBDD/BD.php');
 header("Content-Type: application/json; charset=UTF-8");
 
 if (!$conexion || !($conexion instanceof mysqli)) {
     http_response_code(500);
     echo json_encode(["error" => "Error de conexión"]);
-    exit;
-}
-
-// Verificar autenticación (asumiendo que solo organizadores pueden gestionar ganadores)
-if (!isset($_SESSION['id_organizador'])) {
-    http_response_code(401);
-    echo json_encode(["error" => "Usuario no autenticado"]);
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(["error" => "Método no permitido"]);
     exit;
 }
 

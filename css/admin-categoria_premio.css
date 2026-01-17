@@ -82,7 +82,7 @@
 .edit-icono{
   width: 16px;
   height: 16px;
-  mask-image: url("../img/icon/PencilIcon.svg");
+  mask-image: url("../img/icon/icon-pencil.svg");
   mask-size: contain;
   mask-repeat: no-repeat;
   cursor: pointer;
@@ -92,7 +92,7 @@
 .delete-icono{
   width: 20px;
   height: 20px;
-  mask-image: url("../img/icon/TrashIcon.svg");
+  mask-image: url("../img/icon/icon-trash.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
   cursor: pointer;
