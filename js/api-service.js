@@ -1,6 +1,9 @@
 // constantes y variables generales
 const URL_API = "./../php/api.php";
 
+/**
+ * Formatear bytes a una unidad legible
+ */
 function formatBytes(bytes,decimals = 2 ) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -9,7 +12,6 @@ function formatBytes(bytes,decimals = 2 ) {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
-
 
 /**
  * Funcion para realizar peticiones a la API
