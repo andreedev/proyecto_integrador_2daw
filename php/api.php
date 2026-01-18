@@ -37,13 +37,28 @@ if(isset($_POST['action'])){
             validarRol(['organizador', 'participante']);
             subirArchivo();
             break;
-        case 'borrarArchivo':
+        case 'eliminarArchivo':
             validarRol(['organizador', 'participante']);
-            borrarArchivo();
+            eliminarArchivo();
             break;
         case 'listarCandidaturas':
             validarRol(['organizador', 'participante']);
             listarCandidaturas();
+            break;
+        case 'listarPatrocinadores':
+            validarRol(['organizador', 'participante']);
+            listarPatrocinadores();
+            break;
+        case 'agregarPatrocinador':
+            validarRol(['organizador']);
+            agregarPatrocinador();
+            break;
+        case 'actualizarPatrocinador':
+            validarRol(['organizador']);
+            actualizarPatrocinador();
+        case 'eliminarPatrocinador':
+            validarRol(['organizador']);
+            eliminarPatrocinador();
             break;
         default:
             break;
@@ -320,8 +335,10 @@ function subirArchivo(){
             echo json_encode([
                 "status" => "success",
                 "message" => "Archivo subido correctamente",
-                "id" => $idArchivo,
-                "ruta" => $rutaRelativa
+                "data" => [
+                    "idArchivo" => $idArchivo,
+                    "rutaRelativa" => $rutaRelativa
+                ]
             ]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido"]);
@@ -335,15 +352,23 @@ function subirArchivo(){
     }
 }
 
-function borrarArchivo(){
-    $rutaArchivo = $_POST['rutaArchivo'] ?? '';
+function eliminarArchivo(){
+    $idArchivo = (int) $_POST['idArchivo'];
 
-    if (empty($rutaArchivo)) {
-        echo json_encode(["status" => "error", "message" => "Falta la ruta del archivo"]);
+    global $conexion;
+    $stmt = $conexion->prepare("SELECT ruta FROM archivo WHERE id_archivo = ?");
+    $stmt->bind_param("i", $idArchivo);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        $archivoData = $result->fetch_assoc();
+    } else {
+        echo json_encode(["status" => "error", "message" => "Archivo no encontrado en la base de datos"]);
         return;
     }
 
-    $rutaAbsoluta = __DIR__ . '/..' . $rutaArchivo;
+    $rutaAbsoluta = __DIR__ . '/..' . $archivoData['ruta'];
 
     if (file_exists($rutaAbsoluta)) {
         if (unlink($rutaAbsoluta)) {
@@ -355,6 +380,7 @@ function borrarArchivo(){
         echo json_encode(["status" => "error", "message" => "El archivo no existe"]);
     }
 }
+
 function actualizarGaleriaEdicionActual(){
     global $conexion;
 
@@ -393,6 +419,9 @@ function actualizarGaleriaEdicionActual(){
     echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
 }
 
+/**
+ * Incompleto
+ */
 function listarCandidaturas(){
     global $conexion;
 
@@ -414,6 +443,143 @@ function listarCandidaturas(){
         "status" => "success",
         "data" => $candidaturas
     ]);
+}
+
+/**
+ * Listar patrocinadores con su logo
+ */
+function listarPatrocinadores(){
+    global $conexion;
+
+    $query = "SELECT p.id_patrocinador as idPatrocinador, p.nombre as nombrePatrocinador, a.ruta as rutaArchivoLogo, a.id_archivo as idArchivoLogo FROM patrocinador p LEFT JOIN archivo a ON p.id_archivo_logo = a.id_archivo";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+    $patrocinadores = [];
+    while ($row = $result->fetch_assoc()) {
+        $row['rutaArchivoLogo'] = $baseUrl . $row['rutaArchivoLogo'];
+        $patrocinadores[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $patrocinadores
+    ]);
+}
+
+/**
+ * Agregar un nuevo patrocinador
+ */
+function agregarPatrocinador(){
+    global $conexion;
+
+    $nombre = $_POST['nombre'] ?? '';
+    $idArchivoLogo =(int) $_POST['idArchivoLogo'];
+
+    // validar patrocinador no existe con ese nombre
+    $queryCheck = "SELECT id_patrocinador FROM patrocinador WHERE nombre = ?";
+    $stmtCheck = $conexion->prepare($queryCheck);
+    $stmtCheck->bind_param("s", $nombre);
+    $stmtCheck->execute();
+    $resultCheck = $stmtCheck->get_result();
+    if ($resultCheck && $resultCheck->num_rows > 0) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Ya existe un patrocinador con ese nombre"
+        ]);
+        return;
+    }
+
+    $stmt = $conexion->prepare("INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES (?, ?)");
+    $stmt->bind_param("si", $nombre, $idArchivoLogo);
+    $stmt->execute();
+
+    if ($stmt->affected_rows === 0) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al agregar el patrocinador"
+        ]);
+        return;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Patrocinador agregado correctamente"
+    ]);
+}
+
+/**
+ * Actualizar un patrocinador existente
+ */
+function actualizarPatrocinador(){
+    global $conexion;
+
+    $idPatrocinador = (int) $_POST['idPatrocinador'];
+    $nombre = $_POST['nombre'] ?? '';
+    $idArchivoLogo =(int) $_POST['idArchivoLogo'];
+
+    $stmt = $conexion->prepare("UPDATE patrocinador SET nombre = ?, id_archivo_logo = ? WHERE id_patrocinador = ?");
+    $stmt->bind_param("sii", $nombre, $idArchivoLogo, $idPatrocinador);
+    $stmt->execute();
+
+    if ($stmt->affected_rows === 0) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al actualizar el patrocinador o no hubo cambios"
+        ]);
+        return;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Patrocinador actualizado correctamente"
+    ]);
+}
+
+/**
+ * Eliminar un patrocinador
+ */
+function eliminarPatrocinador(){
+    global $conexion;
+
+    $idPatrocinador = (int) $_POST['idPatrocinador'];
+
+    $stmt = $conexion->prepare("DELETE FROM patrocinador WHERE id_patrocinador = ?");
+    $stmt->bind_param("i", $idPatrocinador);
+    $stmt->execute();
+
+    if ($stmt->affected_rows === 0) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al eliminar el patrocinador"
+        ]);
+        return;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Patrocinador eliminado correctamente"
+    ]);
+}
+
+/**
+ * Obtener la baseUrl desde la configuración
+ */
+function obtenerBaseUrl(){
+    global $conexion;
+
+    $query = "SELECT valor FROM configuracion WHERE nombre = 'baseUrl' LIMIT 1";
+    $result = $conexion->query($query);
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row['valor'];
+    }
+
+    return null;
 }
 
 

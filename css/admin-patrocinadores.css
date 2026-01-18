@@ -1,8 +1,3 @@
-body{
-    background-color: var(--neutral-09);
-    color: var(--text);
-}
-
 .admin-content{
     background-color: var(--neutral-09);
 }
@@ -30,8 +25,8 @@ h1{
 
 }
 
-#cardPatrocinador{
-    width:344px;
+.cardPatrocinador{
+    width: auto;
     display: flex;
     flex-direction: column;
     background-color: var(--neutral-07);
@@ -57,17 +52,6 @@ h1{
     gap: 8px;
 }
 
-.iconoEditarPatrocinador{
-    width:16px;
-    height:16px;
-    position: relative;
-    cursor: pointer;
-    mask-image: url('../img/icon/icon-pencil.svg');
-    background-color: var(--neutral-01);
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    display: inline-block;
-}
 .iconoBorrarPatrocinador{
     width:16px;
     height:16px;
@@ -105,7 +89,7 @@ h1{
     }
 }
 
-.modalEditar{
+.modal{
     position: fixed;
     top: 0;
     left: 0;
@@ -130,7 +114,6 @@ h1{
 }
 
 .header{
-    background: var(--primary-02);
     display:flex;
     flex-direction: row;
     justify-content: space-between;
@@ -149,15 +132,12 @@ h1{
     display: inline-block;
     margin-right:16px;
 }
-.editarPatrocinador{
-    color:var(--neutral-09);
-    padding:16px;
-}
+
 .datosEditarPatrocinador{
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 16px;
+    padding: 0px 16px;
 }
 
 .nombrePatrocinador{
@@ -324,27 +304,9 @@ h1{
 }
 
 .iconoContainer{
-    width:32px;
-    height:32px;
-    background-color: var(--success-02);
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right:8px;
 }
-.iconoAceptado{
-    width:24px;
-    height:24px;
-    position: relative;
-    cursor: pointer;
-    mask-image: url('../img/icon/CheckIcon.svg');
-    background-color: var(--neutral-09);
-    color:var(--success-02);
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    display: inline-block;
-}
+
 .datosArchivo{
     display: flex;
     flex-direction: column;
@@ -386,22 +348,15 @@ h1{
 
 /* Estilos para la confirmación de eliminación */
 .deleteConfirmation{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: var(--neutral-09);
     border: solid 1px var(--neutral-04);
     padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    width: 480px;
     text-align: center;
 }
 .deleteConfirmation .textoConfirmacion{
     margin-bottom: 16px;
     font-size: 14px;
-    color: var(--text);
+    color: var(--neutral-01);
 }
 .deleteConfirmation .botonesConfirmacion{
     display: flex;

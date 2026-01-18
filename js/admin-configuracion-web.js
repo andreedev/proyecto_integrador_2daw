@@ -386,7 +386,7 @@ async function publicarCambios() {
         if (media.dataset.isNew === "true" && media.filePayload) {
             try {
                 const uploadRes = await subirArchivo(media.filePayload);
-                finalId = uploadRes.id; // Get the new ID from server
+                finalId = uploadRes.idArchivo;
             } catch (err) {
                 console.error(err);
                 return updateGeneralMessage("Error subiendo archivo", "text-error-01");
@@ -771,27 +771,10 @@ async function actualizarGaleriaEdicionActual(archivos){
     }
 }
 
-async function subirArchivo(file) {
+async function eliminarArchivo(idArchivo) {
     const formData = new FormData();
-    formData.append('action', 'subirArchivo');
-    formData.append('file', file);
-
-    const response = await fetch(URL_API, {
-        method: 'POST',
-        body: formData
-    });
-
-    const result = await response.json();
-    if (result.status === 'success') {
-        return result;
-    }
-    throw new Error('Error al subir el archivo');
-}
-
-async function borrarArchivo(rutaArchivo) {
-    const formData = new FormData();
-    formData.append('action', 'borrarArchivo');
-    formData.append('rutaArchivo', rutaArchivo);
+    formData.append('action', 'eliminarArchivo');
+    formData.append('idArchivo', idArchivo);
 
     const response = await fetch(URL_API, {
         method: 'POST',
