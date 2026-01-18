@@ -44,7 +44,7 @@ function crearBaseDatosSiNoExiste() {
                 CREATE TABLE candidatura (
                     id_candidatura INT AUTO_INCREMENT PRIMARY KEY,
                     id_participante INT NOT NULL,
-                    estado VARCHAR(50),
+                    estado ENUM('En revisión', 'Aceptada', 'Rechazada', 'Finalista') DEFAULT 'En revisión',
                     fecha_presentacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     fecha_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     sinopsis TEXT,
@@ -187,12 +187,12 @@ function crearBaseDatosSiNoExiste() {
                 ('Laura Gómez', '44444444D', 'laura@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-004'),
                 ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
                 
-                INSERT INTO candidatura (id_participante, estado, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer) VALUES
-                (1, 'En revisión', 'Cortometraje sobre la vida urbana.', 1, 2, 3, NULL),
-                (2, 'En revisión', 'Documental sobre la naturaleza.', 4, 5, 6, NULL),
-                (3, 'En revisión', 'Cortometraje de animación.', 7, 8, 9, NULL),
-                (4, 'En revisión', 'Cortometraje de ficción dramática.', 10, 11, 12, NULL),
-                (5, 'En revisión', 'Cortometraje experimental.', 1, 2, 3, NULL);
+                INSERT INTO candidatura (id_participante, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer) VALUES
+                (1, 'Cortometraje sobre la vida urbana.', 1, 2, 3, NULL),
+                (2, ',Documental sobre la naturaleza.', 4, 5, 6, NULL),
+                (3, 'Cortometraje de animación.', 7, 8, 9, NULL),
+                (4, 'Cortometraje de ficción dramática.', 10, 11, 12, NULL),
+                (5, 'Cortometraje experimental.', 1, 2, 3, NULL);
                 
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES
                 ('Primer premio', true, 600.00, 1),
