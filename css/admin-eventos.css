@@ -1,8 +1,5 @@
 .date-event{
     background-color: var(--neutral-09);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-
     width:100%;
     padding: 16px;
     display: flex;
@@ -259,7 +256,8 @@
 .icono-hora{
     width:20px;
     height:20px;
-    mask-image: url("../img/icon/ClockIcon.svg");
+    mask-image: url("../img/icon/icon-sandclock.svg");
+     margin-right:8px;
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-04);
@@ -277,7 +275,7 @@
 .icono-ubicacion{
     width:20px;
     height:20px;
-    mask-image: url("../img/icon/LocationThickIcon.svg");
+    mask-image: url("../img/icon/icon-location.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-04);
@@ -306,7 +304,7 @@
 .icon-time{
     width:14px;
     height:14px;
-    mask-image: url("../img/icon/ClockIcon.svg");
+    mask-image: url("../img/icon/icon-sandclock.svg");
     margin:16px;
     mask-size: contain;
     mask-repeat: no-repeat;

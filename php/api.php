@@ -56,6 +56,7 @@ if(isset($_POST['action'])){
         case 'actualizarPatrocinador':
             validarRol(['organizador']);
             actualizarPatrocinador();
+            break;
         case 'eliminarPatrocinador':
             validarRol(['organizador']);
             eliminarPatrocinador();
@@ -352,33 +353,45 @@ function subirArchivo(){
     }
 }
 
-function eliminarArchivo(){
-    $idArchivo = (int) $_POST['idArchivo'];
-
+/**
+ * Eliminar archivo por id, solo si no hay otras referencias a él
+ */
+function eliminarArchivoPorId($idArchivo) {
     global $conexion;
+
     $stmt = $conexion->prepare("SELECT ruta FROM archivo WHERE id_archivo = ?");
     $stmt->bind_param("i", $idArchivo);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $archivoData = $stmt->get_result()->fetch_assoc();
 
-    if ($result && $result->num_rows > 0) {
-        $archivoData = $result->fetch_assoc();
-    } else {
-        echo json_encode(["status" => "error", "message" => "Archivo no encontrado en la base de datos"]);
-        return;
-    }
+    if (!$archivoData) return false;
 
-    $rutaAbsoluta = __DIR__ . '/..' . $archivoData['ruta'];
+    $ruta = $archivoData['ruta'];
+    $rutaAbsoluta = __DIR__ . '/..' . $ruta;
 
-    if (file_exists($rutaAbsoluta)) {
-        if (unlink($rutaAbsoluta)) {
-            echo json_encode(["status" => "success", "message" => "Archivo borrado"]);
-        } else {
-            echo json_encode(["status" => "error", "message" => "Error al borrar el archivo"]);
+    $stmtCheck = $conexion->prepare("SELECT COUNT(*) as total FROM archivo WHERE ruta = ? AND id_archivo != ?");
+    $stmtCheck->bind_param("si", $ruta, $idArchivo);
+    $stmtCheck->execute();
+    $totalOtrasRutas = $stmtCheck->get_result()->fetch_assoc()['total'];
+
+    try {
+        $stmtDel = $conexion->prepare("DELETE FROM archivo WHERE id_archivo = ?");
+        $stmtDel->bind_param("i", $idArchivo);
+
+        if ($stmtDel->execute()) {
+            if ((int)$totalOtrasRutas === 0) {
+                if (file_exists($rutaAbsoluta)) {
+                    unlink($rutaAbsoluta);
+                }
+            }
+            return true;
         }
-    } else {
-        echo json_encode(["status" => "error", "message" => "El archivo no existe"]);
+    } catch (Throwable $e) {
+        // Omisión: si hay una restricción de clave foránea (FK)
+        return false;
     }
+
+    return false;
 }
 
 function actualizarGaleriaEdicionActual(){
@@ -511,32 +524,56 @@ function agregarPatrocinador(){
     ]);
 }
 
+
 /**
- * Actualizar un patrocinador existente
+ * Actualizar patrocinador
+ * Maneja la lógica de no duplicar archivos si la ruta es la misma
  */
-function actualizarPatrocinador(){
+function actualizarPatrocinador() {
     global $conexion;
 
     $idPatrocinador = (int) $_POST['idPatrocinador'];
-    $nombre = $_POST['nombre'] ?? '';
-    $idArchivoLogo =(int) $_POST['idArchivoLogo'];
+    $nombre = $_POST['nombre'];
+    $idArchivoNuevo = (int) $_POST['idArchivoLogo'];
 
-    $stmt = $conexion->prepare("UPDATE patrocinador SET nombre = ?, id_archivo_logo = ? WHERE id_patrocinador = ?");
-    $stmt->bind_param("sii", $nombre, $idArchivoLogo, $idPatrocinador);
-    $stmt->execute();
-
-    if ($stmt->affected_rows === 0) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error al actualizar el patrocinador o no hubo cambios"
-        ]);
-        return;
+    $idLogoAnterior = null;
+    $stmtLogo = $conexion->prepare("SELECT id_archivo_logo FROM patrocinador WHERE id_patrocinador = ?");
+    $stmtLogo->bind_param("i", $idPatrocinador);
+    $stmtLogo->execute();
+    $res = $stmtLogo->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $idLogoAnterior = (int)$row['id_archivo_logo'];
     }
 
-    echo json_encode([
-        "status" => "success",
-        "message" => "Patrocinador actualizado correctamente"
-    ]);
+    if ($idLogoAnterior !== null && $idLogoAnterior !== $idArchivoNuevo) {
+        $stmtRutas = $conexion->prepare("
+            SELECT 
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaVieja,
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaNueva
+        ");
+        $stmtRutas->bind_param("ii", $idLogoAnterior, $idArchivoNuevo);
+        $stmtRutas->execute();
+        $rutas = $stmtRutas->get_result()->fetch_assoc();
+
+        if ($rutas['rutaVieja'] === $rutas['rutaNueva']) {
+            $conexion->query("DELETE FROM archivo WHERE id_archivo = $idArchivoNuevo");
+            $idArchivoNuevo = $idLogoAnterior;
+            $idLogoAnterior = null;
+        }
+    }
+
+    $stmt = $conexion->prepare("UPDATE patrocinador SET nombre = ?, id_archivo_logo = ? WHERE id_patrocinador = ?");
+    $stmt->bind_param("sii", $nombre, $idArchivoNuevo, $idPatrocinador);
+
+    if ($stmt->execute()) {
+        // Solo eliminamos el anterior si realmente es un archivo distinto
+        if ($idLogoAnterior !== null && $idLogoAnterior !== $idArchivoNuevo) {
+            eliminarArchivoPorId($idLogoAnterior);
+        }
+        echo json_encode(["status" => "success"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al actualizar"]);
+    }
 }
 
 /**
@@ -544,25 +581,24 @@ function actualizarPatrocinador(){
  */
 function eliminarPatrocinador(){
     global $conexion;
-
     $idPatrocinador = (int) $_POST['idPatrocinador'];
 
-    $stmt = $conexion->prepare("DELETE FROM patrocinador WHERE id_patrocinador = ?");
+    $stmt = $conexion->prepare("SELECT id_archivo_logo FROM patrocinador WHERE id_patrocinador = ?");
     $stmt->bind_param("i", $idPatrocinador);
     $stmt->execute();
+    $idArchivo = $stmt->get_result()->fetch_assoc()['id_archivo_logo'] ?? null;
 
-    if ($stmt->affected_rows === 0) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error al eliminar el patrocinador"
-        ]);
-        return;
+    $stmtDel = $conexion->prepare("DELETE FROM patrocinador WHERE id_patrocinador = ?");
+    $stmtDel->bind_param("i", $idPatrocinador);
+
+    if ($stmtDel->execute()) {
+        if ($idArchivo) {
+            eliminarArchivoPorId($idArchivo);
+        }
+        echo json_encode(["status" => "success", "message" => "Patrocinador eliminado"]);
+    } else {
+        echo json_encode(["status" => "error"]);
     }
-
-    echo json_encode([
-        "status" => "success",
-        "message" => "Patrocinador eliminado correctamente"
-    ]);
 }
 
 /**

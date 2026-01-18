@@ -73,8 +73,6 @@ botonCancelarEditar.addEventListener('click', () => {
 btnConfirmarEliminar.addEventListener('click', async () => {
     const response = await eliminarPatrocinador(patrocinadorActual.idPatrocinador);
     if (response.status === 'success') {
-        await eliminarArchivo(response.data.idArchivoLogo);
-        console.log('Patrocinador eliminado con éxito:', response.data);
         cargarPatrocinadores();
         deleteConfirmationDialog.close();
     } else {
@@ -102,31 +100,65 @@ btnConfimar.addEventListener('click', async () => {
 
             const response = await agregarPatrocinador(nombrePatrocinador.value, idArchivoLogo);
             if (response.status === 'success') {
-                console.log('Patrocinador agregado con éxito:', response.data);
-                cargarPatrocinadores();
-                modal.classList.add('hidden-force');
+                finalizarOperacionExitosa();
             } else {
                 mensajeError.textContent = response.message;
-                console.error('Error al agregar patrocinador:', response.message);
             }
 
         } else if (modoModal === 'editar') {
-            console.log('Editar patrocinador:', nombrePatrocinador.value);
+            try {
+                let idArchivoFinal = patrocinadorActual.idArchivoLogo;
 
-            const responseSubir = await subirArchivo(imageInput.files[0])
-            const idArchivoLogo = responseSubir.status === 'success' ? responseSubir.data.idArchivo : null;
+                if (imageInput.files.length > 0) {
+                    const respuestaSubida = await subirArchivo(imageInput.files[0]);
 
-            const response = await actualizarPatrocinador(patrocinadorActual.idPatrocinador, nombrePatrocinador.value, idArchivoLogo);
-            if (response.status === 'success') {
-                console.log('Patrocinador actualizado con éxito:', response.data);
-                modal.classList.add('hidden-force');
-                cargarPatrocinadores();
-            } else {
-                console.error('Error al actualizar patrocinador:', response.message);
+                    if (respuestaSubida.status === "success") {
+                        idArchivoFinal = respuestaSubida.data.idArchivo;
+                    } else {
+                        mensajeError.textContent = "Error al subir la nueva imagen.";
+                        return;
+                    }
+                }
+
+                const actualizarResponse = await actualizarPatrocinador(
+                    patrocinadorActual.idPatrocinador,
+                    nombrePatrocinador.value,
+                    idArchivoFinal
+                );
+
+                if (actualizarResponse.status === 'success') {
+                    console.log('Actualización exitosa');
+                    modal.classList.add('hidden-force');
+                    cargarPatrocinadores();
+                    resetearFormulario();
+                } else {
+                    mensajeError.textContent = actualizarResponse.message;
+                    console.error('Error:', actualizarResponse.message);
+                }
+            } catch (error) {
+                console.error("Error en el proceso de editar:", error);
+                mensajeError.textContent = "Error de conexión al actualizar.";
             }
         }
     }
 });
+
+function finalizarOperacionExitosa() {
+    cargarPatrocinadores();
+    modal.classList.add('hidden-force');
+    resetearFormulario();
+}
+
+function resetearFormulario() {
+    nombrePatrocinador.value = '';
+    mensajeErrorInput.textContent = '';
+    mensajeError.textContent = '';
+    imageInput.value = ''; //
+    archivoAceptado.classList.add('hidden-force');
+    document.getElementById('imageDropZone').classList.remove('hidden-force');
+    patrocinadorActual = null;
+    modoModal = null;
+}
 
 
 // Lógica para el input personalizado del logo del patrocinador
@@ -172,6 +204,7 @@ function setupDropZone(zoneId, inputId,cardId, nameSpanId, sizeSpanId, removeBtn
         fileCard.classList.remove('hidden-force');
         nameSpan.textContent = file.name;
         sizeSpan.textContent = formatBytes(file.size);
+        errorSpan.textContent = '';
     };
 
 
@@ -223,14 +256,17 @@ setupDropZone(
     5 * 1024 * 1024 // 5 MB en bytesf
 );
 
-function validarImagenRegistrar(mensajeError){
-    if(imageInput.files.length === 0){
-        mensajeError.textContent = 'Por favor, selecciona una imagen para el logo del patrocinador.';
-        return false;
-    }else{
-        mensajeError.textContent = '';
+function validarImagenRegistrar(elementoError){
+    const tieneImagenVisible = !archivoAceptado.classList.contains('hidden-force');
+    const tieneArchivoEnInput = imageInput.files.length > 0;
+
+    if (tieneArchivoEnInput || tieneImagenVisible) {
+        elementoError.textContent = "";
         return true;
-    }   
+    } else {
+        elementoError.textContent = "Por favor, selecciona una imagen para el logo del patrocinador.";
+        return false;
+    }
 }
 
 
