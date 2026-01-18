@@ -66,6 +66,9 @@ if(isset($_POST['action'])){
     }
 }
 
+/**
+ * Revisa si la sesión está iniciada y devuelve el estado
+ */
 function revisarSesion()
 {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
@@ -91,6 +94,9 @@ function cerrarSesion(){
     ]);
 }
 
+/**
+ * Verifica las credenciales de un usuario en la tabla especificada
+ */
 function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad) {
     global $conexion;
 
@@ -114,6 +120,9 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
     return false;
 }
 
+/**
+ * Iniciar sesión como Participante u Organizador
+ */
 function login() {
     $numIdentidad = $_POST['numExpediente'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -154,7 +163,9 @@ function login() {
     }
 }
 
-
+/**
+ * Valida que el rol sea uno de los permitidos
+ */
 function validarRol($rolesPermitidos) {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
@@ -173,7 +184,9 @@ function validarRol($rolesPermitidos) {
     }
 }
 
-//Esta parte es del pre/post-evento de la BBDD
+/**
+ * Obtener configuración web y archivos de la edición actual
+ */
 function obtenerConfiguracionWeb(){
     global $conexion;
 
@@ -239,6 +252,9 @@ function obtenerConfiguracionWeb(){
     ]);
 }
 
+/**
+ * Actualiza los parámetros de configuración web
+ */
 function actualizarConfiguracionWeb(){
     global $conexion;
 
@@ -304,6 +320,7 @@ function actualizarConfiguracionWeb(){
  * Subir archivo, guardar en carpeta, guardar en BD y devolver id
  * Si es publico lo guarda en ./../uploads/public/
  * Si es privado lo guarda en ./../uploads/private/
+ * Por defecto se guardaa de manera publica
  */
 function subirArchivo(){
     $privado = isset($_POST['privado']) && $_POST['privado'] === 'true';
@@ -355,6 +372,8 @@ function subirArchivo(){
 
 /**
  * Eliminar archivo por id, solo si no hay otras referencias a él
+ * Omite la eliminación del archivo físico si hay otras referencias
+ *
  */
 function eliminarArchivoPorId($idArchivo) {
     global $conexion;
@@ -394,6 +413,9 @@ function eliminarArchivoPorId($idArchivo) {
     return false;
 }
 
+/**
+ * Elimina todos los archivos de una edición actual y los vuelve a insertar según el array recibido
+ */
 function actualizarGaleriaEdicionActual(){
     global $conexion;
 
@@ -460,6 +482,7 @@ function listarCandidaturas(){
 
 /**
  * Listar patrocinadores con su logo
+ * Agrega la URL base de archivos a la ruta del logo
  */
 function listarPatrocinadores(){
     global $conexion;
@@ -485,6 +508,7 @@ function listarPatrocinadores(){
 
 /**
  * Agregar un nuevo patrocinador
+ * Verifica que no exista otro con el mismo nombre
  */
 function agregarPatrocinador(){
     global $conexion;
@@ -493,9 +517,9 @@ function agregarPatrocinador(){
     $idArchivoLogo =(int) $_POST['idArchivoLogo'];
 
     // validar patrocinador no existe con ese nombre
-    $queryCheck = "SELECT id_patrocinador FROM patrocinador WHERE nombre = ?";
+    $queryCheck = "SELECT id_patrocinador FROM patrocinador WHERE UPPER(nombre) = ?";
     $stmtCheck = $conexion->prepare($queryCheck);
-    $stmtCheck->bind_param("s", $nombre);
+    $stmtCheck->bind_param("s", strtoupper($nombre));
     $stmtCheck->execute();
     $resultCheck = $stmtCheck->get_result();
     if ($resultCheck && $resultCheck->num_rows > 0) {
@@ -603,6 +627,7 @@ function eliminarPatrocinador(){
 
 /**
  * Obtener la baseUrl desde la configuración
+ * Esto se usa para construir las URLs completas de los archivos
  */
 function obtenerBaseUrl(){
     global $conexion;
