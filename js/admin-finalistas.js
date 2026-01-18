@@ -51,7 +51,7 @@ function cargarCategorias(){
 }
 
 function renderizarCategorias(categorias){
-    contenedorCategoria.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevas categorías
+    bloqueCategoria.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevas categorías
 
     categorias.forEach(categoria => {
         const categoriaDiv = document.createElement('div');
@@ -75,19 +75,29 @@ function renderizarCategorias(categorias){
                             </div>
                         </div>`;
 
+        bloqueCategoria.appendChild(categoriaDiv);
+
     });
 
-    btnAsignarDesasignarBackground.addEventListener('click', () => {
-        if (btnAsignarDesasignar.textContent === 'Asignar') {
-            modalAsignar.showModal();
-            btnAsignarDesasignar.textContent = 'Desasignar';
-        } else {
-            modalDesasignar.showModal();
-        }
-    });
+    
+    
 }
 
 cargarCategorias();
+
+btnAsignarDesasignarBackground.addEventListener('click', () => {
+    if (btnAsignarDesasignar.textContent === 'Asignar') {
+        modalAsignar.showModal();
+        btnAsignarDesasignar.textContent = 'Desasignar';
+    } else {
+        modalDesasignar.showModal();
+    }
+});
+
+btnCerrarModalGanador.addEventListener('click', () => {
+    modalAsignar.close();
+    btnAsignarDesasignar.textContent = 'Asignar';
+});
 
 
 
