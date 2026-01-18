@@ -57,6 +57,11 @@ if(isset($_POST['action'])){
             validarRol(['organizador']);
             eliminarPatrocinador();
             break;
+        case 'obtenerCategorias':
+            validarRol(['organizador']);
+            obtenerCategoriasYSusPremios();
+            break;
+        
         default:
             break;
     }
@@ -638,6 +643,41 @@ function obtenerBaseUrl(){
 
     return null;
 }
+
+
+function obtenerCategoriasYSusPremios(){
+    global $conexion;
+
+    $queryCategorias = "SELECT id_categoria, nombre FROM categoria";
+    $resultCategorias = $conexion->query($queryCategorias);
+
+    $categorias = [];
+    while ($categoria = $resultCategorias->fetch_assoc()) {
+        $idCategoria = $categoria['id_categoria'];
+
+        $queryPremios = "select c.id_categoria, p.id_premio, p.nombre as nombrePremio, p.cantidad_dinero, EXISTS(SELECT 1 FROM premio_candidatura pm WHERE pm.id_premio = p.id_premio) tieneGanador FROM categoria c
+RIGHT JOIN premio p using (id_categoria) where c.id_categoria = ?";
+        
+        $stmtPremios = $conexion->prepare($queryPremios);
+        $stmtPremios->bind_param("i", $idCategoria);
+        $stmtPremios->execute();
+        $resultPremios = $stmtPremios->get_result();
+
+        $premios = [];
+        while ($premio = $resultPremios->fetch_assoc()) {
+            $premios[] = $premio;
+        }
+
+        $categoria['premios'] = $premios;
+        $categorias[] = $categoria;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $categorias
+    ]);
+}
+
 
 
 cerrarConexion();

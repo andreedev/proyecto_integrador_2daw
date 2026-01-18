@@ -15,6 +15,14 @@ dialog::backdrop {
     backdrop-filter: blur(1px);
 }
 
+.bloque-categoria{
+    margin-bottom: 16px;
+    border: 1px solid var(--neutral-06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
 .header-bloque{
     display: flex;
     flex-direction: row;
@@ -236,4 +244,8 @@ dialog::backdrop {
     .buttons-modal-ganador{
         flex-direction: row;
     }
+}
+
+.icono-desplegable-rotado{
+    rotate: calc(0deg);
 }

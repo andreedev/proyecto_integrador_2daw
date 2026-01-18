@@ -105,3 +105,12 @@ closeModalList.forEach(closeModal => {
         }
     });
 });
+
+
+//------------------ Ganadores Admin ------------------//
+async function listarCategorias(){
+    const data = new FormData();
+    data.append('action', 'obtenerCategorias');
+
+    return await fetchAPI(data);
+}
