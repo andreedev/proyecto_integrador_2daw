@@ -509,13 +509,13 @@ function listarPatrocinadores(){
 function agregarPatrocinador(){
     global $conexion;
 
-    $nombre = $_POST['nombre'] ?? '';
+    $nombre = strtoupper($_POST['nombre']);
     $idArchivoLogo =(int) $_POST['idArchivoLogo'];
 
     // validar patrocinador no existe con ese nombre
     $queryCheck = "SELECT id_patrocinador FROM patrocinador WHERE UPPER(nombre) = ?";
     $stmtCheck = $conexion->prepare($queryCheck);
-    $stmtCheck->bind_param("s", strtoupper($nombre));
+    $stmtCheck->bind_param("s", $nombre);
     $stmtCheck->execute();
     $resultCheck = $stmtCheck->get_result();
     if ($resultCheck && $resultCheck->num_rows > 0) {
