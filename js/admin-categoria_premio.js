@@ -84,7 +84,7 @@ function addPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
         <span class="prize-number">${number}</span>
         <input type="text" placeholder="Nombre del premio" value="${label}" required />
         <input type="number" placeholder="Valor €" value="${value}" min="0" step="10" />
-        <button class="delete-btn"><img src="../img/icon/TrashIcon.svg" alt="Eliminar"></button>
+        <button class="delete-btn"><img src="../img/icon/icon-trash.svg" alt="Eliminar"></button>
     `;
     prizesContainer.appendChild(prizeItem);
 
@@ -191,7 +191,7 @@ function addNewPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
         <span class="prize-number">${number}</span>
         <input type="text" placeholder="Nombre del premio" value="${label}" required />
         <input type="number" placeholder="Valor €" value="${value}" min="0" step="10" />
-        <button class="delete-btn"><img src="../img/icon/TrashIcon.svg" alt="Eliminar"></button>
+        <button class="delete-btn"><img src="../img/icon/icon-trash.svg" alt="Eliminar"></button>
     `;
     newPrizesContainer.appendChild(prizeItem);
 

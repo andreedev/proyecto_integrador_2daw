@@ -2,7 +2,6 @@
  * Menú lateral para el panel de admin
  */
 
-const textoIcono = document.querySelectorAll('.textoIcono');
 class MenuAdmin extends HTMLElement {
     constructor() {
         super();
@@ -12,86 +11,49 @@ class MenuAdmin extends HTMLElement {
             <input type="checkbox" id="checkMenu">
             <div class="responsiveMenuAdmin">
                 <label for="checkMenu" class="iconoMenu">
-                    <div class="iconoMenuEscondido">
-                        <span class="iconoMenuHamburguesa"></span>
+                    <div class="d-flex d-lg-none bg-neutral-01 w-40px h-40px justify-content-center align-items-center cursor-pointer">
+                        <span class="w-24px h-24px icon-bars bg-neutral-09"></span>
                     </div>
                 </label>
             </div>
             <div class="menuLateralCompleto">
                 <div class="cabeceraMenuLateral">
                     <div class="cabeceraIcono">
-                        <span class="iconoAdminPanel"></span>
+                        <a href="admin-candidaturas.html">
+                            <img src="../img/logo.svg" alt="logo">
+                        </a>
                     </div>
                     <h1>Panel de Admin</h1>
                 </div>
 
-                <div class="menuLateral">
-                    <ul>
-                        <li class="textoIcono" id="candidaturasMenuLateral">
-                            <div class="iconoCandidaturasMenuLateral">
-                                <span class="iconoCandidaturas"></span>
-                            </div>
-                            <span>Candidaturas</span>
-                        </li>
-                        <li class="textoIcono" id="finalistasMenuLateral">
-                            <div class="iconoFinalistasMenuLateral">
-                                <span class="iconoFinalistas"></span>
-                            </div>
-                            <span>Finalistas</span>
-                        </li>
-                        <li class="textoIcono" id="noticiasMenuLateral">
-                            <div class="iconoNoticiasMenuLateral">
-                                <span class="iconoNoticias"></span>
-                            </div>
-                            <span>Noticias</span>
-                        </li>
-                        <li class="textoIcono" id="categoriasMenuLateral">
-                            <div class="iconoCategoriasMenuLateral">
-                                <span class="iconoCategorias"></span>
-                            </div>
-                            <span>Categorías y Premios</span>
-                        </li>
-                        <li class="textoIcono" id="patrocinadoresMenuLateral">
-                            <div class="iconoPatrocinadoresMenuLateral">
-                                <span class="iconoPatrocinadores"></span>
-                            </div>
-                            <span>Patrocinadores</span>
-                        </li>
-                        <li>
-                            <div class="gala">
-                                <div class="iconoGalaMenuLateral">
-                                    <span class="iconoGala"></span>
-                                </div>
-                                <span>Gala</span>
-                            </div>
-                        </li>
-                        <li class="menuGala">
-                            <ul>
-                                <li class="textoIcono" id="eventoMenuLateral">
-                                    <div class="iconoEventoMenuLateral">
-                                        <span class="iconoEvento"></span>
-                                    </div>
-                                    <span>Eventos</span>
-                                </li>
-                                <li class="textoIcono" id="edicionesAnterioresMenuLateral">
-                                    <div class="iconoEdicionesAnterioresMenuLateral">
-                                        <span class="iconoEdicionesAnteriores"></span>
-                                    </div>
-                                    <span>Ediciones Anteriores</span>
-                                </li>
-                                <li class="textoIcono" id="configuracionWebMenuLateral">
-                                    <div class="iconoConfiguracionWebMenuLateral">
-                                        <span class="iconoConfiguracionWeb"></span>
-                                    </div>
-                                    <span>Configuración Web</span>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="textoIcono cerrarSesionAdmin" id="botonCerrarSesionAdmin">
-                            <span class="iconoCerrarSesion"></span>
-                            <span>Cerrar Sesión</span>
-                        </li>
-                    </ul>
+                <div class="d-flex flex-column gap-16px">
+                    <div class="textoIcono secondary-button-03 py-16px" id="candidaturasMenuLateral">
+                        <span>Candidaturas</span>
+                    </div>
+                    <div class="textoIcono secondary-button-03 py-16px" id="finalistasMenuLateral">
+                        <span>Finalistas</span>
+                    </div>
+                    <div class="textoIcono secondary-button-03 py-16px" id="noticiasMenuLateral">
+                        <span>Noticias</span>
+                    </div>
+                     <div class="textoIcono secondary-button-03 py-16px" id="eventoMenuLateral">
+                        <span>Eventos</span>
+                    </div>
+                    <div class="textoIcono secondary-button-03 py-16px" id="categoriasMenuLateral">
+                        <span>Categorías y Premios</span>
+                    </div>
+                    <div class="textoIcono secondary-button-03 py-16px" id="patrocinadoresMenuLateral">
+                        <span>Patrocinadores</span>
+                    </div>
+                     <div class="textoIcono secondary-button-03 py-16px" id="edicionesAnterioresMenuLateral">
+                        <span>Ediciones Anteriores</span>
+                    </div>
+                    <div class="textoIcono secondary-button-03 py-16px" id="configuracionWebMenuLateral">
+                        <span>Modo pre/post evento</span>
+                    </div>
+                    <div class="primary-button-02 py-16px" id="botonCerrarSesionAdmin">
+                        <span>Cerrar sesión</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -109,7 +71,6 @@ class MenuAdmin extends HTMLElement {
         });
         document.querySelector('#noticiasMenuLateral').addEventListener('click', () => {
             window.location.href = 'admin-noticias.html';
-
         });
 
         document.querySelector('#categoriasMenuLateral').addEventListener('click', () => {

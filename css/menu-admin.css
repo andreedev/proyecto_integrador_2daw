@@ -12,10 +12,9 @@ ul{
     flex-direction: row;
     padding: 8px 0px 8px 8px;
     width: 17rem;
-    border: 1px solid var(--neutral-04);
-    background-color: var(--neutral-05);
     align-items: center;
     gap: 12px;
+    border-bottom: 1px solid var(--neutral-07);
 }
 @media (min-width: 990px){
     .cabeceraMenuLateral{
@@ -47,35 +46,14 @@ ul{
 
 /*Menu lateral*/
 .menuLateral{
-    background-color: var(--neutral-05);
     height: 100vh;
     width:17rem;
 }
 
 .menuLateral ul{
-    padding-left: 16px;
-    padding-top: 16px;
-    padding-right: 16px;
-    margin-top:0px;
-    background-color: var(--neutral-05);
     display: flex;
     flex-direction: column;
-    gap: 12px;
-}
-
-.menuLateral ul li{
-    width: 100%;
-}
-
-.textoIcono{
-    color: var(--neutral-01);
-    background-color: transparent;
-    cursor:pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 48px;
-    transition: all 300ms ease;
+    gap: 20px;
 }
 
 .gala{
@@ -88,10 +66,6 @@ ul{
 .menuGala ul{
     padding-top:0px;
     padding-left:24px;
-}
-
-.menuLateral ul li span{
-    padding-left: 12px;
 }
 
 /* Iconos del menu lateral */
@@ -189,22 +163,6 @@ ul{
     margin: 6px 0px 0px 6px;
 }
 
-.textoIcono:hover{
-    background-color: var(--neutral-04);
-    color: var(--neutral-01);
-    transition: all 300ms ease;
-}
-
-
-.textoIcono.active {
-    background-color: var(--neutral-02);
-    color: var(--neutral-09);
-}
-
-.textoIcono.active div span{
-    background-color: var(--neutral-09);
-}
-
 
 /*Menu lateral responsive*/
 
@@ -213,11 +171,16 @@ ul{
 }
 
 .menuLateralCompleto{
+    min-height: 100vh;
     z-index: 1000;
-    background-color: var(--neutral-05);
+    background-color: var(--neutral-09);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: var(--shadow-01);
 }
 
-@media (max-width: 1000px){
+@media (max-width: 992px){
 
     .responsiveMenuAdmin{
         position: fixed;
@@ -242,10 +205,8 @@ ul{
     }
 
     .iconoMenuEscondido{
-        background-color: var(--neutral-01);
         width:56px;
         height:56px;
-        
     }
 
     .iconoMenuHamburguesa{
@@ -423,30 +384,4 @@ ul{
     background-color: var(--primary-02);
     border-radius:6px;
 
-}
-
-.iconoCerrarSesion{
-    width:24px;
-    height:24px;
-    background-color: var(--neutral-09);
-    mask-image: url('../img/icon/icon-logout.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 0px 0px 0px 6px;
-}
-
-
-#botonCerrarSesionAdmin{
-    width: 100%;
-    color: var(--neutral-09);
-    background-color: var(--primary-01);
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-#botonCerrarSesionAdmin:hover{
-    background-color: var(--primary-03);
 }

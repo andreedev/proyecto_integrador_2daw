@@ -62,7 +62,7 @@ h1{
     height:16px;
     position: relative;
     cursor: pointer;
-    mask-image: url('../img/icon/PencilIcon.svg');
+    mask-image: url('../img/icon/icon-pencil.svg');
     background-color: var(--neutral-01);
     mask-repeat: no-repeat;
     mask-size: contain;
@@ -73,7 +73,7 @@ h1{
     height:16px;
     position: relative;
     cursor: pointer;
-    mask-image: url('../img/icon/TrashIcon.svg');
+    mask-image: url('../img/icon/icon-trash.svg');
     background-color: var(--primary-03);
     mask-repeat: no-repeat;
     mask-size: contain;

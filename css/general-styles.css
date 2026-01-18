@@ -54,6 +54,12 @@ h1, h2, h3, h4, h5, h6{
     font-weight: 600;
 }
 
+ul, li{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 /* Kit de componentes Figma */
 :root{
     --primary-01: #801914;
@@ -155,4 +161,85 @@ p{
     --adp-text-color: var(--neutral-01) !important;
     --adp-cell-background-color-selected: var(--primary-03) !important;
     --adp-cell-background-color-selected-hover: var(--primary-02) !important;
+}
+
+.primary-button-01{
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
+    border: none;
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: min-content;
+    width: 100%;
+    gap: 8px;
+}
+
+@media (min-width: 768px){
+    .primary-button-01 {
+        width: auto;
+    }
+}
+
+.primary-button-01:hover{
+    background-color: var(--primary-02);
+}
+
+.primary-button-01.disabled{
+    background-color: var(--primary-04);
+    cursor: not-allowed;
+}
+
+.primary-button-02{
+    background-color: var(--neutral-09);
+    border: 1px solid var(--primary-03);
+    color: var(--primary-03);
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: min-content;
+    width: 100%;
+    gap: 8px;
+    transition: all 300ms ease;
+}
+
+@media (min-width: 768px){
+    .primary-button-02 {
+        width: auto;
+    }
+    .primary-button-02 {
+        width: auto;
+    }
+}
+
+.primary-button-02:hover{
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
+}
+
+.secondary-button-03{
+    background-color: var(--neutral-09);
+    color: var(--neutral-01);
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    width: 100%;
+    gap: 8px;
+    transition: all 300ms ease;
+}
+
+.secondary-button-03:hover, .secondary-button-03.active{
+    background-color: var(--neutral-01);
+    color: var(--neutral-09);
 }
