@@ -31,7 +31,7 @@ class MenuAdmin extends HTMLElement {
                         <span>Candidaturas</span>
                     </div>
                     <div class="textoIcono secondary-button-03 py-16px" id="finalistasMenuLateral">
-                        <span>Finalistas</span>
+                        <span>Ganadores</span>
                     </div>
                     <div class="textoIcono secondary-button-03 py-16px" id="noticiasMenuLateral">
                         <span>Noticias</span>
