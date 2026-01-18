@@ -37,10 +37,6 @@ if(isset($_POST['action'])){
             validarRol(['organizador', 'participante']);
             subirArchivo();
             break;
-        case 'eliminarArchivo':
-            validarRol(['organizador', 'participante']);
-            eliminarArchivo();
-            break;
         case 'listarCandidaturas':
             validarRol(['organizador', 'participante']);
             listarCandidaturas();

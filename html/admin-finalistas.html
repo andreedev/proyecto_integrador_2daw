@@ -27,12 +27,12 @@
             </div>
             <div class="admin-content">
                 <div class="bloque-categoria">
-                    <div class="header-bloque">
-                        <span class="categoria-title">Mejor Cortometraje UE Alumno</span>
-                        <span class="icono-desplegable"></span>
+                    <div class="header-bloque" id="headerBloque">
+                        <span class="categoria-title" id="nombreCategoria">Mejor Cortometraje UE Alumno</span>
+                        <span class="icono-desplegable " id="iconoDesplegable"></span>
                     </div>
-                    <div class="puesto-container">
-                        <div class="puesto-premio">
+                    <div class="puesto-container" id="puestoContainer">
+                        <div class="puesto-premio" id="puestoPremio">
                             <span class="puesto">Primer lugar </span>
                             <span class="premio">5000€</span>
                         </div>
@@ -40,8 +40,8 @@
                             <span class="icono-persona"></span>
                             <span class="ganador">Juan del Prado del Valle</span>
                         </div>
-                        <div class="boton-asignar-desasignar-background">
-                            <span class="boton-asignar-desasignar">Desasignar</span>
+                        <div class="boton-asignar-desasignar-background" id="btnAsignarDesasignarBackground">
+                            <span class="boton-asignar-desasignar" id="btnAsignarDesasignar">Desasignar</span>
                         </div>
                     </div>
                 </div>
@@ -50,42 +50,42 @@
     </div>
 
 
-    <dialog id="modal-desasignar" class="generic-modal">
+    <dialog id="modalDesasignar" class="generic-modal">
         <div class="modal-header d-flex justify-content-center">
             <span class="modal-header-text ">¿Estás seguro?</span>
         </div>
         <div class="modal-body">
             <button type="submit" class="cancel-modal" id="btnCancelModalDesasignar">Cancelar</button>
-            <button type="submit" class="aceptar-modal" id="btnDesasignarModalDesasignar">Aceptar</button>
+            <button type="submit" class="aceptar-modal" id="btnDesasignarGanador">Aceptar</button>
         </div>
     </dialog>
 
-    <div id="modal-asignar-ganador" class="generic-modal">
+    <dialog id="modalAsignarGanador" class="generic-modal">
         <div class="modal-asignar-header d-flex justify-space-between align-center px-24px py-16px">
             <span class="modal-header-title fs-20px fw-600">Asignar Ganador</span>
-            <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer" id="closeAddModal"></span>
+            <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer" id="cerrarModalAsignar"></span>
         </div>
-        <div class="modal-body-asignar p-16px gap-16px">
-            <div class="info-card-ganador p-8px d-flex align-center gap-16px">
-                <div class="seleccionar-ganador">
-                    <span class="icon-check w-24px h-24px bg-neutral-03"></span>
+        <div class="modal-body-asignar d-flex p-16px gap-16px">
+            <div id="infoCardGanador" class="info-card-ganador p-16px d-flex align-center gap-24px box-shadow-02">
+                <div class="seleccionar-ganador" id="btnGanadorElegido">
+                    <span class="icon-check w-24px h-24px bg-neutral-01 hidden-force" id="iconCheck"></span>
                 </div>
-                <div class="info-ganador">
+                <div id="infoGanador" class="info-ganador d-flex flex-column gap-4px min-w-1px flex-shrink-1">
                     <span class="name-ganador">Juan del Prado del Valle</span>
                     <span class="gmail-ganador">juanpv@gmail.com</span>
-                    <span class="descripcion-corto-ganador">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quibusdam incidunt maxime excepturi rerum ducimus reprehenderit repellendus? Perspiciatis deserunt aliquid ut, dolorem quidem, eius culpa laboriosam nisi inventore quae distinctio!</span>
+                    <span class="descripcion-corto-ganador text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quibusdam incidunt maxime excepturi rerum ducimus reprehenderit repellendus? Perspiciatis deserunt aliquid ut, dolorem quidem, eius culpa laboriosam nisi inventore quae distinctio!</span>
                 </div>
                 <div class="fecha-presentacion">
                     <span class="presentacion">Presentacion</span>
                     <span class="fecha">12/05/2024</span>
                 </div>
             </div>
-            <div class="buttons-add-modal">
+            <div class="buttons-modal-ganador gap-16px d-flex justify-content-center align-items-center">
                 <button type="submit" class="cancel-modal" id="btnCerrarModalGanador">Cancelar</button>
                 <button type="submit" class="aceptar-modal" id="btnAceptarGanador">Aceptar</button>
             </div>
         </div>
-    </div>
+    </dialog>
 
 
 

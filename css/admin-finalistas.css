@@ -190,3 +190,50 @@ dialog::backdrop {
     flex-direction: row;
 }
 
+.seleccionar-ganador{
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--neutral-01);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.name-ganador{
+    font-size: 16px;
+    font-weight: 400;
+}
+.gmail-ganador, .descripcion-corto-ganador{
+    font-size: 12px;
+    color: var(--neutral-03);
+    font-weight: 400;
+}
+
+.presentacion{
+    font-size: 12px;
+    color: var(--neutral-03);
+    font-weight: 400;
+}
+
+.fecha{
+    font-size: 12px;
+    color: var(--neutral-01);
+    font-weight: 400;
+}
+
+.modal-body-asignar{
+    flex-direction: column;
+    padding: 16px;
+}
+
+.buttons-modal-ganador{
+    flex-direction: column;
+}
+
+@media (min-width: 992px){
+    .buttons-modal-ganador{
+        flex-direction: row;
+    }
+}
