@@ -42,7 +42,6 @@
     mask-size: contain;
     mask-position: center;
     transition: all 300ms ease;
-    border-radius: 5px;
 }
 
 .icon-menu-bars:hover {
@@ -54,7 +53,6 @@
     align-items: center;
     padding: 4px;
     border: 1px solid transparent;
-    border-radius: 8px;
     transition: all 300ms ease;
     cursor: pointer;
 }

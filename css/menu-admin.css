@@ -28,7 +28,6 @@ ul{
     height: 40px;
     background-color: var(--neutral-01);
     align-items: center;
-    border-radius: 6px;
 }
 
 .iconoAdminPanel{
@@ -443,7 +442,6 @@ ul{
     color: var(--neutral-09);
     background-color: var(--primary-01);
     border: none;
-    border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;

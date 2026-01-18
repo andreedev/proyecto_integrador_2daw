@@ -27,8 +27,7 @@ h1 {
     flex-wrap: wrap;
     background: var(--neutral-09);
     padding: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--neutrañl-05);
+    border: 1px solid var(--neutral-05);
     margin-bottom: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
@@ -44,7 +43,6 @@ h1 {
 .filters select,
 .filters button {
     padding: 8px 10px;
-    border-radius: 6px;
     border: 1px solid var(--neutral-05);
     font-size: 14px;
     background: var(--neutral-09);
@@ -71,7 +69,6 @@ h1 {
 /* TABLE */
 .table-wrapper {
     background: var(--neutral-09);
-    border-radius: 8px;
     border: 1px solid var(--neutral-05);
     overflow: hidden;
 }
@@ -120,7 +117,6 @@ th {
     display: inline-flex;
     align-items: center;
     padding: 4px 10px;
-    border-radius: 2px;
     font-size: 12px;
     font-weight: 600;
 }
@@ -291,7 +287,6 @@ th {
     max-height: 90vh;
     overflow-y: auto;
     background: var(--neutral-09);
-    border-radius: 8px;
     position: relative;
     margin: 0 auto;
     padding: 8px 8px;
@@ -303,14 +298,12 @@ th {
     width: 90%;
     padding: 24px;
     background: var(--neutral-09);
-    border-radius: 8px;
     position: relative;
 }
 
 #changeModal .modal-context {
     background: var(--neutral-07);
     padding: 12px;
-    border-radius: 6px;
     margin-bottom: 16px;
     font-size: 13px;
     color: var(--neutral-04);
@@ -331,7 +324,6 @@ th {
     width: 100%;
     margin-top: 4px;
     padding: 8px;
-    border-radius: 5px;
     border: 1px solid var(--neutral-05);
 }
 
@@ -349,7 +341,6 @@ th {
     width: 90%;
     padding: 20px;
     background: var(--neutral-09);
-    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     position: relative;
 }
@@ -382,7 +373,6 @@ th {
     margin-bottom: 20px;
     background: var(--neutral-07);
     padding: 8px;
-    border-radius: 8px;
     overflow-x: auto;
 }
 
@@ -390,7 +380,6 @@ th {
     padding: 8px 16px;
     background: var(--neutral-09);
     border: 1px solid var(--neutral-05);
-    border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s;
@@ -409,7 +398,6 @@ th {
 .tab-pane {
     display: none;
     padding: 15px;
-    border-radius: 8px;
     background: var(--neutral-07);
 }
 
@@ -421,7 +409,6 @@ th {
 .video-container {
     position: relative;
     width: 100%;
-    border-radius: 8px;
     overflow: hidden;
     aspect-ratio: 16 / 9;
 }
@@ -466,14 +453,12 @@ th {
 
 .poster-placeholder {
     max-width: 100%;
-    border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* FICHA TÉCNICA */
 .technical-info img {
     width: 100%;
-    border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -484,7 +469,6 @@ th {
     width: 90%;
     padding: 24px;
     background: var(--neutral-09);
-    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     position: relative;
 }
@@ -500,7 +484,6 @@ th {
     margin-bottom: 20px;
     padding: 12px;
     background: var(--neutral-07);
-    border-radius: 8px;
     gap: 10px;
 }
 
@@ -521,7 +504,6 @@ th {
     gap: 12px;
     background: var(--neutral-07);
     padding: 16px;
-    border-radius: 8px;
     margin-bottom: 20px;
 }
 
@@ -543,7 +525,6 @@ th {
     padding: 16px;
     background: var(--neutral-09);
     border: 1px solid var(--neutral-05);
-    border-radius: 8px;
 }
 
 .synopsis-detail strong {
@@ -571,7 +552,6 @@ th {
     gap: 8px;
     background: var(--neutral-07);
     padding: 12px;
-    border-radius: 8px;
     flex: 1;
 }
 
@@ -612,7 +592,6 @@ th {
     width: 90%;
     padding: 20px;
     background: var(--neutral-09);
-    border-radius: 12px;
     position: relative;
 }
 
@@ -677,7 +656,6 @@ th {
 .timeline-content {
     background: var(--neutral-07);
     padding: 12px 14px;
-    border-radius: 8px;
     font-size: 13px;
 }
 
@@ -698,7 +676,6 @@ th {
     background: var(--error-04);
     color: var(--error-01);
     padding: 10px;
-    border-radius: 6px;
     margin-top: 8px;
     font-size: 12px;
 }
@@ -707,7 +684,6 @@ th {
     background: var(--information-04);
     color: var(--information-01);
     padding: 10px;
-    border-radius: 6px;
     margin-top: 8px;
     font-size: 12px;
 }
@@ -717,7 +693,6 @@ th {
 #notificationModal .btn {
     padding: 6px 12px;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -801,7 +776,6 @@ th {
         flex-direction: column;
         background: var(--neutral-09);
         border: 1px solid var(--neutral-05);
-        border-radius: 8px;
         padding: 16px;
         width: calc(50% - 6px);
         min-width: 280px;
@@ -907,7 +881,6 @@ th {
     .pagination-btn {
         padding: 4px 8px;
         font-size: 12px;
-        border-radius: 16px;
     }
 
     .modal-content {

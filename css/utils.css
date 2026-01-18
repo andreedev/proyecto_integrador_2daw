@@ -471,7 +471,6 @@
     mask-size: contain;
     mask-position: center;
     transition: all 300ms ease;
-    border-radius: 5px;
 }
 
 .icon-user-thick {
@@ -488,7 +487,6 @@ dialog:focus {
 
 dialog {
     border: none;
-    border-radius: 8px;
     padding: 0;
 }
 

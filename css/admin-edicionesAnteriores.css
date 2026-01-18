@@ -35,7 +35,6 @@
     color: white;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
 }
@@ -63,7 +62,6 @@
 
 .edition-card {
     background: white;
-    border-radius: 8px;
     border: 1px solid var(--neutral-05);
     padding: 8px;
     position: relative;
@@ -133,7 +131,6 @@
 
 .stat-box {
     background: #f9f9f9;
-    border-radius: 6px;
     padding: 0.75rem;
     display: flex;
     align-items: center;
@@ -147,7 +144,6 @@
     align-items: center;
     justify-content: center;
     background: #eee;
-    border-radius: 4px;
     overflow: hidden;
 }
 
@@ -175,7 +171,6 @@
 .admin-content-body{
     background-color: var(--neutral-09);
     padding: 24px;
-    border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap:16px;
@@ -185,7 +180,6 @@
     width:100%;
     background-color: var(--neutral-07);
     padding: 12px;
-    border-radius: 8px;
 }
 
 .all-editions-title{

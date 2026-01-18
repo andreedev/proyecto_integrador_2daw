@@ -67,7 +67,6 @@
 .right-arrow-container{
     padding: 8px;
     background-color: var(--neutral-09);
-    border-radius: 8px;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -93,7 +92,6 @@
 .calendar-with-date{
     padding: 8px 24px;
     background-color: var(--neutral-07);
-    border-radius: 8px;
     display:flex;
     flex-direction: row;
     align-items: center;
@@ -342,7 +340,6 @@ dialog{
 
 .modal-ver-detalle-content{
     background-color: var(--neutral-09);
-    border-radius: 8px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -382,7 +379,7 @@ dialog{
     cursor: pointer;
     width:36px;
     height:36px;
-    mask-image: url("../img/icon/CloseIcon.svg");
+    mask-image: url("../img/icon/icon-close.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-03);
@@ -391,7 +388,6 @@ dialog{
 
 .modal-ver-detalle-img{
     width: 100%;
-    border-radius:12px;
     object-fit: cover;
     max-width: 400px;
     display: flex;
@@ -402,7 +398,7 @@ dialog{
 .img-modal-detalle-evento{
     width:100%;
     height:100%;
-    border-radius:12px;
+
     object-fit: cover;
 }
 
@@ -426,7 +422,6 @@ dialog{
     height:32px;
     padding:4px;
     background-color: var(--primary-05);
-    border-radius: 6px;
     margin-right:4px;
 }
 
@@ -434,7 +429,7 @@ dialog{
     display:flex;
     width:24px;
     height:24px;
-    mask-image: url("../img/icon/CalendarIcon.svg");
+    mask-image: url("../img/icon/icon-calendar.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--primary-03);
@@ -471,7 +466,6 @@ dialog{
     height:32px;
     padding:4px;
     background-color: var(--primary-05);
-    border-radius: 6px;
     margin-right:4px;
 }
 
@@ -479,7 +473,7 @@ dialog{
     display:flex;
     width:24px;
     height:24px;
-    mask-image: url("../img/icon/ClockIcon.svg");
+    mask-image: url("../img/icon/icon-time.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--primary-03);
@@ -515,7 +509,6 @@ dialog{
     height:32px;
     padding:4px;
     background-color: var(--primary-05);
-    border-radius: 6px;
     margin-right:4px;
 }
 
@@ -523,7 +516,7 @@ dialog{
     display:flex;
     width:24px;
     height:24px;
-    mask-image: url("../img/icon/LocationThickIcon.svg");
+    mask-image: url("../img/icon/icon-location.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--primary-03);
@@ -553,7 +546,6 @@ dialog{
 
 .descripcion-background{
     background-color: var(--neutral-08);
-    border-radius: 12px;
     padding: 16px 20px;
 }
 
@@ -561,7 +553,6 @@ dialog{
     background-color: var(--primary-03);
     color: var(--neutral-09);
     border: none;
-    border-radius: 6px;
     padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;
@@ -595,7 +586,6 @@ dialog{
     background-color: var(--neutral-08);
     color: var(--neutral-03);
     border: none;
-    border-radius: 6px;
     padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;
@@ -643,7 +633,7 @@ dialog{
     cursor: pointer;
     width:36px;
     height:36px;
-    mask-image: url("../img/icon/CloseIcon.svg");
+    mask-image: url("../img/icon/icon-close.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-03);
@@ -677,7 +667,6 @@ dialog{
     padding: 6px 8px;
     gap:10px;
     align-items: stretch;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 
@@ -704,7 +693,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 
@@ -764,7 +752,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 }
@@ -772,7 +759,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 }
@@ -791,7 +777,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 
@@ -800,7 +785,7 @@ dialog{
 .icono-ubicacion-agregar-evento{
     width:16px;
     height:16px;
-    mask-image: url("../img/icon/LocationThickIcon.svg");
+    mask-image: url("../img/icon/icon-location.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-04);
@@ -826,7 +811,6 @@ dialog{
     width:100%;
     height:80px;
     padding: 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
     resize: vertical;
@@ -850,7 +834,6 @@ dialog{
     width:100%;
     height:120px;
     border: 1px dashed var(--primary-03);
-    border-radius: 8px;
     background-color: var(--neutral-09);
     display:flex;
     flex-direction: column;
@@ -864,7 +847,6 @@ dialog{
     height:48px;
     padding:8px;
     background-color: var(--primary-05);
-    border-radius: 24px;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -923,7 +905,7 @@ dialog{
     cursor: pointer;
     width:36px;
     height:36px;
-    mask-image: url("../img/icon/CloseIcon.svg");
+    mask-image: url("../img/icon/icon-close.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-03);
@@ -948,7 +930,6 @@ dialog{
     width: 100%;
     height:36px;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
 
 }
@@ -968,7 +949,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 
@@ -1027,7 +1007,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 }
@@ -1035,7 +1014,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 }
@@ -1054,7 +1032,6 @@ dialog{
     height:36px;
     width:100%;
     padding: 6px 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
 
@@ -1063,7 +1040,7 @@ dialog{
 .icono-ubicacion-editar-evento{
     width:16px;
     height:16px;
-    mask-image: url("../img/icon/LocationThickIcon.svg");
+    mask-image: url("../img/icon/icon-location.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-04);
@@ -1089,7 +1066,6 @@ dialog{
     width:100%;
     height:80px;
     padding: 8px;
-    border-radius: 8px;
     border: 1px solid var(--neutral-06);
     background-color: var(--neutral-09);
     resize: vertical;
@@ -1112,7 +1088,6 @@ dialog{
 .modal-editar-evento-file-input-background{
     width:100%;
     height:120px;
-    border-radius: 8px;
     background-color: var(--neutral-09);
     display:flex;
     flex-direction: column;
@@ -1130,7 +1105,6 @@ dialog{
     width:100%;
     height:auto;
     object-fit: contain;
-    border-radius: 8px;
 }
 
 .icono-cambiar-imagen-editar-evento-background{
@@ -1141,7 +1115,6 @@ dialog{
     height:48px;
     padding:8px;
     background-color: var(--neutral-09);
-    border-radius: 8px;
     display:flex;
     align-items: center;
     justify-content: center;

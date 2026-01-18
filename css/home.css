@@ -78,8 +78,7 @@
     height: 240px;
     width: 90%; 
     background: #cfcfcf;
-    margin: 0 auto 1rem; 
-    border-radius: 8px; 
+    margin: 0 auto 1rem;
 }
 
 
@@ -104,7 +103,6 @@
     width: 220px;
     background: #f2f2f2;
     padding: 1rem;
-    border-radius: 8px;
     font-size: 0.9rem;
 }
 

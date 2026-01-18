@@ -1,7 +1,6 @@
 .generic-card{
     box-shadow: var(--shadow-01);
     transition: 0.3s;
-    border-radius: 12px;
     background-color: #ffffff;
     padding: 20px;
     display: flex;
@@ -11,8 +10,7 @@
 
 .mode-info-internal-card{
     border: 1px dashed var(--primary-03);
-    background: var(--gradient-03);
-    border-radius: 8px;
+    background: var(--neutral-04);
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -114,7 +112,6 @@
     align-items: center;
     flex-direction: column;
     gap: 4px;
-    border-radius: 20px;
     background: var(--neutral-09);
     padding: 8px 16px;
     justify-content: center;
@@ -192,7 +189,6 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    border-radius: 8px;
 }
 
 .card-header-title-container{
@@ -358,7 +354,6 @@
 
 .large-input-group-body{
     width: 100%;
-    border-radius: 16px;
     border: 1px solid var(--neutral-05);
     height: 140px;
     display: flex;
@@ -409,7 +404,6 @@
 
 .secondary-card{
     transition: 0.3s;
-    border-radius: 12px;
     background-color: var(--neutral-06);
     padding: 16px;
     display: flex;
@@ -467,7 +461,6 @@
 .streaming-card{
     width: 100%;
     transition: 0.3s;
-    border-radius: 12px;
     background-color: var(--neutral-07);
     border: 2px solid var(--neutral-04);
     padding: 12px;
@@ -502,13 +495,12 @@
     flex-direction: row;
     gap: 8px;
     align-items: center;
-    border-radius: 20px;
     background-color: var(--neutral-06);
     padding: 8px 12px;
 }
 
 .streaming-card.enabled .streaming-indicator{
-    background: var(--gradient-02);
+    background: var(--primary-03);
 }
 
 .streaming-card.enabled .icon{
@@ -567,7 +559,6 @@
 .streaming-toggle-button{
     width: 50px;
     height: 28px;
-    border-radius: 14px;
     background-color: var(--neutral-05);
     cursor: pointer;
     display: flex;
@@ -706,7 +697,6 @@
 
 .gallery-item{
     width: 100%;
-    border-radius: 12px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     cursor: grab;
@@ -723,7 +713,6 @@
 .icon-container-2{
     width: 32px;
     height: 32px;
-    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -769,7 +758,6 @@
     color: var(--neutral-03);
     font-size: 12px;
     padding: 4px 8px;
-    border-radius: 12px;
     font-weight: 500;
     z-index: 2;
 }
@@ -822,7 +810,6 @@ remove-btn {
 
 .video-item {
     width: 100%;
-    border-radius: 12px;
     aspect-ratio: 16 / 9;
     background-color: var(--neutral-08);
     overflow: hidden;
@@ -933,7 +920,6 @@ dialog{
     background-color: var(--primary-03);
     color: var(--neutral-09);
     border: none;
-    border-radius: 6px;
     padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;
@@ -966,7 +952,6 @@ dialog{
     background-color: var(--neutral-08);
     color: var(--neutral-03);
     border: none;
-    border-radius: 6px;
     padding: 8px 24px;
     font-size: 16px;
     font-weight: 600;
@@ -988,7 +973,6 @@ dialog{
     flex-direction: row;
     gap: 8px;
     padding: 12px 16px;
-    border-radius: 8px;
 }
 
 .warning-content{
