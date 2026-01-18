@@ -1,5 +1,4 @@
 const modalVerDetalleEvento = document.getElementById('modalVerDetalleEvento');
-const closeModalList = document.querySelectorAll('.close-modal');
 
 const eventRows = document.querySelectorAll('.event-row');
 const btnEliminarEvento = document.querySelector('.neutral-button');
@@ -157,15 +156,6 @@ eventImageEditar.addEventListener('blur', () => {
     } else {
         imgErrorMessageEditarEvento.textContent = '';
     }   
-});
-
-
-// Cerrar modales
-closeModalList.forEach(closeModal => {
-    closeModal.addEventListener('click', () => {
-        const dialog = closeModal.closest('dialog');
-        dialog.close();
-    });
 });
 
 

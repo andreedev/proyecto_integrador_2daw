@@ -57,7 +57,7 @@ async function agregarPatrocinador(nombre, idArchivoLogo) {
  */
 async function actualizarPatrocinador(idPatrocinador, nombre, idArchivoLogo) {
     const data = new FormData();
-    data.append('action', 'editarPatrocinador');
+    data.append('action', 'actualizarPatrocinador');
     data.append('idPatrocinador', idPatrocinador);
     data.append('nombre', nombre);
     data.append('idArchivoLogo', idArchivoLogo);
@@ -94,15 +94,7 @@ async function subirArchivo(file) {
     throw new Error('Error al subir el archivo');
 }
 
-async function eliminarArchivo(idArchivo) {
-    const data = new FormData();
-    data.append('action', 'borrarArchivo');
-    data.append('idArchivo', idArchivo);
-    return await fetchAPI(data);
-}
-
 const closeModalList = document.querySelectorAll('.close-modal');
-console.log(closeModalList)
 closeModalList.forEach(closeModal => {
     closeModal.addEventListener('click', () => {
         const dialog = closeModal.closest('dialog');
