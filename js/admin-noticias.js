@@ -15,7 +15,6 @@ const newsParagraph = document.querySelector('.news-paragraph');
 const modalAgregarNoticia = document.getElementById('addModal');
 const cerrarModal = document.getElementById('closeAddModal');
 const btnCancelModal = document.getElementById('btnCancelModalAdd');
-const btnAddModal = document.getElementById('btnAddModalAdd');
 const iconoDeleteImg = document.getElementById('deleteImg');
 
 const posterInput= document.getElementById('newsImageInput');

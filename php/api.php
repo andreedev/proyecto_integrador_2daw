@@ -104,6 +104,10 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             listarNoticias();
             break;
+        case 'crearNoticia':
+            validarRol(['organizador', 'participante']);
+            crearNoticia();
+            break;
         default:
             break;
     }
@@ -1151,5 +1155,22 @@ function listarNoticias(){
     ]);
 }
 
+function crearNoticia(){
+    global $conexion;
+
+    $nombre = $_POST['nombreNoticia'];
+    $descripcion = $_POST['descripcionNoticia'];
+    $fecha = $_POST['fechaNoticia'];
+    $idArchivoImagen = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
+
+    $stmt = $conexion->prepare("INSERT INTO noticia (nombre, descripcion, fecha, id_archivo_imagen) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $nombre, $descripcion, $fecha, $idArchivoImagen);
+
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Noticia creada correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al crear la noticia"]);
+    }
+}
 
 cerrarConexion();
