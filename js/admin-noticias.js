@@ -4,7 +4,6 @@ const btnAgregarNoticia = document.getElementById('addNews');
 const noticiaContainer = document.querySelector('.one-news');
 const imagenNoticia = document.querySelector('.news-image img');
 const newsTitle = document.querySelector('.news-title')
-const btnEliminarNoticia = document.querySelector('.icon-delete-news');
 const newsDate = document.querySelector('.news-date');
 const newsStatus = document.querySelector('.news-status');
 const iconStatus = document.querySelector('.icon-status');
@@ -31,9 +30,10 @@ const newsTitleInput = document.getElementById('newsTitleInput');
 const newsDescriptionInput = document.getElementById('newsDescriptionInput');
 const newsDateInput = document.getElementById('newsDateInput');
 
+const newsListContainer = document.getElementById('newsListContainer');
+
 
 //Validaciones para Agregar
-
 newsTitleInput.addEventListener('blur', () => {
     const titleValue = newsTitleInput.value.trim();
     if (titleValue === '') {
@@ -94,26 +94,12 @@ btnCancelModal.addEventListener('click', () => {
     document.getElementById('errorNewsDateInput').textContent = '';
 });
 
-btnEliminarNoticia.addEventListener('click', () => {
-    const confirmar = confirm('¿Estás seguro de que deseas eliminar esta noticia?');
-    if (confirmar) {
-        alert('Noticia eliminada.');
-        newsContainer.remove();
-        
-    } else {
-        alert('Operación cancelada.');
-    }
-});
-
-
-
 iconoDeleteImg.addEventListener('click', () => {
     imagenAceptadaCard.src = '';
     imagenAceptadaCard.classList.add('hidden-force');
     posterInput.value = '';
 });
 
-// Lógica para el input personalizado del logo del patrocinador
 
 function setupDropZone(zoneId, inputId,cardId, nameSpanId, sizeSpanId, removeBtnId, errorSpanID, acceptedFormats, maxSizeMB) {
     const dropZone = document.getElementById(zoneId);
@@ -220,3 +206,67 @@ setupDropZone(
     ['png', '.jpg', '.jpeg'],
     5 * 1024 * 1024 
 );
+
+/**
+ * Renderiza las noticias
+ */
+function renderizarNoticias(noticias) {
+    newsListContainer.innerHTML = '';
+    noticias.forEach(noticia => {
+        const noticiaDate = convertISOStringToDate(noticia.fechaNoticia)
+        const publicada = noticiaDate> new Date();
+        let estado = '';
+        let statusClass = '';
+        let iconClass = '';
+        if (!publicada){
+            estado = 'Programada';
+            statusClass = 'text-neutral-02';
+            iconClass = 'icon-sand-clock';
+        } else {
+            estado = 'Publicado';
+            statusClass = 'text-success';
+            iconClass = 'icon-small-check';
+        }
+
+
+        const fechaFormateada = humanizeDate(noticiaDate);
+
+        const noticiaElement = document.createElement('div');
+        noticiaElement.classList.add('news-container');
+        noticiaElement.innerHTML = `
+            <div class="d-flex flex-column flex-md-row align-items-center">
+                <div class="news-image">
+                    <img class="news-img" src="${noticia.rutaImagenNoticia}" alt="Imagen de la noticia ${noticia.id}">
+                </div>
+                <div class="w-100 p-16px position-relative gap-8px d-flex flex-column">
+                    <div class="news-header">
+                        <p class="fs-20px fw-600">${noticia.nombreNoticia}</p>
+                    </div>
+                    <div class="d-flex flex-column gap-12px w-auto">
+                        <div class="d-flex align-items-center gap-12px">
+                            <span class="icon-calendar bg-neutral-03 w-20px h-20px"></span>
+                            <span>${fechaFormateada}</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-12px">
+                            <span class="${iconClass} bg-neutral-03 w-20px h-20px"></span>
+                            <div class="${statusClass}">${estado}</div>
+                        </div>
+                    </div>
+                    <p class="news-paragraph">${noticia.descripcionNoticia}</p>
+                    <span class="position-absolute icon-pencil w-24px h-24px bg-neutral-02 top-12px right-48px cursor-pointer hover-scale-1-10"></span>
+                    <span class="position-absolute icon-trash  w-24px h-24px bg-primary-03 top-12px right-14px cursor-pointer hover-scale-1-10"></span>
+                </div>
+            </div>
+        `;
+        newsListContainer.appendChild(noticiaElement);
+    });
+}
+
+async function cargarNoticias() {
+    const response = await listarNoticias();
+    if (response.status !== 'success') throw new Error('Error al cargar las noticias');
+    renderizarNoticias(response.data);
+}
+
+
+cargarNoticias();

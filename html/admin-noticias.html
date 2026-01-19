@@ -22,37 +22,38 @@
                 <div class="subtitle">Administra las noticias  que se mostrará en la página principal del festival</div>
             </div>
             <div class="search-bar-with-button">
-                <div class="search-bar-container">
-                        <span class="d-block icon-search w-24px h-24px bg-neutral-01"></span>
-                    <input type="text" id="searchBar" placeholder="Buscar noticia...">
+                <div class="search-bar-container flex-grow-1 w-100">
+                    <span class="d-block icon-search w-24px h-24px bg-neutral-03"></span>
+                    <input type="text" id="searchBar" placeholder="Buscar noticia">
                 </div>
-                <div id="addNews" class="primary-button-01">Añadir Noticia</div>
+                <div id="addNews" class="primary-button-01 flex-shrink-0 h-100">Añadir Noticia</div>
             </div>
-            <div class="news-container">
-                <div class="d-flex flex-column flex-md-row">
-                    <div class="news-image">
-                        <img class="news-img" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen de la noticia 1">
-                    </div>
-                    <div class="w-100 p-24px">
-                        <div class="news-header">
-                            <p class="fs-20px fw-600">Convocatoria del Festival de Cortometrajes 2025</p>
-                            <div class="news-actions">
-                                <span class="icon-edit-news" title="Editar noticia"></span>
-                                <span class="icon-delete-news" title="Eliminar noticia"></span>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center gap-8px">
-                            <span class="icon-calendar bg-neutral-03 w-20px h-20px"></span>
-                            <span class="news-date">1 de diciembre de 2024</span>
-                            <div class="news-status">
-                                <span class="icon-status"></span>
-                                <span class="status">Publicado</span>
-                            </div>
-                        </div>
-                        <p class="news-paragraph">Se abre el plazo para presentar candidaturas al festival anual de cortometrajes. Podrán participar obras de ficción, documental y animación.</p>
-                    </div>
-                </div>
-            </div>
+            <div id="newsListContainer" class="d-flex flex-column gap-16px">
+
+<!--                <div class="news-container">-->
+<!--                    <div class="d-flex flex-column flex-md-row align-items-center">-->
+<!--                        <div class="news-image">-->
+<!--                            <img class="news-img" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen de la noticia 1">-->
+<!--                        </div>-->
+<!--                        <div class="w-100 p-16px position-relative gap-8px d-flex flex-column">-->
+<!--                            <div class="news-header">-->
+<!--                                <p class="fs-20px fw-600">Convocatoria del Festival de Cortometrajes 2025</p>-->
+<!--                            </div>-->
+<!--                            <div class="d-flex flex-row align-items-center gap-8px">-->
+<!--                                <span class="icon-calendar bg-neutral-03 w-20px h-20px"></span>-->
+<!--                                <span class="news-date">1 de diciembre de 2024</span>-->
+<!--                                <div class="news-status">-->
+<!--                                    <span class="icon-status"></span>-->
+<!--                                    <span class="status">Publicado</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <p class="news-paragraph">Se abre el plazo para presentar candidaturas al festival anual de cortometrajes. Podrán participar obras de ficción, documental y animación.</p>-->
+<!--                            <span class="position-absolute icon-pencil w-24px h-24px bg-neutral-02 top-12px right-48px cursor-pointer hover-scale-1-10"></span>-->
+<!--                            <span class="position-absolute icon-trash  w-24px h-24px bg-primary-03 top-12px right-14px cursor-pointer hover-scale-1-10"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </div>
     </div>

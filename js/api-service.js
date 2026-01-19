@@ -3,6 +3,17 @@ const URL_API = "./../php/api.php";
 
 // -------------------- UTILIDADES --------------------
 /**
+ * Cerrar modales al hacer clic en elementos con la clase 'close-modal'
+ */
+const closeModalList = document.querySelectorAll('.close-modal');
+closeModalList.forEach(closeModal => {
+    closeModal.addEventListener('click', () => {
+        const dialog = closeModal.closest('dialog');
+        if (dialog) dialog.close();
+    });
+});
+
+/**
  * Formatear bytes a una unidad legible
  */
 function formatBytes(bytes, decimals = 2) {
@@ -15,6 +26,26 @@ function formatBytes(bytes, decimals = 2) {
 }
 
 /**
+ * Convierte ISO String YYYY-MM-DD a objeto Date
+ */
+function convertISOStringToDate(string) {
+    const parts = string.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+    return new Date(year, month, day);
+}
+
+/**
+ * Formatea una fecha a formato legible en español
+ */
+function humanizeDate(date) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('es-ES', options);
+}
+
+
+/**
  * Función para realizar peticiones a la API
  */
 async function fetchAPI(data = null) {
@@ -23,11 +54,11 @@ async function fetchAPI(data = null) {
         headers: {}
     };
 
-    if (typeof data === 'string') { // JSON crudo
+    if (typeof data === 'string') {
         options.body = data;
         options.headers['Content-Type'] = 'application/json';
     } else if (data instanceof FormData) {
-        options.body = data; // FormData se encarga del Content-Type
+        options.body = data;
     }
 
     try {
@@ -51,7 +82,7 @@ async function fetchAPI(data = null) {
     }
 }
 
-// -------------------- PATRICINADORES --------------------
+// -------------------- PATROCINADORES --------------------
 async function listarPatrocinadores() {
     const data = new FormData();
     data.append('action', 'listarPatrocinadores');
@@ -93,15 +124,7 @@ async function subirArchivo(file) {
     throw new Error('Error al subir el archivo');
 }
 
-const closeModalList = document.querySelectorAll('.close-modal');
-closeModalList.forEach(closeModal => {
-    closeModal.addEventListener('click', () => {
-        const dialog = closeModal.closest('dialog');
-        if (dialog) dialog.close();
-    });
-});
-
-// -------------------- CATEGORÍAS Y PREMIOS --------------------
+// -------------------- CATEGORIAS Y PREMIOS --------------------
 
 // Obtener todas las categorías con sus premios
 async function obtenerCategoriasConPremios() {
@@ -110,7 +133,7 @@ async function obtenerCategoriasConPremios() {
     return await fetchAPI(data);
 }
 
-// Agregar categoría con premios (CORREGIDO: usa FormData)
+// Agregar categoría con premios
 async function agregarCategoriaConPremios(nombreCategoria, premios) {
     const data = new FormData();
     data.append('action', 'agregarCategoriaConPremios');
@@ -119,7 +142,7 @@ async function agregarCategoriaConPremios(nombreCategoria, premios) {
     return await fetchAPI(data);
 }
 
-// Editar categoría con premios (CORREGIDO: usa FormData)
+// Editar categoría con premios
 async function editarCategoriaConPremios(idCategoria, nombreCategoria, premios) {
     const data = new FormData();
     data.append('action', 'editarCategoriaConPremios');
