@@ -343,6 +343,7 @@ dialog{
 .inputs{
     position:relative;
     width:100%;
+    height:32px;
 }
 
 .input{
@@ -407,6 +408,7 @@ dialog{
     background-color: var(--success-01);
     position: absolute;
     right: 10px;
+    top:8px
 }
 
 .cross{
@@ -419,6 +421,13 @@ dialog{
     background-color: var(--error-01);
     position: absolute;
     right: 10px;
+    top:8px
+}
+
+/*Para que se mantenga el label arriba cuando escribes*/
+.label-arriba{
+    transform: translateY(-130%);
+    line-height: 18px;
 }
 
 /* Label rojo si se pierde el foco */
@@ -571,6 +580,7 @@ dialog{
     flex-direction: row;
     gap:8px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .icono-ganador{
@@ -761,4 +771,20 @@ hr{
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.icono-texto-ganador{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+    align-items: center;
+}
+.icon-eliminar-ganador{
+    width: 24px;
+    height: 24px;
+    mask-image: url('../img/icon/icon-trash.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    cursor: pointer;
+    background-color: var(--neutral-01);
 }

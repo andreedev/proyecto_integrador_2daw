@@ -225,6 +225,7 @@ ul{
 
 #checkMenu:checked ~ .menuLateralCompleto {
     left: 0;
+    top:57px;
     transition: left 300ms ease-in-out;
 }
 #checkMenu:not(:checked) ~ .menuLateralCompleto {
