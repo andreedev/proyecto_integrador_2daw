@@ -159,3 +159,57 @@ async function desasignarGanador(idPremio, idCandidatura) {
     data.append('idCandidatura', idCandidatura);
     return await fetchAPI(data);
 }
+
+async function actualizarDatosPreEvento(galaPreEventoTitulo,galaPreEventoFecha,galaPreEventoHora,galaPreEventoUbicacion,galaPreEventoDescripcion,galaPreEventoStreamingActivo,galaPreEventoStreamingUrl){
+    const data = new FormData();
+    data.append('action', 'actualizarDatosPreEvento');
+    data.append('galaPreEventoTitulo', galaPreEventoTitulo.trim());
+    data.append('galaPreEventoFecha', galaPreEventoFecha.trim());
+    data.append('galaPreEventoHora', galaPreEventoHora.trim());
+    data.append('galaPreEventoUbicacion', galaPreEventoUbicacion.trim());
+    data.append('galaPreEventoDescripcion', galaPreEventoDescripcion.trim());
+    data.append('galaPreEventoStreamingActivo', galaPreEventoStreamingActivo);
+    data.append('galaPreEventoStreamingUrl', galaPreEventoStreamingUrl.trim());
+
+    return await fetchAPI(data);
+}
+
+async function actualizarDatosPostEvento(resumenPostEvento, archivos){
+    const data = new FormData();
+    data.append('action', 'actualizarDatosPostEvento');
+    data.append('archivos', JSON.stringify(archivos));
+    data.append('resumenPostEvento', resumenPostEvento);
+
+    return await fetchAPI(data);
+}
+
+async function actualizarEdicion(idEdicion, nombreEdicion, anioEdicion, resumenEvento, nroParticipantes, fechaEnvioEmailInformativo, fechaBorradoDatos){
+    const data = new FormData();
+    data.append('action', 'actualizarEdicion');
+    data.append('idEdicion', idEdicion);
+    data.append('nombreEdicion', nombreEdicion);
+    data.append('anioEdicion', anioEdicion);
+    data.append('resumenEvento', resumenEvento);
+    data.append('nroParticipantes', nroParticipantes);
+    data.append('fechaEnvioEmailInformativo', fechaEnvioEmailInformativo);
+    data.append('fechaBorradoDatos', fechaBorradoDatos);
+
+    return await fetchAPI(data);
+}
+
+async function enviarEdicionAAnteriores(anioEdicion, fechaEnvioEmailInformativo, fechaBorradoDatos){
+    const data = new FormData();
+    data.append('action', 'enviarEdicionAAnteriores');
+    data.append('anioEdicion', anioEdicion);
+    data.append('fechaEnvioEmailInformativo', fechaEnvioEmailInformativo);
+    data.append('fechaBorradoDatos', fechaBorradoDatos);
+
+    return await fetchAPI(data);
+}
+
+async function cargarConfiguracion() {
+    const formData = new FormData();
+    formData.append('action', 'obtenerConfiguracion');
+
+    return await fetchAPI(formData);
+}

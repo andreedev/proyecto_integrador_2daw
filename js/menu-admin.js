@@ -59,7 +59,7 @@ class MenuAdmin extends HTMLElement {
         `;
 
         document.querySelector('#configuracionWebMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-configuracion-web.html';
+            window.location.href = 'admin-modo.html';
         });
 
         document.querySelector('#finalistasMenuLateral').addEventListener('click', () => {
@@ -139,7 +139,7 @@ class MenuAdmin extends HTMLElement {
             case 'admin-edicionesAnteriores.html':
                 document.querySelector('#edicionesAnterioresMenuLateral').classList.add('active');
                 break;
-            case 'admin-configuracion-web.html':
+            case 'admin-modo.html':
                 document.querySelector('#configuracionWebMenuLateral').classList.add('active');
                 break;
             default:

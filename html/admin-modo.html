@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/libraries/air-datepicker.min.css">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
-    <link rel="stylesheet" href="../css/admin-configuracion-web.css">
+    <link rel="stylesheet" href="../css/admin-modo.css">
     <link rel="stylesheet" href="../css/utils.css">
 </head>
 <body>
@@ -21,7 +21,7 @@
         <div class="admin-page-content">
             <div class="admin-header">
                 <div class="admin-header-module-info-container">
-                    <p class="admin-module-name">Gala/Configuración Web</p>
+                    <p class="admin-module-name">Modo pre/post evento</p>
                     <span class="admin-module-description">Gestiona el contenido público de la Gala para el sitio web</span>
                 </div>
             </div>
@@ -39,11 +39,11 @@
                                 </div>
                             </div>
                             <div class="last-updated-info-container">
-                                <div class="published-text-container">
+                                <div class="published-text-container fs-14px" id="publishedText">
                                     <span class="icon-check w-20px h-20px bg-success-01"></span>
                                     <span>Publicado</span>
                                 </div>
-                                <span class="text-warning-01 fs-12px fw-500 hidden-force" id="unsavedChangesWarning">
+                                <span class="text-warning-01 fs-14px fw-500 hidden-force" id="unsavedChangesWarning">
                                     ● Hay cambios sin publicar
                                 </span>
                                 <div class="last-modified-text-container">
@@ -62,29 +62,27 @@
                                 </div>
                             </div>
                             <div class="main-action-right-side">
-                                <div class="secondary-button-02" id="sendToPreviousEditionsButton">
+                                <div class="secondary-button-02 text-center" id="sendToPreviousEditionsButton">
                                     <span>Enviar a Ediciones Anteriores</span>
                                 </div>
                             </div>
                         </div>
 
-                        <span id="generalMessage" class="fs-12px fw-500"></span>
+                        <span id="generalMessage" class="fs-14px fw-500"></span>
                     </div>
 
 
                     <!-- Cards Pre-evento -->
                     <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
-                            <div class="card-header-left-side">
-                                <div class="icon-container bg-gradient-01">
-                                    <span class="icon-document w-24px h-24px bg-neutral-09"></span>
+                            <div class="d-flex flex-row gap-12px flex-grow-1">
+                                <div class="icon-container">
+                                    <span class="icon-document w-24px h-24px bg-neutral-01"></span>
                                 </div>
-                                <div class="card-header-title-container">
+                                <div class="d-flex flex-column gap-4px">
                                     <span class="card-header-title">Información Principal</span>
                                     <span class="card-header-subtitle">Datos generales del evento</span>
                                 </div>
-                            </div>
-                            <div class="card-header-right-side">
                             </div>
                         </div>
                         <div class="generic-input-group">
@@ -133,16 +131,14 @@
                     </div>
                     <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
-                            <div class="card-header-left-side">
-                                <div class="icon-container bg-primary-05">
-                                    <span class="icon-live w-24px h-24px bg-primary-03"></span>
+                            <div class="d-flex flex-row gap-12px flex-grow-1">
+                                <div class="icon-container">
+                                    <span class="icon-live w-24px h-24px bg-neutral-01"></span>
                                 </div>
-                                <div class="card-header-title-container">
+                                <div class="d-flex flex-column gap-4px">
                                     <span class="card-header-title">Streaming en vivo</span>
                                     <span class="card-header-subtitle">Habilita y configura el enlace de streaming</span>
                                 </div>
-                            </div>
-                            <div class="card-header-right-side">
                             </div>
                         </div>
                         <div class="streaming-card" id="streamingToggleContainer">
@@ -174,16 +170,16 @@
                     </div>
                     <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
-                            <div class="card-header-left-side">
-                                <div class="icon-container bg-gradient-01">
-                                    <span class="icon-calendar w-20px h-20px bg-neutral-09"></span>
+                            <div class="d-flex flex-row gap-12px flex-grow-1">
+                                <div class="icon-container">
+                                    <span class="icon-calendar w-24px h-24px bg-neutral-01"></span>
                                 </div>
-                                <div class="card-header-title-container">
+                                <div class="d-flex flex-column gap-4px">
                                     <span class="card-header-title">Itinerario del día</span>
                                     <span class="card-header-subtitle">Eventos programados para la Gala</span>
                                 </div>
                             </div>
-                            <div class="card-header-right-side">
+                            <div class="d-flex align-items-center gap-8px">
                                 <a class="primary-button-02" href="admin-eventos.html">
                                     <span class="icon-external w-16px h-16px bg-primary-03"></span>
                                     <span>Gestionar eventos</span>
@@ -199,16 +195,14 @@
                     <!-- Cards Post-evento -->
                     <div class="generic-card postEventoCard hidden-force">
                         <div class="card-header">
-                            <div class="card-header-left-side">
-                                <div class="icon-container bg-primary-05">
-                                    <span class="icon-document w-24px h-24px bg-primary-03"></span>
+                            <div class="d-flex flex-row gap-12px flex-grow-1">
+                                <div class="icon-container">
+                                    <span class="icon-document w-24px h-24px bg-neutral-01"></span>
                                 </div>
-                                <div class="card-header-title-container">
+                                <div class="d-flex flex-column gap-4px">
                                     <span class="card-header-title">Resumen del evento</span>
                                     <span class="card-header-subtitle">Texto descriptivo para la landing post-evento</span>
                                 </div>
-                            </div>
-                            <div class="card-header-right-side">
                             </div>
                         </div>
                         <div class="large-input-group">
@@ -225,11 +219,11 @@
 
                     <div class="generic-card postEventoCard hidden-force">
                         <div class="card-header">
-                            <div class="card-header-left-side">
-                                <div class="icon-container bg-gradient-01">
-                                    <span class="icon-picture bg-neutral-09 w-20px h-20px"></span>
+                            <div class="d-flex flex-row gap-12px flex-grow-1">
+                                <div class="icon-container">
+                                    <span class="icon-picture bg-neutral-01 w-24px h-24px"></span>
                                 </div>
-                                <div class="card-header-title-container">
+                                <div class="d-flex flex-column gap-4px">
                                     <span class="card-header-title">Galería de imágenes y vídeos</span>
                                     <span class="card-header-subtitle">Sube las fotos y vídeos del evento</span>
                                 </div>
@@ -260,16 +254,16 @@
 
                     <div class="generic-card postEventoCard hidden-force">
                         <div class="card-header">
-                            <div class="card-header-left-side">
-                                <div class="icon-container bg-gradient-01">
-                                    <span class="icon-trophy bg-neutral-09 w-20px h-20px"></span>
+                            <div class="d-flex flex-row gap-12px flex-grow-1">
+                                <div class="icon-container">
+                                    <span class="icon-star bg-neutral-01 w-24px h-24px"></span>
                                 </div>
-                                <div class="card-header-title-container">
+                                <div class="d-flex flex-column gap-4px">
                                     <span class="card-header-title">Ganadores del evento</span>
                                     <span class="card-header-subtitle">Lista de ganadores por categoría</span>
                                 </div>
                             </div>
-                            <div class="card-header-right-side">
+                            <div class="d-flex align-items-center gap-8px">
                                 <a class="primary-button-02" href="admin-ganadores.html">
                                     <span class="icon-external"></span>
                                     <span>Gestionar ganadores</span>
@@ -288,6 +282,8 @@
 
 
     <dialog id="modalEnviarEdicionesAnteriores" class="generic-modal bg-neutral-08">
+        <button autofocus style="position: absolute; opacity: 0; pointer-events: none;">Ghost Focus</button>
+
         <div class="modal-header d-flex justify-space-between align-center">
             <div class="modal-header-left-side">
                 <span class="modal-header-title">Enviar a Ediciones Anteriores</span>
@@ -304,17 +300,16 @@
                     <span class="generic-input-label">Año de edición</span>
                     <label class="generic-input-wrapper">
                         <span class="icon-calendar w-16px h-16px bg-neutral-03"></span>
-                        <input id="yearEdicionInput" class="generic-input" value="2026">
+                        <input id="yearEdicionInput" class="generic-input" autocomplete="off">
                     </label>
                     <span id="yearEditionErrorMessage" class="error-message"></span>
                 </div>
                 <div class="generic-input-group">
                     <span class="generic-input-label">Número de participantes</span>
-                    <label class="generic-input-wrapper">
+                    <label class="d-flex align-center p-12px gap-8px">
                         <span class="icon-user-thick w-16px h-16px bg-neutral-03"></span>
-                        <input id="nroParticipantesInput" class="generic-input" value="150" type="text">
+                        <span id="nroParticipantesText"></span>
                     </label>
-                    <span id="nroParticipantesErrorMessage" class="error-message"></span>
                 </div>
             </div>
             <p class="fw-600">Acciones programadas</p>
@@ -336,6 +331,38 @@
                 <span id="fechaBorradoDatosInputErrorMessage" class="error-message"></span>
                 <span class="helper-text">Se eliminarán automáticamente las candidaturas que no sean ganadoras</span>
             </div>
+            <div class="card-header">
+                <div class="d-flex flex-row gap-12px">
+                    <div class="icon-container flex-shrink-0">
+                        <span class="icon-star bg-neutral-01 w-24px h-24px"></span>
+                    </div>
+                    <div class="d-flex flex-column gap-4px">
+                        <span class="card-header-title">Ganadores de esta edición</span>
+                        <span class="card-header-subtitle">Se incluirán los ganadores de la edición actual</span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-8px flex-shrink-0">
+                    <a class="primary-button-02" href="admin-ganadores.html">
+                        <span>Gestionar ganadores</span>
+                    </a>
+                </div>
+            </div>
+            <div class="card-header">
+                <div class="d-flex flex-row gap-12px">
+                    <div class="icon-container flex-shrink-0">
+                        <span class="icon-picture bg-neutral-01 w-24px h-24px"></span>
+                    </div>
+                    <div class="d-flex flex-column gap-4px">
+                        <span class="card-header-title">Galería de imágenes y vídeos</span>
+                        <span class="card-header-subtitle">Se incluirán las imágenes y vídeos de la galería de la edición actual</span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-8px flex-shrink-0">
+                    <a class="primary-button-02 close-modal">
+                        <span>Gestionar galería</span>
+                    </a>
+                </div>
+            </div>
             <div class="warning-text-container text-warning-01 d-flex flex-row align-start">
                 <span class="icon-warning w-28px h-28px bg-warning-01 flex-shrink-0"></span>
                 <div class="warning-content">
@@ -345,8 +372,20 @@
             </div>
             <span class="divider-line"></span>
             <div class="d-flex-two-columns-responsive">
-                <div class="neutral-button modal-close-button closeEnviarEdicionesAnterioresModal">Cancelar</div>
-                <div class="primary-button" id="confirmEnviarEdicionesAnterioresButton">Continuar</div>
+                <div class="secondary-button-02 text-center modal-close-button closeEnviarEdicionesAnterioresModal">Cancelar</div>
+                <div class="primary-button-01" id="confirmarEnviarEdicionesAnterioresBtn">Continuar</div>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalEdicionCreadaExito" class="generic-modal bg-neutral-09">
+        <div class="d-flex flex-column gap-24px p-24px justify-content-center align-items-center">
+            <span class="icon-check w-80px h-80px bg-primary-03"></span>
+            <h1 class="text-center">¡Edición creada correctamente!</h1>
+            <p class="text-neutral-04">La edición 2026 se ha añadido al histórico de ediciones anteriores</p>
+            <div class="d-flex gap-16px justify-content-center">
+                <span class="icon-sand-clock w-24px h-24px bg-neutral-01"></span>
+                <span class="fs-24px fw-500">Acciones programadas configuradas</span>
             </div>
         </div>
     </dialog>
@@ -356,6 +395,6 @@
     <script src="../js/menu-admin.js"></script>
     <script src="../js/libraries/Sortable.min.js"></script>
     <script src="../js/libraries/air-datepicker.min.js"></script>
-    <script src="../js/admin-configuracion-web.js"></script>
+    <script src="../js/admin-modo.js"></script>
 </body>
 </html>

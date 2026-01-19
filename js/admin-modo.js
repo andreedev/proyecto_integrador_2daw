@@ -20,6 +20,7 @@ const fechaUltimaModificacionText = document.getElementById('fechaUltimaModifica
 
 const publishChangesButton = document.getElementById('publishChangesButton');
 const unsavedChangesWarning = document.getElementById('unsavedChangesWarning');
+const publishedText = document.getElementById('publishedText');
 
 const streamingToggleContainer = document.getElementById('streamingToggleContainer');
 const streamingToggleButton = document.getElementById('streamingToggleButton');
@@ -42,17 +43,20 @@ const postEventoResumenErrorMessage = document.getElementById('postEventoResumen
 
 const yearEdicionInput = document.getElementById('yearEdicionInput');
 const yearEditionErrorMessage = document.getElementById('yearEditionErrorMessage');
-const nroParticipantesInput = document.getElementById('nroParticipantesInput');
-const nroParticipantesErrorMessage = document.getElementById('nroParticipantesErrorMessage');
+const nroParticipantesText = document.getElementById('nroParticipantesText');
 const fechaEnvioEmailInformativoInput = document.getElementById('fechaEnvioEmailInformativoInput');
 const fechaEnvioEmailInformativoErrorMessage = document.getElementById('fechaEnvioEmailInformativoErrorMessage');
 const fechaBorradoDatosInput = document.getElementById('fechaBorradoDatosInput');
 const fechaBorradoDatosInputErrorMessage = document.getElementById('fechaBorradoDatosInputErrorMessage');
 
+const confirmarEnviarEdicionesAnterioresBtn = document.getElementById('confirmarEnviarEdicionesAnterioresBtn');
+const modalEdicionCreadaExito = document.getElementById('modalEdicionCreadaExito');
+
 
 let modo = 'pre-evento';
 let configuracionActual = null;
 let loadingConfiguracion = true;
+let idEdicion = null;
 
 const fechaEventoDateTimePicker = new AirDatepicker(fechaEventoInput, {
     minDate: new Date(),
@@ -127,26 +131,19 @@ const horaEventoDateTimePicker = new AirDatepicker(horaEventoInput, {
     }
 });
 const yearEdicionDateTimePicker = new AirDatepicker(yearEdicionInput, {
-    timepicker: true,
-    onlyTimepicker: true,
-    minHours: 7,
-    maxHours: 22,
-    timeFormat: 'HH:mm',
-    minutesStep: 15,
+    container: modalEnviarEdicionesAnteriores,
+    view: 'years',
+    minView: 'years',
+    dateFormat: 'yyyy',
+    timepicker: false,
+    focusAction: false,
+    minDate: new Date().setFullYear(new Date().getFullYear()),
+    selectedDates: [new Date()],
     buttons: [
         {
             content: 'Ahora',
             onClick: (dp) => {
-                let now = new Date();
-                let currentHour = now.getHours();
-
-                if (currentHour >= 8 && currentHour <= 20) {
-                    dp.selectDate(now);
-                } else {
-                    let startRange = new Date();
-                    startRange.setHours(8, 0);
-                    dp.selectDate(startRange);
-                }
+                dp.selectDate(new Date());
                 dp.hide();
             }
         },
@@ -158,9 +155,79 @@ const yearEdicionDateTimePicker = new AirDatepicker(yearEdicionInput, {
             }
         }
     ],
-    onlyTimepicker: true,
     onSelect({date, formattedDate}) {
-        console.log('yearEdicionDateTimePicker changed');
+        console.log('Year selected:', formattedDate);
+        revisarSiHayCambios();
+    }
+});
+yearEdicionDateTimePicker.selectDate(new Date(), { silent: true });
+
+const fechaEnvioEmailInformativoDateTimePicker = new AirDatepicker(fechaEnvioEmailInformativoInput, {
+    container: modalEnviarEdicionesAnteriores,
+    minDate: new Date(),
+    autoClose: true,
+    dateFormat: 'dd/MM/yyyy',
+    buttons: ['today', 'clear'],
+    locale: {
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        daysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        today: 'Hoy',
+        clear: 'Limpiar',
+        firstDay: 1
+    },
+    buttons: [
+        {
+            content: 'Hoy',
+            className: 'custom-today-button',
+            onClick: (dp) => {
+                let date = new Date();
+                dp.selectDate(date);
+                dp.setViewDate(date);
+                dp.hide();
+            }
+        },
+        'clear'
+    ],
+    onSelect({date}) {
+        console.log('fechaEnvioEmailInformativoDateTimePicker changed');
+        revisarSiHayCambios()
+    }
+});
+const fechaBorradoDatosDateTimePicker = new AirDatepicker(fechaBorradoDatosInput, {
+    container: modalEnviarEdicionesAnteriores,
+    position: 'top center',
+    minDate: new Date(),
+    autoClose: true,
+    dateFormat: 'dd/MM/yyyy',
+    buttons: ['today', 'clear'],
+    locale: {
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        daysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        today: 'Hoy',
+        clear: 'Limpiar',
+        firstDay: 1
+    },
+    buttons: [
+        {
+            content: 'Hoy',
+            className: 'custom-today-button',
+            onClick: (dp) => {
+                let date = new Date();
+                dp.selectDate(date);
+                dp.setViewDate(date);
+                dp.hide();
+            }
+        },
+        'clear'
+    ],
+    onSelect({date}) {
+        console.log('fechaBorradoDatosDateTimePicker changed');
         revisarSiHayCambios()
     }
 });
@@ -173,7 +240,6 @@ descripcionInput.addEventListener('input', revisarSiHayCambios);
 urlStreamingInput.addEventListener('input', revisarSiHayCambios);
 postEventoResumenInput.addEventListener('input', revisarSiHayCambios);
 yearEdicionInput.addEventListener('input', revisarSiHayCambios);
-nroParticipantesInput.addEventListener('input', revisarSiHayCambios);
 fechaEnvioEmailInformativoInput.addEventListener('input', revisarSiHayCambios);
 fechaBorradoDatosInput.addEventListener('input', revisarSiHayCambios);
 
@@ -212,11 +278,88 @@ urlStreamingInput.addEventListener('blur', () => validateUrlStreaming(true));
 postEventoResumenInput.addEventListener('blur', () => validatePostEventoResumen(true));
 
 yearEdicionInput.addEventListener('blur', () => validateYearEdicion(true));
-nroParticipantesInput.addEventListener('blur', () => validateNroParticipantes(true));
 fechaEnvioEmailInformativoInput.addEventListener('blur', () => validateFechaEnvioEmailInformativo(true));
 fechaBorradoDatosInput.addEventListener('blur', () => validateFechaBorradoDatos(true));
 
 publishChangesButton.addEventListener('click', () => publicarCambios());
+
+
+galleryContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-remove-video');
+    if (btn) {
+        btn.closest('.video-item').remove();
+        updateVideoOrder();
+        revisarSiHayCambios();
+    }
+});
+
+filesDropZone.addEventListener('click', () => fileInput.click());
+
+['dragenter', 'dragover'].forEach(eventName => {
+    filesDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        filesDropZone.classList.add('drag-over');
+    });
+});
+['dragleave', 'drop'].forEach(eventName => {
+    filesDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        filesDropZone.classList.remove('drag-over');
+    });
+});
+
+filesDropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files) );
+
+fileInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+    e.target.value = '';
+});
+
+galleryContainer.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.btn-remove-file');
+    if (removeBtn) {
+        removeBtn.closest('.gallery-item').remove();
+        updateOrderNumbers();
+        revisarSiHayCambios();
+    }
+});
+
+sendToPreviousEditionsButton.addEventListener('click', () => {
+    modalEnviarEdicionesAnteriores.showModal();
+});
+
+closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        modalEnviarEdicionesAnteriores.close();
+    });
+});
+
+confirmarEnviarEdicionesAnterioresBtn.addEventListener('click', async () => {
+    if (!validarDatosEnvioEdicionesAnteriores()) return;
+
+    const fechaEnvioEmailFormatoISO = convertToISODate(fechaEnvioEmailInformativoInput.value);
+    const fechaBorradoDatosFormatoISO = convertToISODate(fechaBorradoDatosInput.value);
+    const response = await enviarEdicionAAnteriores(parseInt(yearEdicionInput.value), fechaEnvioEmailFormatoISO, fechaBorradoDatosFormatoISO);
+    if (response.status === 'success') {
+        updateGeneralMessage('Edición enviada a ediciones anteriores exitosamente', 'text-success-02', true);
+        modalEnviarEdicionesAnteriores.close();
+        modalEdicionCreadaExito.showModal();
+        setTimeout(() => {
+            modalEdicionCreadaExito.close();
+            loadConfig();
+        }, 4000);
+    } else {
+        updateGeneralMessage('Error enviando edición a ediciones anteriores', 'text-error-01');
+    }
+});
+
+function validarDatosEnvioEdicionesAnteriores() {
+    const isYearValid = validateYearEdicion(true);
+    const isFechaEmailValid = validateFechaEnvioEmailInformativo(true);
+    const isFechaBorradoValid = validateFechaBorradoDatos(true);
+
+    return isYearValid && isFechaEmailValid && isFechaBorradoValid;
+}
 
 function cambiarModo(newMode) {
     modo = newMode;
@@ -295,15 +438,6 @@ function validateYearEdicion(messageOnError) {
     yearEditionErrorMessage.classList.add('hidden-force');
     return true;
 }
-function validateNroParticipantes(messageOnError) {
-    if (nroParticipantesInput.value.trim() === '' || isNaN(nroParticipantesInput.value) || parseInt(nroParticipantesInput.value) < 1) {
-        if (messageOnError) nroParticipantesErrorMessage.textContent = 'Ingresa un número válido';
-        if (messageOnError) nroParticipantesErrorMessage.classList.remove('hidden-force');
-        return false;
-    }
-    nroParticipantesErrorMessage.classList.add('hidden-force');
-    return true;
-}
 function validateFechaEnvioEmailInformativo(messageOnError) {
     if (fechaEnvioEmailInformativoInput.value === '') {
         if (messageOnError) fechaEnvioEmailInformativoErrorMessage.textContent = 'La fecha no puede estar vacía';
@@ -354,70 +488,78 @@ async function publicarCambios() {
             updateGeneralMessage('Por favor, corrige los errores antes de publicar los cambios', 'text-error-01');
             return;
         }
-    }
-    if (modo === 'post-evento') {
-        const isResumenValid = validatePostEventoResumen(true);
-        const isYearValid = validateYearEdicion(true);
-        const isNroParticipantesValid = validateNroParticipantes(true);
-        const isFechaEnvioEmailValid = validateFechaEnvioEmailInformativo(true);
-        const isFechaBorradoDatosValid = validateFechaBorradoDatos(true);
 
-        if (!isResumenValid || !isYearValid || !isNroParticipantesValid || !isFechaEnvioEmailValid || !isFechaBorradoDatosValid) {
+
+        updateGeneralMessage('Guardando cambios...', 'text-information-02', true);
+
+        const updatePreEventDataResponse = await actualizarDatosPreEvento(tituloEventoInput.value, fechaEventoInput.value, horaEventoInput.value, ubicacionEventoInput.value, descripcionInput.value, streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', urlStreamingInput.value);
+        if (updatePreEventDataResponse.status !== 'success') {
+            updateGeneralMessage('Error guardando datos del pre-evento', 'text-error-01');
+            return;
+        }
+    } else if (modo === 'post-evento') {
+        const isResumenValid = validatePostEventoResumen(true);
+
+        updateGeneralMessage('Guardando cambios...', 'text-information-02', true);
+
+
+        const idArchivoList = [];
+        const items = Array.from(galleryContainer.querySelectorAll(".gallery-item"));
+
+        for (const item of items) {
+            const img = item.querySelector("img");
+            const vid = item.querySelector("video");
+            const media = img || vid;
+
+            if (!media) continue;
+
+            let finalId = null;
+
+            if (media.dataset.isNew === "true" && media.filePayload) {
+                try {
+                    const uploadRes = await subirArchivo(media.filePayload);
+                    if (uploadRes.status === 'success')  finalId = uploadRes.data.idArchivo;
+                } catch (err) {
+                    console.error(err);
+                    return updateGeneralMessage("Error subiendo archivo", "text-error-01");
+                }
+            }
+            else if (media.dataset.idArchivo) {
+                finalId = media.dataset.idArchivo;
+            }
+
+            if (finalId) {
+                idArchivoList.push(parseInt(finalId));
+            }
+        }
+
+        if (!isResumenValid) {
             updateGeneralMessage('Por favor, corrige los errores antes de publicar los cambios', 'text-error-01');
             return;
         }
+
+        const updatePostEventDataResponse = await actualizarDatosPostEvento(postEventoResumenInput.value, idArchivoList);
+        if (updatePostEventDataResponse.status !== 'success') {
+            updateGeneralMessage('Error guardando datos del post-evento', 'text-error-01');
+            return;
+        }
+
     }
 
-    unsavedChangesWarning.classList.add('hidden-force');
-    updateGeneralMessage('Guardando cambios', 'text-information-01');
-
-    const archivosParaGuardar = [];
-    const items = Array.from(galleryContainer.querySelectorAll(".gallery-item"));
-
-    for (const item of items) {
-        const img = item.querySelector("img");
-        const vid = item.querySelector("video");
-        const media = img || vid;
-
-        if (!media) continue;
-
-        let finalId = null;
-
-        if (media.dataset.isNew === "true" && media.filePayload) {
-            try {
-                const uploadRes = await subirArchivo(media.filePayload);
-                finalId = uploadRes.idArchivo;
-            } catch (err) {
-                console.error(err);
-                return updateGeneralMessage("Error subiendo archivo", "text-error-01");
-            }
-        }
-        else if (media.dataset.idArchivo) {
-            finalId = media.dataset.idArchivo;
-        }
-
-        if (finalId) {
-            archivosParaGuardar.push({ id: finalId });
-        }
-    }
-
-    if (modo === 'post-evento') {
-        try {
-            await actualizarGaleriaEdicionActual(archivosParaGuardar);
-        } catch (error) {
-            console.error(error);
-            return updateGeneralMessage("Error al organizar la galería", "text-error-01");
-        }
-    }
-
-    await actualizarConfiguracionWeb();
-    updateGeneralMessage('Cambios guardados exitosamente', 'text-success-01');
+    await loadConfig();
+    updateConfigStatus('published');
+    updateGeneralMessage('Cambios guardados exitosamente', 'text-success-02', true);;
 }
 
-function updateGeneralMessage(message, className) {
-    generalMessage.classList.remove('text-error-01', 'text-success-01', 'text-information-01');
+function updateGeneralMessage(message, className, autoRemove=false) {
+    generalMessage.classList.remove('text-error-01', 'text-success-01', 'text-success-02', 'text-information-01', 'text-information-02');
     generalMessage.classList.add(className);
     generalMessage.textContent = message;
+    if (autoRemove) {
+        setTimeout(() => {
+            generalMessage.textContent = '';
+        }, 3500);
+    }
 }
 
 function renderizarUI(data) {
@@ -458,9 +600,8 @@ function renderizarUI(data) {
         urlStreamingContainer.classList.add('hidden-force');
     }
     urlStreamingInput.value = config.galaPreEventoStreamingUrl || '';
-    postEventoResumenInput.value = edicionActual.resumen_evento;
-    yearEdicionInput.value = edicionActual.anio_edicion || '';
-    nroParticipantesInput.value = edicionActual.nro_participantes || '';
+    postEventoResumenInput.value = edicionActual.resumenEvento;
+    nroParticipantesText.textContent = edicionActual.nroParticipantes;
 
     galleryContainer.innerHTML = "";
     if (archivos && Array.isArray(archivos)) {
@@ -534,9 +675,9 @@ function revisarSiHayCambios() {
 
     if (hasChanges) {
         // console.log("Cambios detectados:", reasons);
-        unsavedChangesWarning.classList.remove('hidden-force');
+        updateConfigStatus('pendingChanges');
     } else {
-        unsavedChangesWarning.classList.add('hidden-force');
+        updateConfigStatus('published');
     }
 }
 
@@ -567,38 +708,25 @@ function convertTimeToDate(timeString) {
     return date;
 }
 
+/**
+ * Convert dd/MM/YYYY to YYYY-MM-DD
+ */
+function convertToISODate(string) {
+    if (!string || string.trim() === "") return null;
 
-function handleFiles(files) {
-    const fileArray = Array.from(files);
-    let invalidFiles = false;
+    const parts = string.split('/');
 
-    fileArray.forEach(file => {
-        const isImage = file.type.startsWith('image/');
-        const isVideo = file.type.startsWith('video/');
+    if (parts.length === 1) {
+        const year = parts[0].trim();
+        return (year.length === 4) ? `${year}-01-01` : null;
+    }
 
-        if (!isImage && !isVideo) {
-            invalidFiles = true;
-            return;
-        }
+    if (parts.length === 3) {
+        const [day, month, year] = parts;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
 
-        const objectUrl = URL.createObjectURL(file);
-        const type = isImage ? 'imagen' : 'video';
-
-        const mediaElement = createGalleryItem(objectUrl, type);
-        mediaElement.dataset.isNew = "true";
-        mediaElement.filePayload = file;
-    });
-
-    if (invalidFiles) triggerShakeError(filesDropZone);
-}
-
-function triggerShakeError(element) {
-    const target = element || filesDropZone;
-
-    target.classList.add('shake-error');
-    setTimeout(() => {
-        target.classList.remove('shake-error');
-    }, 400);
+    return null;
 }
 
 const updateOrderNumbers = () => {
@@ -666,30 +794,6 @@ const fileSortable = new Sortable(galleryContainer, {
         revisarSiHayCambios();
     }
 });
-
-function createVideoItem(src) {
-    const item = document.createElement('div');
-    item.className = 'video-item';
-    item.innerHTML = `
-        <div class="order-badge">0</div>
-        
-        <video src="${src}#t=0.5" preload="metadata"></video>
-        
-        <div class="gallery-item-overlay">
-            <div class="icon-container-2 bg-neutral-05 drag-handle">
-                <div class="icon-drag w-16px h-16px bg-neutral-01"></div>
-            </div>
-            
-            <div class="icon-container-2 bg-neutral-05 btn-remove-video">
-                <div class="icon-close w-16px h-16px bg-neutral-01"></div>
-            </div>
-        </div>
-    `;
-    galleryContainer.appendChild(item);
-    updateVideoOrder();
-    revisarSiHayCambios();
-}
-
 function updateVideoOrder() {
     const items = galleryContainer.querySelectorAll('.video-item');
     items.forEach((item, index) => {
@@ -706,136 +810,30 @@ function updateVideoOrder() {
     }
 }
 
-async function cargarConfiguracionWeb() {
-    const formData = new FormData();
-    formData.append('action', 'obtenerConfiguracionWeb');
-
-    const response = await fetch(URL_API, {
-        method: 'POST',
-        body: formData
-    }).then(response => response.json())
-        .then(result => {
-            configuracionActual = result.data;
-            renderizarUI(result.data);
-        })
-        .catch(error => {
-            console.error('Error al cargar la configuración web:', error);
-        });
-}
-
-async function actualizarConfiguracionWeb() {
-    const formData = new FormData();
-    formData.append('action', 'actualizarConfiguracionWeb');
-    formData.append('modo', modo);
-    if (modo === 'pre-evento') {
-        formData.append('galaPreEventoTitulo', tituloEventoInput.value.trim());
-        formData.append('galaPreEventoFecha', fechaEventoInput.value);
-        formData.append('galaPreEventoHora', horaEventoInput.value);
-        formData.append('galaPreEventoUbicacion', ubicacionEventoInput.value.trim());
-        formData.append('galaPreEventoDescripcion', descripcionInput.value.trim());
-        formData.append('galaPreEventoStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
-        formData.append('galaPreEventoStreamingUrl', urlStreamingInput.value.trim());
-    }
-    if (modo === 'post-evento') {
-        formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
-    }
-
-    try {
-        const response = await fetch(URL_API, {
-            method: 'POST',
-            body: formData
-        });
-        const result = await response.json();
-        if (result.status !== 'success') throw new Error(result.message);
-
-        await cargarConfiguracionWeb();
-        unsavedChangesWarning.classList.add('hidden-force');
-    } catch (error) {
-        console.error("Error:", error);
+async function loadConfig() {
+    const response = await cargarConfiguracion();
+    if (response.status === 'success') {
+        configuracionActual = response.data;
+        renderizarUI(response.data);
+    } else {
+        updateGeneralMessage('Error cargando configuración', 'text-error-01');
     }
 }
 
-async function actualizarGaleriaEdicionActual(archivos){
-    const formData = new FormData();
-    formData.append('action', 'actualizarGaleriaEdicionActual');
-    formData.append('archivos', JSON.stringify(archivos));
+/**
+ * pendingChanges
+ * published
+ */
+function updateConfigStatus(status){
+    publishedText.classList.add('hidden-force');
+    unsavedChangesWarning.classList.add('hidden-force');
 
-    const response = await fetch(URL_API, { method: 'POST', body: formData });
-    const text = await response.text();
-    try {
-        const result = JSON.parse(text);
-        if (result.status !== 'success') throw new Error(result.message);
-        return result;
-    } catch (e) {
-        throw new Error("Error: " + text);
+    if (status === 'pendingChanges') {
+        unsavedChangesWarning.classList.remove('hidden-force');
+    } else if (status === 'published') {
+        publishedText.classList.remove('hidden-force');
     }
 }
 
-async function eliminarArchivo(idArchivo) {
-    const formData = new FormData();
-    formData.append('action', 'eliminarArchivo');
-    formData.append('idArchivo', idArchivo);
 
-    const response = await fetch(URL_API, {
-        method: 'POST',
-        body: formData
-    });
-
-    const result = await response.json();
-    if (result.status === 'success') {
-        return true;
-    }
-    throw new Error('Error al borrar el archivo');
-}
-
-galleryContainer.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn-remove-video');
-    if (btn) {
-        btn.closest('.video-item').remove();
-        updateVideoOrder();
-        revisarSiHayCambios();
-    }
-});
-
-filesDropZone.addEventListener('click', () => fileInput.click());
-
-['dragenter', 'dragover'].forEach(eventName => {
-    filesDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        filesDropZone.classList.add('drag-over');
-    });
-});
-['dragleave', 'drop'].forEach(eventName => {
-    filesDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        filesDropZone.classList.remove('drag-over');
-    });
-});
-
-filesDropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files) );
-
-fileInput.addEventListener('change', (e) => {
-    handleFiles(e.target.files);
-    e.target.value = '';
-});
-
-galleryContainer.addEventListener('click', (e) => {
-    const removeBtn = e.target.closest('.btn-remove-file');
-    if (removeBtn) {
-        removeBtn.closest('.gallery-item').remove();
-        updateOrderNumbers();
-        revisarSiHayCambios();
-    }
-});
-
-sendToPreviousEditionsButton.addEventListener('click', () => {
-    modalEnviarEdicionesAnteriores.showModal();
-});
-
-closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        modalEnviarEdicionesAnteriores.close();
-    });
-});
-
-cargarConfiguracionWeb();
+loadConfig();
