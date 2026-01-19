@@ -1,11 +1,12 @@
-// Referencias a elementos del DOM (Edición)
+// -------------------- REFERENCIAS --------------------
 const editCategoryModal = document.getElementById('editCategoryModal');
 const categoryNameInput = document.getElementById('categoryName');
 const prizesContainer = document.getElementById('prizesContainer');
 const addPrizeBtn = document.getElementById('addPrizeBtn');
 const editCategoryForm = document.getElementById('editCategoryForm');
 const cancelBtn = document.getElementById('cancelBtn');
-const closeBtn = document.querySelector('.close');
+const closeBtn = document.querySelector('#editCategoryModal .close');
+
 const createCategoryModal = document.getElementById('createCategoryModal');
 const newCategoryNameInput = document.getElementById('newCategoryName');
 const newPrizesContainer = document.getElementById('newPrizesContainer');
@@ -13,73 +14,35 @@ const addNewPrizeBtn = document.getElementById('addNewPrizeBtn');
 const createCategoryForm = document.getElementById('createCategoryForm');
 const cancelCreateBtn = document.getElementById('cancelCreateBtn');
 
-const categoryCardAnimacion = document.querySelector('.category-card-animacion');
-const deleteIcon = document.querySelector('.delete-icono');
-
-const deleteCard = document.querySelector('.confirmation-delete-card-container');
-const btnCancelDelete = deleteCard.querySelector('.btn-cancel-delete');
-const btnConfirmDelete = deleteCard.querySelector('.btn-confirm-delete');
-
-const nombreDelPremioInput = document.querySelector('.nombreDelPremio');
-
+const categoriesGrid = document.getElementById('categoriesGrid');
 const errorMessage = document.querySelector(".error-message");
 
-
-newCategoryNameInput.addEventListener("blur", () => {
-    if (newCategoryNameInput.value.trim() === "") {
-        errorMessage.textContent = "El nombre de la categoría es obligatorio.";
-    } else {
-        errorMessage.textContent = "";
-    }
-});
-
-nombreDelPremioInput.addEventListener("blur", () => {
-    if (nombreDelPremioInput.value.trim() === "") {
-        errorMessage.textContent = "El nombre del premio es obligatorio.";
-    } else {
-        errorMessage.textContent = "";
-    }
-});
-
-deleteIcon.addEventListener('click', (e) => {
-    e.stopPropagation();
-    deleteCard.classList.remove('hidden-force');
-
-    btnCancelDelete.addEventListener('click', () => {
-        deleteCard.classList.add('hidden-force');
-    });
-
-    btnConfirmDelete.addEventListener('click', () => {
-        //Eliminamos la tarjeta
-        categoryCardAnimacion.remove();
-        deleteCard.classList.add('hidden-force');
-    });
-});
-
-// Variables globales
 let currentCategoryId = null;
 
-// Función para abrir el modal de edición
+// -------------------- VALIDACIONES --------------------
+newCategoryNameInput.addEventListener("blur", () => {
+    errorMessage.textContent = newCategoryNameInput.value.trim() === ""
+        ? "El nombre de la categoría es obligatorio."
+        : "";
+});
+
+// -------------------- FUNCIONES MODAL EDICIÓN --------------------
 function openEditModal(categoryId, categoryName, prizes) {
     currentCategoryId = categoryId;
     categoryNameInput.value = categoryName;
-
-    // Limpiar contenedor de premios
     prizesContainer.innerHTML = '';
 
-    // Rellenar premios
     prizes.forEach((prize, index) => {
-        addPrizeToModal(prize.label, prize.value, index + 1);
+        addPrizeToModal(prize.nombre, prize.cantidad_dinero, index + 1, prize.id_premio);
     });
 
-    // Mostrar modal
     editCategoryModal.style.display = 'flex';
 }
 
-// Función para añadir un premio al modal de edición
-function addPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
+function addPrizeToModal(label = 'Nuevo premio', value = '', number = 1, idPremio = null) {
     const prizeItem = document.createElement('div');
     prizeItem.className = 'prize-item';
+    prizeItem.dataset.idPremio = idPremio;
     prizeItem.innerHTML = `
         <span class="prize-number">${number}</span>
         <input type="text" placeholder="Nombre del premio" value="${label}" required />
@@ -88,102 +51,83 @@ function addPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
     `;
     prizesContainer.appendChild(prizeItem);
 
-    // Evento para eliminar premio
     prizeItem.querySelector('.delete-btn').addEventListener('click', () => {
         prizeItem.remove();
         updatePrizeNumbers();
     });
 }
 
-// Actualizar números de premios después de eliminar uno
 function updatePrizeNumbers() {
-    const prizeItems = prizesContainer.querySelectorAll('.prize-item');
-    prizeItems.forEach((item, index) => {
+    prizesContainer.querySelectorAll('.prize-item').forEach((item, index) => {
         item.querySelector('.prize-number').textContent = index + 1;
     });
 }
 
-// Evento: Añadir nuevo premio (edición)
 addPrizeBtn.addEventListener('click', () => {
-    const nextNumber = prizesContainer.children.length + 1;
-    addPrizeToModal(`Premio ${nextNumber}`, '', nextNumber);
+    addPrizeToModal(`Premio ${prizesContainer.children.length + 1}`, '', prizesContainer.children.length + 1);
 });
 
-// Evento: Cancelar (edición)
 cancelBtn.addEventListener('click', () => {
     editCategoryModal.style.display = 'none';
     resetEditModal();
 });
 
-// Evento: Cerrar con X (edición)
 closeBtn.addEventListener('click', () => {
     editCategoryModal.style.display = 'none';
     resetEditModal();
 });
 
-// Cerrar modal si se hace clic fuera (edición)
 window.addEventListener('click', (e) => {
-    if (e.target === editCategoryModal) {
-        editCategoryModal.style.display = 'none';
-        resetEditModal();
-    }
+    if (e.target === editCategoryModal) resetEditModal();
 });
 
-// Función para resetear el modal de edición
 function resetEditModal() {
     currentCategoryId = null;
     categoryNameInput.value = '';
     prizesContainer.innerHTML = '';
 }
 
-// Evento: Guardar cambios (edición)
-editCategoryForm.addEventListener('submit', (e) => {
+// -------------------- GUARDAR CAMBIOS --------------------
+editCategoryForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const categoryName = categoryNameInput.value.trim();
-    const prizes = [];
-
-    const prizeItems = prizesContainer.querySelectorAll('.prize-item');
-    prizeItems.forEach((item, index) => {
+    const premios = [];
+    prizesContainer.querySelectorAll('.prize-item').forEach(item => {
         const label = item.querySelector('input[type="text"]').value.trim();
         const value = item.querySelector('input[type="number"]').valueAsNumber || 0;
-
-        if (label) {
-            prizes.push({
-                label,
-                value
-            });
-        }
+        if (label) premios.push({
+            id_premio: item.dataset.idPremio ? parseInt(item.dataset.idPremio) : undefined,
+            nombre: label,
+            cantidad_dinero: value,
+            incluye_dinero: value > 0 ? 1 : 0
+        });
     });
 
-    if (!categoryName || prizes.length === 0) {
-        alert("Por favor, completa el nombre de la categoría y al menos un premio.");
+    if (!categoryName || premios.length === 0) {
+        alert("Completa el nombre y al menos un premio.");
         return;
     }
 
-    console.log({
-        id: currentCategoryId,
-        name: categoryName,
-        prizes: prizes
-    });
-
-    alert("Categoría actualizada correctamente.");
-    editCategoryModal.style.display = 'none';
-    resetEditModal();
+    try {
+        await editarCategoriaConPremios(currentCategoryId, categoryName, premios);
+        editCategoryModal.style.display = 'none';
+        resetEditModal();
+        cargarCategorias();
+    } catch (err) {
+        console.error(err);
+        alert("Error al actualizar categoría");
+    }
 });
 
-// FUNCIONES PARA EL MODAL DE CREACIÓN
-
-// Función para abrir el modal de creación
+// -------------------- MODAL CREACIÓN --------------------
 function openCreateModal() {
     newCategoryNameInput.value = '';
     newPrizesContainer.innerHTML = '';
-    // Añadir premio por defecto SOLO al abrir
     addNewPrizeToModal('Nuevo premio', 100, 1);
     createCategoryModal.style.display = 'flex';
 }
 
-// Función para añadir un premio al modal de creación
 function addNewPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
     const prizeItem = document.createElement('div');
     prizeItem.className = 'prize-item';
@@ -195,34 +139,27 @@ function addNewPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
     `;
     newPrizesContainer.appendChild(prizeItem);
 
-    // Evento para eliminar premio
     prizeItem.querySelector('.delete-btn').addEventListener('click', () => {
         prizeItem.remove();
         updateNewPrizeNumbers();
     });
 }
 
-// Actualizar números de premios en modal de creación
 function updateNewPrizeNumbers() {
-    const prizeItems = newPrizesContainer.querySelectorAll('.prize-item');
-    prizeItems.forEach((item, index) => {
+    newPrizesContainer.querySelectorAll('.prize-item').forEach((item, index) => {
         item.querySelector('.prize-number').textContent = index + 1;
     });
 }
 
-// Evento: Añadir nuevo premio (creación)
 addNewPrizeBtn.addEventListener('click', () => {
-    const nextNumber = newPrizesContainer.children.length + 1;
-    addNewPrizeToModal(`Premio ${nextNumber}`, '', nextNumber);
+    addNewPrizeToModal(`Premio ${newPrizesContainer.children.length + 1}`, '', newPrizesContainer.children.length + 1);
 });
 
-// Evento: Cancelar (creación)
 cancelCreateBtn.addEventListener('click', () => {
     createCategoryModal.style.display = 'none';
     resetCreateModal();
 });
 
-// Evento: Cerrar con X (creación)
 document.querySelectorAll('#createCategoryModal .close').forEach(btn => {
     btn.addEventListener('click', () => {
         createCategoryModal.style.display = 'none';
@@ -230,111 +167,108 @@ document.querySelectorAll('#createCategoryModal .close').forEach(btn => {
     });
 });
 
-// Cerrar modal si se hace clic fuera (creación)
 window.addEventListener('click', (e) => {
-    if (e.target === createCategoryModal) {
-        createCategoryModal.style.display = 'none';
-        resetCreateModal();
-    }
+    if (e.target === createCategoryModal) resetCreateModal();
 });
 
-// Función para resetear el modal de creación
 function resetCreateModal() {
     newCategoryNameInput.value = '';
     newPrizesContainer.innerHTML = '';
-    //NO añadimos premio por defecto aquí (solo al abrir)
 }
 
-// Evento: Crear categoría → ¡AHORA ACTUALIZA LA LISTA!
-createCategoryForm.addEventListener('submit', (e) => {
+// -------------------- CREAR CATEGORÍA --------------------
+createCategoryForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const categoryName = newCategoryNameInput.value.trim();
-    const prizes = [];
-
-    const prizeItems = newPrizesContainer.querySelectorAll('.prize-item');
-    prizeItems.forEach((item, index) => {
+    const premios = [];
+    newPrizesContainer.querySelectorAll('.prize-item').forEach(item => {
         const label = item.querySelector('input[type="text"]').value.trim();
         const value = item.querySelector('input[type="number"]').valueAsNumber || 0;
-
-        if (label) {
-            prizes.push({
-                label,
-                value
-            });
-        }
+        if (label) premios.push({ nombre: label, cantidad_dinero: value, incluye_dinero: value > 0 ? 1 : 0 });
     });
 
-    if (!categoryName || prizes.length === 0) {
-        alert("Por favor, completa el nombre de la categoría y al menos un premio.");
+    if (!categoryName || premios.length === 0) {
+        alert("Completa nombre y al menos un premio.");
         return;
     }
 
-    //CREAR LA NUEVA TARJETA VISUAL
-    const categoryCard = document.createElement('div');
-    categoryCard.className = 'category-card';
-
-    let prizesHTML = '';
-    prizes.forEach(prize => {
-        if (prize.value > 0) {
-            prizesHTML += `
-                <div class="prize-item">
-                    <div class="prize-label">${prize.label}</div>
-                    <div class="prize-value">${prize.value}€</div>
-                </div>
-            `;
-        } else {
-            prizesHTML += `
-                <div class="prize-item">
-                    <div class="prize-label">${prize.label}</div>
-                </div>
-            `;
-        }
-    });
-
-    categoryCard.innerHTML = `
-        <div class="category-header">
-            <div class="category-title">${categoryName}</div>
-        </div>
-        <div class="prizes-list">
-            ${prizesHTML}
-        </div>
-    `;
-
-    // AÑADIR AL GRID
-    document.querySelector('.categories-grid').appendChild(categoryCard);
-
-    // HACERLA EDITABLE
-    categoryCard.addEventListener('click', () => {
-        openEditModal(Date.now(), categoryName, prizes);
-    });
-
-    // Mensaje y cierre
-    alert("Categoría creada correctamente.");
-    createCategoryModal.style.display = 'none';
-    resetCreateModal();
+    try {
+        await agregarCategoriaConPremios(categoryName, premios);
+        createCategoryModal.style.display = 'none';
+        resetCreateModal();
+        cargarCategorias();
+    } catch (err) {
+        console.error(err);
+        alert("Error al crear categoría");
+    }
 });
 
-// EVENTOS DE CLIC EN TARJETAS EXISTENTES Y BOTÓN "CREAR"
-
-// Tarjetas existentes (cargadas inicialmente)
-document.querySelectorAll('.category-card').forEach((card, index) => {
-    card.addEventListener('click', () => {
-        const title = card.querySelector('.category-title').textContent;
-        const prizes = [];
-
-        card.querySelectorAll('.prize-item').forEach((item) => {
-            const label = item.querySelector('.prize-label').textContent;
-            const valueText = item.querySelector('.prize-value')?.textContent;
-            const value = valueText ? parseInt(valueText.replace('€', '').trim()) || 0 : 0;
-            prizes.push({ label, value });
-        });
-        openEditModal(index + 1, title, prizes);
-    });
-});
-
-// Botón "+ Crear categoría"
-document.querySelector('.btn-create').addEventListener('click', (e) => {
+// -------------------- BOTÓN CREAR --------------------
+document.querySelector('.btn-create').addEventListener('click', e => {
     e.stopPropagation();
     openCreateModal();
 });
+
+// -------------------- CARGAR CATEGORÍAS --------------------
+async function cargarCategorias() {
+    try {
+        const response = await obtenerCategoriasConPremios();
+        if (response.status !== 'success') {
+            console.error("Error al obtener categorías:", response);
+            return;
+        }
+        pintarCategorias(response.data);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function pintarCategorias(categorias) {
+    categoriesGrid.innerHTML = '';
+
+    categorias.forEach(categoria => {
+        const categoryCard = document.createElement('div');
+        categoryCard.className = 'category-card';
+        categoryCard.dataset.id = categoria.id_categoria;
+
+        let premiosHTML = '';
+        categoria.premios.forEach(premio => {
+            premiosHTML += premio.cantidad_dinero > 0
+                ? `<div class="prize-item"><div class="prize-label">${premio.nombre}</div><div class="prize-value">${premio.cantidad_dinero}€</div></div>`
+                : `<div class="prize-item"><div class="prize-label">${premio.nombre}</div></div>`;
+        });
+
+        categoryCard.innerHTML = `
+            <div class="category-header">
+                <div class="category-icons">
+                    <span class="delete-icono" onclick="confirmarEliminarCategoria(${categoria.id_categoria}, '${categoria.nombre}')"></span>
+                </div>
+                <div class="category-title">${categoria.nombre}</div>
+            </div>
+            <div class="prizes-list">${premiosHTML}</div>
+        `;
+
+        categoryCard.addEventListener('click', () =>
+            openEditModal(categoria.id_categoria, categoria.nombre, categoria.premios)
+        );
+
+        categoriesGrid.appendChild(categoryCard);
+    });
+}
+
+// -------------------- ELIMINAR CATEGORÍA --------------------
+async function confirmarEliminarCategoria(idCategoria, nombre) {
+    if (!confirm(`¿Seguro que deseas eliminar "${nombre}"?`)) return;
+
+    try {
+        await eliminarCategoria(idCategoria);
+        cargarCategorias();
+    } catch (err) {
+        console.error(err);
+        alert("Error al eliminar categoría");
+    }
+}
+
+// -------------------- INICIALIZACIÓN --------------------
+document.addEventListener("DOMContentLoaded", () => cargarCategorias());

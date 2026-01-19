@@ -10,8 +10,8 @@ abrirConexion();
 crearBaseDatosSiNoExiste();
 session_start();
 
-if(isset($_POST['action'])){
-    switch($_POST['action']){
+if (isset($_POST['action'])) {
+    switch ($_POST['action']) {
         case 'revisarSesion':
             revisarSesion();
             break;
@@ -19,7 +19,7 @@ if(isset($_POST['action'])){
             login();
             break;
         case 'cerrarSesion':
-            cerrarSesion(); 
+            cerrarSesion();
             break;
         case 'obtenerConfiguracionWeb':
             validarRol(['organizador', 'participante']);
@@ -73,6 +73,27 @@ if(isset($_POST['action'])){
             validarRol(['organizador']);
             desasignarGanador();
             break;
+        case 'obtenerCategoriasConPremios':
+            validarRol(['organizador']);
+            obtenerCategoriasConPremios();
+            break;
+
+        case 'agregarCategoriaConPremios':
+            validarRol(['organizador']);
+            agregarCategoriaConPremios();
+            break;
+
+        case 'editarCategoriaConPremios':
+            validarRol(['organizador']);
+            editarCategoriaConPremios();
+            break;
+
+        case 'eliminarCategoria':
+            validarRol(['organizador']);
+            eliminarCategoria();
+            break;
+
+
         default:
             break;
     }
@@ -97,7 +118,8 @@ function revisarSesion()
     ]);
 }
 
-function cerrarSesion(){
+function cerrarSesion()
+{
     session_unset();
     session_destroy();
     echo json_encode([
@@ -109,7 +131,8 @@ function cerrarSesion(){
 /**
  * Verifica las credenciales de un usuario en la tabla especificada
  */
-function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad) {
+function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad)
+{
     global $conexion;
 
     $query = "SELECT * FROM $tabla WHERE $columnaId = ?";
@@ -135,10 +158,11 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
 /**
  * Iniciar sesión como Participante u Organizador
  */
-function login() {
+function login()
+{
     $numIdentidad = $_POST['numExpediente'] ?? '';
     $password = $_POST['password'] ?? '';
-    $idEntidad=null;
+    $idEntidad = null;
 
     if (empty($numIdentidad) || empty($password)) {
         echo json_encode(["status" => "error", "message" => "Faltan datos de inicio de sesión"]);
@@ -178,7 +202,8 @@ function login() {
 /**
  * Valida que el rol sea uno de los permitidos
  */
-function validarRol($rolesPermitidos) {
+function validarRol($rolesPermitidos)
+{
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
             "status" => "error",
@@ -199,7 +224,8 @@ function validarRol($rolesPermitidos) {
 /**
  * Obtener configuración web y archivos de la edición actual
  */
-function obtenerConfiguracionWeb(){
+function obtenerConfiguracionWeb()
+{
     global $conexion;
 
     $sqlConfig = "SELECT nombre, valor FROM configuracion";
@@ -267,7 +293,8 @@ function obtenerConfiguracionWeb(){
 /**
  * Actualiza los parámetros de configuración web
  */
-function actualizarConfiguracionWeb(){
+function actualizarConfiguracionWeb()
+{
     global $conexion;
 
     $camposPermitidos = [
@@ -303,7 +330,7 @@ function actualizarConfiguracionWeb(){
         }
 
         // Actualizar la fecha de última modificación si hubo cambios
-        if($actualizados > 0){
+        if ($actualizados > 0) {
             $stmtFecha = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
             $fechaActual = date("d/m/Y H:i");
             $nombreCampoFecha = 'fechaUltimaModificacionConfiguracion';
@@ -317,7 +344,6 @@ function actualizarConfiguracionWeb(){
             "message" => "Proceso finalizado",
             "camposActualizados" => $actualizados
         ]);
-
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode([
@@ -334,7 +360,8 @@ function actualizarConfiguracionWeb(){
  * Si es privado lo guarda en ./../uploads/private/
  * Por defecto se guardaa de manera publica
  */
-function subirArchivo(){
+function subirArchivo()
+{
     $privado = isset($_POST['privado']) && $_POST['privado'] === 'true';
     $directorioSubida = $privado ? './../uploads/private/' : './../uploads/public/';
 
@@ -387,7 +414,8 @@ function subirArchivo(){
  * Omite la eliminación del archivo físico si hay otras referencias
  *
  */
-function eliminarArchivoPorId($idArchivo) {
+function eliminarArchivoPorId($idArchivo)
+{
     global $conexion;
 
     $stmt = $conexion->prepare("SELECT ruta FROM archivo WHERE id_archivo = ?");
@@ -428,7 +456,8 @@ function eliminarArchivoPorId($idArchivo) {
 /**
  * Elimina todos los archivos de una edición actual y los vuelve a insertar según el array recibido
  */
-function actualizarGaleriaEdicionActual(){
+function actualizarGaleriaEdicionActual()
+{
     global $conexion;
 
     if (!isset($_POST['archivos'])) {
@@ -469,7 +498,8 @@ function actualizarGaleriaEdicionActual(){
 /**
  * Incompleto
  */
-function listarCandidaturas(){
+function listarCandidaturas()
+{
     global $conexion;
 
     $query = "SELECT c.id_candidatura as idCandidatura, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, c.fecha_ultima_modificacion as fechaUltimaModificacion, a.ruta AS ruta_archivo_video as rutaArchivoVideo, pc.nombre AS nombre_participante, pc.correo as correoParticipante
@@ -496,7 +526,8 @@ function listarCandidaturas(){
  * Listar patrocinadores con su logo
  * Agrega la URL base de archivos a la ruta del logo
  */
-function listarPatrocinadores(){
+function listarPatrocinadores()
+{
     global $conexion;
 
     $query = "SELECT p.id_patrocinador as idPatrocinador, p.nombre as nombrePatrocinador, a.ruta as rutaArchivoLogo, a.id_archivo as idArchivoLogo FROM patrocinador p LEFT JOIN archivo a ON p.id_archivo_logo = a.id_archivo";
@@ -522,11 +553,12 @@ function listarPatrocinadores(){
  * Agregar un nuevo patrocinador
  * Verifica que no exista otro con el mismo nombre
  */
-function agregarPatrocinador(){
+function agregarPatrocinador()
+{
     global $conexion;
 
     $nombre = strtoupper($_POST['nombre']);
-    $idArchivoLogo =(int) $_POST['idArchivoLogo'];
+    $idArchivoLogo = (int) $_POST['idArchivoLogo'];
 
     // validar patrocinador no existe con ese nombre
     $queryCheck = "SELECT id_patrocinador FROM patrocinador WHERE UPPER(nombre) = ?";
@@ -565,7 +597,8 @@ function agregarPatrocinador(){
  * Actualizar patrocinador
  * Maneja la lógica de no duplicar archivos si la ruta es la misma
  */
-function actualizarPatrocinador() {
+function actualizarPatrocinador()
+{
     global $conexion;
 
     $idPatrocinador = (int) $_POST['idPatrocinador'];
@@ -615,7 +648,8 @@ function actualizarPatrocinador() {
 /**
  * Eliminar un patrocinador
  */
-function eliminarPatrocinador(){
+function eliminarPatrocinador()
+{
     global $conexion;
     $idPatrocinador = (int) $_POST['idPatrocinador'];
 
@@ -641,7 +675,8 @@ function eliminarPatrocinador(){
  * Obtener la baseUrl desde la configuración
  * Esto se usa para construir las URLs completas de los archivos
  */
-function obtenerBaseUrl(){
+function obtenerBaseUrl()
+{
     global $conexion;
 
     $query = "SELECT valor FROM configuracion WHERE nombre = 'baseUrl' LIMIT 1";
@@ -658,24 +693,25 @@ function obtenerBaseUrl(){
 /**
  * Obtener categorías y sus premios asociados
  */
-function obtenerCategoriasYSusPremios(){
+function obtenerCategoriasYSusPremios()
+{
     global $conexion;
 
-    $queryCategorias = "SELECT id_categoria, nombre FROM categoria";
+    $queryCategorias = "SELECT * FROM categoria";
     $resultCategorias = $conexion->query($queryCategorias);
 
     $categorias = [];
     while ($categoria = $resultCategorias->fetch_assoc()) {
         $idCategoria = $categoria['id_categoria'];
 
-        $queryPremios = "select c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador 
+        $queryPremios = "SELECT c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador 
             FROM categoria c 
             RIGHT JOIN premio p on p.id_categoria = c.id_categoria
             LEFT JOIN premio_candidatura pm on pm.id_premio = p.id_premio
             LEFT JOIN candidatura ca on ca.id_candidatura = pm.id_candidatura
             LEFT JOIN participante pa on pa.id_participante = ca.id_participante
             where c.id_categoria = ?";
-        
+
         $stmtPremios = $conexion->prepare($queryPremios);
         $stmtPremios->bind_param("i", $idCategoria);
         $stmtPremios->execute();
@@ -701,7 +737,8 @@ function obtenerCategoriasYSusPremios(){
 /**
  * Listar finalistas que no son ganadores
  */
-function listarFinalistasNoGanadores(){
+function listarFinalistasNoGanadores()
+{
     global $conexion;
 
     $query = "SELECT c.id_candidatura as idCandidatura, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, pc.nombre AS nombreParticipante, pc.correo as correoParticipante
@@ -751,7 +788,8 @@ function asignarGanador()
 /**
  * Deasignar ganador de un premio
  */
-function desasignarGanador(){
+function desasignarGanador()
+{
     global $conexion;
     $idPremio = (int)$_POST['idPremio'];
     $idCandidatura = (int)$_POST['idCandidatura'];
@@ -764,6 +802,203 @@ function desasignarGanador(){
         echo json_encode(["status" => "error", "message" => "Error al desasignar el ganador"]);
     }
 }
+
+/**
+ * Obtener todas las categorías con sus premios
+ */
+function obtenerCategoriasConPremios() {
+    global $conexion;
+    $queryCategorias = "SELECT * FROM categoria";
+    $resultCategorias = $conexion->query($queryCategorias);
+
+    $categorias = [];
+
+    while ($categoria = $resultCategorias->fetch_assoc()) {
+        $idCategoria = $categoria['id_categoria'];
+        $queryPremios = "
+            SELECT id_premio, nombre, incluye_dinero, cantidad_dinero
+            FROM premio
+            WHERE id_categoria = ?
+        ";
+        $stmt = $conexion->prepare($queryPremios);
+        $stmt->bind_param("i", $idCategoria);
+        $stmt->execute();
+        $resultPremios = $stmt->get_result();
+
+        $premios = [];
+        while ($premio = $resultPremios->fetch_assoc()) {
+            $premio['incluye_dinero'] = (bool)$premio['incluye_dinero'];
+            $premios[] = $premio;
+        }
+
+        $categoria['premios'] = $premios;
+        $categorias[] = $categoria;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $categorias
+    ]);
+}
+
+/**
+ * Agregar categoría con premios
+ */
+function agregarCategoriaConPremios() {
+    global $conexion;
+
+    // Leer datos desde FormData
+    $nombreCategoria = $_POST['nombreCategoria'] ?? null;
+    $premios = isset($_POST['premios']) ? json_decode($_POST['premios'], true) : [];
+
+    if (!$nombreCategoria || empty($premios)) {
+        echo json_encode(["status" => "error", "message" => "Faltan datos"]);
+        return;
+    }
+
+    $conexion->begin_transaction();
+
+    try {
+        $queryCategoria = "INSERT INTO categoria (nombre) VALUES (?)";
+        $stmtCategoria = $conexion->prepare($queryCategoria);
+        $stmtCategoria->bind_param("s", $nombreCategoria);
+        if (!$stmtCategoria->execute()) throw new Exception("No se pudo agregar categoría");
+
+        $idCategoria = $conexion->insert_id;
+        $premiosInsertados = [];
+
+        $queryPremio = "INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES (?, ?, ?, ?)";
+        $stmtPremio = $conexion->prepare($queryPremio);
+
+        foreach ($premios as $premio) {
+            $nombre = $premio['nombre'];
+            $incluye = isset($premio['incluye_dinero']) ? 1 : 0;
+            $cantidad = $premio['cantidad_dinero'] ?? 0;
+
+            $stmtPremio->bind_param("sidi", $nombre, $incluye, $cantidad, $idCategoria);
+            if (!$stmtPremio->execute()) throw new Exception("No se pudo agregar premio: $nombre");
+
+            $premiosInsertados[] = [
+                "id_premio" => $conexion->insert_id,
+                "nombre" => $nombre,
+                "incluye_dinero" => (bool)$incluye,
+                "cantidad_dinero" => $cantidad
+            ];
+        }
+
+        $conexion->commit();
+
+        echo json_encode([
+            "status" => "success",
+            "data" => [
+                "id_categoria" => $idCategoria,
+                "nombre" => $nombreCategoria,
+                "premios" => $premiosInsertados
+            ]
+        ]);
+
+    } catch (Exception $e) {
+        $conexion->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    }
+}
+
+/**
+ * Editar categoría con premios
+ */
+function editarCategoriaConPremios() {
+    global $conexion;
+
+    $idCategoria = $_POST['idCategoria'] ?? null;
+    $nombreCategoria = $_POST['nombreCategoria'] ?? null;
+    $premios = isset($_POST['premios']) ? json_decode($_POST['premios'], true) : [];
+
+    if (!$idCategoria || !$nombreCategoria || empty($premios)) {
+        echo json_encode(["status" => "error", "message" => "Faltan datos"]);
+        return;
+    }
+
+    $conexion->begin_transaction();
+
+    try {
+        $queryCategoria = "UPDATE categoria SET nombre = ? WHERE id_categoria = ?";
+        $stmtCategoria = $conexion->prepare($queryCategoria);
+        $stmtCategoria->bind_param("si", $nombreCategoria, $idCategoria);
+        if (!$stmtCategoria->execute()) throw new Exception("Error al actualizar categoría");
+
+        // Actualizar o insertar premios
+        foreach ($premios as $premio) {
+            $nombre = $premio['nombre'];
+            $incluye = isset($premio['incluye_dinero']) ? 1 : 0;
+            $cantidad = $premio['cantidad_dinero'] ?? 0;
+
+            if (isset($premio['id_premio'])) {
+                $idPremio = $premio['id_premio'];
+                $queryUpdate = "UPDATE premio SET nombre = ?, incluye_dinero = ?, cantidad_dinero = ? WHERE id_premio = ? AND id_categoria = ?";
+                $stmtUpdate = $conexion->prepare($queryUpdate);
+                $stmtUpdate->bind_param("sidii", $nombre, $incluye, $cantidad, $idPremio, $idCategoria);
+                if (!$stmtUpdate->execute()) throw new Exception("Error al actualizar premio: $nombre");
+            } else {
+                $queryInsert = "INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES (?, ?, ?, ?)";
+                $stmtInsert = $conexion->prepare($queryInsert);
+                $stmtInsert->bind_param("sidi", $nombre, $incluye, $cantidad, $idCategoria);
+                if (!$stmtInsert->execute()) throw new Exception("Error al agregar premio: $nombre");
+            }
+        }
+
+        $conexion->commit();
+
+        echo json_encode([
+            "status" => "success",
+            "data" => [
+                "id_categoria" => $idCategoria,
+                "nombre" => $nombreCategoria,
+                "premios" => $premios
+            ]
+        ]);
+
+    } catch (Exception $e) {
+        $conexion->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    }
+}
+
+/**
+ * Eliminar categoría con premios
+ */
+function eliminarCategoria() {
+    global $conexion;
+
+    $idCategoria = $_POST['id_categoria'] ?? null;
+    if (!$idCategoria) {
+        echo json_encode(["status" => "error", "message" => "No se recibió id_categoria"]);
+        return;
+    }
+
+    $conexion->begin_transaction();
+
+    try {
+        $queryPremios = "DELETE FROM premio WHERE id_categoria = ?";
+        $stmtPremios = $conexion->prepare($queryPremios);
+        $stmtPremios->bind_param("i", $idCategoria);
+        if (!$stmtPremios->execute()) throw new Exception("No se pudieron eliminar los premios");
+
+        $queryCategoria = "DELETE FROM categoria WHERE id_categoria = ?";
+        $stmtCategoria = $conexion->prepare($queryCategoria);
+        $stmtCategoria->bind_param("i", $idCategoria);
+        if (!$stmtCategoria->execute()) throw new Exception("No se pudo eliminar la categoría");
+
+        $conexion->commit();
+
+        echo json_encode(["status" => "success", "message" => "Categoría eliminada correctamente", "id_categoria_eliminada" => $idCategoria]);
+
+    } catch (Exception $e) {
+        $conexion->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    }
+}
+
+
 
 
 

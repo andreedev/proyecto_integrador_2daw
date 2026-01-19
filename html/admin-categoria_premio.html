@@ -26,101 +26,19 @@
                     <span class="admin-module-description">Administra las categorías y premios del festival de cortometraje</span>
                 </div>
                 <div class="admin-header-module-actions-container">
-                    <div class="admin-header-main-action-button btn-create" >
+                    <div class="admin-header-main-action-button btn-create">
                         <span class="icono-agregar"></span>
                         <span>Crear categoría</span>
                     </div>
                 </div>
             </div>
             <div class="admin-content">
-
-                <div class="categories-grid">
-
-                    <!-- Categoría 1 -->
-                    <div class="category-card">
-                        <div class="category-header">
-                            <div class="category-title">Mejor cortometraje UE (alumno)</div>
-                        </div>
-                        <div class="prizes-list">
-                            <div class="prize-item">
-                                <div class="prize-label">1° Primer premio</div>
-                                <div class="prize-value">600€</div>
-                            </div>
-                            <div class="prize-item">
-                                <div class="prize-label">2° Segundo premio</div>
-                                <div class="prize-value">300€</div>
-                            </div>
-                            <div class="prize-item">
-                                <div class="prize-label">3° Tercer premio</div>
-                                <div class="prize-value">100€</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Categoría 2 -->
-                    <div class="category-card">
-                        <div class="category-header">
-                            <div class="category-title">Mejor cortometraje alumni</div>
-                        </div>
-                        <div class="prizes-list">
-                            <div class="prize-item">
-                                <div class="prize-label">1° Primer premio</div>
-                                <div class="prize-value">700€</div>
-                            </div>
-                            <div class="prize-item">
-                                <div class="prize-label">2° Segundo premio</div>
-                                <div class="prize-value">300€</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Categoría 3 -->
-                    <div class="category-card">
-                        <div class="category-header">
-                            <div class="category-title">Premio honorífico</div>
-                        </div>
-                        <div class="prizes-list">
-                            <div class="prize-item">
-                                <div class="prize-label">Reconocimiento Honorífico</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Categoría 4 -->
-                    <div class="category-card-animacion">
-                        <div class="category-header">
-                            <div class="category-title">Animación</div>
-                            <div class="category-icons">
-                                <span class="edit-icono"></span>
-                                <span class="delete-icono"></span>
-                            </div>
-                        </div>
-                        <div class="prizes-list">
-                            <div class="prize-item">
-                                <div class="prize-label">1° Primer premio</div>
-                                <div class="prize-value">700€</div>
-                            </div>
-                            <div class="prize-item">
-                                <div class="prize-label">2° Segundo premio</div>
-                                <div class="prize-value">300€</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="confirmation-delete-card-container hidden-force">
-                        <div class="confirmation-delete-card">
-                            <p class="question">¿Estás seguro de que deseas eliminar la categoría "Animación"?</p>
-                            <div class="action-delete-card">
-                                <button class="btn-cancel-delete">Cancelar</button>
-                                <button class="btn-confirm-delete">Eliminar</button>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- Aquí se pintan las categorías desde JS -->
                 </div>
             </div>
         </div>
     </div>
-
 
     <!-- MODAL DE EDICIÓN DE CATEGORÍA -->
     <div id="editCategoryModal" class="modal" style="display: none;">
@@ -141,8 +59,7 @@
                             <label>Premios:</label>
                             <button type="button" id="addPrizeBtn" class="btn-add">+ Añadir</button>
                         </div>
-                        <div id="prizesContainer">
-                        </div>
+                        <div id="prizesContainer"></div>
                     </div>
 
                     <div class="modal-actions">
@@ -173,7 +90,6 @@
                         <label>Premios:</label>
                         <button type="button" id="addNewPrizeBtn" class="btn-add">+ Añadir</button>
                         <div id="newPrizesContainer">
-                            <!-- Premio por defecto -->
                             <div class="prize-item">
                                 <span class="prize-number">1</span>
                                 <input type="text" class="nombreDelPremio" placeholder="Nuevo premio" value="Nuevo premio"/>
