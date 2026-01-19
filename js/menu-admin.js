@@ -63,7 +63,7 @@ class MenuAdmin extends HTMLElement {
         });
 
         document.querySelector('#finalistasMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-finalistas.html';
+            window.location.href = 'admin-ganadores.html';
         });
 
         document.querySelector('#candidaturasMenuLateral').addEventListener('click', () => {
@@ -121,7 +121,7 @@ class MenuAdmin extends HTMLElement {
             case 'admin-candidaturas.html':
                 document.querySelector('#candidaturasMenuLateral').classList.add('active');
                 break;
-            case 'admin-finalistas.html':
+            case 'admin-ganadores.html':
                 document.querySelector('#finalistasMenuLateral').classList.add('active');
                 break;
             case 'admin-noticias.html':

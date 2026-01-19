@@ -644,7 +644,9 @@ function obtenerBaseUrl(){
     return null;
 }
 
-
+/**
+ * Obtener categorías y sus premios asociados
+ */
 function obtenerCategoriasYSusPremios(){
     global $conexion;
 
@@ -655,8 +657,14 @@ function obtenerCategoriasYSusPremios(){
     while ($categoria = $resultCategorias->fetch_assoc()) {
         $idCategoria = $categoria['id_categoria'];
 
-        $queryPremios = "select c.id_categoria, p.id_premio, p.nombre as nombrePremio, p.cantidad_dinero, EXISTS(SELECT 1 FROM premio_candidatura pm WHERE pm.id_premio = p.id_premio) tieneGanador FROM categoria c
-RIGHT JOIN premio p using (id_categoria) where c.id_categoria = ?";
+        $queryPremios = "select c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador
+       , pa.nombre as nombreGanador 
+            FROM categoria c 
+            RIGHT JOIN premio p on p.id_categoria = c.id_categoria
+            LEFT JOIN premio_candidatura pm on pm.id_premio = p.id_premio
+            LEFT JOIN candidatura ca on ca.id_candidatura = pm.id_candidatura
+            LEFT JOIN participante pa on pa.id_participante = ca.id_participante
+            where c.id_categoria = ?";
         
         $stmtPremios = $conexion->prepare($queryPremios);
         $stmtPremios->bind_param("i", $idCategoria);
@@ -665,6 +673,7 @@ RIGHT JOIN premio p using (id_categoria) where c.id_categoria = ?";
 
         $premios = [];
         while ($premio = $resultPremios->fetch_assoc()) {
+            $premio['tieneGanador'] = $premio['tieneGanador'] == 1;
             $premios[] = $premio;
         }
 
