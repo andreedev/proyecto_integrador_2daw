@@ -435,9 +435,6 @@ dialog{
     color: var(--error-01);
 }
 
-
-
-
 /* Parte de galería e imágenes */
 
 .modal-multimedia{
@@ -787,4 +784,21 @@ hr{
     mask-repeat: no-repeat;
     cursor: pointer;
     background-color: var(--neutral-01);
+}
+
+
+.error-message-nombre{
+    color: var(--error-01);
+    font-size: 12px;
+    margin-top:4px;
+}
+.error-message-puesto{
+    color: var(--error-01);
+    font-size: 12px;
+    margin-top:4px;
+}
+.error-message-categoria{
+    color: var(--error-01);
+    font-size: 12px;
+    margin-top:4px;
 }

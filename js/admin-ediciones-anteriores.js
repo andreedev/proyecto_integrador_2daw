@@ -13,6 +13,11 @@ const statValueTipo = document.getElementById("statValueTipo");
 
 /*Modal*/
 const label = document.getElementById("label");
+const labelNum = document.getElementById("labelNum");
+const labelResumen = document.getElementById("labelResumen");
+const labelNom = document.getElementById("labelNom");
+const labelCategoria = document.getElementById("labelCategoria");
+const labelPuesto = document.getElementById("labelPuesto");
 const icon =  document.getElementById("icon");
 const modalCrearEdicionAnterior = document.getElementById("modalCrearEdicionAnterior");
 const cerrarModalCrear = document.getElementById("cerrarModalCrear");
@@ -89,11 +94,11 @@ inputYear.addEventListener("blur", () => {
 inputNumParticipantes.addEventListener("blur", () => {
     if (inputNumParticipantes.value.trim() === "") {
         errorMessageNumParticipantes.textContent = "El número de participantes es obligatorio.";
-        label.classList.add("incorrecto");
+        labelNum.classList.add("incorrecto");
         iconNum.classList.add("cross");
     } else {
         errorMessageNumParticipantes.textContent = "";
-        label.classList.remove("incorrecto");
+        labelNum.classList.remove("incorrecto");
         iconNum.classList.remove("cross");
     }
 });
@@ -101,11 +106,11 @@ inputNumParticipantes.addEventListener("blur", () => {
 inputResumen.addEventListener("blur", () => {
     if (inputResumen.value.trim() === "") {
         errorMessageResumen.textContent= "El resumen es obligatorio.";
-        label.classList.add("incorrecto");
+        labelResumen.classList.add("incorrecto");
         iconResumen.classList.add("cross");
     } else {
         errorMessageResumen.textContent = "";
-        label.classList.remove("incorrecto");
+        labelResumen.classList.remove("incorrecto");
         iconResumen.classList.remove("cross");
     }
 });
@@ -113,11 +118,11 @@ inputResumen.addEventListener("blur", () => {
 inputNombre.addEventListener("blur", () => {
     if (inputNombre.value.trim() === "") {
         errorMessageNombre.textContent = "El nombre es obligatorio.";
-        label.classList.add("incorrecto");
+        labelNom.classList.add("incorrecto");
         iconNom.classList.add("cross");
     } else {
         errorMessageNombre.textContent = "";
-        label.classList.remove("incorrecto");
+        labelNom.classList.remove("incorrecto");
         iconNom.classList.remove("cross");
     }
 });
@@ -125,11 +130,11 @@ inputNombre.addEventListener("blur", () => {
 inputCategoria.addEventListener("blur", () => {
     if (inputCategoria.value.trim() === "") {
         errorMessageCategoria.textContent = "La categoría es obligatoria.";
-        label.classList.add("incorrecto");
+        labelCategoria.classList.add("incorrecto");
         iconCategoria.classList.add("cross");
     } else {
         errorMessageCategoria.textContent = "";
-        label.classList.remove("incorrecto");
+        labelCategoria.classList.remove("incorrecto");
         iconCategoria.classList.remove("cross");
     }
 });
@@ -137,11 +142,76 @@ inputCategoria.addEventListener("blur", () => {
 inputPuesto.addEventListener("blur", () => {
     if (inputPuesto.value.trim() === "") {
         errorMessagePuesto.textContent = "El puesto es obligatorio.";
-        label.classList.add("incorrecto");
+        labelPuesto.classList.add("incorrecto");
         iconPuesto.classList.add("cross");
     } else {
         errorMessagePuesto.textContent = "";
-        label.classList.remove("incorrecto");
+        labelPuesto.classList.remove("incorrecto");
         iconPuesto.classList.remove("cross");
+    }
+});
+
+
+// Si hay algo escrito en el input, que el label se quede arriba
+inputYear.addEventListener("input", () => {
+    if (inputYear.value.trim() !== "") {
+        label.classList.add("label-arriba");
+        icon.classList.add("check");
+        document.querySelector('.inputs .label').style.transform ='none'; 
+    } else {
+        label.classList.remove("label-arriba");
+        icon.classList.remove("check");
+        document.querySelector('.inputs .label').style.transform ='-50%'; 
+    }
+});
+
+inputNumParticipantes.addEventListener("input", () => {
+    if (inputNumParticipantes.value.trim() !== "") {
+        labelNum.classList.add("label-arriba");
+        iconNum.classList.add("check");
+    } else {
+        labelNum.classList.remove("label-arriba");
+        iconNum.classList.remove("check");
+    }
+});
+
+inputResumen.addEventListener("input", () => {
+    if (inputResumen.value.trim() !== "") {
+        labelResumen.classList.add("label-arriba");
+        iconResumen.classList.add("check");
+    } else {
+        labelResumen.classList.remove("label-arriba");
+        iconResumen.classList.remove("check");
+    }
+});
+
+inputNombre.addEventListener("input", () => {
+    if (inputNombre.value.trim() !== "") {
+        labelNom.classList.add("label-arriba");
+        iconNom.classList.add("check");
+    }
+    else {
+        labelNom.classList.remove("label-arriba");
+        iconNom.classList.remove("check");
+    }
+});
+
+inputCategoria.addEventListener("input", () => {
+    if (inputCategoria.value.trim() !== "") {
+        labelCategoria.classList.add("label-arriba");
+        iconCategoria.classList.add("check");
+    } else {
+        labelCategoria.classList.remove("label-arriba");
+        iconCategoria.classList.remove("check");
+    }
+});
+
+inputPuesto.addEventListener("input", () => {
+    if (inputPuesto.value.trim() !== "") {
+        labelPuesto.classList.add("label-arriba");
+        iconPuesto.classList.add("check");
+    } else {
+        labelPuesto.classList.remove("label-arriba");
+        iconPuesto.classList.remove("check");
     }
 });
