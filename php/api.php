@@ -1121,11 +1121,17 @@ function enviarEdicionAAnteriores(){
 function listarNoticias(){
     global $conexion;
 
+    $filtroNombre = isset($_POST['filtroNombre']) && !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
+    $filtrosSql = "";
+    if ($filtroNombre) {
+        $filtrosSql .= " AND n.nombre LIKE '%" . $conexion->real_escape_string($filtroNombre) . "%' ";
+    }
+
     $baseUrl = obtenerBaseUrl();
     $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
                 n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia
               FROM noticia n
-              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo ORDER BY n.fecha DESC";
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true ". $filtrosSql . " ORDER BY n.fecha DESC";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();

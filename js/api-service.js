@@ -237,9 +237,10 @@ async function cargarConfiguracion() {
     return await fetchAPI(formData);
 }
 
-async function listarNoticias() {
+async function listarNoticias(filtroNombre) {
     const formData = new FormData();
     formData.append('action', 'listarNoticias');
+    formData.append('filtroNombre', filtroNombre);
 
     return await fetchAPI(formData);
 }
