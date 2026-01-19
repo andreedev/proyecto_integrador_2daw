@@ -105,6 +105,46 @@
     flex-direction: row;
 }
 
+@media (min-width: 480px) {
+    .flex-xs-column{
+        flex-direction: column;
+    }
+
+    .flex-xs-row{
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 768px) {
+    .flex-md-column{
+        flex-direction: column;
+    }
+
+    .flex-md-row{
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 992px) {
+    .flex-lg-column{
+        flex-direction: column;
+    }
+
+    .flex-lg-row{
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1200px) {
+    .flex-xl-column{
+        flex-direction: column;
+    }
+
+    .flex-xl-row{
+        flex-direction: row;
+    }
+}
+
 .flex-wrap{
     flex-wrap: wrap;
 }

@@ -193,3 +193,10 @@ async function cargarConfiguracion() {
 
     return await fetchAPI(formData);
 }
+
+async function listarNoticias() {
+    const formData = new FormData();
+    formData.append('action', 'listarNoticias');
+
+    return await fetchAPI(formData);
+}

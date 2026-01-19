@@ -81,6 +81,10 @@ if(isset($_POST['action'])){
             validarRol(['organizador']);
             enviarEdicionAAnteriores();
             break;
+        case 'listarNoticias':
+            validarRol(['organizador']);
+            listarNoticias();
+            break;
         default:
             break;
     }
@@ -818,6 +822,12 @@ function contarParticipantesEdicionActual(){
 
 /**
  * Enviar edicion actual a ediciones anteriores
+ * Cambia el tipo de la edicion actual a 'anterior'
+ * Mueve los ganadores a la tabla histórica ganadores_edicion
+ * Elimina candidaturas no ganadoras, historial asociado y relaciones entre premios y candidaturas
+ * en el orden correcto para mantener la integridad referencial
+ * Crea una nueva edicion actual para el proximo año
+ * Actualiza el modo a 'pre-evento'
  */
 function enviarEdicionAAnteriores(){
     global $conexion;
@@ -859,7 +869,7 @@ function enviarEdicionAAnteriores(){
             $stmtInsertGanador->execute();
         }
 
-        // eliminar historial_candidatura y candidatura sin premios asociados
+        // eliminar historial_candidatura y candidaturas no ganadores
         $eliminarHistorialSql = "DELETE hc FROM historial_candidatura hc
                              INNER JOIN candidatura c ON hc.id_candidatura = c.id_candidatura
                              LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
@@ -867,17 +877,16 @@ function enviarEdicionAAnteriores(){
 
         $conexion->query($eliminarHistorialSql);
 
-        // eliminar candidaturas asociadas a premios
-        $eliminarPremiosSql = "DELETE pc FROM premio_candidatura pc
-                              INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura";
-        $conexion->query($eliminarPremiosSql);
-
-
-        // eliminar candidaturas sin premios asociados
+        // eliminar candidaturas no ganadores
         $eliminarCandidaturasSql = "DELETE c FROM candidatura c
                                     LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
                                     WHERE pc.id_candidatura IS NULL";
         $conexion->query($eliminarCandidaturasSql);
+
+        // eliminar premios asociados a candidaturas
+        $eliminarPremiosSql = "DELETE pc FROM premio_candidatura pc
+                              INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura";
+        $conexion->query($eliminarPremiosSql);
 
 
         // crear nueva edicion actual del proximo año
@@ -897,5 +906,30 @@ function enviarEdicionAAnteriores(){
     }
 }
 
+/**
+ * Listar noticias
+ */
+function listarNoticias(){
+    global $conexion;
+
+    $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
+                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia
+              FROM noticia n
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo ORDER BY n.fecha DESC";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $noticias = [];
+    while ($row = $result->fetch_assoc()) {
+        $noticias[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $noticias
+    ]);
+}
 
 cerrarConexion();
