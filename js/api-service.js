@@ -1,10 +1,11 @@
-// constantes y variables generales
+// -------------------- CONSTANTES Y VARIABLES --------------------
 const URL_API = "./../php/api.php";
 
+// -------------------- UTILIDADES --------------------
 /**
  * Formatear bytes a una unidad legible
  */
-function formatBytes(bytes,decimals = 2 ) {
+function formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
@@ -14,38 +15,49 @@ function formatBytes(bytes,decimals = 2 ) {
 }
 
 /**
- * Funcion para realizar peticiones a la API
+ * Función para realizar peticiones a la API
  */
-async function fetchAPI( data = null) {
+async function fetchAPI(data = null) {
     const options = {
         method: 'POST',
+        headers: {}
     };
 
-    if (data) {
+    if (typeof data === 'string') { // JSON crudo
         options.body = data;
+        options.headers['Content-Type'] = 'application/json';
+    } else if (data instanceof FormData) {
+        options.body = data; // FormData se encarga del Content-Type
     }
 
-    return await fetch(URL_API, options)
-        .then(response => response.json())
-        .catch(error => {
-            console.error('Error:', error);
-            throw error;
-        });
+    try {
+        const response = await fetch(URL_API, options);
+        const text = await response.text();
+
+        if (!text) {
+            console.warn("Respuesta vacía del servidor");
+            return { status: 'error', message: 'Respuesta vacía del servidor' };
+        }
+
+        try {
+            return JSON.parse(text);
+        } catch {
+            console.error("No se pudo parsear JSON:", text);
+            return { status: 'error', message: 'Respuesta no JSON', raw: text };
+        }
+    } catch (err) {
+        console.error("Error en fetchAPI:", err);
+        return { status: 'error', message: 'Error de conexión', error: err };
+    }
 }
 
-/**
- * Listar patrocinadores
- */
+// -------------------- PATRICINADORES --------------------
 async function listarPatrocinadores() {
     const data = new FormData();
     data.append('action', 'listarPatrocinadores');
-
     return await fetchAPI(data);
 }
 
-/**
- * Agregar patrocinador
- */
 async function agregarPatrocinador(nombre, idArchivoLogo) {
     const data = new FormData();
     data.append('action', 'agregarPatrocinador');
@@ -54,9 +66,6 @@ async function agregarPatrocinador(nombre, idArchivoLogo) {
     return await fetchAPI(data);
 }
 
-/**
- *  Actualizar patrocinador
- */
 async function actualizarPatrocinador(idPatrocinador, nombre, idArchivoLogo) {
     const data = new FormData();
     data.append('action', 'actualizarPatrocinador');
@@ -66,9 +75,6 @@ async function actualizarPatrocinador(idPatrocinador, nombre, idArchivoLogo) {
     return await fetchAPI(data);
 }
 
-/**
- * Eliminar patrocinador
- */
 async function eliminarPatrocinador(idPatrocinador) {
     const data = new FormData();
     data.append('action', 'eliminarPatrocinador');
@@ -76,23 +82,14 @@ async function eliminarPatrocinador(idPatrocinador) {
     return await fetchAPI(data);
 }
 
-/**
- * Subir archivo
- */
 async function subirArchivo(file) {
     const formData = new FormData();
     formData.append('action', 'subirArchivo');
     formData.append('file', file);
 
-    const response = await fetch(URL_API, {
-        method: 'POST',
-        body: formData
-    });
+    const result = await fetchAPI(formData);
+    if (result.status === 'success') return result;
 
-    const result = await response.json();
-    if (result.status === 'success') {
-        return result;
-    }
     throw new Error('Error al subir el archivo');
 }
 
@@ -100,43 +97,66 @@ const closeModalList = document.querySelectorAll('.close-modal');
 closeModalList.forEach(closeModal => {
     closeModal.addEventListener('click', () => {
         const dialog = closeModal.closest('dialog');
-        if (dialog) {
-            dialog.close();
-        }
+        if (dialog) dialog.close();
     });
 });
 
+// -------------------- CATEGORÍAS Y PREMIOS --------------------
 
-//------------------ Ganadores Admin ------------------//
-async function listarCategorias(){
+// Obtener todas las categorías con sus premios
+async function obtenerCategoriasConPremios() {
     const data = new FormData();
-    data.append('action', 'obtenerCategorias');
-
+    data.append('action', 'obtenerCategoriasConPremios');
     return await fetchAPI(data);
 }
 
-async function listarFinalistasNoGanadores(){
+// Agregar categoría con premios (CORREGIDO: usa FormData)
+async function agregarCategoriaConPremios(nombreCategoria, premios) {
+    const data = new FormData();
+    data.append('action', 'agregarCategoriaConPremios');
+    data.append('nombreCategoria', nombreCategoria);
+    data.append('premios', JSON.stringify(premios));
+    return await fetchAPI(data);
+}
+
+// Editar categoría con premios (CORREGIDO: usa FormData)
+async function editarCategoriaConPremios(idCategoria, nombreCategoria, premios) {
+    const data = new FormData();
+    data.append('action', 'editarCategoriaConPremios');
+    data.append('idCategoria', idCategoria);
+    data.append('nombreCategoria', nombreCategoria);
+    data.append('premios', JSON.stringify(premios));
+    return await fetchAPI(data);
+}
+
+// Eliminar categoría con premios
+async function eliminarCategoria(idCategoria) {
+    const data = new FormData();
+    data.append('action', 'eliminarCategoria');
+    data.append('id_categoria', idCategoria);
+    return await fetchAPI(data);
+}
+
+// -------------------- GANADORES --------------------
+async function listarFinalistasNoGanadores() {
     const data = new FormData();
     data.append('action', 'listarFinalistasNoGanadores');
-
     return await fetchAPI(data);
 }
 
-async function asignarGanador(idPremio, idCandidatura){
+async function asignarGanador(idPremio, idCandidatura) {
     const data = new FormData();
     data.append('action', 'asignarGanador');
     data.append('idPremio', idPremio);
     data.append('idCandidatura', idCandidatura);
-
     return await fetchAPI(data);
 }
 
-async function desasignarGanador(idPremio, idCandidatura){
+async function desasignarGanador(idPremio, idCandidatura) {
     const data = new FormData();
     data.append('action', 'desasignarGanador');
     data.append('idPremio', idPremio);
     data.append('idCandidatura', idCandidatura);
-
     return await fetchAPI(data);
 }
 
