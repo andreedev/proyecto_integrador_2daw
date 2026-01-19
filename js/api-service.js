@@ -252,3 +252,11 @@ async function listarNoticias(filtroNombre) {
 
     return await fetchAPI(formData);
 }
+
+
+async function listarEventos() {
+    const formData = new FormData();
+    formData.append('action', 'listarEventos');
+
+    return await fetchAPI(formData);
+}

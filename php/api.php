@@ -77,17 +77,14 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             obtenerCategoriasConPremios();
             break;
-
         case 'agregarCategoriaConPremios':
             validarRol(['organizador']);
             agregarCategoriaConPremios();
             break;
-
         case 'editarCategoriaConPremios':
             validarRol(['organizador']);
             editarCategoriaConPremios();
             break;
-
         case 'eliminarCategoria':
             validarRol(['organizador']);
             eliminarCategoria();
@@ -107,6 +104,10 @@ if (isset($_POST['action'])) {
         case 'crearNoticia':
             validarRol(['organizador', 'participante']);
             crearNoticia();
+            break;
+        case 'listarEventos':
+            validarRol(['organizador', 'participante']);
+            listarEventos();
             break;
         default:
             break;
@@ -848,7 +849,6 @@ function obtenerCategoriasConPremios() {
 function agregarCategoriaConPremios() {
     global $conexion;
 
-    // Leer datos desde FormData
     $nombreCategoria = $_POST['nombreCategoria'] ?? null;
     $premios = isset($_POST['premios']) ? json_decode($_POST['premios'], true) : [];
 
@@ -997,6 +997,9 @@ function eliminarCategoria() {
 
 }
 
+/**
+ * Actualizar una edición
+ */
 function actualizarEdicion(){
     global $conexion;
 
@@ -1155,6 +1158,9 @@ function listarNoticias(){
     ]);
 }
 
+/**
+ * Crear una nueva noticia
+ */
 function crearNoticia(){
     global $conexion;
 
@@ -1171,6 +1177,38 @@ function crearNoticia(){
     } else {
         echo json_encode(["status" => "error", "message" => "Error al crear la noticia"]);
     }
+}
+
+/**
+ * Listar eventos
+ */
+function listarEventos(){
+    global $conexion;
+
+    $query = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
+                e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
+                e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento
+              FROM evento e
+              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo
+              ORDER BY e.fecha DESC, e.hora_inicio DESC";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+    $eventos = [];
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaImagenEvento']) {
+            $row['rutaImagenEvento'] = $baseUrl . $row['rutaImagenEvento'];
+        }
+        $eventos[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $eventos
+    ]);
 }
 
 cerrarConexion();

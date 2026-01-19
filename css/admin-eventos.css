@@ -1162,3 +1162,38 @@ dialog{
 }
 
 
+.generic-input-wrapper{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    border: 1px solid var(--neutral-05);
+    background-color: var(--neutral-09);
+    padding: 12px 12px;
+    cursor: text;
+    transition: all 200ms ease;
+}
+
+.generic-input{
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.2;
+    color: var(--neutral-03);
+    cursor: text;
+}
+
+.generic-input:focus{
+    color: var(--neutral-02);
+}
+
+.generic-input::placeholder{
+    color: var(--neutral-04);
+}
+
+.generic-input-wrapper:has(.generic-input:focus) {
+    border: 1px solid var(--neutral-04);
+}
