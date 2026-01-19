@@ -25,13 +25,13 @@ if(isset($_POST['action'])){
             validarRol(['organizador', 'participante']);
             obtenerConfiguracion();
             break;
-        case 'actualizarConfiguracion':
+        case 'actualizarDatosPreEvento':
             validarRol(['organizador']);
-            actualizarConfiguracion();
+            actualizarDatosPreEvento();
             break;
-        case 'actualizarGaleriaEdicionActual':
+        case 'actualizarDatosPostEvento':
             validarRol(['organizador']);
-            actualizarGaleriaEdicionActual();
+            actualizarDatosPostEvento();
             break;
         case 'subirArchivo':
             validarRol(['organizador', 'participante']);
@@ -270,60 +270,104 @@ function obtenerConfiguracion(){
 }
 
 /**
- * Actualiza los parámetros de configuración web
+ * Actualiza datos de pre-evento
  */
-function actualizarConfiguracion(){
+function actualizarDatosPreEvento(){
     global $conexion;
 
-    $camposPermitidos = [
-        'modo', 'minCandidaturas', 'maxCandidaturas', 'galaProximaFecha',
-        'galaPreEventoTitulo', 'galaPreEventoFecha', 'galaPreEventoHora',
-        'galaPreEventoUbicacion', 'galaPreEventoDescripcion',
-        'galaPreEventoStreamingActivo', 'galaPreEventoStreamingUrl'
-    ];
+    $fechaActual = date("d/m/Y H:i");
 
-    try {
-        $stmt = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
-        $actualizados = 0;
+    $sqlUpdateModo = "UPDATE configuracion SET valor = 'pre-evento' WHERE nombre = 'modo'";
+    $sqlUpdatePreEventoTitulo = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoTitulo'";
+    $sqlUpdatePreEventoFecha = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoFecha'";
+    $sqlUpdatePreEventoHora = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoHora'";
+    $sqlUpdatePreEventoUbicacion = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoUbicacion'";
+    $sqlUpdatePreEventoDescripcion = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoDescripcion'";
+    $sqlUpdatePreEventoStreamingActivo = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoStreamingActivo'";
+    $sqlUpdatePreEventoStreamingUrl = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoStreamingUrl'";
+    $sqlUpdateFechaModificacion = "UPDATE configuracion SET valor = ? WHERE nombre = 'fechaUltimaModificacionConfiguracion'";
 
-        foreach ($camposPermitidos as $campo) {
-            if (isset($_POST[$campo])) {
-                $valor = $_POST[$campo];
+    $sqlUpdateModo = $conexion->prepare($sqlUpdateModo);
+    $sqlUpdatePreEventoTitulo = $conexion->prepare($sqlUpdatePreEventoTitulo);
+    $sqlUpdatePreEventoFecha = $conexion->prepare($sqlUpdatePreEventoFecha);
+    $sqlUpdatePreEventoHora = $conexion->prepare($sqlUpdatePreEventoHora);
+    $sqlUpdatePreEventoUbicacion = $conexion->prepare($sqlUpdatePreEventoUbicacion);
+    $sqlUpdatePreEventoDescripcion = $conexion->prepare($sqlUpdatePreEventoDescripcion);
+    $sqlUpdatePreEventoStreamingActivo = $conexion->prepare($sqlUpdatePreEventoStreamingActivo);
+    $sqlUpdatePreEventoStreamingUrl = $conexion->prepare($sqlUpdatePreEventoStreamingUrl);
+    $sqlUpdateFechaModificacion = $conexion->prepare($sqlUpdateFechaModificacion);
 
-                $stmt->bind_param("ss", $valor, $campo);
-                $stmt->execute();
 
-                if ($stmt->affected_rows > 0) {
-                    $actualizados++;
-                }
-            }
-        }
+    $sqlUpdateModo->execute();
+    $sqlUpdatePreEventoTitulo->bind_param("s", $_POST['galaPreEventoTitulo']);
+    $sqlUpdatePreEventoTitulo->execute();
+    $sqlUpdatePreEventoFecha->bind_param("s", $_POST['galaPreEventoFecha']);
+    $sqlUpdatePreEventoFecha->execute();
+    $sqlUpdatePreEventoHora->bind_param("s", $_POST['galaPreEventoHora']);
+    $sqlUpdatePreEventoHora->execute();
+    $sqlUpdatePreEventoUbicacion->bind_param("s", $_POST['galaPreEventoUbicacion']);
+    $sqlUpdatePreEventoUbicacion->execute();
+    $sqlUpdatePreEventoDescripcion->bind_param("s", $_POST['galaPreEventoDescripcion']);
+    $sqlUpdatePreEventoDescripcion->execute();
+    $sqlUpdatePreEventoStreamingActivo->bind_param("s", $_POST['galaPreEventoStreamingActivo']);
+    $sqlUpdatePreEventoStreamingActivo->execute();
+    $sqlUpdatePreEventoStreamingUrl->bind_param("s", $_POST['galaPreEventoStreamingUrl']);
+    $sqlUpdatePreEventoStreamingUrl->execute();
+    $sqlUpdateFechaModificacion->bind_param("s", $fechaActual);
+    $sqlUpdateFechaModificacion->execute();
 
-        // Actualizar la fecha de última modificación si hubo cambios
-        if($actualizados > 0){
-            $stmtFecha = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
-            $fechaActual = date("d/m/Y H:i");
-            $nombreCampoFecha = 'fechaUltimaModificacionConfiguracion';
+    echo json_encode([
+        "status" => "success",
+        "message" => "Proceso finalizado"
+    ]);
 
-            $stmtFecha->bind_param("ss", $fechaActual, $nombreCampoFecha);
-            $stmtFecha->execute();
-        }
-
-        echo json_encode([
-            "status" => "success",
-            "message" => "Proceso finalizado",
-            "camposActualizados" => $actualizados
-        ]);
-
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error: " . $e->getMessage()
-        ]);
-    }
 }
 
+
+/**
+ * Actualiza datos de post-evento
+ */
+function actualizarDatosPostEvento(){
+    global $conexion;
+
+    $resumenPostEvento = $_POST['resumenPostEvento'];
+    $updateResumenSql = "UPDATE edicion SET resumen_evento = ? WHERE tipo = 'actual'";
+    $stmtUpdateResumen = $conexion->prepare($updateResumenSql);
+    $stmtUpdateResumen->bind_param("s", $resumenPostEvento);
+    $stmtUpdateResumen->execute();
+
+    $sqlUpdatModo = "UPDATE configuracion SET valor = 'post-evento' WHERE nombre = 'modo'";
+    $stmtUpdateModo = $conexion->prepare($sqlUpdatModo);
+    $stmtUpdateModo->execute();
+
+
+    $archivos = json_decode($_POST['archivos'], true);
+    if (count($archivos) > 0) {
+
+        $queryEdicion = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
+        $resEdicion = $conexion->query($queryEdicion);
+
+        if (!$resEdicion || $resEdicion->num_rows === 0) {
+            echo json_encode(["status" => "error", "message" => "No se encontró una edición actual"]);
+            return;
+        }
+        $idEdicion = $resEdicion->fetch_assoc()['id_edicion'];
+
+        $stmtDel = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
+        $stmtDel->bind_param("i", $idEdicion);
+        $stmtDel->execute();
+
+        $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
+
+        foreach ($archivos as $idArchivo) {
+            $idArchivoInt = (int)$idArchivo;
+            $stmtInsertRel->bind_param("ii", $idArchivoInt, $idEdicion);
+            $stmtInsertRel->execute();
+        }
+    }
+
+    echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
+}
 
 
 /**
@@ -421,46 +465,6 @@ function eliminarArchivoPorId($idArchivo) {
     }
 
     return false;
-}
-
-/**
- * Elimina todos los archivos de una edición actual y los vuelve a insertar según el array recibido
- */
-function actualizarGaleriaEdicionActual(){
-    global $conexion;
-
-    if (!isset($_POST['archivos'])) {
-        echo json_encode(["status" => "error", "message" => "No se recibieron archivos"]);
-        return;
-    }
-
-    $queryEdicion = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
-    $resEdicion = $conexion->query($queryEdicion);
-
-    if (!$resEdicion || $resEdicion->num_rows === 0) {
-        echo json_encode(["status" => "error", "message" => "No se encontró una edición actual"]);
-        return;
-    }
-    $idEdicion = $resEdicion->fetch_assoc()['id_edicion'];
-
-    $stmtDel = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
-    $stmtDel->bind_param("i", $idEdicion);
-    $stmtDel->execute();
-
-    // ["3","4"]
-    $archivos = json_decode($_POST['archivos'], true);
-
-    if (count($archivos) > 0) {
-        $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
-
-        foreach ($archivos as $idArchivo) {
-            $idArchivoInt = (int)$idArchivo;
-            $stmtInsertRel->bind_param("ii", $idArchivoInt, $idEdicion);
-            $stmtInsertRel->execute();
-        }
-    }
-
-    echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
 }
 
 /**

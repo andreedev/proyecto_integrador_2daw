@@ -140,23 +140,25 @@ async function desasignarGanador(idPremio, idCandidatura){
     return await fetchAPI(data);
 }
 
-async function actualizarConfiguracion(modo,galaPreEventoTitulo,galaPreEventoFecha,galaPreEventoHora,galaPreEventoUbicacion,galaPreEventoDescripcion,galaPreEventoStreamingActivo,galaPreEventoStreamingUrl,galaPostEventoResumen){
+async function actualizarDatosPreEvento(galaPreEventoTitulo,galaPreEventoFecha,galaPreEventoHora,galaPreEventoUbicacion,galaPreEventoDescripcion,galaPreEventoStreamingActivo,galaPreEventoStreamingUrl){
     const data = new FormData();
-    data.append('action', 'actualizarConfiguracion');
-    data.append('modo', modo);
+    data.append('action', 'actualizarDatosPreEvento');
+    data.append('galaPreEventoTitulo', galaPreEventoTitulo.trim());
+    data.append('galaPreEventoFecha', galaPreEventoFecha.trim());
+    data.append('galaPreEventoHora', galaPreEventoHora.trim());
+    data.append('galaPreEventoUbicacion', galaPreEventoUbicacion.trim());
+    data.append('galaPreEventoDescripcion', galaPreEventoDescripcion.trim());
+    data.append('galaPreEventoStreamingActivo', galaPreEventoStreamingActivo);
+    data.append('galaPreEventoStreamingUrl', galaPreEventoStreamingUrl.trim());
 
-    if (modo === 'pre-evento') {
-        data.append('galaPreEventoTitulo', galaPreEventoTitulo);
-        data.append('galaPreEventoFecha', galaPreEventoFecha);
-        data.append('galaPreEventoHora', galaPreEventoHora);
-        data.append('galaPreEventoUbicacion', galaPreEventoUbicacion);
-        data.append('galaPreEventoDescripcion', galaPreEventoDescripcion);
-        data.append('galaPreEventoStreamingActivo', galaPreEventoStreamingActivo);
-        data.append('galaPreEventoStreamingUrl', galaPreEventoStreamingUrl);
-    }
-    if (modo === 'post-evento') {
-        data.append('galaPostEventoResumen', galaPostEventoResumen);
-    }
+    return await fetchAPI(data);
+}
+
+async function actualizarDatosPostEvento(resumenPostEvento, archivos){
+    const data = new FormData();
+    data.append('action', 'actualizarDatosPostEvento');
+    data.append('archivos', JSON.stringify(archivos));
+    data.append('resumenPostEvento', resumenPostEvento);
 
     return await fetchAPI(data);
 }

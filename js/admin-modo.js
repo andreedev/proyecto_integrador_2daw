@@ -355,66 +355,65 @@ async function publicarCambios() {
             updateGeneralMessage('Por favor, corrige los errores antes de publicar los cambios', 'text-error-01');
             return;
         }
-    }
-    if (modo === 'post-evento') {
-        const isResumenValid = validatePostEventoResumen(true);
-        const isYearValid = validateYearEdicion(true);
-        const isNroParticipantesValid = validateNroParticipantes(true);
-        const isFechaEnvioEmailValid = validateFechaEnvioEmailInformativo(true);
-        const isFechaBorradoDatosValid = validateFechaBorradoDatos(true);
 
-        if (!isResumenValid || !isYearValid || !isNroParticipantesValid || !isFechaEnvioEmailValid || !isFechaBorradoDatosValid) {
-            updateGeneralMessage('Por favor, corrige los errores antes de publicar los cambios', 'text-error-01');
+        unsavedChangesWarning.classList.add('hidden-force');
+        updateGeneralMessage('Guardando cambios', 'text-information-01');
+
+        const updatePreEventDataResponse = await actualizarDatosPreEvento(tituloEventoInput.value, fechaEventoInput.value, horaEventoInput.value, ubicacionEventoInput.value, descripcionInput.value, streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', urlStreamingInput.value);
+        if (updatePreEventDataResponse.status !== 'success') {
+            updateGeneralMessage('Error guardando datos del pre-evento', 'text-error-01');
             return;
         }
     }
+    if (modo === 'post-evento') {
+        const isResumenValid = validatePostEventoResumen(true);
 
-    unsavedChangesWarning.classList.add('hidden-force');
-    updateGeneralMessage('Guardando cambios', 'text-information-01');
+        unsavedChangesWarning.classList.add('hidden-force');
+        updateGeneralMessage('Guardando cambios', 'text-information-01');
 
-    const archivosParaGuardar = [];
-    const items = Array.from(galleryContainer.querySelectorAll(".gallery-item"));
 
-    for (const item of items) {
-        const img = item.querySelector("img");
-        const vid = item.querySelector("video");
-        const media = img || vid;
+        const idArchivoList = [];
+        const items = Array.from(galleryContainer.querySelectorAll(".gallery-item"));
 
-        if (!media) continue;
+        for (const item of items) {
+            const img = item.querySelector("img");
+            const vid = item.querySelector("video");
+            const media = img || vid;
 
-        let finalId = null;
+            if (!media) continue;
 
-        if (media.dataset.isNew === "true" && media.filePayload) {
-            try {
-                const uploadRes = await subirArchivo(media.filePayload);
-                if (uploadRes.status === 'success')  finalId = uploadRes.data.idArchivo;
-            } catch (err) {
-                console.error(err);
-                return updateGeneralMessage("Error subiendo archivo", "text-error-01");
+            let finalId = null;
+
+            if (media.dataset.isNew === "true" && media.filePayload) {
+                try {
+                    const uploadRes = await subirArchivo(media.filePayload);
+                    if (uploadRes.status === 'success')  finalId = uploadRes.data.idArchivo;
+                } catch (err) {
+                    console.error(err);
+                    return updateGeneralMessage("Error subiendo archivo", "text-error-01");
+                }
+            }
+            else if (media.dataset.idArchivo) {
+                finalId = media.dataset.idArchivo;
+            }
+
+            if (finalId) {
+                idArchivoList.push(parseInt(finalId));
             }
         }
-        else if (media.dataset.idArchivo) {
-            finalId = media.dataset.idArchivo;
+
+        if (!isResumenValid) {
+            updateGeneralMessage('Por favor, corrige los errores antes de publicar los cambios', 'text-error-01');
+            return;
         }
 
-        if (finalId) {
-            archivosParaGuardar.push(finalId);
+        const updatePostEventDataResponse = await actualizarDatosPostEvento(postEventoResumenInput.value, idArchivoList);
+        if (updatePostEventDataResponse.status !== 'success') {
+            updateGeneralMessage('Error guardando datos del post-evento', 'text-error-01');
+            return;
         }
+
     }
-
-    if (modo === 'post-evento' && archivosParaGuardar.length > 0) {
-        try {
-            await actualizarGaleriaEdicionActual(archivosParaGuardar);
-        } catch (error) {
-            console.error(error);
-            return updateGeneralMessage("Error al organizar la galería", "text-error-01");
-        }
-    }
-
-    const result = await actualizarConfiguracion(modo, tituloEventoInput.value, fechaEventoInput.value, horaEventoInput.value, ubicacionEventoInput.value, descripcionInput.value, streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', urlStreamingInput.value, postEventoResumenInput.value, yearEdicionInput.value, nroParticipantesInput.value);
-    if (result.status !== 'success') throw new Error(result.message);
-    const updateEditionResult = await actualizarEdicion(idEdicion, yearEdicionInput.value, postEventoResumenInput.value, nroParticipantesInput.value, fechaEnvioEmailInformativoInput.value, fechaBorradoDatosInput.value);
-    if (updateEditionResult.status !== 'success') throw new Error(updateEditionResult.message);
 
     await cargarConfiguracionWeb();
     unsavedChangesWarning.classList.add('hidden-force');
@@ -731,27 +730,6 @@ async function cargarConfiguracionWeb() {
         .catch(error => {
             console.error('Error al cargar la configuración web:', error);
         });
-}
-
-async function actualizarConfiguracionWeb() {
-
-
-}
-
-async function actualizarGaleriaEdicionActual(archivos){
-    const formData = new FormData();
-    formData.append('action', 'actualizarGaleriaEdicionActual');
-    formData.append('archivos', JSON.stringify(archivos));
-
-    const response = await fetch(URL_API, { method: 'POST', body: formData });
-    const text = await response.text();
-    try {
-        const result = JSON.parse(text);
-        if (result.status !== 'success') throw new Error(result.message);
-        return result;
-    } catch (e) {
-        throw new Error("Error: " + text);
-    }
 }
 
 async function eliminarArchivo(idArchivo) {
