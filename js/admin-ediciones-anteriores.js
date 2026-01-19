@@ -1,6 +1,7 @@
-const btnCrearEdicion = document.querySelector('.admin-header-main-action-button');
-const modalCrearEdicion = document.getElementById('modal-crear-edicion');
+const btnCrearEdición = document.querySelector(".admin-header-main-action-button");
 
-btnCrearEdicion.addEventListener('click', () => {
-    modalCrearEdicion.showModal();
-});
+const modalCrearEdicionesAnteriores = document.getElementById("modalCrearEdicionAnterior");
+
+btnCrearEdición.addEventListener("click", () => {
+    modalCrearEdicionesAnteriores.showModal();
+})

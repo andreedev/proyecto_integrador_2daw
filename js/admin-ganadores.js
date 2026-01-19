@@ -33,6 +33,10 @@ function renderizarCategorias(categorias){
     categoriesContainer.replaceChildren();
 
     categorias.forEach(categoria => {
+        const categoriaSuperContainer = document.createElement('div');
+        categoriaSuperContainer.classList.add('categoriaSuperContainer');
+
+
         const categoriaDiv = document.createElement('div');
         categoriaDiv.classList.add('bloque-categoria');
 
@@ -45,16 +49,35 @@ function renderizarCategorias(categorias){
         nombreCategoria.id = 'nombreCategoria';
         nombreCategoria.textContent = categoria.nombre;
 
+        const checkBoxInput = document.createElement('input');
+        checkBoxInput.type = 'checkbox';
+        checkBoxInput.checked = true;
+        checkBoxInput.classList.add('checkboxAccordeon')
+        checkBoxInput.hidden = true;
+
         const iconoDesplegable = document.createElement('span');
         iconoDesplegable.classList.add('icono-desplegable');
         iconoDesplegable.id = 'iconoDesplegable';
         iconoDesplegable.addEventListener('click', () => {
             iconoDesplegable.classList.toggle('icono-desplegable-rotado');
+            checkBoxInput.checked = !checkBoxInput.checked;
+            if (checkBoxInput.checked) {
+                premiosContainerDiv.classList.remove('hidden-force');
+            }else{
+                premiosContainerDiv.classList.add('hidden-force');
+            }
+
         });
 
+
+
         headerBloque.appendChild(nombreCategoria);
+        headerBloque.appendChild(checkBoxInput);
         headerBloque.appendChild(iconoDesplegable);
         categoriaDiv.appendChild(headerBloque);
+
+        const premiosContainerDiv = document.createElement("div");
+        premiosContainerDiv.classList.add('premiosContainer');
 
         const premios = categoria.premios;
 
@@ -121,11 +144,18 @@ function renderizarCategorias(categorias){
             premioDiv.appendChild(puestoContainerDiv);
 
             premioDiv.appendChild(btnAsignarDiv);
-            categoriaDiv.appendChild(premioDiv);
+            premiosContainerDiv.appendChild(premioDiv);
         });
 
-        categoriesContainer.appendChild(categoriaDiv);
+        categoriaSuperContainer.appendChild(categoriaDiv);
+        categoriaSuperContainer.appendChild(premiosContainerDiv);
+
+        categoriesContainer.appendChild(categoriaSuperContainer)
+
+
+
     });
+
 }
 
 function cargarCategorias(){

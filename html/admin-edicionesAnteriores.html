@@ -49,16 +49,16 @@
                                     </div>
                                 </div>
                                 <div class="stats-grid">
-                                    <div class="stat-box participantes">
+                                    <div class="stat-box-participantes">
                                         <div class="stat-icon">
-                                            <img src="../img/icon/icon-user.svg" alt="Participantes">
+                                            <img src="../img/icon/icon-users.svg" alt="Participantes">
                                         </div>
                                         <div>
                                             <div class="stat-label">Participantes</div>
                                             <div class="stat-value">45</div>
                                         </div>
                                     </div>
-                                    <div class="stat-box ganadores">
+                                    <div class="stat-box-ganadores">
                                         <div class="stat-icon">
                                             <img src="../img/icon/icon-trophy.svg" alt="Ganadores">
                                         </div>
@@ -67,13 +67,68 @@
                                             <div class="stat-value">2</div>
                                         </div>
                                     </div>
-                                    <div class="stat-box imagenes">
+                                    <div class="stat-box-imagenes">
                                         <div class="stat-icon">
-                                            <img src="../img/icon/icon-picture.svg" alt="Imágenes">
+                                            <img src="../img/icon/icon-video.svg" alt="Imágenes">
                                         </div>
                                         <div>
-                                            <div class="stat-label">Imágenes</div>
+                                            <div class="stat-label">Imágenes</div> y videos
                                             <div class="stat-value">3</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-box-tipo">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/icon-star.svg" alt="Imágenes">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Tipo</div>
+                                            <div class="stat-value">Actual</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><div class="edition-card">
+                                <div class="edition-header">
+                                    <h2 class="edition-title">Edición 2025</h2>
+                                    <div class="edition-actions">
+                                        <span class="icon-editar"></span>
+                                        <span class="icon-eliminar"></span>
+                                    </div>
+                                </div>
+                                <div class="stats-grid">
+                                    <div class="stat-box-participantes">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/icon-users.svg" alt="Participantes">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Participantes</div>
+                                            <div class="stat-value">45</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-box-ganadores">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/icon-trophy.svg" alt="Ganadores">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Ganadores</div>
+                                            <div class="stat-value">2</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-box-imagenes">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/icon-video.svg" alt="Imágenes">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Imágenes y videos</div>
+                                            <div class="stat-value">3</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-box-tipo">
+                                        <div class="stat-icon">
+                                            <img src="../img/icon/icon-star.svg" alt="Imágenes">
+                                        </div>
+                                        <div>
+                                            <div class="stat-label">Tipo</div>
+                                            <div class="stat-value">Actual</div>
                                         </div>
                                     </div>
                                 </div>
@@ -89,85 +144,82 @@
 
     <!-- Modal Crear Edicion Anterior -->
 
-    <div class="modal w-100" id="modalCrearEdicionAnterior">
+    <dialog class="generic-modal" id="modalCrearEdicionAnterior">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header d-flex justify-space-between align-center px-24px py-16px">
                 <div class="modal-text">
-                    <h2 class="modal-title">Crear Edición Anterior</h2>
+                    <h2 class="modal-title fs-20px fw-600">Crear Edición Anterior</h2>
                     <span class="modal-subtitle">Crea una nueva entrada en el histórico de ediciones</span>
                 </div>
-                <span class="close-modal"></span>
+                <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer"></span>
             </div>
 
-            <div class="modal-body">
-
+            <div class="modal-body p-20px">
                 <div class="modal-basic-info">
                     <div class="basic-info-header">
-                        <div class="icono-documento-background">
-                            <span class="icono-documento"></span>
-                        </div>
-                        <h2 class="basic-info-title">Información Básica</h2>
-                        <span class="basic-info-subtitle">Información sobre la edición</span>
-                    </div>
-
-                    <div class="datos">
-                        <div class="year-edicion">
-                            <label for="label-year">Año de la edición</label>
-                            <div class="input-year-background">
-                                <span class="icon-calendar"></span>
-                                <input type="text" class="input-year" id="inputYearEdicion" placeholder="yyyy">
-                            </div>
-                        </div>
-
-                        <div class="number-contestant">
-                            <label for="label-number-contestant">Número de participantes</label>
-                            <div class="input-number-contestant-background">
-                                <span class="icono-participantes"></span>
-                                <input type="text" class="input-number-contestant" id="inputNumberContestantEdicion" placeholder="Número de participantes">
-                            </div>
-                        </div>
-
-                        <div class="resumen-edicion">
-                            <label for="label-resumen">Resumen de la edición</label>
-                            <textarea id="inputResumenCrearEdicion" class="input-resumen" placeholder="Escribe una breve descripción de la edición..."></textarea>
+                        <span class="icon-document-check w-40px h-40px bg-neutral-03"></span>
+                        <div class="basic-info-header-text">
+                            <span class="header-title fs-20px fw-600">Información básica</span>
+                            <span class="header-subtitle fs-14px fw-400">Información sobre la edición</span>
                         </div>
                     </div>
-                    <p class="description-resumen">Describe los momentos destacados y el éxito del evento</p>
+                    <div class="basic-info-inputs">
+                        <div class="input-year-num-participantes">
+                            <div class="inputs">
+                                <label for="inputYear" class="label">Año de edición</label>
+                                <input type="text" id="inputYear" class="input">
+                                <span class="error-message-year"></span>
+                                <span class="icon"></span>
+                            </div>
+                            <div class="inputs">
+                                <label for="inputNumParticipants" class="label">Número de participantes</label>
+                                <input type="text" id="inputNumParticipants" class="input">
+                                <span class="error-message-num-participants"></span>
+                            </div>
+                        </div>
+                        <div class="inputs">
+                            <label for="inputResumen" class="label">Resumen</label>
+                            <input type="text" id="inputResumen" class="input">
+                            <span class="error-message-resumen"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modal-multimedia">
                     <div class="multimedia-header">
-                        <div class="icono-multimedia-background">
-                            <span class="icono-multimedia"></span>
+                        <span class="icon-picture w-40px h-40px bg-neutral-03"></span>
+                        <div class="multimedia-header-text">
+                            <span class="header-title fs-20px fw-600">Galería de imágenes y vídeos</span>
+                            <span class="header-subtitle fs-14px fw-400">Sube fotos y vídeos de esta edición</span>
                         </div>
-                        <h2 class="multimedia-title">Galería de imágenes y vídeos</h2>
-                        <span class="multimedia-subtitle">Sube las fotos y videos de esta edición</span>
                     </div>
 
                     <div class="drop-zone" id="dropZoneCrearEdicion">
-                        <input type="file" id="fileInputCrearEdicion" class=-anterior-file hidden-force" accept="image/*">
-                        <div class="icono-cambiar-imagen-background">
-                            <span class="icono-cambiar-imagen"></span>
-                        </div>
+                        <input type="file" id="fileInputCrearEdicion" class="file hidden-force" accept="image/*">
+                        <span class="icono-cambiar-imagen"></span>
                         <p class="drop-zone-text">Arrastra tu imagen o video haz clic para seleccionar</p>
                     </div>
+                    <div class="preview-multimedia-text">
+                        <span class="multimedia-text">Imágenes y vídeos cargados(0)</span>
+                        <span class="multimedia-subtitle">Arrastra para ordenar</span>
+                    </div>
                     <div class="preview-multimedia">
-                        <p class="preview-multimedia-title">No hay imágenes o vídeos subidos. Haz click en el botón de arriba para añadir videos</p>
+                        
                     </div>
                 </div>
 
                 <div class="modal-ganadores">
                     <div class="ganadores-header">
-                        <div class="icono-ganadores-background">
-                            <span class="icono-ganadores"></span>
-                        </div>
-                        <div class="ganadores-text">
-                            <h2 class="ganadores-title">Ganadores de esta edición</h2>
-                            <span class="ganadores-subtitle">1 ganador registrado</span>
-                        </div>
-                        <div class="boton-agregar-ganador">
-                            <span class="icono-agregar-ganador"></span>
-                            <span class="boton-text-agregar-ganador">Agregar ganador</span>
+                        <span class="icono-ganadores w-40px h-40px"></span>
+                        <div class="btn-text-ganador">
+                            <div class="ganadores-text">
+                                <h2 class="ganadores-title fs-20px fw-600">Ganadores de esta edición</h2>
+                                <span class="ganadores-subtitle fs-14px fw-400">1 ganador registrado</span>
+                            </div>
+                            <div class="boton-agregar-ganador" id="btnAgregarGanador">
+                                <span class="icono-agregar-ganador"></span>
+                                <span class="boton-text-agregar-ganador">Agregar ganador</span>
+                            </div>
                         </div>
                     </div>
 
@@ -175,24 +227,24 @@
                         <div class="datos-ganador">
                             <div class="nombre-ganador">
                                 <span class="icono-ganador"></span>
-                                <span class="nombre-ganador">Juan Carlos del Prado</span>
+                                <span class="nombre-ganador fs-16px fw-600">Juan Carlos del Prado</span>
                             </div>
 
-                            <div class="categoría-ganador">
+                            <div class="categoria-ganador">
                                 <span class="icono-categoria-ganador"></span>
-                                <span class="categoria-ganador">Mejor Cortometraje Alumno</span>
+                                <span class="categoria-ganador fs-16px fw-600">Mejor Cortometraje Alumno</span>
                             </div>
                             
                             <div class="puesto-ganador">
                                 <span class="icono-puesto-ganador"></span>
-                                <span class="puesto-ganador">Segundo puesto 100€</span>
+                                <span class="puesto-ganador fs-16px fw-600">Segundo puesto 100€</span>
                             </div>
 
                             <div class="video-ganador">
                                 <span class="icono-video-ganador"></span>
                                 <div class="nombre-video-ganador">
-                                    <span class="video-ganador">Cortometraje:</span>
-                                    <span class="nombre-video">nombre_video.mp4</span>
+                                    <span class="video-ganador fs-16px fw-600">Cortometraje:</span>
+                                    <span class="nombre-video fs-16px fw-600">nombre_video.mp4</span>
                                 </div>
                             </div>
 
@@ -203,53 +255,56 @@
                     <div class="agregar-ganador">
 
                         <div class="agregar-ganador-header">
-                            <span class="agregar-ganador-text">Agregar ganador</span>
+                            <span class="agregar-ganador-text fs-16px fw-600">Nuevo ganador</span>
                             <span class="icono-cancelar-agregar-ganador"></span>
                         </div>
 
                         <div class="agregar-ganador-body">
-                            <div class="nombre-ganador">
-                                <label for="label-nombre-ganador">Nombre</label>
-                                <div class="input-nombre-ganador-background">
-                                    <span class="icono-ganador"></span>
-                                    <input type="text" class="input-nombre-ganador" id="inputNombreGanador" placeholder="Nombre completo del ganador">
+                            <div class="basic-info-inputs">
+                                <div class="inputs">
+                                    <label for="inputNombre" class="label">Nombre</label>
+                                    <input type="text" id="inputNombre" class="input">
+                                    <span class="error-message-nombre"></span>
+                                    <span class="icon"></span>
                                 </div>
-                            </div>
-
-                            <div class="categoria-puesto-ganador">
-                                <div class="categoria-ganador">
-                                    <label for="label-categoria-ganador">Categoría</label>
-                                    <div class="input-categoria-ganador-background">
-                                        <span class="icono-categoria-ganador"></span>
-                                        <input type="text" class="input-categoria-ganador" id="inputCategoriaGanador" placeholder="Categoría del premio">
+                                <div class="inputs-categoria-puesto">
+                                    <div class="inputs">
+                                        <label for="inputCategoria" class="label">Categoría</label>
+                                        <input type="text" id="inputCategoria" class="input">
+                                        <span class="error-message-categoria"></span>
                                     </div>
-                                </div>
-                                <div class="puesto-ganador">
-                                    <label for="label-puesto-ganador">Premio</label>
-                                    <div class="input-puesto-ganador-background">
-                                        <span class="icono-puesto-ganador"></span>
-                                        <input type="text" class="input-puesto-ganador" id="inputPuestoGanador" placeholder="Puesto del ganador">
+                                    <div class="inputs">
+                                        <label for="inputPuesto" class="label">Puesto</label>
+                                        <input type="text" id="inputPuesto" class="input">
+                                        <span class="error-message-puesto"></span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="video-gandor">
-                                <label for="label-video-ganador">Video del ganador</label>
-                                <div class="input-video-ganador-background">
-                                    <span class="icono-video-ganador"></span>
-                                    <input type="text" class="input-video-ganador" id="inputVideoGanador" placeholder="Enlace al video del ganador">
+                            <div class="video-ganador-container">
+                                <label for="inputVideoGanador" class="fs-16px fw-600">Cortometraje del ganador</label>
+                                <div class="drop-zone w-100" id="dropZoneVideoGanador">
+                                    <input type="file" id="fileInputVideoGanador" class="file hidden-force" accept="image/*">
+                                    <span class="icono-cambiar-imagen"></span>
+                                    <p class="drop-zone-text">Arrastra tu imagen o video haz clic para seleccionar</p>
+                                </div>
+                                <div class="btn-guardar-ganador w-100" id="btnGuardarGandor">
+                                    <span class="guardar-ganador-text" id="btnGuardarGanador">Guardar</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <hr>
             </div>
+
 
             <div class="modal-actions">
                 <button class="btn-cancelar-modal">Cancelar</button>
                 <button class="btn-guardar-modal">Guardar</button>
             </div>
         </div>
+    </dialog>
 
     </dialog>
 

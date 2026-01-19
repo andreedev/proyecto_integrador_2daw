@@ -46,9 +46,9 @@
     align-items: stretch;
 }
 
-@media (min-width: 268px) {
+@media (min-width: 992px) {
     .editions-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
 
     }
 }
@@ -88,6 +88,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 8px;
 }
 
 .edition-title {
@@ -129,8 +130,30 @@
     }
 }
 
-.stat-box {
-    background: #f9f9f9;
+.stat-box-participantes {
+    background: var(--neutral-08);
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-box-ganadores {
+    background: var(--neutral-08);
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.stat-box-imagenes {
+    background:var(--neutral-08);
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.stat-box-tipo {
+    background: var(--neutral-08);
     padding: 0.75rem;
     display: flex;
     align-items: center;
@@ -143,7 +166,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #eee;
     overflow: hidden;
 }
 
@@ -178,7 +200,6 @@
 
 .all-editions{
     width:100%;
-    background-color: var(--neutral-07);
     padding: 12px;
 }
 
@@ -190,25 +211,25 @@
 
 .icon-editar{
     display: inline-block;
-    width: 24px;
-    height: 23px;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
     mask-image: url('../img/icon/icon-pencil.svg');
     mask-size: contain;
     mask-repeat: no-repeat;
     cursor: pointer;
-    margin-right: 8px;
     background-color: var(--neutral-01);
 }
 
 .icon-eliminar{
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
     mask-image: url('../img/icon/icon-trash.svg');
     mask-size: contain;
     mask-repeat: no-repeat;
     cursor: pointer;
-    background-color: var(--primary-03);
+    background-color:var(--neutral-01);
 
 }
 
@@ -219,7 +240,7 @@
 
 @media (min-width: 768px) {
     .card-ediciones-body{
-        align-items: center;
+        align-items: self-start;
     }
 }
 
@@ -246,7 +267,6 @@ dialog{
 }
 
 /* Modal Crear Edicion Anterior */
-
 .modal-header {
     border-bottom: 2px solid var(--neutral-06);
     padding:8px 6px;
@@ -267,3 +287,478 @@ dialog{
     color: var(--neutral-04);
 }
 
+.modal-basic-info{
+    display: flex;
+    flex-direction: column;
+    gap:24px;
+    margin-top:16px;
+}
+.basic-info-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:16px;
+}
+
+.icon-document-check{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    mask-image: url('../img/icon/icon-documentcheck.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.basic-info-header-text{
+    display: flex;
+    flex-direction: column;
+}
+
+.basic-info-inputs{
+    display: flex;
+    flex-direction: column;
+    gap:40px;
+    margin-bottom:32px;
+    margin-top:16px;
+}
+
+.input-year-num-participantes{
+    display: flex;
+    flex-direction: row;
+    gap:16px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 568px) {
+    .input-year-num-participantes{
+        flex-direction: column;
+        gap:56px;
+        align-items: flex-start;
+    }
+}
+
+.inputs{
+    position:relative;
+    width:100%;
+}
+
+.input{
+    width:100%;
+    height:40px;
+    border-bottom:1px solid var(--neutral-01);
+}
+
+.input:focus{
+    border-bottom:2px solid var(--primary-01);
+}
+
+.inputs .label{
+    position:absolute;
+    z-index:10;
+    line-height: 48px;
+    font-weight: 400;
+    padding:4px 8px;
+    border-radius: 0px;
+    transform: translateY(-50%);
+    top:16px;
+}
+
+
+.label{
+    color:var(--neutral-04);
+    z-index:2;
+}
+
+.inputs:hover .label{
+    transform: translateY(-130%);
+    line-height: 18px;
+}
+
+.error-message-year{
+    color: var(--error-01);
+    font-size: 12px;
+    margin-top:4px;
+}
+
+.error-message-num-participantes{
+    color: var(--error-01);
+    font-size: 12px;
+    margin-top:4px;
+}
+
+.error-message-resumen{
+    color: var(--error-01);
+    font-size: 12px;
+    margin-top:4px;
+}
+
+/* Iconos del imput valid/invalid */
+
+.check{
+    width: 24px;
+    height: 24px;
+    mask-image: url('../img/icon/icon-check.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    cursor: pointer;
+    background-color: var(--success-01);
+    position: absolute;
+    right: 10px;
+}
+
+.cross{
+    width: 24px;
+    height: 24px;
+    mask-image: url('../img/icon/icon-close.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    cursor: pointer;
+    background-color: var(--error-01);
+    position: absolute;
+    right: 10px;
+}
+
+/* Label rojo si se pierde el foco */
+.incorrecto{
+    color: var(--error-01);
+}
+
+
+
+
+/* Parte de galería e imágenes */
+
+.modal-multimedia{
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+}
+.multimedia-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:16px;
+}
+
+.multimedia-header-text{
+    display: flex;
+    flex-direction: column;
+}
+
+.drop-zone{
+    border: 2px dashed var(--neutral-01);
+    border-radius: 0px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:8px;
+    cursor: pointer;
+}
+
+.icono-cambiar-imagen{
+    width: 40px;
+    height: 40px;
+    mask-image: url('../img/icon/icon-upload.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.preview-multimedia-text{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.multimedia-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--neutral-01);
+}
+
+.multimedia-subtitle{
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--neutral-04);
+} 
+
+/* Parte de ganador */
+.modal-ganadores{
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+    margin-bottom:32px;
+}
+
+.ganadores-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:16px;
+}
+@media (min-width: 768px) {
+    .ganadores-header{
+        flex-direction: row;
+    }
+}
+.icono-ganadores{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    mask-image: url('../img/icon/icon-star.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.btn-text-ganador{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width:100%;
+    gap:8px;
+}
+
+@media (min-width: 768px) {
+    .btn-text-ganador{
+        flex-direction: row;
+    }
+}
+.ganadores-text{
+    display: flex;
+    flex-direction: column;
+}
+
+.boton-agregar-ganador{
+    border:1px solid var(--primary-03);
+    color:var(--primary-03);
+    padding:8px 24px;
+    display: flex;
+    align-items: center;
+}
+
+.boton-agregar-ganador:hover{
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
+}
+
+.ganador-card{
+    border:1px solid var(--neutral-05);
+    padding:16px;
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+
+}
+
+.datos-ganador{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+}
+
+.nombre-ganador{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+    align-items: center;
+}
+
+.icono-ganador{
+    width: 32px;
+    height: 32px;
+    mask-image: url('../img/icon/icon-user.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.categoria-ganador{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+    align-items: center;
+}
+
+.icono-categoria-ganador{
+    width: 32px;
+    height: 32px;
+    mask-image: url('../img/icon/icon-tags.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.puesto-ganador{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+    align-items: center;
+}
+
+.icono-puesto-ganador{
+    width: 32px;
+    height: 32px;
+    mask-image: url('../img/icon/icon-trophy.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.video-ganador{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+    align-items: center;
+}
+
+.icono-video-ganador{
+    width: 32px;
+    height: 32px;
+    mask-image: url('../img/icon/icon-video.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.nombre-video-ganador{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+    align-items: center;
+}
+
+
+.agregar-ganador{
+    border: 1px solid var(--neutral-05);
+    padding:16px;
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+}
+
+.agregar-ganador-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap:16px;
+}
+
+
+.icono-cancelar-agregar-ganador{
+    width: 24px;
+    height: 24px;
+    mask-image: url('../img/icon/icon-close.svg');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    cursor: pointer;
+    background-color: var(--neutral-01);
+}
+
+.inputs-categoria-puesto{
+    display: flex;
+    flex-direction: row;
+    gap:16px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 568px) {
+    .inputs-categoria-puesto{
+        flex-direction: column;
+        gap:56px;
+        align-items: flex-start;
+    }
+}
+
+.video-ganador-container{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+    align-items: flex-start;
+
+}
+
+.btn-guardar-ganador{
+    border: 1px solid var(--primary-03);
+    color: var(--primary-03);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-top:8px;
+}
+
+.btn-guardar-ganador:hover{
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
+}
+
+hr{
+    border-top: 1px solid var(--neutral-04);
+}
+
+/* Botones del modal */
+.modal-actions{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin:0px 16px 16px 16px;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .modal-actions{
+        flex-direction: row;
+        gap:16px;
+    }
+}
+
+.btn-cancelar-modal{
+    width:100%;
+    background-color: var(--neutral-09);
+    border:1px solid var(--neutral-01);
+    color: var(--neutral-01);
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.btn-cancelar-modal:hover{
+    background-color: var(--neutral-01);
+    color:var(--neutral-09);
+}
+
+.btn-guardar-modal{
+    width:100%;
+    background-color: var(--primary-03);
+    border:1px solid var(--primary-03);
+    color: var(--neutral-09);
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.btn-guardar-modal:hover{
+    background-color: var(--neutral-09);
+    color: var(--primary-03);
+    border:1px solid var(--primary-03);
+}
+
+.drop-zone-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

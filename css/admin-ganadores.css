@@ -16,7 +16,6 @@ dialog::backdrop {
 }
 
 .bloque-categoria{
-    margin-bottom: 16px;
     border: 1px solid var(--neutral-06);
     overflow: hidden;
     display: flex;
