@@ -1,5 +1,5 @@
 const newsContainer = document.querySelector('.news-container');
-const searchBar = document.getElementById('searchBar');
+const searchInput = document.getElementById('searchInput');
 const btnAgregarNoticia = document.getElementById('addNews');
 const noticiaContainer = document.querySelector('.one-news');
 const imagenNoticia = document.querySelector('.news-image img');
@@ -15,7 +15,6 @@ const newsParagraph = document.querySelector('.news-paragraph');
 const modalAgregarNoticia = document.getElementById('addModal');
 const cerrarModal = document.getElementById('closeAddModal');
 const btnCancelModal = document.getElementById('btnCancelModalAdd');
-const btnAddModal = document.getElementById('btnAddModalAdd');
 const iconoDeleteImg = document.getElementById('deleteImg');
 
 const posterInput= document.getElementById('newsImageInput');
@@ -61,7 +60,11 @@ newsDateInput.addEventListener('blur', () => {
     }
 });
 
-
+searchInput.addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+        cargarNoticias();
+    }
+});
 
 
 
@@ -263,7 +266,8 @@ function renderizarNoticias(noticias) {
 }
 
 async function cargarNoticias() {
-    const response = await listarNoticias();
+    const filtroNombre = searchInput.value.trim();
+    const response = await listarNoticias(filtroNombre);
     if (response.status !== 'success') throw new Error('Error al cargar las noticias');
     renderizarNoticias(response.data);
 }

@@ -1,7 +1,7 @@
-// -------------------- CONSTANTES Y VARIABLES --------------------
+// constantes y variables generales
 const URL_API = "./../php/api.php";
 
-// -------------------- UTILIDADES --------------------
+
 /**
  * Cerrar modales al hacer clic en elementos con la clase 'close-modal'
  */
@@ -44,51 +44,39 @@ function humanizeDate(date) {
     return date.toLocaleDateString('es-ES', options);
 }
 
-
 /**
- * Función para realizar peticiones a la API
+ * Funcion para realizar peticiones a la API
  */
-async function fetchAPI(data = null) {
+async function fetchAPI( data = null) {
     const options = {
         method: 'POST',
-        headers: {}
     };
 
-    if (typeof data === 'string') {
-        options.body = data;
-        options.headers['Content-Type'] = 'application/json';
-    } else if (data instanceof FormData) {
+    if (data) {
         options.body = data;
     }
 
-    try {
-        const response = await fetch(URL_API, options);
-        const text = await response.text();
-
-        if (!text) {
-            console.warn("Respuesta vacía del servidor");
-            return { status: 'error', message: 'Respuesta vacía del servidor' };
-        }
-
-        try {
-            return JSON.parse(text);
-        } catch {
-            console.error("No se pudo parsear JSON:", text);
-            return { status: 'error', message: 'Respuesta no JSON', raw: text };
-        }
-    } catch (err) {
-        console.error("Error en fetchAPI:", err);
-        return { status: 'error', message: 'Error de conexión', error: err };
-    }
+    return await fetch(URL_API, options)
+        .then(response => response.json())
+        .catch(error => {
+            console.error('Error:', error);
+            throw error;
+        });
 }
 
-// -------------------- PATROCINADORES --------------------
+/**
+ * Listar patrocinadores
+ */
 async function listarPatrocinadores() {
     const data = new FormData();
     data.append('action', 'listarPatrocinadores');
+
     return await fetchAPI(data);
 }
 
+/**
+ * Agregar patrocinador
+ */
 async function agregarPatrocinador(nombre, idArchivoLogo) {
     const data = new FormData();
     data.append('action', 'agregarPatrocinador');
@@ -97,6 +85,9 @@ async function agregarPatrocinador(nombre, idArchivoLogo) {
     return await fetchAPI(data);
 }
 
+/**
+ *  Actualizar patrocinador
+ */
 async function actualizarPatrocinador(idPatrocinador, nombre, idArchivoLogo) {
     const data = new FormData();
     data.append('action', 'actualizarPatrocinador');
@@ -106,6 +97,9 @@ async function actualizarPatrocinador(idPatrocinador, nombre, idArchivoLogo) {
     return await fetchAPI(data);
 }
 
+/**
+ * Eliminar patrocinador
+ */
 async function eliminarPatrocinador(idPatrocinador) {
     const data = new FormData();
     data.append('action', 'eliminarPatrocinador');
@@ -113,18 +107,32 @@ async function eliminarPatrocinador(idPatrocinador) {
     return await fetchAPI(data);
 }
 
+/**
+ * Subir archivo
+ */
 async function subirArchivo(file) {
     const formData = new FormData();
     formData.append('action', 'subirArchivo');
     formData.append('file', file);
 
-    const result = await fetchAPI(formData);
-    if (result.status === 'success') return result;
+    const response = await fetch(URL_API, {
+        method: 'POST',
+        body: formData
+    });
 
+    const result = await response.json();
+    if (result.status === 'success') {
+        return result;
+    }
     throw new Error('Error al subir el archivo');
 }
 
-// -------------------- CATEGORIAS Y PREMIOS --------------------
+async function listarCategorias(){
+    const data = new FormData();
+    data.append('action', 'obtenerCategorias');
+
+    return await fetchAPI(data);
+}
 
 // Obtener todas las categorías con sus premios
 async function obtenerCategoriasConPremios() {
@@ -237,9 +245,10 @@ async function cargarConfiguracion() {
     return await fetchAPI(formData);
 }
 
-async function listarNoticias() {
+async function listarNoticias(filtroNombre) {
     const formData = new FormData();
     formData.append('action', 'listarNoticias');
+    formData.append('filtroNombre', filtroNombre);
 
     return await fetchAPI(formData);
 }

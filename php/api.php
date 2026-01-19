@@ -104,6 +104,10 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             listarNoticias();
             break;
+        case 'crearNoticia':
+            validarRol(['organizador', 'participante']);
+            crearNoticia();
+            break;
         default:
             break;
     }
@@ -1121,11 +1125,17 @@ function enviarEdicionAAnteriores(){
 function listarNoticias(){
     global $conexion;
 
+    $filtroNombre = isset($_POST['filtroNombre']) && !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
+    $filtrosSql = "";
+    if ($filtroNombre) {
+        $filtrosSql .= " AND n.nombre LIKE '%" . $conexion->real_escape_string($filtroNombre) . "%' ";
+    }
+
     $baseUrl = obtenerBaseUrl();
     $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
                 n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia
               FROM noticia n
-              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo ORDER BY n.fecha DESC";
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true ". $filtrosSql . " ORDER BY n.fecha DESC";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();
@@ -1145,5 +1155,22 @@ function listarNoticias(){
     ]);
 }
 
+function crearNoticia(){
+    global $conexion;
+
+    $nombre = $_POST['nombreNoticia'];
+    $descripcion = $_POST['descripcionNoticia'];
+    $fecha = $_POST['fechaNoticia'];
+    $idArchivoImagen = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
+
+    $stmt = $conexion->prepare("INSERT INTO noticia (nombre, descripcion, fecha, id_archivo_imagen) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $nombre, $descripcion, $fecha, $idArchivoImagen);
+
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Noticia creada correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al crear la noticia"]);
+    }
+}
 
 cerrarConexion();
