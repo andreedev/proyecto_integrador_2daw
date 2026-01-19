@@ -9,8 +9,7 @@
 }
 
 .mode-info-internal-card{
-    border: 1px dashed var(--primary-03);
-    background: var(--neutral-04);
+    border: 1px solid var(--neutral-06);
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -112,12 +111,10 @@
     align-items: center;
     flex-direction: column;
     gap: 4px;
-    background: var(--neutral-09);
     padding: 8px 16px;
     justify-content: center;
     color: var(--neutral-01);
     font-size: 14px;
-    box-shadow: var(--shadow-02);
 }
 
 @media (min-width: 480px) {
@@ -164,19 +161,6 @@
     }
 }
 
-.card-header-left-side{
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    flex-grow: 1;
-}
-
-.card-header-right-side{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
 .generic-cards-container{
     display: flex;
     flex-direction: column;
@@ -189,12 +173,6 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-}
-
-.card-header-title-container{
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
 }
 
 .card-header-title{
@@ -557,8 +535,8 @@
 }
 
 .streaming-toggle-button{
-    width: 50px;
-    height: 28px;
+    width: 46px;
+    height: 24px;
     background-color: var(--neutral-05);
     cursor: pointer;
     display: flex;
@@ -566,6 +544,7 @@
     padding: 4px;
     box-sizing: border-box;
     transition: all 300ms ease;
+    border-radius: 14px;
 }
 
 .streaming-card.enabled .streaming-toggle-button{
@@ -584,7 +563,7 @@
 }
 
 .streaming-card.enabled .streaming-toggle-button .toggle-button-circle{
-    transform: translateX(22px);
+    transform: translateX(18px);
 }
 
 .streaming-toggle-button .toggle-button-circle-inner{
@@ -606,43 +585,6 @@
     flex-direction: row;
     gap: 12px;
     align-items: center;
-}
-
-.secondary-button{
-    background: var(--gradient-05);
-    color: var(--neutral-09);
-    padding: 8px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: min-content;
-    width: 100%;
-    gap: 8px;
-    transition: all 300ms ease;
-    border: 1px transparent solid;
-    font-size: 12px;
-}
-
-@media (min-width: 480px){
-    .secondary-button {
-        font-size: 14px;
-    }
-}
-
-.secondary-button:hover .icon-archive{
-    background-color: var(--neutral-09);
-    transition: all 300ms ease;
-}
-
-.secondary-button:hover{
-    background: var(--neutral-09);
-    color: var(--primary-02);
-    border: 1px solid var(--primary-02);
-    transition: all 300ms ease;
 }
 
 .drop-zone-icon-container{
@@ -854,7 +796,6 @@ remove-btn {
 
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(1px);
 }
 
 dialog{
@@ -916,37 +857,6 @@ dialog{
     background-color: var(--neutral-05);
 }
 
-.primary-button{
-    background-color: var(--primary-03);
-    color: var(--neutral-09);
-    border: none;
-    padding: 8px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: min-content;
-    width: 100%;
-    gap: 8px;
-}
-
-@media (min-width: 768px){
-    .primary-button {
-        width: auto;
-    }
-}
-
-.primary-button:hover{
-    background-color: var(--primary-02);
-}
-
-.primary-button.disabled{
-    background-color: var(--primary-04);
-    cursor: not-allowed;
-}
 
 .neutral-button{
     background-color: var(--neutral-08);

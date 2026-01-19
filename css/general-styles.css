@@ -182,6 +182,8 @@ p{
     height: min-content;
     width: 100%;
     gap: 8px;
+    border: 1px solid var(--primary-03);
+    transition: all 200ms ease;
 }
 
 @media (min-width: 768px){
@@ -191,7 +193,10 @@ p{
 }
 
 .primary-button-01:hover{
-    background-color: var(--primary-02);
+    background-color: var(--neutral-09);
+    color: var(--primary-03);
+    border: 1px solid var(--primary-03);
+    transition: all 200ms ease;
 }
 
 .primary-button-01.disabled{

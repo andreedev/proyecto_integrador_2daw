@@ -10,8 +10,8 @@ abrirConexion();
 crearBaseDatosSiNoExiste();
 session_start();
 
-if(isset($_POST['action'])){
-    switch($_POST['action']){
+if (isset($_POST['action'])) {
+    switch ($_POST['action']) {
         case 'revisarSesion':
             revisarSesion();
             break;
@@ -19,19 +19,19 @@ if(isset($_POST['action'])){
             login();
             break;
         case 'cerrarSesion':
-            cerrarSesion(); 
+            cerrarSesion();
             break;
-        case 'obtenerConfiguracionWeb':
+        case 'obtenerConfiguracion':
             validarRol(['organizador', 'participante']);
-            obtenerConfiguracionWeb();
+            obtenerConfiguracion();
             break;
-        case 'actualizarConfiguracionWeb':
+        case 'actualizarDatosPreEvento':
             validarRol(['organizador']);
-            actualizarConfiguracionWeb();
+            actualizarDatosPreEvento();
             break;
-        case 'actualizarGaleriaEdicionActual':
+        case 'actualizarDatosPostEvento':
             validarRol(['organizador']);
-            actualizarGaleriaEdicionActual();
+            actualizarDatosPostEvento();
             break;
         case 'subirArchivo':
             validarRol(['organizador', 'participante']);
@@ -73,6 +73,37 @@ if(isset($_POST['action'])){
             validarRol(['organizador']);
             desasignarGanador();
             break;
+        case 'obtenerCategoriasConPremios':
+            validarRol(['organizador']);
+            obtenerCategoriasConPremios();
+            break;
+
+        case 'agregarCategoriaConPremios':
+            validarRol(['organizador']);
+            agregarCategoriaConPremios();
+            break;
+
+        case 'editarCategoriaConPremios':
+            validarRol(['organizador']);
+            editarCategoriaConPremios();
+            break;
+
+        case 'eliminarCategoria':
+            validarRol(['organizador']);
+            eliminarCategoria();
+            break;
+        case 'actualizarEdicion':
+            validarRol(['organizador']);
+            actualizarEdicion();
+            break;
+        case 'enviarEdicionAAnteriores':
+            validarRol(['organizador']);
+            enviarEdicionAAnteriores();
+            break;
+        case 'listarNoticias':
+            validarRol(['organizador', 'participante']);
+            listarNoticias();
+            break;
         default:
             break;
     }
@@ -81,8 +112,7 @@ if(isset($_POST['action'])){
 /**
  * Revisa si la sesión está iniciada y devuelve el estado
  */
-function revisarSesion()
-{
+function revisarSesion(){
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
             "status" => "inactive",
@@ -109,7 +139,7 @@ function cerrarSesion(){
 /**
  * Verifica las credenciales de un usuario en la tabla especificada
  */
-function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad) {
+function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad){
     global $conexion;
 
     $query = "SELECT * FROM $tabla WHERE $columnaId = ?";
@@ -135,10 +165,10 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
 /**
  * Iniciar sesión como Participante u Organizador
  */
-function login() {
+function login(){
     $numIdentidad = $_POST['numExpediente'] ?? '';
     $password = $_POST['password'] ?? '';
-    $idEntidad=null;
+    $idEntidad = null;
 
     if (empty($numIdentidad) || empty($password)) {
         echo json_encode(["status" => "error", "message" => "Faltan datos de inicio de sesión"]);
@@ -178,7 +208,7 @@ function login() {
 /**
  * Valida que el rol sea uno de los permitidos
  */
-function validarRol($rolesPermitidos) {
+function validarRol($rolesPermitidos){
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
             "status" => "error",
@@ -197,9 +227,9 @@ function validarRol($rolesPermitidos) {
 }
 
 /**
- * Obtener configuración web y archivos de la edición actual
+ * Obtener configuración, archivos de la edición actual, y datos de la edición actual
  */
-function obtenerConfiguracionWeb(){
+function obtenerConfiguracion(){
     global $conexion;
 
     $sqlConfig = "SELECT nombre, valor FROM configuracion";
@@ -245,11 +275,13 @@ function obtenerConfiguracionWeb(){
     }
 
     // obtener datos de la edicion actual
-    $sqlEdicion = "SELECT * FROM edicion WHERE tipo = 'actual' LIMIT 1";
+    $sqlEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, fecha_envio_email_informativo as fechaEnvioEmailInformativo, fecha_borrado_datos as fechaBorradoDatos
+                    FROM edicion WHERE tipo = 'actual' LIMIT 1";
     $resultadoEdicion = $conexion->query($sqlEdicion);
     $edicionActual = null;
     if ($resultadoEdicion && $resultadoEdicion->num_rows > 0) {
         $edicionActual = $resultadoEdicion->fetch_assoc();
+        $edicionActual['nroParticipantes'] = contarParticipantesEdicionActual();
     }
 
     $configuracionCompleta = [
@@ -265,66 +297,108 @@ function obtenerConfiguracionWeb(){
 }
 
 /**
- * Actualiza los parámetros de configuración web
+ * Actualiza datos de pre-evento
  */
-function actualizarConfiguracionWeb(){
+function actualizarDatosPreEvento(){
     global $conexion;
 
-    $camposPermitidos = [
-        'modo',
-        'minCandidaturas',
-        'maxCandidaturas',
-        'galaProximaFecha',
-        'galaPreEventoTitulo',
-        'galaPreEventoFecha',
-        'galaPreEventoHora',
-        'galaPreEventoUbicacion',
-        'galaPreEventoDescripcion',
-        'galaPreEventoStreamingActivo',
-        'galaPreEventoStreamingUrl',
-        'galaPostEventoResumen'
-    ];
+    $fechaActual = date("d/m/Y H:i");
 
-    try {
-        $stmt = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
-        $actualizados = 0;
+    $sqlUpdateModo = "UPDATE configuracion SET valor = 'pre-evento' WHERE nombre = 'modo'";
+    $sqlUpdatePreEventoTitulo = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoTitulo'";
+    $sqlUpdatePreEventoFecha = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoFecha'";
+    $sqlUpdatePreEventoHora = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoHora'";
+    $sqlUpdatePreEventoUbicacion = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoUbicacion'";
+    $sqlUpdatePreEventoDescripcion = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoDescripcion'";
+    $sqlUpdatePreEventoStreamingActivo = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoStreamingActivo'";
+    $sqlUpdatePreEventoStreamingUrl = "UPDATE configuracion SET valor = ? WHERE nombre = 'galaPreEventoStreamingUrl'";
+    $sqlUpdateFechaModificacion = "UPDATE configuracion SET valor = ? WHERE nombre = 'fechaUltimaModificacionConfiguracion'";
 
-        foreach ($camposPermitidos as $campo) {
-            if (isset($_POST[$campo])) {
-                $valor = $_POST[$campo];
+    $sqlUpdateModo = $conexion->prepare($sqlUpdateModo);
+    $sqlUpdatePreEventoTitulo = $conexion->prepare($sqlUpdatePreEventoTitulo);
+    $sqlUpdatePreEventoFecha = $conexion->prepare($sqlUpdatePreEventoFecha);
+    $sqlUpdatePreEventoHora = $conexion->prepare($sqlUpdatePreEventoHora);
+    $sqlUpdatePreEventoUbicacion = $conexion->prepare($sqlUpdatePreEventoUbicacion);
+    $sqlUpdatePreEventoDescripcion = $conexion->prepare($sqlUpdatePreEventoDescripcion);
+    $sqlUpdatePreEventoStreamingActivo = $conexion->prepare($sqlUpdatePreEventoStreamingActivo);
+    $sqlUpdatePreEventoStreamingUrl = $conexion->prepare($sqlUpdatePreEventoStreamingUrl);
+    $sqlUpdateFechaModificacion = $conexion->prepare($sqlUpdateFechaModificacion);
 
-                $stmt->bind_param("ss", $valor, $campo);
-                $stmt->execute();
 
-                if ($stmt->affected_rows > 0) {
-                    $actualizados++;
-                }
-            }
+    $sqlUpdateModo->execute();
+    $sqlUpdatePreEventoTitulo->bind_param("s", $_POST['galaPreEventoTitulo']);
+    $sqlUpdatePreEventoTitulo->execute();
+    $sqlUpdatePreEventoFecha->bind_param("s", $_POST['galaPreEventoFecha']);
+    $sqlUpdatePreEventoFecha->execute();
+    $sqlUpdatePreEventoHora->bind_param("s", $_POST['galaPreEventoHora']);
+    $sqlUpdatePreEventoHora->execute();
+    $sqlUpdatePreEventoUbicacion->bind_param("s", $_POST['galaPreEventoUbicacion']);
+    $sqlUpdatePreEventoUbicacion->execute();
+    $sqlUpdatePreEventoDescripcion->bind_param("s", $_POST['galaPreEventoDescripcion']);
+    $sqlUpdatePreEventoDescripcion->execute();
+    $sqlUpdatePreEventoStreamingActivo->bind_param("s", $_POST['galaPreEventoStreamingActivo']);
+    $sqlUpdatePreEventoStreamingActivo->execute();
+    $sqlUpdatePreEventoStreamingUrl->bind_param("s", $_POST['galaPreEventoStreamingUrl']);
+    $sqlUpdatePreEventoStreamingUrl->execute();
+    $sqlUpdateFechaModificacion->bind_param("s", $fechaActual);
+    $sqlUpdateFechaModificacion->execute();
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Proceso finalizado"
+    ]);
+}
+
+
+/**
+ * Actualiza datos de post-evento
+ */
+function actualizarDatosPostEvento(){
+    global $conexion;
+
+    $resumenPostEvento = $_POST['resumenPostEvento'];
+    $updateResumenSql = "UPDATE edicion SET resumen_evento = ? WHERE tipo = 'actual'";
+    $stmtUpdateResumen = $conexion->prepare($updateResumenSql);
+    $stmtUpdateResumen->bind_param("s", $resumenPostEvento);
+    $stmtUpdateResumen->execute();
+
+    $sqlUpdatModo = "UPDATE configuracion SET valor = 'post-evento' WHERE nombre = 'modo'";
+    $stmtUpdateModo = $conexion->prepare($sqlUpdatModo);
+    $stmtUpdateModo->execute();
+
+
+    $archivos = json_decode($_POST['archivos'], true);
+    if (count($archivos) > 0) {
+
+        $idEdicion = obtenerIdEdicionActual();
+        $stmtDel = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
+        $stmtDel->bind_param("i", $idEdicion);
+        $stmtDel->execute();
+
+        $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
+
+        foreach ($archivos as $idArchivo) {
+            $idArchivoInt = (int)$idArchivo;
+            $stmtInsertRel->bind_param("ii", $idArchivoInt, $idEdicion);
+            $stmtInsertRel->execute();
         }
-
-        // Actualizar la fecha de última modificación si hubo cambios
-        if($actualizados > 0){
-            $stmtFecha = $conexion->prepare("UPDATE configuracion SET valor = ? WHERE nombre = ?");
-            $fechaActual = date("d/m/Y H:i");
-            $nombreCampoFecha = 'fechaUltimaModificacionConfiguracion';
-
-            $stmtFecha->bind_param("ss", $fechaActual, $nombreCampoFecha);
-            $stmtFecha->execute();
-        }
-
-        echo json_encode([
-            "status" => "success",
-            "message" => "Proceso finalizado",
-            "camposActualizados" => $actualizados
-        ]);
-
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error: " . $e->getMessage()
-        ]);
     }
+
+    echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
+}
+
+function obtenerIdEdicionActual(){
+    global $conexion;
+
+    $query = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
+    $result = $conexion->query($query);
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return (int)$row['id_edicion'];
+    }
+
+    return null;
 }
 
 
@@ -387,7 +461,7 @@ function subirArchivo(){
  * Omite la eliminación del archivo físico si hay otras referencias
  *
  */
-function eliminarArchivoPorId($idArchivo) {
+function eliminarArchivoPorId($idArchivo){
     global $conexion;
 
     $stmt = $conexion->prepare("SELECT ruta FROM archivo WHERE id_archivo = ?");
@@ -423,47 +497,6 @@ function eliminarArchivoPorId($idArchivo) {
     }
 
     return false;
-}
-
-/**
- * Elimina todos los archivos de una edición actual y los vuelve a insertar según el array recibido
- */
-function actualizarGaleriaEdicionActual(){
-    global $conexion;
-
-    if (!isset($_POST['archivos'])) {
-        echo json_encode(["status" => "error", "message" => "No se recibieron archivos"]);
-        return;
-    }
-
-    $queryEdicion = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
-    $resEdicion = $conexion->query($queryEdicion);
-
-    if (!$resEdicion || $resEdicion->num_rows === 0) {
-        echo json_encode(["status" => "error", "message" => "No se encontró una edición actual"]);
-        return;
-    }
-    $idEdicion = $resEdicion->fetch_assoc()['id_edicion'];
-
-    $stmtDel = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
-    $stmtDel->bind_param("i", $idEdicion);
-    $stmtDel->execute();
-
-    $archivos = json_decode($_POST['archivos'], true);
-
-    if (count($archivos) > 0) {
-        $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
-
-        foreach ($archivos as $archivo) {
-            $idArchivo = $archivo['id'];
-            if ($idArchivo) {
-                $stmtInsertRel->bind_param("ii", $idArchivo, $idEdicion);
-                $stmtInsertRel->execute();
-            }
-        }
-    }
-
-    echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
 }
 
 /**
@@ -526,7 +559,7 @@ function agregarPatrocinador(){
     global $conexion;
 
     $nombre = strtoupper($_POST['nombre']);
-    $idArchivoLogo =(int) $_POST['idArchivoLogo'];
+    $idArchivoLogo = (int) $_POST['idArchivoLogo'];
 
     // validar patrocinador no existe con ese nombre
     $queryCheck = "SELECT id_patrocinador FROM patrocinador WHERE UPPER(nombre) = ?";
@@ -661,21 +694,21 @@ function obtenerBaseUrl(){
 function obtenerCategoriasYSusPremios(){
     global $conexion;
 
-    $queryCategorias = "SELECT id_categoria, nombre FROM categoria";
+    $queryCategorias = "SELECT * FROM categoria";
     $resultCategorias = $conexion->query($queryCategorias);
 
     $categorias = [];
     while ($categoria = $resultCategorias->fetch_assoc()) {
         $idCategoria = $categoria['id_categoria'];
 
-        $queryPremios = "select c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador 
+        $queryPremios = "SELECT c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador 
             FROM categoria c 
             RIGHT JOIN premio p on p.id_categoria = c.id_categoria
             LEFT JOIN premio_candidatura pm on pm.id_premio = p.id_premio
             LEFT JOIN candidatura ca on ca.id_candidatura = pm.id_candidatura
             LEFT JOIN participante pa on pa.id_participante = ca.id_participante
             where c.id_categoria = ?";
-        
+
         $stmtPremios = $conexion->prepare($queryPremios);
         $stmtPremios->bind_param("i", $idCategoria);
         $stmtPremios->execute();
@@ -701,7 +734,8 @@ function obtenerCategoriasYSusPremios(){
 /**
  * Listar finalistas que no son ganadores
  */
-function listarFinalistasNoGanadores(){
+function listarFinalistasNoGanadores()
+{
     global $conexion;
 
     $query = "SELECT c.id_candidatura as idCandidatura, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, pc.nombre AS nombreParticipante, pc.correo as correoParticipante
@@ -751,7 +785,8 @@ function asignarGanador()
 /**
  * Deasignar ganador de un premio
  */
-function desasignarGanador(){
+function desasignarGanador()
+{
     global $conexion;
     $idPremio = (int)$_POST['idPremio'];
     $idCandidatura = (int)$_POST['idCandidatura'];
@@ -765,6 +800,350 @@ function desasignarGanador(){
     }
 }
 
+/**
+ * Obtener todas las categorías con sus premios
+ */
+function obtenerCategoriasConPremios() {
+    global $conexion;
+    $queryCategorias = "SELECT * FROM categoria";
+    $resultCategorias = $conexion->query($queryCategorias);
+
+    $categorias = [];
+
+    while ($categoria = $resultCategorias->fetch_assoc()) {
+        $idCategoria = $categoria['id_categoria'];
+        $queryPremios = "
+            SELECT id_premio, nombre, incluye_dinero, cantidad_dinero
+            FROM premio
+            WHERE id_categoria = ?
+        ";
+        $stmt = $conexion->prepare($queryPremios);
+        $stmt->bind_param("i", $idCategoria);
+        $stmt->execute();
+        $resultPremios = $stmt->get_result();
+
+        $premios = [];
+        while ($premio = $resultPremios->fetch_assoc()) {
+            $premio['incluye_dinero'] = (bool)$premio['incluye_dinero'];
+            $premios[] = $premio;
+        }
+
+        $categoria['premios'] = $premios;
+        $categorias[] = $categoria;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $categorias
+    ]);
+}
+
+/**
+ * Agregar categoría con premios
+ */
+function agregarCategoriaConPremios() {
+    global $conexion;
+
+    // Leer datos desde FormData
+    $nombreCategoria = $_POST['nombreCategoria'] ?? null;
+    $premios = isset($_POST['premios']) ? json_decode($_POST['premios'], true) : [];
+
+    if (!$nombreCategoria || empty($premios)) {
+        echo json_encode(["status" => "error", "message" => "Faltan datos"]);
+        return;
+    }
+
+    $conexion->begin_transaction();
+
+    try {
+        $queryCategoria = "INSERT INTO categoria (nombre) VALUES (?)";
+        $stmtCategoria = $conexion->prepare($queryCategoria);
+        $stmtCategoria->bind_param("s", $nombreCategoria);
+        if (!$stmtCategoria->execute()) throw new Exception("No se pudo agregar categoría");
+
+        $idCategoria = $conexion->insert_id;
+        $premiosInsertados = [];
+
+        $queryPremio = "INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES (?, ?, ?, ?)";
+        $stmtPremio = $conexion->prepare($queryPremio);
+
+        foreach ($premios as $premio) {
+            $nombre = $premio['nombre'];
+            $incluye = isset($premio['incluye_dinero']) ? 1 : 0;
+            $cantidad = $premio['cantidad_dinero'] ?? 0;
+
+            $stmtPremio->bind_param("sidi", $nombre, $incluye, $cantidad, $idCategoria);
+            if (!$stmtPremio->execute()) throw new Exception("No se pudo agregar premio: $nombre");
+
+            $premiosInsertados[] = [
+                "id_premio" => $conexion->insert_id,
+                "nombre" => $nombre,
+                "incluye_dinero" => (bool)$incluye,
+                "cantidad_dinero" => $cantidad
+            ];
+        }
+
+        $conexion->commit();
+
+        echo json_encode([
+            "status" => "success",
+            "data" => [
+                "id_categoria" => $idCategoria,
+                "nombre" => $nombreCategoria,
+                "premios" => $premiosInsertados
+            ]
+        ]);
+    } catch (Exception $e) {
+        $conexion->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    }
+}
+
+/**
+ * Editar categoría con premios
+ */
+function editarCategoriaConPremios() {
+    global $conexion;
+
+    $idCategoria = $_POST['idCategoria'] ?? null;
+    $nombreCategoria = $_POST['nombreCategoria'] ?? null;
+    $premios = isset($_POST['premios']) ? json_decode($_POST['premios'], true) : [];
+
+    if (!$idCategoria || !$nombreCategoria || empty($premios)) {
+        echo json_encode(["status" => "error", "message" => "Faltan datos"]);
+        return;
+    }
+
+    $conexion->begin_transaction();
+
+    try {
+        $queryCategoria = "UPDATE categoria SET nombre = ? WHERE id_categoria = ?";
+        $stmtCategoria = $conexion->prepare($queryCategoria);
+        $stmtCategoria->bind_param("si", $nombreCategoria, $idCategoria);
+        if (!$stmtCategoria->execute()) throw new Exception("Error al actualizar categoría");
+
+        // Actualizar o insertar premios
+        foreach ($premios as $premio) {
+            $nombre = $premio['nombre'];
+            $incluye = isset($premio['incluye_dinero']) ? 1 : 0;
+            $cantidad = $premio['cantidad_dinero'] ?? 0;
+
+            if (isset($premio['id_premio'])) {
+                $idPremio = $premio['id_premio'];
+                $queryUpdate = "UPDATE premio SET nombre = ?, incluye_dinero = ?, cantidad_dinero = ? WHERE id_premio = ? AND id_categoria = ?";
+                $stmtUpdate = $conexion->prepare($queryUpdate);
+                $stmtUpdate->bind_param("sidii", $nombre, $incluye, $cantidad, $idPremio, $idCategoria);
+                if (!$stmtUpdate->execute()) throw new Exception("Error al actualizar premio: $nombre");
+            } else {
+                $queryInsert = "INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES (?, ?, ?, ?)";
+                $stmtInsert = $conexion->prepare($queryInsert);
+                $stmtInsert->bind_param("sidi", $nombre, $incluye, $cantidad, $idCategoria);
+                if (!$stmtInsert->execute()) throw new Exception("Error al agregar premio: $nombre");
+            }
+        }
+
+        $conexion->commit();
+
+        echo json_encode([
+            "status" => "success",
+            "data" => [
+                "id_categoria" => $idCategoria,
+                "nombre" => $nombreCategoria,
+                "premios" => $premios
+            ]
+        ]);
+    } catch (Exception $e) {
+        $conexion->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    }
+}
+
+/**
+ * Eliminar categoría con premios
+ */
+function eliminarCategoria() {
+    global $conexion;
+
+    $idCategoria = $_POST['id_categoria'] ?? null;
+    if (!$idCategoria) {
+        echo json_encode(["status" => "error", "message" => "No se recibió id_categoria"]);
+        return;
+    }
+
+    $conexion->begin_transaction();
+
+    try {
+        $queryPremios = "DELETE FROM premio WHERE id_categoria = ?";
+        $stmtPremios = $conexion->prepare($queryPremios);
+        $stmtPremios->bind_param("i", $idCategoria);
+        if (!$stmtPremios->execute()) throw new Exception("No se pudieron eliminar los premios");
+
+        $queryCategoria = "DELETE FROM categoria WHERE id_categoria = ?";
+        $stmtCategoria = $conexion->prepare($queryCategoria);
+        $stmtCategoria->bind_param("i", $idCategoria);
+        if (!$stmtCategoria->execute()) throw new Exception("No se pudo eliminar la categoría");
+
+        $conexion->commit();
+
+        echo json_encode(["status" => "success", "message" => "Categoría eliminada correctamente", "id_categoria_eliminada" => $idCategoria]);
+    } catch (Exception $e) {
+        $conexion->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    }
+
+}
+
+function actualizarEdicion(){
+    global $conexion;
+
+    $idEdicion = (int) $_POST['idEdicion'];
+    $anioEdicion = (int) $_POST['anioEdicion'];
+    $resumenEvento = $_POST['resumenEvento'];
+    $nroParticipantes = (int) $_POST['nroParticipantes'];
+    $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
+    $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
+
+    $stmt = $conexion->prepare("UPDATE edicion SET anio_edicion = ?, resumen_evento = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE id_edicion = ?");
+    $stmt->bind_param("isisss", $anioEdicion, $resumenEvento, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos, $idEdicion);
+
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Edición actualizada correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al actualizar la edición"]);
+    }
+}
+
+/**
+ * Contar participantes de la edición actual
+ */
+function contarParticipantesEdicionActual() {
+    global $conexion;
+
+    $nroParticipantes = 0;
+    $nroParticipantesSql = "SELECT COUNT(*) as total FROM candidatura";
+    $resultNroParticipantes = $conexion->query($nroParticipantesSql);
+    if ($resultNroParticipantes && $row = $resultNroParticipantes->fetch_assoc()) {
+        $nroParticipantes = (int)$row['total'];
+    }
+    return $nroParticipantes;
+}
+
+
+/**
+ * Enviar edicion actual a ediciones anteriores
+ * Cambia el tipo de la edicion actual a 'anterior'
+ * Mueve los ganadores a la tabla histórica ganadores_edicion
+ * Elimina candidaturas no ganadoras, historial asociado y relaciones entre premios y candidaturas
+ * en el orden correcto para mantener la integridad referencial
+ * Crea una nueva edicion actual para el proximo año
+ * Actualiza el modo a 'pre-evento'
+ */
+function enviarEdicionAAnteriores(){
+    global $conexion;
+
+        $idEdicionActual = obtenerIdEdicionActual();
+
+        $anioEdicion = (int) $_POST['anioEdicion'];
+        $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
+        $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
+        $nroParticipantes = contarParticipantesEdicionActual();
+
+
+        $stmtTipo = $conexion->prepare("UPDATE edicion SET tipo = 'anterior', anio_edicion = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE tipo = 'actual'");
+        $stmtTipo->bind_param("iiss", $anioEdicion, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos);
+
+        if ($stmtTipo->execute()) {
+
+            // mover de tabla premio_candidatura a tabla ganadores_edicion
+            $queryGanadores = "SELECT c.id_candidatura, part.nombre AS nombreParticipante, cat.nombre AS categoria, p.nombre AS premio, c.id_archivo_video FROM premio_candidatura pc
+                           INNER JOIN premio p ON pc.id_premio = p.id_premio
+                           INNER JOIN categoria cat ON p.id_categoria = cat.id_categoria
+                           INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
+                           INNER JOIN participante part ON c.id_participante = part.id_participante";
+
+            $resultGanadores = $conexion->query($queryGanadores);
+
+            $stmtInsertGanador = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
+
+            // insertar cada ganador
+            while ($ganador = $resultGanadores->fetch_assoc()) {
+                $stmtInsertGanador->bind_param(
+                    "isssi",
+                    $idEdicionActual,
+                    $ganador['categoria'],
+                    $ganador['nombreParticipante'],
+                    $ganador['premio'],
+                    $ganador['id_archivo_video']
+                );
+                $stmtInsertGanador->execute();
+            }
+
+        // eliminar historial_candidatura y candidaturas no ganadores
+        $eliminarHistorialSql = "DELETE hc FROM historial_candidatura hc
+                             INNER JOIN candidatura c ON hc.id_candidatura = c.id_candidatura
+                             LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
+                             WHERE pc.id_candidatura IS NULL";
+
+            $conexion->query($eliminarHistorialSql);
+
+        // eliminar candidaturas no ganadores
+        $eliminarCandidaturasSql = "DELETE c FROM candidatura c
+                                    LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
+                                    WHERE pc.id_candidatura IS NULL";
+            $conexion->query($eliminarCandidaturasSql);
+
+        // eliminar premios asociados a candidaturas
+        $eliminarPremiosSql = "DELETE pc FROM premio_candidatura pc
+                              INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura";
+        $conexion->query($eliminarPremiosSql);
+
+
+            // crear nueva edicion actual del proximo año
+            $nuevoAnioEdicion = $anioEdicion + 1;
+            $nuevoResumen = 'Resumen del año ' . $nuevoAnioEdicion;
+            $stmtNuevaEdicion = $conexion->prepare("INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, fecha_envio_email_informativo, fecha_borrado_datos, tipo, id_organizador) VALUES (?, ?, 0, CURDATE(), CURDATE(), 'actual', 1)");
+            $stmtNuevaEdicion->bind_param("is", $nuevoAnioEdicion, $nuevoResumen);
+            $stmtNuevaEdicion->execute();
+
+            // actualizar modo a pre-evento
+            $stmtModo = $conexion->prepare("UPDATE configuracion SET valor = 'pre-evento' WHERE nombre = 'modo'");
+            $stmtModo->execute();
+
+            echo json_encode(["status" => "success", "message" => "Edición enviada a anteriores correctamente"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al enviar la edición a anteriores"]);
+        }
+    }
+
+/**
+ * Listar noticias
+ */
+function listarNoticias(){
+    global $conexion;
+
+    $baseUrl = obtenerBaseUrl();
+    $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
+                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia
+              FROM noticia n
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo ORDER BY n.fecha DESC";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $noticias = [];
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaImagenNoticia']) {
+            $row['rutaImagenNoticia'] = $baseUrl . $row['rutaImagenNoticia'];
+        }
+        $noticias[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $noticias
+    ]);
+}
 
 
 cerrarConexion();

@@ -210,9 +210,9 @@ function crearBaseDatosSiNoExiste() {
                     ('modo', 'pre-evento', 1),
                     ('minCandidaturas', '2', 1),
                     ('maxCandidaturas', '5', 1),
-                    ('galaProximaFecha', '2027-12-21', 1),
+                    ('galaProximaFecha', '18/12/2027', 1),
                     ('galaPreEventoTitulo', 'Festival de Cine 2026', 1),
-                    ('galaPreEventoFecha', '2026-12-20', 1),
+                    ('galaPreEventoFecha', '18/12/2026', 1),
                     ('galaPreEventoHora', '15:00', 1),
                     ('galaPreEventoUbicacion', 'Auditorio Principal', 1),
                     ('galaPreEventoDescripcion', '¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni', 1),
@@ -221,12 +221,12 @@ function crearBaseDatosSiNoExiste() {
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                     
-                INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador) VALUES
-                    (2023, 'Resumen 2023', 150, 'anterior', 1),
-                    (2024, 'Resumen 2024', 200, 'actual', 1);
+                INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador, fecha_envio_email_informativo, fecha_borrado_datos) VALUES
+                    (2024, 'Resumen 2024', 120, 'anterior', 1, CURDATE(), CURDATE()),
+                    (2026, 'Resumen 2026', NULL, 'actual'  , 1, CURDATE(), CURDATE());
                 
                 INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
-                    (1, 'Documental', 'Juan Pérez', 'Mejor Documental', 1),
+                    (1, 'Documental'  , 'Juan Pérez' , 'Mejor Documental'  , 1),
                     (1, 'Cortometraje', 'María López', 'Mejor Cortometraje', 4);
                 
                 INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES (1, 'En revisión', 'Inicio');
@@ -259,7 +259,8 @@ function crearBaseDatosSiNoExiste() {
                 if ($res = $conexion->store_result()) { $res->free(); }
             } while ($conexion->more_results() && $conexion->next_result());
         } else {
-            die("Error al inicializar tablas: " . $conexion->error);
+            echo "Error creando tablas e inserts iniciales: " . $conexion->error;
+            exit;
         }
 
     } else {
