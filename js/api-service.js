@@ -114,3 +114,28 @@ async function listarCategorias(){
 
     return await fetchAPI(data);
 }
+
+async function listarFinalistasNoGanadores(){
+    const data = new FormData();
+    data.append('action', 'listarFinalistasNoGanadores');
+
+    return await fetchAPI(data);
+}
+
+async function asignarGanador(idPremio, idCandidatura){
+    const data = new FormData();
+    data.append('action', 'asignarGanador');
+    data.append('idPremio', idPremio);
+    data.append('idCandidatura', idCandidatura);
+
+    return await fetchAPI(data);
+}
+
+async function desasignarGanador(idPremio, idCandidatura){
+    const data = new FormData();
+    data.append('action', 'desasignarGanador');
+    data.append('idPremio', idPremio);
+    data.append('idCandidatura', idCandidatura);
+
+    return await fetchAPI(data);
+}

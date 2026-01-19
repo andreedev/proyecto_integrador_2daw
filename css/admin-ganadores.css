@@ -127,7 +127,6 @@ dialog::backdrop {
 }
 
 .generic-modal{
-    border-radius: 8px;
     box-shadow: var(--shadow-02);
     background-color: var(--neutral-09);
     width: 90%;
@@ -201,7 +200,6 @@ dialog::backdrop {
 
 /* Estilos modal asignar ganador */
 .info-card-ganador{
-    border: 1px solid var(--neutral-01);
     flex-direction: row;
 }
 
@@ -209,7 +207,6 @@ dialog::backdrop {
     width: 24px;
     height: 24px;
     border: 1px solid var(--neutral-01);
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;

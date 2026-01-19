@@ -60,6 +60,10 @@ ul, li{
     list-style: none;
 }
 
+button{
+    border-radius: 0;
+}
+
 /* Kit de componentes Figma */
 :root{
     --primary-01: #801914;
@@ -244,6 +248,25 @@ p{
     background-color: var(--neutral-01);
     color: var(--neutral-09);
     border: 1px solid var(--neutral-01);
+}
+
+.secondary-button-02{
+    background-color: var(--neutral-09);
+    color: var(--neutral-01);
+    border: 1px solid var(--neutral-03);
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    width: 100%;
+    gap: 8px;
+    transition: all 300ms ease;
+}
+
+.secondary-button-02:hover, .secondary-button-02.active{
+    background-color: var(--neutral-01);
+    color: var(--neutral-09);
+    border: 1px solid var(--neutral-09);
 }
 
 .secondary-button-03{

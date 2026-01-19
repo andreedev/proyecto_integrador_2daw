@@ -1,9 +1,4 @@
-const finalistasMenuLateral = document.getElementById('finalistasMenuLateral');
-
-const bloqueCategoria = document.getElementById('bloqueCategoria');
-const headerBloque = document.getElementById('headerBloque');
-const nombreCategoria = document.getElementById('nombreCategoria');
-const iconoDesplegable = document.getElementById('iconoDesplegable');
+const categoriesContainer = document.getElementById('categoriesContainer');
 
 const puestoContainer = document.getElementById('puestoContainer');
 const puestoPremio = document.getElementById('puestoPremio');
@@ -12,8 +7,6 @@ const premio = document.querySelector('.premio');
 
 const ganador = document.querySelector('.ganador');
 
-const btnAsignarDesasignarBackground = document.getElementById('btnAsignarDesasignarBackground');
-const btnAsignarDesasignar = document.getElementById('btnAsignarDesasignar');
 const modalDesasignar = document.getElementById('modalDesasignar');
 const btnDesasignarGanador = document.getElementById('btnDesasignarGanador');
 const btnCancelarModalDesasignar = document.getElementById('btnCancelModalDesasignar');
@@ -24,51 +17,44 @@ const cerrarModalAsignar = document.getElementById('cerrarModalAsignar');
 const infoCardGanador = document.getElementById('infoCardGanador');
 const btnGanadorElegido = document.getElementById('btnGanadorElegido');
 const iconCheck = document.getElementById('iconCheck');
-const nameGanador = document.querySelector('.name-ganador');
-const gmailGanador = document.querySelector('.gmail-ganador');
-const descripcionCortoGanador = document.querySelector('.descripcion-corto-ganador');
-const fecha = document.querySelector('.fecha');
 const btnAceptarGanador = document.getElementById('btnAceptarGanador');
 const btnCerrarModalGanador = document.getElementById('btnCerrarModalGanador');
 
-const categoriesContainer = document.getElementById('categoriesContainer');
 
+let idPremioSeleccionado;
+let idCandidaturaSeleccionada;
 
-//Cuando pinchamos en el menu lateral ganadores, nos traemos de la bd: las categorías
-finalistasMenuLateral.addEventListener('click', () => {
-    cargarCategorias();
-});
-
-
-function cargarCategorias(){
-    listarCategorias()
-        .then(data => {
-            if (data.status === 'success'){
-                renderizarCategorias(data.data);
-            }
-        })
-        .catch(error => {
-            console.error('Error al cargar las categorías:', error);
-        });
-}
 
 /**
  * Renderiza las categorías
  */
 function renderizarCategorias(categorias){
-    bloqueCategoria.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevas categorías
+    console.log('renderizarCategorias')
+    categoriesContainer.replaceChildren();
 
     categorias.forEach(categoria => {
         const categoriaDiv = document.createElement('div');
         categoriaDiv.classList.add('bloque-categoria');
-        categoriaDiv.innerHTML = `                        
-            <div class="header-bloque" id="headerBloque">
-                <span class="categoria-title" id="nombreCategoria">${categoria.nombre}</span>
-                <span class="icono-desplegable" id="iconoDesplegable"></span>
-            </div>
-        `;
 
-        bloqueCategoria.appendChild(categoriaDiv);
+        const headerBloque = document.createElement('div');
+        headerBloque.classList.add('header-bloque');
+        headerBloque.id = 'headerBloque';
+
+        const nombreCategoria = document.createElement('span');
+        nombreCategoria.classList.add('categoria-title');
+        nombreCategoria.id = 'nombreCategoria';
+        nombreCategoria.textContent = categoria.nombre;
+
+        const iconoDesplegable = document.createElement('span');
+        iconoDesplegable.classList.add('icono-desplegable');
+        iconoDesplegable.id = 'iconoDesplegable';
+        iconoDesplegable.addEventListener('click', () => {
+            iconoDesplegable.classList.toggle('icono-desplegable-rotado');
+        });
+
+        headerBloque.appendChild(nombreCategoria);
+        headerBloque.appendChild(iconoDesplegable);
+        categoriaDiv.appendChild(headerBloque);
 
         const premios = categoria.premios;
 
@@ -77,7 +63,7 @@ function renderizarCategorias(categorias){
 
             const premioDiv = document.createElement('div');
             premioDiv.classList.add('puesto-container', 'd-flex', 'align-items-center');
-            
+
             const puestoContainerDiv = document.createElement('div');
             puestoContainerDiv.classList.add('puesto-container', 'w-100');
 
@@ -105,6 +91,23 @@ function renderizarCategorias(categorias){
             const btnAsignarDiv = document.createElement('div');
             btnAsignarDiv.classList.add('primary-button-02', 'btnAsignar', 'btn-action');
             btnAsignarDiv.textContent = premio.tieneGanador ? 'Desasignar' : 'Asignar';
+            btnAsignarDiv.addEventListener('click', async () => {
+                if (btnAsignarDiv.textContent === 'Asignar') {
+                    const listarFinalistasNoGanadoresResponse = await listarFinalistasNoGanadores();
+                    if (listarFinalistasNoGanadoresResponse.status === 'success') {
+                        const finalistas = listarFinalistasNoGanadoresResponse.data;
+                        renderizarFinalistasEnModal(finalistas);
+                        idPremioSeleccionado = premio.idPremio;
+                    }
+                    modalAsignar.showModal();
+                } else {
+                    modalDesasignar.showModal();
+                }
+                if (btnAsignarDiv.textContent === 'Desasignar') {
+                    idPremioSeleccionado = premio.idPremio;
+                    idCandidaturaSeleccionada = premio.idCandidaturaGanador;
+                }
+            });
 
 
             ganadorDiv.appendChild(iconoPersonaSpan);
@@ -123,30 +126,84 @@ function renderizarCategorias(categorias){
 
         categoriesContainer.appendChild(categoriaDiv);
     });
+}
+
+function cargarCategorias(){
+    listarCategorias()
+        .then(data => {
+            if (data.status === 'success'){
+                renderizarCategorias(data.data);
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar las categorías:', error);
+        });
+}
 
 
+/**
+ * Renderiza los finalistas en el modal de asignar ganador
+ */
+function renderizarFinalistasEnModal(finalistas) {
+    const finalistasContainer = document.getElementById('finalistasContainer');
+    finalistasContainer.innerHTML = '';
+
+    finalistas.forEach(finalista => {
+        const finalistaDiv = document.createElement('div');
+        finalistaDiv.classList.add('info-card-ganador', 'p-16px', 'd-flex', 'align-center', 'gap-24px', 'box-shadow-02');
+        finalistaDiv.innerHTML = `
+            <div class="seleccionar-ganador cursor-pointer">
+                <span class="icon-small-check w-24px h-24px bg-neutral-01 hidden-force"></span>
+            </div>
+            <div class="info-ganador d-flex flex-column gap-4px min-w-1px flex-shrink-1">
+                <span class="name-ganador">${finalista.nombreParticipante}</span>
+                <span class="gmail-ganador">${finalista.correoParticipante}</span>
+                <span class="descripcion-corto-ganador text-truncate">${finalista.sinopsis}</span>
+            </div>
+            <div class="fecha-presentacion">
+                <span class="presentacion">Presentacion</span>
+                <span class="fecha">${new Date(finalista.fechaPresentacion).toLocaleDateString()}</span>
+            </div>
+        `;
+
+        finalistaDiv.addEventListener('click', () => {
+            const seleccionarGanadorElements = finalistasContainer.querySelectorAll('.seleccionar-ganador');
+            seleccionarGanadorElements.forEach(element => {
+                element.firstElementChild.classList.add('hidden-force');
+            });
+
+            const seleccionarGanador = finalistaDiv.querySelector('.seleccionar-ganador');
+            seleccionarGanador.firstElementChild.classList.remove('hidden-force');
+
+            btnAceptarGanador.disabled = false;
+
+            btnAceptarGanador.onclick = async () => {
+                const response = await asignarGanador(idPremioSeleccionado, finalista.idCandidatura);
+                if (response.status === 'success') {
+                    modalAsignar.close();
+                    await cargarCategorias();
+                } else {
+                    console.error('Error al asignar el ganador:', response.message);
+                }
+            };
+        });
+
+        finalistasContainer.appendChild(finalistaDiv);
+    });
 }
 
 cargarCategorias();
 
-btnAsignarDesasignarBackground.addEventListener('click', () => {
-    if (btnAsignarDesasignar.textContent === 'Asignar') {
-        modalAsignar.showModal();
-        btnAsignarDesasignar.textContent = 'Desasignar';
+
+btnDesasignarGanador.addEventListener('click', async () => {
+    const response = await desasignarGanador(idPremioSeleccionado, idCandidaturaSeleccionada);
+    if (response.status === 'success') {
+        modalDesasignar.close();
+        await cargarCategorias();
     } else {
-        modalDesasignar.showModal();
+        console.error('Error al desasignar el ganador:', response.message);
     }
 });
 
-btnCerrarModalGanador.addEventListener('click', () => {
-    modalAsignar.close();
-    btnAsignarDesasignar.textContent = 'Asignar';
-});
 
-
-// Si pinchamos en la flecha, este cambia de sentido, y mostramos puestoContainer poco a poco
-iconoDesplegable.addEventListener('click', () => {
-    iconoDesplegable.classList.toggle('icono-desplegable-rotado');
-});
-
-//
+cargarCategorias();

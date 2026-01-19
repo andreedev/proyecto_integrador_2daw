@@ -61,7 +61,18 @@ if(isset($_POST['action'])){
             validarRol(['organizador']);
             obtenerCategoriasYSusPremios();
             break;
-        
+        case 'listarFinalistasNoGanadores':
+            validarRol(['organizador']);
+            listarFinalistasNoGanadores();
+            break;
+        case 'asignarGanador':
+            validarRol(['organizador']);
+            asignarGanador();
+            break;
+        case 'desasignarGanador':
+            validarRol(['organizador']);
+            desasignarGanador();
+            break;
         default:
             break;
     }
@@ -657,8 +668,7 @@ function obtenerCategoriasYSusPremios(){
     while ($categoria = $resultCategorias->fetch_assoc()) {
         $idCategoria = $categoria['id_categoria'];
 
-        $queryPremios = "select c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador
-       , pa.nombre as nombreGanador 
+        $queryPremios = "select c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador 
             FROM categoria c 
             RIGHT JOIN premio p on p.id_categoria = c.id_categoria
             LEFT JOIN premio_candidatura pm on pm.id_premio = p.id_premio
@@ -685,6 +695,74 @@ function obtenerCategoriasYSusPremios(){
         "status" => "success",
         "data" => $categorias
     ]);
+}
+
+
+/**
+ * Listar finalistas que no son ganadores
+ */
+function listarFinalistasNoGanadores(){
+    global $conexion;
+
+    $query = "SELECT c.id_candidatura as idCandidatura, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, pc.nombre AS nombreParticipante, pc.correo as correoParticipante
+              FROM candidatura c
+              INNER JOIN participante pc ON c.id_participante = pc.id_participante
+              INNER JOIN archivo a ON c.id_archivo_video = a.id_archivo
+              WHERE c.estado = 'Finalista' AND c.id_candidatura NOT IN (
+                  SELECT pm.id_candidatura
+                  FROM premio_candidatura pm
+              )";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $finalistas = [];
+    while ($row = $result->fetch_assoc()) {
+        $finalistas[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $finalistas
+    ]);
+}
+
+/**
+ * Asignar ganador a un premio
+ */
+function asignarGanador()
+{
+    global $conexion;
+
+    $idPremio = (int)$_POST['idPremio'];
+    $idCandidatura = (int)$_POST['idCandidatura'];
+
+    $stmt = $conexion->prepare("INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES (?, ?)");
+    $stmt->bind_param("ii", $idPremio, $idCandidatura);
+
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Ganador asignado correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al asignar el ganador"]);
+    }
+}
+
+/**
+ * Deasignar ganador de un premio
+ */
+function desasignarGanador(){
+    global $conexion;
+    $idPremio = (int)$_POST['idPremio'];
+    $idCandidatura = (int)$_POST['idCandidatura'];
+
+    $stmt = $conexion->prepare("DELETE FROM premio_candidatura WHERE id_premio = ? AND id_candidatura = ?");
+    $stmt->bind_param("ii", $idPremio, $idCandidatura);
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Ganador desasignado correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al desasignar el ganador"]);
+    }
 }
 
 

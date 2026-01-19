@@ -27,25 +27,25 @@
             </div>
             <div class="admin-content">
                 <div id="categoriesContainer">
-                    <div class="bloque-categoria" id="bloqueCategoria">
-                        <div class="header-bloque" id="headerBloque">
-                            <span class="categoria-title" id="nombreCategoria">Mejor Cortometraje UE Alumno</span>
-                            <span class="icono-desplegable" id="iconoDesplegable"></span>
-                        </div>
-                        <div class="puesto-container" id="puestoContainer">
-                            <div class="puesto-premio" id="puestoPremio">
-                                <span class="puesto">Primer lugar </span>
-                                <span class="premio">5000€</span>
-                            </div>
-                            <div class="ganador-asignado">
-                                <span class="icono-persona"></span>
-                                <span class="ganador">Sin ganador asignado</span>
-                            </div>
-                            <div class="boton-asignar-desasignar-background" id="btnAsignarDesasignarBackground">
-                                <span class="boton-asignar-desasignar" id="btnAsignarDesasignar">Asignar</span>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="bloque-categoria" id="bloqueCategoria">-->
+<!--                        <div class="header-bloque" id="headerBloque">-->
+<!--                            <span class="categoria-title" id="nombreCategoria">Mejor Cortometraje UE Alumno</span>-->
+<!--                            <span class="icono-desplegable" id="iconoDesplegable"></span>-->
+<!--                        </div>-->
+<!--                        <div class="puesto-container" id="puestoContainer">-->
+<!--                            <div class="puesto-premio" id="puestoPremio">-->
+<!--                                <span class="puesto">Primer lugar </span>-->
+<!--                                <span class="premio">5000€</span>-->
+<!--                            </div>-->
+<!--                            <div class="ganador-asignado">-->
+<!--                                <span class="icono-persona"></span>-->
+<!--                                <span class="ganador">Sin ganador asignado</span>-->
+<!--                            </div>-->
+<!--                            <div class="boton-asignar-desasignar-background" id="btnAsignarDesasignarBackground">-->
+<!--                                <span class="boton-asignar-desasignar" id="btnAsignarDesasignar">Asignar</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -56,9 +56,9 @@
         <div class="modal-header d-flex justify-content-center">
             <span class="modal-header-text ">¿Estás seguro?</span>
         </div>
-        <div class="modal-body">
-            <button type="submit" class="cancel-modal" id="btnCancelModalDesasignar">Cancelar</button>
-            <button type="submit" class="aceptar-modal" id="btnDesasignarGanador">Aceptar</button>
+        <div class="d-flex-two-columns-responsive p-24px gap-24px">
+            <div class="secondary-button-02 text-center close-modal" id="btnCancelModalDesasignar">Cancelar</div>
+            <div class="primary-button-02 text-center" id="btnDesasignarGanador">Desasignar</div>
         </div>
     </dialog>
 
@@ -68,23 +68,12 @@
             <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer" id="cerrarModalAsignar"></span>
         </div>
         <div class="modal-body-asignar d-flex p-16px gap-16px">
-            <div id="infoCardGanador" class="info-card-ganador p-16px d-flex align-center gap-24px box-shadow-02">
-                <div class="seleccionar-ganador" id="btnGanadorElegido">
-                    <span class="icon-check w-24px h-24px bg-neutral-01 hidden-force" id="iconCheck"></span>
-                </div>
-                <div id="infoGanador" class="info-ganador d-flex flex-column gap-4px min-w-1px flex-shrink-1">
-                    <span class="name-ganador">Juan del Prado del Valle</span>
-                    <span class="gmail-ganador">juanpv@gmail.com</span>
-                    <span class="descripcion-corto-ganador text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quibusdam incidunt maxime excepturi rerum ducimus reprehenderit repellendus? Perspiciatis deserunt aliquid ut, dolorem quidem, eius culpa laboriosam nisi inventore quae distinctio!</span>
-                </div>
-                <div class="fecha-presentacion">
-                    <span class="presentacion">Presentacion</span>
-                    <span class="fecha">12/05/2024</span>
-                </div>
+            <div id="finalistasContainer" class="d-flex flex-column gap-16px">
+
             </div>
-            <div class="buttons-modal-ganador gap-16px d-flex justify-content-center align-items-center">
-                <button type="submit" class="cancel-modal" id="btnCerrarModalGanador">Cancelar</button>
-                <button type="submit" class="aceptar-modal" id="btnAceptarGanador">Aceptar</button>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal" id="btnCerrarModalGanador">Cancelar</div>
+                <div class="primary-button-02 text-center" id="btnAceptarGanador">Aceptar</div>
             </div>
         </div>
     </dialog>
