@@ -139,3 +139,38 @@ async function desasignarGanador(idPremio, idCandidatura){
 
     return await fetchAPI(data);
 }
+
+async function actualizarConfiguracion(modo,galaPreEventoTitulo,galaPreEventoFecha,galaPreEventoHora,galaPreEventoUbicacion,galaPreEventoDescripcion,galaPreEventoStreamingActivo,galaPreEventoStreamingUrl,galaPostEventoResumen){
+    const data = new FormData();
+    data.append('action', 'actualizarConfiguracion');
+    data.append('modo', modo);
+
+    if (modo === 'pre-evento') {
+        data.append('galaPreEventoTitulo', galaPreEventoTitulo);
+        data.append('galaPreEventoFecha', galaPreEventoFecha);
+        data.append('galaPreEventoHora', galaPreEventoHora);
+        data.append('galaPreEventoUbicacion', galaPreEventoUbicacion);
+        data.append('galaPreEventoDescripcion', galaPreEventoDescripcion);
+        data.append('galaPreEventoStreamingActivo', galaPreEventoStreamingActivo);
+        data.append('galaPreEventoStreamingUrl', galaPreEventoStreamingUrl);
+    }
+    if (modo === 'post-evento') {
+        data.append('galaPostEventoResumen', galaPostEventoResumen);
+    }
+
+    return await fetchAPI(data);
+}
+
+async function actualizarEdicion(idEdicion, nombreEdicion, anioEdicion, resumenEvento, nroParticipantes, fechaEnvioEmailInformativo, fechaBorradoDatos){
+    const data = new FormData();
+    data.append('action', 'actualizarEdicion');
+    data.append('idEdicion', idEdicion);
+    data.append('nombreEdicion', nombreEdicion);
+    data.append('anioEdicion', anioEdicion);
+    data.append('resumenEvento', resumenEvento);
+    data.append('nroParticipantes', nroParticipantes);
+    data.append('fechaEnvioEmailInformativo', fechaEnvioEmailInformativo);
+    data.append('fechaBorradoDatos', fechaBorradoDatos);
+
+    return await fetchAPI(data);
+}

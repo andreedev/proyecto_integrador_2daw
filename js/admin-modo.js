@@ -53,6 +53,7 @@ const fechaBorradoDatosInputErrorMessage = document.getElementById('fechaBorrado
 let modo = 'pre-evento';
 let configuracionActual = null;
 let loadingConfiguracion = true;
+let idEdicion = null;
 
 const fechaEventoDateTimePicker = new AirDatepicker(fechaEventoInput, {
     minDate: new Date(),
@@ -386,7 +387,7 @@ async function publicarCambios() {
         if (media.dataset.isNew === "true" && media.filePayload) {
             try {
                 const uploadRes = await subirArchivo(media.filePayload);
-                finalId = uploadRes.idArchivo;
+                if (uploadRes.status === 'success')  finalId = uploadRes.data.idArchivo;
             } catch (err) {
                 console.error(err);
                 return updateGeneralMessage("Error subiendo archivo", "text-error-01");
@@ -397,11 +398,11 @@ async function publicarCambios() {
         }
 
         if (finalId) {
-            archivosParaGuardar.push({ id: finalId });
+            archivosParaGuardar.push(finalId);
         }
     }
 
-    if (modo === 'post-evento') {
+    if (modo === 'post-evento' && archivosParaGuardar.length > 0) {
         try {
             await actualizarGaleriaEdicionActual(archivosParaGuardar);
         } catch (error) {
@@ -410,7 +411,13 @@ async function publicarCambios() {
         }
     }
 
-    await actualizarConfiguracionWeb();
+    const result = await actualizarConfiguracion(modo, tituloEventoInput.value, fechaEventoInput.value, horaEventoInput.value, ubicacionEventoInput.value, descripcionInput.value, streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', urlStreamingInput.value, postEventoResumenInput.value, yearEdicionInput.value, nroParticipantesInput.value);
+    if (result.status !== 'success') throw new Error(result.message);
+    const updateEditionResult = await actualizarEdicion(idEdicion, yearEdicionInput.value, postEventoResumenInput.value, nroParticipantesInput.value, fechaEnvioEmailInformativoInput.value, fechaBorradoDatosInput.value);
+    if (updateEditionResult.status !== 'success') throw new Error(updateEditionResult.message);
+
+    await cargarConfiguracionWeb();
+    unsavedChangesWarning.classList.add('hidden-force');
     updateGeneralMessage('Cambios guardados exitosamente', 'text-success-01');
 }
 
@@ -458,9 +465,11 @@ function renderizarUI(data) {
         urlStreamingContainer.classList.add('hidden-force');
     }
     urlStreamingInput.value = config.galaPreEventoStreamingUrl || '';
-    postEventoResumenInput.value = edicionActual.resumen_evento;
-    yearEdicionInput.value = edicionActual.anio_edicion || '';
-    nroParticipantesInput.value = edicionActual.nro_participantes || '';
+    postEventoResumenInput.value = edicionActual.resumenEvento;
+    yearEdicionInput.value = edicionActual.anioEdicion || '';
+    nroParticipantesInput.value = edicionActual.nroParticipantes || '';
+    fechaEnvioEmailInformativoInput.value = edicionActual.fechaEnvioEmailInformativo || '';
+    fechaBorradoDatosInput.value = edicionActual.fechaBorradoDatos || '';
 
     galleryContainer.innerHTML = "";
     if (archivos && Array.isArray(archivos)) {
@@ -716,6 +725,7 @@ async function cargarConfiguracionWeb() {
     }).then(response => response.json())
         .then(result => {
             configuracionActual = result.data;
+            idEdicion = result.data.edicionActual ? result.data.edicionActual.idEdicion : null;
             renderizarUI(result.data);
         })
         .catch(error => {
@@ -724,35 +734,8 @@ async function cargarConfiguracionWeb() {
 }
 
 async function actualizarConfiguracionWeb() {
-    const formData = new FormData();
-    formData.append('action', 'actualizarConfiguracionWeb');
-    formData.append('modo', modo);
-    if (modo === 'pre-evento') {
-        formData.append('galaPreEventoTitulo', tituloEventoInput.value.trim());
-        formData.append('galaPreEventoFecha', fechaEventoInput.value);
-        formData.append('galaPreEventoHora', horaEventoInput.value);
-        formData.append('galaPreEventoUbicacion', ubicacionEventoInput.value.trim());
-        formData.append('galaPreEventoDescripcion', descripcionInput.value.trim());
-        formData.append('galaPreEventoStreamingActivo', streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false');
-        formData.append('galaPreEventoStreamingUrl', urlStreamingInput.value.trim());
-    }
-    if (modo === 'post-evento') {
-        formData.append('galaPostEventoResumen', postEventoResumenInput.value.trim());
-    }
 
-    try {
-        const response = await fetch(URL_API, {
-            method: 'POST',
-            body: formData
-        });
-        const result = await response.json();
-        if (result.status !== 'success') throw new Error(result.message);
 
-        await cargarConfiguracionWeb();
-        unsavedChangesWarning.classList.add('hidden-force');
-    } catch (error) {
-        console.error("Error:", error);
-    }
 }
 
 async function actualizarGaleriaEdicionActual(archivos){

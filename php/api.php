@@ -23,11 +23,11 @@ if(isset($_POST['action'])){
             break;
         case 'obtenerConfiguracionWeb':
             validarRol(['organizador', 'participante']);
-            obtenerConfiguracionWeb();
+            obtenerConfiguracion();
             break;
-        case 'actualizarConfiguracionWeb':
+        case 'actualizarConfiguracion':
             validarRol(['organizador']);
-            actualizarConfiguracionWeb();
+            actualizarConfiguracion();
             break;
         case 'actualizarGaleriaEdicionActual':
             validarRol(['organizador']);
@@ -72,6 +72,10 @@ if(isset($_POST['action'])){
         case 'desasignarGanador':
             validarRol(['organizador']);
             desasignarGanador();
+            break;
+        case 'actualizarEdicion':
+            validarRol(['organizador']);
+            actualizarEdicion();
             break;
         default:
             break;
@@ -197,9 +201,9 @@ function validarRol($rolesPermitidos) {
 }
 
 /**
- * Obtener configuración web y archivos de la edición actual
+ * Obtener configuración, archivos de la edición actual, y datos de la edición actual
  */
-function obtenerConfiguracionWeb(){
+function obtenerConfiguracion(){
     global $conexion;
 
     $sqlConfig = "SELECT nombre, valor FROM configuracion";
@@ -245,7 +249,8 @@ function obtenerConfiguracionWeb(){
     }
 
     // obtener datos de la edicion actual
-    $sqlEdicion = "SELECT * FROM edicion WHERE tipo = 'actual' LIMIT 1";
+    $sqlEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, nro_participantes as nroParticipantes, fecha_envio_email_informativo as fechaEnvioEmailInformativo, fecha_borrado_datos as fechaBorradoDatos
+                    FROM edicion WHERE tipo = 'actual' LIMIT 1";
     $resultadoEdicion = $conexion->query($sqlEdicion);
     $edicionActual = null;
     if ($resultadoEdicion && $resultadoEdicion->num_rows > 0) {
@@ -267,22 +272,14 @@ function obtenerConfiguracionWeb(){
 /**
  * Actualiza los parámetros de configuración web
  */
-function actualizarConfiguracionWeb(){
+function actualizarConfiguracion(){
     global $conexion;
 
     $camposPermitidos = [
-        'modo',
-        'minCandidaturas',
-        'maxCandidaturas',
-        'galaProximaFecha',
-        'galaPreEventoTitulo',
-        'galaPreEventoFecha',
-        'galaPreEventoHora',
-        'galaPreEventoUbicacion',
-        'galaPreEventoDescripcion',
-        'galaPreEventoStreamingActivo',
-        'galaPreEventoStreamingUrl',
-        'galaPostEventoResumen'
+        'modo', 'minCandidaturas', 'maxCandidaturas', 'galaProximaFecha',
+        'galaPreEventoTitulo', 'galaPreEventoFecha', 'galaPreEventoHora',
+        'galaPreEventoUbicacion', 'galaPreEventoDescripcion',
+        'galaPreEventoStreamingActivo', 'galaPreEventoStreamingUrl'
     ];
 
     try {
@@ -326,6 +323,7 @@ function actualizarConfiguracionWeb(){
         ]);
     }
 }
+
 
 
 /**
@@ -449,17 +447,16 @@ function actualizarGaleriaEdicionActual(){
     $stmtDel->bind_param("i", $idEdicion);
     $stmtDel->execute();
 
+    // ["3","4"]
     $archivos = json_decode($_POST['archivos'], true);
 
     if (count($archivos) > 0) {
         $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
 
-        foreach ($archivos as $archivo) {
-            $idArchivo = $archivo['id'];
-            if ($idArchivo) {
-                $stmtInsertRel->bind_param("ii", $idArchivo, $idEdicion);
-                $stmtInsertRel->execute();
-            }
+        foreach ($archivos as $idArchivo) {
+            $idArchivoInt = (int)$idArchivo;
+            $stmtInsertRel->bind_param("ii", $idArchivoInt, $idEdicion);
+            $stmtInsertRel->execute();
         }
     }
 
@@ -762,6 +759,29 @@ function desasignarGanador(){
         echo json_encode(["status" => "success", "message" => "Ganador desasignado correctamente"]);
     } else {
         echo json_encode(["status" => "error", "message" => "Error al desasignar el ganador"]);
+    }
+}
+
+/**
+ * Actualizar edición
+ */
+function actualizarEdicion(){
+    global $conexion;
+
+    $idEdicion = (int) $_POST['idEdicion'];
+    $anioEdicion = (int) $_POST['anioEdicion'];
+    $resumenEvento = $_POST['resumenEvento'];
+    $nroParticipantes = (int) $_POST['nroParticipantes'];
+    $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
+    $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
+
+    $stmt = $conexion->prepare("UPDATE edicion SET anio_edicion = ?, resumen_evento = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE id_edicion = ?");
+    $stmt->bind_param("isisss", $anioEdicion, $resumenEvento, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos, $idEdicion);
+
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Edición actualizada correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al actualizar la edición"]);
     }
 }
 
