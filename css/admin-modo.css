@@ -161,19 +161,6 @@
     }
 }
 
-.card-header-left-side{
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    flex-grow: 1;
-}
-
-.card-header-right-side{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
 .generic-cards-container{
     display: flex;
     flex-direction: column;
@@ -186,12 +173,6 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-}
-
-.card-header-title-container{
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
 }
 
 .card-header-title{
@@ -815,7 +796,6 @@ remove-btn {
 
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(1px);
 }
 
 dialog{

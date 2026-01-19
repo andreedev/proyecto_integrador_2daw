@@ -21,7 +21,7 @@ if(isset($_POST['action'])){
         case 'cerrarSesion':
             cerrarSesion(); 
             break;
-        case 'obtenerConfiguracionWeb':
+        case 'obtenerConfiguracion':
             validarRol(['organizador', 'participante']);
             obtenerConfiguracion();
             break;
@@ -76,6 +76,10 @@ if(isset($_POST['action'])){
         case 'actualizarEdicion':
             validarRol(['organizador']);
             actualizarEdicion();
+            break;
+        case 'enviarEdicionAAnteriores':
+            validarRol(['organizador']);
+            enviarEdicionAAnteriores();
             break;
         default:
             break;
@@ -789,6 +793,32 @@ function actualizarEdicion(){
     }
 }
 
+
+/**
+ * Enviar edicion actual a ediciones anteriores
+ */
+function enviarEdicionAAnteriores(){
+    global $conexion;
+
+    $anioEdicion = (int) $_POST['anioEdicion'];
+    $nroParticipantes = 0;
+    $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
+    $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
+
+    $nroParticipantesSql = "SELECT COUNT(*) as total FROM candidatura";
+    $resultNroParticipantes = $conexion->query($nroParticipantesSql);
+    if ($resultNroParticipantes && $row = $resultNroParticipantes->fetch_assoc()) {
+        $nroParticipantes = (int)$row['total'];
+    }
+
+    $stmtTipo = $conexion->prepare("UPDATE edicion SET tipo = 'anterior', anio_edicion = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE tipo = 'actual'");
+    $stmtTipo->bind_param("iiss", $anioEdicion, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos);
+    if ($stmtTipo->execute()) {
+        echo json_encode(["status" => "success", "message" => "Edición enviada a anteriores correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al enviar la edición a anteriores"]);
+    }
+}
 
 
 cerrarConexion();

@@ -176,3 +176,20 @@ async function actualizarEdicion(idEdicion, nombreEdicion, anioEdicion, resumenE
 
     return await fetchAPI(data);
 }
+
+async function enviarEdicionAAnteriores(anioEdicion, fechaEnvioEmailInformativo, fechaBorradoDatos){
+    const data = new FormData();
+    data.append('action', 'enviarEdicionAAnteriores');
+    data.append('anioEdicion', anioEdicion);
+    data.append('fechaEnvioEmailInformativo', fechaEnvioEmailInformativo);
+    data.append('fechaBorradoDatos', fechaBorradoDatos);
+
+    return await fetchAPI(data);
+}
+
+async function cargarConfiguracion() {
+    const formData = new FormData();
+    formData.append('action', 'obtenerConfiguracion');
+
+    return await fetchAPI(formData);
+}
