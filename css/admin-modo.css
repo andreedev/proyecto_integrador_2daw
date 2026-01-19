@@ -857,37 +857,6 @@ dialog{
     background-color: var(--neutral-05);
 }
 
-.primary-button{
-    background-color: var(--primary-03);
-    color: var(--neutral-09);
-    border: none;
-    padding: 8px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: min-content;
-    width: 100%;
-    gap: 8px;
-}
-
-@media (min-width: 768px){
-    .primary-button {
-        width: auto;
-    }
-}
-
-.primary-button:hover{
-    background-color: var(--primary-02);
-}
-
-.primary-button.disabled{
-    background-color: var(--primary-04);
-    cursor: not-allowed;
-}
 
 .neutral-button{
     background-color: var(--neutral-08);

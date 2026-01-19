@@ -253,12 +253,13 @@ function obtenerConfiguracion(){
     }
 
     // obtener datos de la edicion actual
-    $sqlEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, nro_participantes as nroParticipantes, fecha_envio_email_informativo as fechaEnvioEmailInformativo, fecha_borrado_datos as fechaBorradoDatos
+    $sqlEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, fecha_envio_email_informativo as fechaEnvioEmailInformativo, fecha_borrado_datos as fechaBorradoDatos
                     FROM edicion WHERE tipo = 'actual' LIMIT 1";
     $resultadoEdicion = $conexion->query($sqlEdicion);
     $edicionActual = null;
     if ($resultadoEdicion && $resultadoEdicion->num_rows > 0) {
         $edicionActual = $resultadoEdicion->fetch_assoc();
+        $edicionActual['nroParticipantes'] = contarParticipantesEdicionActual();
     }
 
     $configuracionCompleta = [
@@ -348,15 +349,7 @@ function actualizarDatosPostEvento(){
     $archivos = json_decode($_POST['archivos'], true);
     if (count($archivos) > 0) {
 
-        $queryEdicion = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
-        $resEdicion = $conexion->query($queryEdicion);
-
-        if (!$resEdicion || $resEdicion->num_rows === 0) {
-            echo json_encode(["status" => "error", "message" => "No se encontró una edición actual"]);
-            return;
-        }
-        $idEdicion = $resEdicion->fetch_assoc()['id_edicion'];
-
+        $idEdicion = obtenerIdEdicionActual();
         $stmtDel = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
         $stmtDel->bind_param("i", $idEdicion);
         $stmtDel->execute();
@@ -371,6 +364,20 @@ function actualizarDatosPostEvento(){
     }
 
     echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
+}
+
+function obtenerIdEdicionActual(){
+    global $conexion;
+
+    $query = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
+    $result = $conexion->query($query);
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return (int)$row['id_edicion'];
+    }
+
+    return null;
 }
 
 
@@ -793,6 +800,21 @@ function actualizarEdicion(){
     }
 }
 
+/**
+ * Contar participantes de la edición actual
+ */
+function contarParticipantesEdicionActual(){
+    global $conexion;
+
+    $nroParticipantes = 0;
+    $nroParticipantesSql = "SELECT COUNT(*) as total FROM candidatura";
+    $resultNroParticipantes = $conexion->query($nroParticipantesSql);
+    if ($resultNroParticipantes && $row = $resultNroParticipantes->fetch_assoc()) {
+        $nroParticipantes = (int)$row['total'];
+    }
+    return $nroParticipantes;
+}
+
 
 /**
  * Enviar edicion actual a ediciones anteriores
@@ -800,20 +822,75 @@ function actualizarEdicion(){
 function enviarEdicionAAnteriores(){
     global $conexion;
 
+    $idEdicionActual = obtenerIdEdicionActual();
+
     $anioEdicion = (int) $_POST['anioEdicion'];
-    $nroParticipantes = 0;
     $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
     $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
+    $nroParticipantes = contarParticipantesEdicionActual();
 
-    $nroParticipantesSql = "SELECT COUNT(*) as total FROM candidatura";
-    $resultNroParticipantes = $conexion->query($nroParticipantesSql);
-    if ($resultNroParticipantes && $row = $resultNroParticipantes->fetch_assoc()) {
-        $nroParticipantes = (int)$row['total'];
-    }
 
     $stmtTipo = $conexion->prepare("UPDATE edicion SET tipo = 'anterior', anio_edicion = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE tipo = 'actual'");
     $stmtTipo->bind_param("iiss", $anioEdicion, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos);
+
     if ($stmtTipo->execute()) {
+
+        // mover de tabla premio_candidatura a tabla ganadores_edicion
+        $queryGanadores = "SELECT c.id_candidatura, part.nombre AS nombreParticipante, cat.nombre AS categoria, p.nombre AS premio, c.id_archivo_video FROM premio_candidatura pc
+                           INNER JOIN premio p ON pc.id_premio = p.id_premio
+                           INNER JOIN categoria cat ON p.id_categoria = cat.id_categoria
+                           INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
+                           INNER JOIN participante part ON c.id_participante = part.id_participante";
+
+        $resultGanadores = $conexion->query($queryGanadores);
+
+        $stmtInsertGanador = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
+
+        // insertar cada ganador
+        while ($ganador = $resultGanadores->fetch_assoc()) {
+            $stmtInsertGanador->bind_param(
+                "isssi",
+                $idEdicionActual,
+                $ganador['categoria'],
+                $ganador['nombreParticipante'],
+                $ganador['premio'],
+                $ganador['id_archivo_video']
+            );
+            $stmtInsertGanador->execute();
+        }
+
+        // eliminar historial_candidatura y candidatura sin premios asociados
+        $eliminarHistorialSql = "DELETE hc FROM historial_candidatura hc
+                             INNER JOIN candidatura c ON hc.id_candidatura = c.id_candidatura
+                             LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
+                             WHERE pc.id_candidatura IS NULL";
+
+        $conexion->query($eliminarHistorialSql);
+
+        // eliminar candidaturas asociadas a premios
+        $eliminarPremiosSql = "DELETE pc FROM premio_candidatura pc
+                              INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura";
+        $conexion->query($eliminarPremiosSql);
+
+
+        // eliminar candidaturas sin premios asociados
+        $eliminarCandidaturasSql = "DELETE c FROM candidatura c
+                                    LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
+                                    WHERE pc.id_candidatura IS NULL";
+        $conexion->query($eliminarCandidaturasSql);
+
+
+        // crear nueva edicion actual del proximo año
+        $nuevoAnioEdicion = $anioEdicion + 1;
+        $nuevoResumen = 'Resumen del año ' . $nuevoAnioEdicion;
+        $stmtNuevaEdicion = $conexion->prepare("INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, fecha_envio_email_informativo, fecha_borrado_datos, tipo, id_organizador) VALUES (?, ?, 0, CURDATE(), CURDATE(), 'actual', 1)");
+        $stmtNuevaEdicion->bind_param("is", $nuevoAnioEdicion, $nuevoResumen);
+        $stmtNuevaEdicion->execute();
+
+        // actualizar modo a pre-evento
+        $stmtModo = $conexion->prepare("UPDATE configuracion SET valor = 'pre-evento' WHERE nombre = 'modo'");
+        $stmtModo->execute();
+
         echo json_encode(["status" => "success", "message" => "Edición enviada a anteriores correctamente"]);
     } else {
         echo json_encode(["status" => "error", "message" => "Error al enviar la edición a anteriores"]);

@@ -222,8 +222,8 @@ function crearBaseDatosSiNoExiste() {
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                     
                 INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador, fecha_envio_email_informativo, fecha_borrado_datos) VALUES
-                    (2024, 'Resumen 2024', 100, 'anterior', 1, CURDATE(), CURDATE()),
-                    (2025, 'Resumen 2025', 120, 'actual'  , 1, CURDATE(), CURDATE());
+                    (2024, 'Resumen 2024', 120, 'anterior', 1, CURDATE(), CURDATE()),
+                    (2026, 'Resumen 2026', NULL, 'actual'  , 1, CURDATE(), CURDATE());
                 
                 INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
                     (1, 'Documental'  , 'Juan Pérez' , 'Mejor Documental'  , 1),

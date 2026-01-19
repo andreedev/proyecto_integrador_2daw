@@ -137,7 +137,7 @@ const yearEdicionDateTimePicker = new AirDatepicker(yearEdicionInput, {
     dateFormat: 'yyyy',
     timepicker: false,
     focusAction: false,
-    minDate: new Date().setFullYear(new Date().getFullYear() - 1),
+    minDate: new Date().setFullYear(new Date().getFullYear()),
     selectedDates: [new Date()],
     buttons: [
         {
@@ -337,13 +337,16 @@ closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
 confirmarEnviarEdicionesAnterioresBtn.addEventListener('click', async () => {
     if (!validarDatosEnvioEdicionesAnteriores()) return;
 
-    const response = await enviarEdicionAAnteriores(parseInt(yearEdicionInput.value), fechaEnvioEmailInformativoInput.value, fechaBorradoDatosInput.value);
+    const fechaEnvioEmailFormatoISO = convertToISODate(fechaEnvioEmailInformativoInput.value);
+    const fechaBorradoDatosFormatoISO = convertToISODate(fechaBorradoDatosInput.value);
+    const response = await enviarEdicionAAnteriores(parseInt(yearEdicionInput.value), fechaEnvioEmailFormatoISO, fechaBorradoDatosFormatoISO);
     if (response.status === 'success') {
         updateGeneralMessage('Edición enviada a ediciones anteriores exitosamente', 'text-success-02', true);
         modalEnviarEdicionesAnteriores.close();
         modalEdicionCreadaExito.showModal();
         setTimeout(() => {
             modalEdicionCreadaExito.close();
+            loadConfig();
         }, 4000);
     } else {
         updateGeneralMessage('Error enviando edición a ediciones anteriores', 'text-error-01');
@@ -705,13 +708,25 @@ function convertTimeToDate(timeString) {
     return date;
 }
 
-function triggerShakeError(element) {
-    const target = element || filesDropZone;
+/**
+ * Convert dd/MM/YYYY to YYYY-MM-DD
+ */
+function convertToISODate(string) {
+    if (!string || string.trim() === "") return null;
 
-    target.classList.add('shake-error');
-    setTimeout(() => {
-        target.classList.remove('shake-error');
-    }, 400);
+    const parts = string.split('/');
+
+    if (parts.length === 1) {
+        const year = parts[0].trim();
+        return (year.length === 4) ? `${year}-01-01` : null;
+    }
+
+    if (parts.length === 3) {
+        const [day, month, year] = parts;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
+    return null;
 }
 
 const updateOrderNumbers = () => {
