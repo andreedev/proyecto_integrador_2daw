@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/libraries/air-datepicker.min.css">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
     <link rel="stylesheet" href="../css/admin-eventos.css">
@@ -23,8 +24,7 @@
                     <p class="admin-module-name">Eventos</p>
                     <span class="admin-module-description">Gestiona el itinerario de eventos</span>
                 </div>
-                <div class="admin-header-main-action-button" id="btnAgregarEvento">
-                    <span class="icono-agregar"></span>
+                <div class="primary-button-01" id="btnAgregarEvento">
                     <span>Crear evento</span>
                 </div>
             </div>
@@ -33,22 +33,22 @@
                 <div class="box-shadow-01">
                     <div class="date-event">
                         <div class="buttons-and-calendar">
-                            <span class="button-day">Hoy</span>
+                            <div class="primary-button-02">Hoy</div>
                             <div class="date-container">
                                 <div class="left-arrow-container">
                                     <span class="left-arrow"></span>
                                 </div>
-                                <div class="calendar-with-date">
-                                    <span class="icon-calendar"></span>
-                                    <span class="date-display">dd/mm/yyyy</span>
-                                </div>
+                                <label class="generic-input-wrapper">
+                                    <input id="filtroFechaInput" class="generic-input">
+                                    <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
+                                </label>
                                 <div class="right-arrow-container">
                                     <span class="right-arrow"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="big-date">
-                            <span class="date">Viernes  9 de enero de 2026</span>
+                            <span class="date" id="fechaHumana">Viernes  9 de enero de 2026</span>
                         </div>
                     </div>
                     <div class="event-row">
@@ -156,13 +156,13 @@
             <div class="modal-agregar-evento-body">
     
                 <div class="nombre-evento-agregar-input">
-                    <label for="event-name" class="modal-agregar-evento-label">Nombre del evento</label>
+                    <label class="modal-agregar-evento-label">Nombre del evento</label>
                     <input type="text" id="eventNameAgregar" class="modal-agregar-evento-input" placeholder="Ingrese el nombre del evento">
                     <span class="nombre-error-message-agregar-evento"></span>
                 </div>
     
                 <div class="fecha-evento-agregar-input">
-                    <label for="event-date" class="modal-agregar-evento-label">Fecha</label>
+                    <label class="modal-agregar-evento-label">Fecha</label>
                     <div class="input-e-icono-calendario-agregar-evento">
                         <input type="text" id="eventDateAgregar" class="modal-agregar-evento-input-fecha" placeholder="DD/MM/AAAA">
                         <span class="icono-calendario-agregar-evento"></span>
@@ -172,19 +172,19 @@
     
                 <div class="hora-evento-agregar-input">
                     <div class="hora-inicio-evento-agregar">
-                        <label for="event-start-time" class="modal-agregar-evento-label">Hora de inicio</label>
+                        <label class="modal-agregar-evento-label">Hora de inicio</label>
                         <input type="time" id="eventStartTimeAgregar" class="modal-agregar-evento-hora-inicio-input">
                         <span class="hora-inicio-error-message-agregar-evento"></span>
                     </div>
                     <div class="hora-fin-evento-agregar">
-                        <label for="event-end-time" class="modal-agregar-evento-label">Hora de finalización</label>
+                        <label class="modal-agregar-evento-label">Hora de finalización</label>
                         <input type="time" id="eventEndTimeAgregar" class="modal-agregar-evento-hora-fin-input">
                         <span class="hora-fin-error-message-agregar-evento"></span>
                     </div>
                 </div>
     
                 <div class="ubicacion-evento-agregar-input">
-                    <label for="event-location" class="modal-agregar-evento-label">Ubicación</label>
+                    <label class="modal-agregar-evento-label">Ubicación</label>
                     <div class="input-e-icono-location-agregar-evento">
                         <span class="icono-ubicacion-agregar-evento"></span>
                         <input type="text" id="eventLocationAgregar" class="modal-agregar-evento-input-ubicacion" placeholder="Ingrese la ubicación del evento">
@@ -193,13 +193,13 @@
                 </div>
     
                 <div class="descripcion-evento-agregar-input">
-                    <label for="event-description" class="modal-agregar-evento-label">Descripción</label>
+                    <label class="modal-agregar-evento-label">Descripción</label>
                     <textarea id="eventDescriptionAgregar" class="modal-agregar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
                     <span class="descripcion-error-message-agregar-evento"></span>
                 </div>
     
                 <div class="img-evento-agregar-container">
-                    <label for="event-image" class="modal-agregar-evento-label">Imagen del evento</label>
+                    <label class="modal-agregar-evento-label">Imagen del evento</label>
     
                     <div class="modal-agregar-evento-file-input-background-drop-zone" id="imgAgregarEventoDropZone">
                         <input type="file" id="eventImageAgregar" class="modal-agregar-evento-file-input hidden-force" accept="image/*">
@@ -230,13 +230,13 @@
             <div class="modal-editar-evento-body">
     
                 <div class="nombre-evento-editar-input">
-                    <label for="event-name" class="modal-editar-evento-label">Nombre del evento</label>
+                    <label class="modal-editar-evento-label">Nombre del evento</label>
                     <input type="text" id="eventNameEditar" class="modal-editar-evento-input" placeholder="Ingrese el nombre del evento">
                     <span class="nombre-error-message-editar-evento"></span>
                 </div>
     
                 <div class="fecha-evento-editar-input">
-                    <label for="event-date" class="modal-editar-evento-label">Fecha</label>
+                    <label class="modal-editar-evento-label">Fecha</label>
                     <div class="input-e-icono-calendario-editar-evento">
                         <input type="text" id="eventDateEditar" class="modal-editar-evento-input-fecha" placeholder="DD/MM/AAAA">
                         <span class="icono-calendario-editar-evento"></span>
@@ -246,19 +246,19 @@
     
                 <div class="hora-evento-editar-input">
                     <div class="hora-inicio-evento-editar">
-                        <label for="event-start-time" class="modal-editar-evento-label">Hora de inicio</label>
+                        <label class="modal-editar-evento-label">Hora de inicio</label>
                         <input type="time" id="eventStartTimeEditar" class="modal-editar-evento-hora-inicio-input">
                         <span class="hora-inicio-error-message-editar-evento"></span>
                     </div>
                     <div class="hora-fin-evento-editar">
-                        <label for="event-end-time" class="modal-editar-evento-label">Hora de finalización</label>
+                        <label class="modal-editar-evento-label">Hora de finalización</label>
                         <input type="time" id="eventEndTimeEditar" class="modal-editar-evento-hora-fin-input">
                         <span class="hora-fin-error-message-editar-evento"></span>
                     </div>
                 </div>
     
                 <div class="ubicacion-evento-editar-input">
-                    <label for="event-location" class="modal-editar-evento-label">Ubicación</label>
+                    <label class="modal-editar-evento-label">Ubicación</label>
                     <div class="input-e-icono-location-editar-evento">
                         <span class="icono-ubicacion-editar-evento"></span>
                         <input type="text" id="eventLocationEditar" class="modal-editar-evento-input-ubicacion" placeholder="Ingrese la ubicación del evento">
@@ -267,13 +267,13 @@
                 </div>
     
                 <div class="descripcion-evento-editar-input">
-                    <label for="event-description" class="modal-editar-evento-label">Descripción</label>
+                    <label class="modal-editar-evento-label">Descripción</label>
                     <textarea id="eventDescriptionEditar" class="modal-editar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
                     <span class="descripcion-error-message-editar-evento"></span>
                 </div>
     
                 <div class="img-evento-editar-container">
-                    <label for="event-image" class="modal-editar-evento-label">Imagen del evento</label>
+                    <label class="modal-editar-evento-label">Imagen del evento</label>
     
                     <div class="modal-editar-evento-file-input-background" id="imgEditarEvento">
                         <input type="file" id="eventImageEditar" class="modal-editar-evento-file-input hidden-force" accept="image/*">
@@ -297,6 +297,7 @@
     <script src="../js/api-service.js"></script>
     <script src="../js/check-session.js"></script>
     <script src="../js/menu-admin.js"></script>
+    <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/admin-eventos.js"></script>
 </body>
 </html>

@@ -42,8 +42,8 @@ const ubicacionErrorMessageEditarEvento = document.querySelector('.ubicacion-err
 const descripcionErrorMessageEditarEvento = document.querySelector('.descripcion-error-message-editar-evento');
 const imgErrorMessageEditarEvento = document.querySelector('.img-error-message-editar-evento');
 
-
-
+const filtroFechaInput = document.getElementById('filtroFechaInput');
+const fechaHumana = document.getElementById('fechaHumana');
 
 // Mensajes de error si se pierde el foco
 eventNameAgregar.addEventListener('blur', () => {
@@ -182,5 +182,49 @@ btnEditarEvento.addEventListener('click', () => {
     modalEditarEvento.showModal();
 });
 
+const filtroFechaDateTimePicker = new AirDatepicker(filtroFechaInput, {
+    autoClose: true,
+    dateFormat: 'dd/MM/yyyy',
+    buttons: ['today', 'clear'],
+    locale: {
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        daysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        today: 'Hoy',
+        clear: 'Limpiar',
+        firstDay: 1
+    },
+    buttons: [
+        {
+            content: 'Hoy',
+            className: 'custom-today-button',
+            onClick: (dp) => {
+                let date = new Date();
+                dp.selectDate(date);
+                dp.setViewDate(date);
+                dp.hide();
+            }
+        },
+        'clear'
+    ],
+    onSelect({date}) {
+        console.log('fechaEventoDateTimePicker changed');
+        fechaHumana.textContent= date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+});
+filtroFechaDateTimePicker.selectDate(new Date(), { silent: true });
+
+function renderizarEventos(eventos) {
+}
+
+async function cargarEventos() {
+    const response = await listarEventos();
+    if (response.status === 'success') {
+        renderizarEventos(response.data);
+    }
+}
 
 
+cargarEventos();
