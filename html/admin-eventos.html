@@ -33,7 +33,7 @@
                 <div class="box-shadow-01">
                     <div class="date-event">
                         <div class="buttons-and-calendar">
-                            <div class="primary-button-02">Hoy</div>
+                            <div class="primary-button-02" id="todayBtn">Hoy</div>
                             <div class="date-container">
                                 <div class="left-arrow-container">
                                     <span class="left-arrow"></span>
@@ -48,33 +48,35 @@
                             </div>
                         </div>
                         <div class="big-date">
-                            <span class="date" id="fechaHumana">Viernes  9 de enero de 2026</span>
+                            <span class="date" id="fechaHumana"></span>
                         </div>
                     </div>
-                    <div class="event-row">
-                        <div class="event-start-duration">
-                            <span class="event-start-time fw-500">10:00</span>
-                            <span class="event-duration">2h</span>
-                        </div>
-                        <div class="img-event">
-                            <img class="img" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen del evento">
-                        </div>
-                        <div class="event-info">
-                            <span class="event-name">Nombre del evento</span>
-                            <div class="event-hour">
-                                <span class="icono-hora"></span>
-                                <span class="event-time-info">10:00 - 12:00</span>
+                    <div id="eventsContainer">
+                        <div class="event-row">
+                            <div class="event-start-duration">
+                                <span class="event-start-time fw-500">10:00</span>
+                                <span class="event-duration">2h</span>
                             </div>
-                            <div class="event-location">
-                                <span class="icono-ubicacion"></span>
-                                <span class="event-location-info">Ubicación del evento</span>
+                            <div class="img-event">
+                                <img class="img" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen del evento">
                             </div>
+                            <div class="event-info">
+                                <span class="event-name">Nombre del evento</span>
+                                <div class="event-hour">
+                                    <span class="icono-hora"></span>
+                                    <span class="event-time-info">10:00 - 12:00</span>
+                                </div>
+                                <div class="event-location">
+                                    <span class="icono-ubicacion"></span>
+                                    <span class="event-location-info">Ubicación del evento</span>
+                                </div>
+                            </div>
+                            <span class="vertical-line"></span>
                         </div>
-                        <span class="vertical-line"></span>
-                    </div>
-                    <div class="event-free-time">
-                        <span class="icon-time"></span>
-                        <span class="free-time-text">30min libre</span>
+                        <div class="event-free-time">
+                            <span class="icon-time"></span>
+                            <span class="free-time-text">30min libre</span>
+                        </div>
                     </div>
                 </div>
                 

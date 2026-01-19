@@ -44,6 +44,8 @@ const imgErrorMessageEditarEvento = document.querySelector('.img-error-message-e
 
 const filtroFechaInput = document.getElementById('filtroFechaInput');
 const fechaHumana = document.getElementById('fechaHumana');
+const todayBtn = document.getElementById('todayBtn');
+const eventsContainer = document.getElementById('eventsContainer');
 
 // Mensajes de error si se pierde el foco
 eventNameAgregar.addEventListener('blur', () => {
@@ -211,12 +213,107 @@ const filtroFechaDateTimePicker = new AirDatepicker(filtroFechaInput, {
     ],
     onSelect({date}) {
         console.log('fechaEventoDateTimePicker changed');
-        fechaHumana.textContent= date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+        fechaHumana.textContent= humanizeDate(date);
     }
 });
-filtroFechaDateTimePicker.selectDate(new Date(), { silent: true });
+setTodayDate();
 
+todayBtn.addEventListener('click', () => {
+    setTodayDate()
+});
+
+function setTodayDate() {
+    const today = new Date();
+    filtroFechaDateTimePicker.selectDate(today);
+    filtroFechaDateTimePicker.setViewDate(today);
+    fechaHumana.textContent= humanizeDate(today);
+}
+
+/**
+ * Renderizar eventos
+ */
 function renderizarEventos(eventos) {
+    eventsContainer.replaceChildren();
+
+    eventos.forEach(evento => {
+        const eventRow = document.createElement('div');
+        eventRow.classList.add('event-row');
+
+        const eventStartDuration = document.createElement('div');
+        eventStartDuration.classList.add('event-start-duration');
+
+        const eventStartTime = document.createElement('span');
+        eventStartTime.classList.add('event-start-time', 'fw-500');
+        eventStartTime.textContent = evento.horaInicioEvento.substring(0,5);
+
+        const startTime = new Date(`1970-01-01T${evento.horaInicioEvento}Z`);
+        const endTime = new Date(`1970-01-01T${evento.horaFinEvento}Z`);
+        const durationInHours = (endTime - startTime) / (1000 * 60 * 60);
+        const eventDuration = document.createElement('span');
+        eventDuration.classList.add('event-duration');
+        eventDuration.textContent = `${durationInHours}h`;
+
+        eventStartDuration.appendChild(eventStartTime);
+        eventStartDuration.appendChild(eventDuration);
+
+        const imgEvent = document.createElement('div');
+        imgEvent.classList.add('img-event');
+
+        const img = document.createElement('img');
+        img.classList.add('img');
+        img.src = evento.rutaImagenEvento;
+        img.alt = 'Imagen del evento';
+
+        imgEvent.appendChild(img);
+
+        const eventInfo = document.createElement('div');
+        eventInfo.classList.add('event-info');
+
+        const eventName = document.createElement('span');
+        eventName.classList.add('event-name');
+        eventName.textContent = evento.nombreEvento;
+
+        const eventHour = document.createElement('div');
+        eventHour.classList.add('event-hour');
+
+        const iconoHora = document.createElement('span');
+        iconoHora.classList.add('icono-hora');
+
+        const eventTimeInfo = document.createElement('span');
+        eventTimeInfo.classList.add('event-time-info');
+        eventTimeInfo.textContent = `${evento.horaInicioEvento.substring(0,5)} - ${evento.horaFinEvento.substring(0,5)}`;
+
+        eventHour.appendChild(iconoHora);
+        eventHour.appendChild(eventTimeInfo);
+
+        const eventLocation = document.createElement('div');
+        eventLocation.classList.add('event-location');
+
+        const iconoUbicacion = document.createElement('span');
+        iconoUbicacion.classList.add('icono-ubicacion');
+
+        const eventLocationInfo = document.createElement('span');
+        eventLocationInfo.classList.add('event-location-info');
+        eventLocationInfo.textContent = evento.ubicacionEvento;
+
+        eventLocation.appendChild(iconoUbicacion);
+        eventLocation.appendChild(eventLocationInfo);
+
+        eventInfo.appendChild(eventName);
+        eventInfo.appendChild(eventHour);
+        eventInfo.appendChild(eventLocation);
+
+        const verticalLine = document.createElement('span');
+        verticalLine.classList.add('vertical-line');
+
+        eventRow.appendChild(eventStartDuration);
+        eventRow.appendChild(imgEvent);
+        eventRow.appendChild(eventInfo);
+        eventRow.appendChild(verticalLine);
+
+        eventsContainer.appendChild(eventRow);
+
+    });
 }
 
 async function cargarEventos() {
