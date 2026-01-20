@@ -109,6 +109,22 @@
         </div>
     </div>
 
+    <div class="modal-confirmar-delete hidden-force" id="confirmDeleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <span class="confirmar-delete-message" id="confirmDeleteMessage">¿Estás seguro de que deseas eliminar esta categoría?</span>
+                <div class="modal-actions">
+                    <button id="cancelDeleteBtn" class="btn-cancelar">Cancelar</button>
+                    <button id="confirmDeleteBtn" class="btn-eliminar">Eliminar</button>  
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/api-service.js"></script>
     <script src="../js/check-session.js"></script>
     <script src="../js/menu-admin.js"></script>
