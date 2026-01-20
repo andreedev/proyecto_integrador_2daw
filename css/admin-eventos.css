@@ -670,12 +670,6 @@ dialog{
 
 }
 
-.nombre-error-message-agregar-evento{
-    font-size:12px;
-    color: var(--error-03);
-    height:14px;
-}
-
 .fecha-evento-agregar-input{
     display: flex;
     flex-direction: column;
@@ -696,14 +690,7 @@ dialog{
 
 }
 
-.icono-calendario-agregar-evento{
-    width:24px;
-    height:24px;
-    mask-image: url("../img/icon/CalendarIcon.svg");
-    mask-size: contain;
-    mask-repeat: no-repeat;
-    background-color: var(--neutral-01);
-}
+.icono-cale
 
 .fecha-error-message-agregar-evento{
     font-size:12px;
@@ -831,13 +818,13 @@ dialog{
 .modal-agregar-evento-file-input-background-drop-zone{
     width:100%;
     height:120px;
-    border: 1px dashed var(--primary-03);
-    background-color: var(--neutral-09);
+    border: 1px dashed var(--neutral-02);
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    gap:8px;
 }
 
 .icono-subir-imagen-agregar-evento-background{
@@ -1122,7 +1109,7 @@ dialog{
 .icono-cambiar-imagen-editar-evento{
     width:32px;
     height:32px;
-    mask-image: url("../img/icon/ReplaceIcon.svg");
+    mask-image: url("../img/icon/icon-refresh.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
     background-color: var(--neutral-03);

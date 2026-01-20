@@ -9,18 +9,10 @@ const modalAgregarEvento = document.getElementById('modalAgregarEvento');
 
 const modalEditarEvento = document.getElementById('modalEditarEvento');
 
-const eventNameAgregar = document.getElementById('eventNameAgregar');
-const eventDateAgregar = document.getElementById('eventDateAgregar');
-const eventStartTimeAgregar = document.getElementById('eventStartTimeAgregar');
-const eventEndTimeAgregar = document.getElementById('eventEndTimeAgregar');
-const eventLocationAgregar = document.getElementById('eventLocationAgregar');
-const eventDescriptionAgregar = document.getElementById('eventDescriptionAgregar');
-const eventImageAgregar = document.getElementById('eventImageAgregar');
-
 const nombreErrorMessageAgregarEvento = document.querySelector('.nombre-error-message-agregar-evento');
-const fechaErrorMessageAgregarEvento = document.querySelector('.fecha-error-message-agregar-evento');
-const horaInicioErrorMessageAgregarEvento = document.querySelector('.hora-inicio-error-message-agregar-evento');
-const horaFinErrorMessageAgregarEvento = document.querySelector('.hora-fin-error-message-agregar-evento');
+const fechaErrorMessageAgregarEvento = document.getElementById('msgErrorFechaAgregarEvento');
+
+
 const ubicacionErrorMessageAgregarEvento = document.querySelector('.ubicacion-error-message-agregar-evento');
 const descripcionErrorMessageAgregarEvento = document.querySelector('.descripcion-error-message-agregar-evento');
 const imgErrorMessageAgregarEvento = document.querySelector('.img-error-message-agregar-evento');
@@ -47,6 +39,30 @@ const fechaHumana = document.getElementById('fechaHumana');
 const todayBtn = document.getElementById('todayBtn');
 const eventsContainer = document.getElementById('eventsContainer');
 
+const imgDetalleEvento = document.getElementById('imgDetalleEvento');
+const nombreDetalleEvento = document.getElementById('nombreDetalleEvento');
+const fechaDetalleEvento = document.getElementById('fechaDetalleEvento');
+const horaInicioDetalleEvento = document.getElementById('horaInicioDetalleEvento');
+const horaFinDetalleEvento = document.getElementById('horaFinDetalleEvento');
+const ubicacionDetalleEvento = document.getElementById('ubicacionDetalleEvento');
+const descripcionDetalleEvento = document.getElementById('descripcionDetalleEvento');
+
+const eventNameAgregar = document.getElementById('eventNameAgregar');
+const fechaEventoAgregar = document.getElementById('fechaEventoAgregar');
+
+const horaInicioEventoAgregar = document.getElementById('horaInicioEventoAgregar');
+const msgErrorHoraInicioAgregar = document.getElementById('msgErrorHoraInicioAgregar');
+
+const horaFinEventoAgregar = document.getElementById('horaFinEventoAgregar');
+const msgErrorHoraFinAgregar = document.getElementById('msgErrorHoraFinAgregar');
+
+const ubicacionEventoAgregar = document.getElementById('ubicacionEventoAgregar');
+const descripcionEventoAgregar = document.getElementById('descripcionEventoAgregar');
+const imagenEventoAgregar = document.getElementById('imagenEventoAgregar');
+
+const btnConfirmarAgregarEvento = document.getElementById('btnConfirmarAgregarEvento');
+
+
 // Mensajes de error si se pierde el foco
 eventNameAgregar.addEventListener('blur', () => {
     if(eventNameAgregar.value.trim() === '') {
@@ -56,48 +72,48 @@ eventNameAgregar.addEventListener('blur', () => {
     }
 });
 
-eventDateAgregar.addEventListener('blur', () => {
-    if(eventDateAgregar.value.trim() === '') {
+fechaEventoAgregar.addEventListener('blur', () => {
+    if(fechaEventoAgregar.value.trim() === '') {
         fechaErrorMessageAgregarEvento.textContent = 'La fecha del evento es obligatoria.';
     } else {
         fechaErrorMessageAgregarEvento.textContent = '';
     }
 });
 
-eventStartTimeAgregar.addEventListener('blur', () => {
-    if(eventStartTimeAgregar.value.trim() === '') {
-        horaInicioErrorMessageAgregarEvento.textContent = 'La hora de inicio es obligatoria.';
+horaInicioEventoAgregar.addEventListener('blur', () => {
+    if(horaInicioEventoAgregar.value.trim() === '') {
+        msgErrorHoraInicioAgregar.textContent = 'La hora de inicio es obligatoria.';
     } else {
-        horaInicioErrorMessageAgregarEvento.textContent = '';
+        msgErrorHoraInicioAgregar.textContent = '';
     }
 });
 
-eventEndTimeAgregar.addEventListener('blur', () => {
-    if(eventEndTimeAgregar.value.trim() === '') {
-        horaFinErrorMessageAgregarEvento.textContent = 'La hora de finalización es obligatoria.';
+horaFinEventoAgregar.addEventListener('blur', () => {
+    if(horaFinEventoAgregar.value.trim() === '') {
+        msgErrorHoraFinAgregar.textContent = 'La hora de finalización es obligatoria.';
     } else {
-        horaFinErrorMessageAgregarEvento.textContent = '';
+        msgErrorHoraFinAgregar.textContent = '';
     }
 });
 
-eventLocationAgregar.addEventListener('blur', () => {
-    if(eventLocationAgregar.value.trim() === '') {
+ubicacionEventoAgregar.addEventListener('blur', () => {
+    if(ubicacionEventoAgregar.value.trim() === '') {
         ubicacionErrorMessageAgregarEvento.textContent = 'La ubicación del evento es obligatoria.';
     } else {
         ubicacionErrorMessageAgregarEvento.textContent = '';
     }
 });
 
-eventDescriptionAgregar.addEventListener('blur', () => {
-    if(eventDescriptionAgregar.value.trim() === '') {
+descripcionEventoAgregar.addEventListener('blur', () => {
+    if(descripcionEventoAgregar.value.trim() === '') {
         descripcionErrorMessageAgregarEvento.textContent = 'La descripción del evento es obligatoria.';
     } else {
         descripcionErrorMessageAgregarEvento.textContent = '';
     }
 });
 
-eventImageAgregar.addEventListener('blur', () => {
-    if(eventImageAgregar.files.length === 0) {
+imagenEventoAgregar.addEventListener('blur', () => {
+    if(imagenEventoAgregar.files.length === 0) {
         imgErrorMessageAgregarEvento.textContent = 'La imagen del evento es obligatoria.';
     } else {
         imgErrorMessageAgregarEvento.textContent = '';
@@ -160,7 +176,6 @@ eventImageEditar.addEventListener('blur', () => {
     }   
 });
 
-
 btnEliminarEvento.addEventListener('click', () => {
    modalVerDetalleEvento.close();
    eventRows[0].remove();
@@ -182,6 +197,10 @@ btnAgregarEvento.addEventListener('click', () => {
 btnEditarEvento.addEventListener('click', () => {
     modalVerDetalleEvento.close();
     modalEditarEvento.showModal();
+});
+
+btnConfirmarAgregarEvento.addEventListener('click', () => {
+    agregarEventoEvent();
 });
 
 const filtroFechaDateTimePicker = new AirDatepicker(filtroFechaInput, {
@@ -212,22 +231,143 @@ const filtroFechaDateTimePicker = new AirDatepicker(filtroFechaInput, {
         'clear'
     ],
     onSelect({date}) {
-        console.log('fechaEventoDateTimePicker changed');
         fechaHumana.textContent= humanizeDate(date);
+        cargarEventos(convertDateToISOString(date));
     }
 });
-setTodayDate();
+
+setTodayDate(filtroFechaDateTimePicker);
 
 todayBtn.addEventListener('click', () => {
-    setTodayDate()
+    setTodayDate(filtroFechaDateTimePicker)
 });
 
-function setTodayDate() {
+function setTodayDate(picker) {
     const today = new Date();
-    filtroFechaDateTimePicker.selectDate(today);
-    filtroFechaDateTimePicker.setViewDate(today);
-    fechaHumana.textContent= humanizeDate(today);
+    picker.selectDate(today);
+    picker.setViewDate(today);
+    if (picker === filtroFechaDateTimePicker) {
+        fechaHumana.textContent= humanizeDate(today);
+    }
 }
+
+const fechaEventoAgregarDatePicker = new AirDatepicker(fechaEventoAgregar, {
+    container: modalAgregarEvento,
+    autoClose: true,
+    dateFormat: 'yyyy-MM-dd',
+    buttons: ['today', 'clear'],
+    locale: {
+        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        daysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        daysMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        today: 'Hoy',
+        clear: 'Limpiar',
+        firstDay: 1
+    },
+    buttons: [
+        {
+            content: 'Hoy',
+            className: 'custom-today-button',
+            onClick: (dp) => {
+                let date = new Date();
+                dp.selectDate(date);
+                dp.setViewDate(date);
+                dp.hide();
+            }
+        },
+        'clear'
+    ],
+    onSelect({date}) {
+
+    }
+});
+
+setTodayDate(fechaEventoAgregarDatePicker);
+
+const horaInicioDateTimePicker = new AirDatepicker(horaInicioEventoAgregar, {
+    container: modalAgregarEvento,
+    timepicker: true,
+    onlyTimepicker: true,
+    startDate: new Date().setHours(8, 0, 0),
+    minHours: 7,
+    maxHours: 22,
+    timeFormat: 'HH:mm',
+    minutesStep: 15,
+    buttons: [
+        {
+            content: 'Ahora',
+            onClick: (dp) => {
+                let now = new Date();
+                let currentHour = now.getHours();
+
+                if (currentHour >= 8 && currentHour <= 20) {
+                    dp.selectDate(now);
+                } else {
+                    let startRange = new Date();
+                    startRange.setHours(8, 0);
+                    dp.selectDate(startRange);
+                }
+                dp.hide();
+            }
+        },
+        {
+            content: 'Limpiar',
+            onClick: (dp) => {
+                dp.clear();
+                dp.hide();
+            }
+        }
+    ],
+    onlyTimepicker: true,
+    onSelect({date, formattedDate}) {
+    }
+});
+
+setTodayDate(horaInicioDateTimePicker);
+
+const horaFinEventoAgregarDatePicker = new AirDatepicker(horaFinEventoAgregar, {
+    container: modalAgregarEvento,
+    timepicker: true,
+    onlyTimepicker: true,
+    startDate: new Date().setHours(8, 0, 0),
+    minHours: 7,
+    maxHours: 22,
+    timeFormat: 'HH:mm',
+    minutesStep: 15,
+    buttons: [
+        {
+            content: 'Ahora',
+            onClick: (dp) => {
+                let now = new Date();
+                let currentHour = now.getHours();
+
+                if (currentHour >= 8 && currentHour <= 20) {
+                    dp.selectDate(now);
+                } else {
+                    let startRange = new Date();
+                    startRange.setHours(8, 0);
+                    dp.selectDate(startRange);
+                }
+                dp.hide();
+            }
+        },
+        {
+            content: 'Limpiar',
+            onClick: (dp) => {
+                dp.clear();
+                dp.hide();
+            }
+        }
+    ],
+    onlyTimepicker: true,
+    onSelect({date, formattedDate}) {
+    }
+});
+
+setTodayDate(horaFinEventoAgregarDatePicker);
+
 
 /**
  * Renderizar eventos
@@ -235,9 +375,22 @@ function setTodayDate() {
 function renderizarEventos(eventos) {
     eventsContainer.replaceChildren();
 
+    // calcular espacios vacios entre eventos
+
     eventos.forEach(evento => {
-        const eventRow = document.createElement('div');
-        eventRow.classList.add('event-row');
+        const eventContainer = document.createElement('div');
+        eventContainer.classList.add('event-row');
+        eventContainer.addEventListener('click', () => {
+            imgDetalleEvento.src = evento.rutaImagenEvento;
+            nombreDetalleEvento.textContent = evento.nombreEvento;
+            const fechaEvento = convertISOStringToDate(evento.fechaEvento);
+            fechaDetalleEvento.textContent = humanizeDate(fechaEvento);
+            horaInicioDetalleEvento.textContent = evento.horaInicioEvento.substring(0,5);
+            horaFinDetalleEvento.textContent = evento.horaFinEvento.substring(0,5);
+            ubicacionDetalleEvento.textContent = evento.ubicacionEvento;
+            descripcionDetalleEvento.textContent = evento.descripcionEvento;
+            modalVerDetalleEvento.showModal();
+        });
 
         const eventStartDuration = document.createElement('div');
         eventStartDuration.classList.add('event-start-duration');
@@ -306,22 +459,106 @@ function renderizarEventos(eventos) {
         const verticalLine = document.createElement('span');
         verticalLine.classList.add('vertical-line');
 
-        eventRow.appendChild(eventStartDuration);
-        eventRow.appendChild(imgEvent);
-        eventRow.appendChild(eventInfo);
-        eventRow.appendChild(verticalLine);
+        eventContainer.appendChild(eventStartDuration);
+        eventContainer.appendChild(imgEvent);
+        eventContainer.appendChild(eventInfo);
+        eventContainer.appendChild(verticalLine);
 
-        eventsContainer.appendChild(eventRow);
+        eventsContainer.appendChild(eventContainer);
+
 
     });
 }
 
-async function cargarEventos() {
-    const response = await listarEventos();
+async function cargarEventos(date='') {
+    const response = await listarEventos(date);
     if (response.status === 'success') {
         renderizarEventos(response.data);
     }
 }
 
+const imagenEventoDynamicDropZone =  setupDynamicDropZone(
+    document.getElementById('imagenEventoAgregar'),
+    ['PNG', 'JPG', 'JPEG'],
+    5* 1024 * 1024, // 5MB
+    (file) => {
+        console.log('Archivo agregado:', file.name);
+    }
+);
 
-cargarEventos();
+/**
+ * Agregar evento
+ */
+async function agregarEventoEvent() {
+    let isValid = true;
+
+    if (eventNameAgregar.value.trim() === '') {
+        nombreErrorMessageAgregarEvento.textContent = 'El nombre del evento es obligatorio.';
+        isValid = false;
+    } else {
+        nombreErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (fechaEventoAgregar.value.trim() === '') {
+        fechaErrorMessageAgregarEvento.textContent = 'La fecha del evento es obligatoria.';
+        isValid = false;
+    } else {
+        fechaErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (horaInicioEventoAgregar.value.trim() === '') {
+        msgErrorHoraInicioAgregar.textContent = 'La hora de inicio es obligatoria.';
+        isValid = false;
+    } else {
+        msgErrorHoraInicioAgregar.textContent = '';
+    }
+
+    if (horaFinEventoAgregar.value.trim() === '') {
+        msgErrorHoraFinAgregar.textContent = 'La hora de finalización es obligatoria.';
+        isValid = false;
+    } else {
+        msgErrorHoraFinAgregar.textContent = '';
+    }
+
+    if (ubicacionEventoAgregar.value.trim() === '') {
+        ubicacionErrorMessageAgregarEvento.textContent = 'La ubicación del evento es obligatoria.';
+        isValid = false;
+    } else {
+        ubicacionErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (descripcionEventoAgregar.value.trim() === '') {
+        descripcionErrorMessageAgregarEvento.textContent = 'La descripción del evento es obligatoria.';
+        isValid = false;
+    } else {
+        descripcionErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (!isValid) {
+        return;
+    }
+
+    const nombre = eventNameAgregar.value.trim();
+    const fecha = fechaEventoAgregar.value.trim();
+    const horaInicio = horaInicioEventoAgregar.value.trim();
+    const horaFin = horaFinEventoAgregar.value.trim();
+    const ubicacion = ubicacionEventoAgregar.value.trim();
+    const descripcion = descripcionEventoAgregar.value.trim();
+    const imagen = imagenEventoDynamicDropZone.getFile();
+
+    let responseUploadFile = await subirArchivo(imagen);
+    if (responseUploadFile.status !== 'success') throw new Error('Error al subir la imagen del evento');
+    const idArchivo = responseUploadFile.data.idArchivo;
+
+    let response = await crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivo);
+    if (response.status !== 'success') throw new Error('Error al crear el evento');
+
+    modalAgregarEvento.close();
+
+    eventNameAgregar.value = '';
+    ubicacionEventoAgregar.value = '';
+    descripcionEventoAgregar.value = '';
+    imagenEventoDynamicDropZone.clear();
+
+    cargarEventos();
+}

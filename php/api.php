@@ -109,6 +109,10 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             listarEventos();
             break;
+        case 'crearEvento':
+            validarRol(['organizador', 'participante']);
+            crearEvento();
+            break;
         default:
             break;
     }
@@ -1185,12 +1189,17 @@ function crearNoticia(){
 function listarEventos(){
     global $conexion;
 
+    $filtroFecha = isset($_POST['filtroFecha']) && !empty($_POST['filtroFecha']) ? $_POST['filtroFecha'] : null;
+    $filtrosSql = "";
+    if ($filtroFecha) {
+        $filtrosSql .= " AND e.fecha = '" . $conexion->real_escape_string($filtroFecha) . "' ";
+    }
+
     $query = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
                 e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
                 e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento
               FROM evento e
-              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo
-              ORDER BY e.fecha DESC, e.hora_inicio DESC";
+              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . "ORDER BY e.fecha DESC, e.hora_inicio DESC";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();
@@ -1209,6 +1218,30 @@ function listarEventos(){
         "status" => "success",
         "data" => $eventos
     ]);
+}
+
+/**
+ * Crear evento
+ */
+function crearEvento(){
+    global $conexion;
+
+    $nombre = $_POST['nombreEvento'];
+    $descripcion = $_POST['descripcionEvento'];
+    $ubicacion = $_POST['ubicacionEvento'];
+    $fecha = $_POST['fechaEvento'];
+    $horaInicio = $_POST['horaInicioEvento'];
+    $horaFin = $_POST['horaFinEvento'];
+    $idArchivoImagen = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
+
+    $stmt = $conexion->prepare("INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_archivo_imagen) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssi", $nombre, $descripcion, $ubicacion, $fecha, $horaInicio, $horaFin, $idArchivoImagen);
+
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Evento creado correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al crear el evento"]);
+    }
 }
 
 cerrarConexion();

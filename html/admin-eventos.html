@@ -94,16 +94,16 @@
 
             <div class="modal-ver-detalle-body">
                 <div class="modal-ver-detalle-img">
-                    <img class="img-modal-detalle-evento" src="../img/Foto_corto.png" alt="Imagen del evento">
+                    <img class="img-modal-detalle-evento" src="../img/Foto_corto.png" alt="Imagen del evento" id="imgDetalleEvento">
                 </div>
-                <p class="modal-ver-detalle-event-name">Nombre del evento</p>
+                <p class="modal-ver-detalle-event-name" id="nombreDetalleEvento">Nombre del evento</p>
                 <div class="modal-ver-detalle-event-fecha">
                     <div class="icono-calendario-background">
                         <span class="icono-calendario-ver-detalle"></span>
                     </div>
                     <div class="event-fecha">
                         <span class="fecha">Fecha</span>
-                        <span class="date">9 de enero de 2026</span>
+                        <span class="date" id="fechaDetalleEvento">25/12/2024</span>
                     </div>
                 </div>
                 <div class="modal-ver-detalle-event-time">
@@ -112,7 +112,7 @@
                     </div>
                     <div class="event-time">
                         <span class="hora">Hora</span>
-                        <span class="time">10:00 - 12:00</span>
+                        <div class="time"><span id="horaInicioDetalleEvento">10:00</span> - <span id="horaFinDetalleEvento">12:00</span></div>
                     </div>
                 </div>
                 <div class="modal-ver-detalle-event-location">
@@ -121,13 +121,13 @@
                     </div>
                     <div class="event-location-info">
                         <span class="ubicacion">Ubicación</span>
-                        <span class="location">Ubicación del evento</span>
+                        <span class="location" id="ubicacionDetalleEvento">Ubicación del evento</span>
                     </div>
                 </div>
                 <div class="modal-ver-detalle-descripcion">
                     <h2 class="modal-ver-detalle-event-description-title">Descripción</h2>
                     <div class="descripcion-background">
-                        <p class="modal-ver-detalle-event-description-info">Descripción del evento. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="modal-ver-detalle-event-description-info" id="descripcionDetalleEvento">Descripción del evento. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     </div>
                 </div>
                 <div class="divider-line"></div>
@@ -160,28 +160,34 @@
                 <div class="nombre-evento-agregar-input">
                     <label class="modal-agregar-evento-label">Nombre del evento</label>
                     <input type="text" id="eventNameAgregar" class="modal-agregar-evento-input" placeholder="Ingrese el nombre del evento">
-                    <span class="nombre-error-message-agregar-evento"></span>
+                    <span class="nombre-error-message-agregar-evento fs-12px text-error-01"></span>
                 </div>
     
                 <div class="fecha-evento-agregar-input">
                     <label class="modal-agregar-evento-label">Fecha</label>
-                    <div class="input-e-icono-calendario-agregar-evento">
-                        <input type="text" id="eventDateAgregar" class="modal-agregar-evento-input-fecha" placeholder="DD/MM/AAAA">
-                        <span class="icono-calendario-agregar-evento"></span>
-                    </div>
-                    <span class="fecha-error-message-agregar-evento"></span>
+                    <label class="generic-input-wrapper">
+                        <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
+                        <input id="fechaEventoAgregar" class="generic-input" placeholder="DD/MM/AAAA">
+                    </label>
+                    <span id="msgErrorFechaAgregarEvento" class="fs-12px text-error-01"></span>
                 </div>
     
                 <div class="hora-evento-agregar-input">
                     <div class="hora-inicio-evento-agregar">
                         <label class="modal-agregar-evento-label">Hora de inicio</label>
-                        <input type="time" id="eventStartTimeAgregar" class="modal-agregar-evento-hora-inicio-input">
-                        <span class="hora-inicio-error-message-agregar-evento"></span>
+                        <label class="generic-input-wrapper">
+                            <span class="icon-clock w-20px h-20px bg-neutral-03"></span>
+                            <input class="generic-input" type="text" id="horaInicioEventoAgregar" placeholder="HH:MM">
+                        </label>
+                        <span id="msgErrorHoraInicioAgregar" class="fs-12px text-error-01"></span>
                     </div>
                     <div class="hora-fin-evento-agregar">
                         <label class="modal-agregar-evento-label">Hora de finalización</label>
-                        <input type="time" id="eventEndTimeAgregar" class="modal-agregar-evento-hora-fin-input">
-                        <span class="hora-fin-error-message-agregar-evento"></span>
+                        <label class="generic-input-wrapper">
+                            <span class="icon-clock w-20px h-20px bg-neutral-03"></span>
+                            <input class="generic-input" type="text" id="horaFinEventoAgregar" placeholder="HH:MM">
+                        </label>
+                        <span id="msgErrorHoraFinAgregar" class="fs-12px text-error-01"></span>
                     </div>
                 </div>
     
@@ -189,33 +195,25 @@
                     <label class="modal-agregar-evento-label">Ubicación</label>
                     <div class="input-e-icono-location-agregar-evento">
                         <span class="icono-ubicacion-agregar-evento"></span>
-                        <input type="text" id="eventLocationAgregar" class="modal-agregar-evento-input-ubicacion" placeholder="Ingrese la ubicación del evento">
+                        <input type="text" id="ubicacionEventoAgregar" class="modal-agregar-evento-input-ubicacion" placeholder="Ingrese la ubicación del evento">
                     </div>
                     <span class="ubicacion-error-message-agregar-evento"></span>
                 </div>
     
                 <div class="descripcion-evento-agregar-input">
                     <label class="modal-agregar-evento-label">Descripción</label>
-                    <textarea id="eventDescriptionAgregar" class="modal-agregar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
+                    <textarea id="descripcionEventoAgregar" class="modal-agregar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
                     <span class="descripcion-error-message-agregar-evento"></span>
                 </div>
     
                 <div class="img-evento-agregar-container">
                     <label class="modal-agregar-evento-label">Imagen del evento</label>
-    
-                    <div class="modal-agregar-evento-file-input-background-drop-zone" id="imgAgregarEventoDropZone">
-                        <input type="file" id="eventImageAgregar" class="modal-agregar-evento-file-input hidden-force" accept="image/*">
-                        <div class="icono-subir-imagen-agregar-evento-background">
-                            <span class="icono-subir-imagen-agregar-evento"></span>
-                        </div>
-                        <span class="modal-agregar-evento-file-input-text">Arrastra tu imagen o haz click para seleccionar</span>
-                    </div>
-                    <span class="img-error-message-agregar-evento"></span>
+                    <div id="imagenEventoAgregar"></div>
                 </div>
                 
                 <div class="acciones-agregar-evento">
                     <span class="icono-boton-agregar-evento"></span>
-                    <span class="boton-agregar-evento primary-button cursor-pointer" id="btnAgregarEventoFinal">Agregar evento</span>
+                    <span class="boton-agregar-evento primary-button cursor-pointer" id="btnConfirmarAgregarEvento">Agregar evento</span>
                 </div>
             </div>
         </div>
@@ -276,7 +274,7 @@
     
                 <div class="img-evento-editar-container">
                     <label class="modal-editar-evento-label">Imagen del evento</label>
-    
+
                     <div class="modal-editar-evento-file-input-background" id="imgEditarEvento">
                         <input type="file" id="eventImageEditar" class="modal-editar-evento-file-input hidden-force" accept="image/*">
                         <img class="img-preview-editar-evento" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen del evento">

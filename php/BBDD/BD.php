@@ -244,9 +244,9 @@ function crearBaseDatosSiNoExiste() {
                 ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 5);
                 
                 INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_organizador, id_archivo_imagen) VALUES
-                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', '2024-06-01', '19:00', '21:00', 1, 2),
-                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', '2024-06-05', '10:00', '13:00', 1, 4),
-                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', '2024-06-10', '20:00', '22:00', 1, 6);
+                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', CURDATE(), '19:00', '21:00', 1, 1),
+                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', CURDATE(), '10:00', '13:00', 1, 1),
+                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', CURDATE(), '20:00', '22:00', 1, 1);
                 
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
                 ('Canon', 1);

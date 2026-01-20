@@ -241,8 +241,7 @@ function switchStep(targetStep) {
 /**
  * Configura una zona de arrastrar y soltar con validación de tipo y tamaño
  */
-function setupDropZone(zoneId, inputId, cardId, nameSpanId, sizeSpanId,
-                       removeBtnId, errorSpanId, allowedExtensions, maxSizeBytes) {
+function setupDropZone(zoneId, inputId, cardId, nameSpanId, sizeSpanId, removeBtnId, errorSpanId, allowedExtensions, maxSizeBytes) {
     const zone = document.getElementById(zoneId);
     const input = document.getElementById(inputId);
     const card = document.getElementById(cardId);

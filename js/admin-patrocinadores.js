@@ -243,7 +243,6 @@ function setupDropZone(zoneId, inputId,cardId, nameSpanId, sizeSpanId, removeBtn
  
 }
 
-// Función de validación antes de enviar el formulario de agregar patrocinador
 setupDropZone(
     'imageDropZone',
     'imageInput',
