@@ -51,7 +51,6 @@ dialog::backdrop {
     gap: 12px;
     padding: 16px;
     background-color: var(--neutral-09);
-    border-bottom: 1px solid var(--neutral-06);
 }
 
 @media (min-width: 768px){
