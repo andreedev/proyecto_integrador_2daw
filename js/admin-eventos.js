@@ -19,7 +19,6 @@ const imgErrorMessageAgregarEvento = document.querySelector('.img-error-message-
 
 const eventNameEditar = document.getElementById('eventNameEditar');
 const eventDateEditar = document.getElementById('eventDateEditar');
-const eventStartTimeEditar = document.getElementById('eventStartTimeEditar');
 const eventEndTimeEditar = document.getElementById('eventEndTimeEditar');
 const eventLocationEditar = document.getElementById('eventLocationEditar');
 const eventDescriptionEditar = document.getElementById('eventDescriptionEditar');
@@ -62,6 +61,8 @@ const imagenEventoAgregar = document.getElementById('imagenEventoAgregar');
 const btnConfirmarAgregarEvento = document.getElementById('btnConfirmarAgregarEvento');
 
 const btnEliminarEvento = document.getElementById('btnEliminarEvento');
+
+const horaInicioEventoEditar = document.getElementById('horaInicioEventoEditar');
 
 let idEvento = null;
 
@@ -138,8 +139,8 @@ eventDateEditar.addEventListener('blur', () => {
     }
 });
 
-eventStartTimeEditar.addEventListener('blur', () => {
-    if(eventStartTimeEditar.value.trim() === '') {
+horaInicioEventoEditar.addEventListener('blur', () => {
+    if(horaInicioEventoEditar.value.trim() === '') {
         horaInicioErrorMessageEditarEvento.textContent = 'La hora de inicio es obligatoria.';
     } else {
         horaInicioErrorMessageEditarEvento.textContent = '';

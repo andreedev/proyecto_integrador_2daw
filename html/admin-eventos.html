@@ -213,8 +213,8 @@
             </div>
         </div>
     </dialog>
-    
-    
+
+
     <!-- Modal editar evento -->
     <dialog class="modal-editar-evento w-100" id="modalEditarEvento">
         <div class="modal-ver-detalle-content">
@@ -223,13 +223,13 @@
                 <span class="close-modal-editar-evento close-modal"></span>
             </div>
             <div class="modal-editar-evento-body">
-    
+
                 <div class="nombre-evento-editar-input">
                     <label class="modal-editar-evento-label">Nombre del evento</label>
                     <input type="text" id="eventNameEditar" class="modal-editar-evento-input" placeholder="Ingrese el nombre del evento">
                     <span class="nombre-error-message-editar-evento"></span>
                 </div>
-    
+
                 <div class="fecha-evento-editar-input">
                     <label class="modal-editar-evento-label">Fecha</label>
                     <div class="input-e-icono-calendario-editar-evento">
@@ -238,20 +238,26 @@
                     </div>
                     <span class="fecha-error-message-editar-evento"></span>
                 </div>
-    
+
                 <div class="hora-evento-editar-input">
                     <div class="hora-inicio-evento-editar">
                         <label class="modal-editar-evento-label">Hora de inicio</label>
-                        <input type="time" id="eventStartTimeEditar" class="modal-editar-evento-hora-inicio-input">
+                        <label class="generic-input-wrapper">
+                            <span class="icon-clock w-20px h-20px bg-neutral-03"></span>
+                            <input class="generic-input" type="text" id="horaInicioEventoEditar" placeholder="HH:MM">
+                        </label>
                         <span class="hora-inicio-error-message-editar-evento"></span>
                     </div>
                     <div class="hora-fin-evento-editar">
                         <label class="modal-editar-evento-label">Hora de finalización</label>
-                        <input type="time" id="eventEndTimeEditar" class="modal-editar-evento-hora-fin-input">
+                        <label class="generic-input-wrapper">
+                            <span class="icon-clock w-20px h-20px bg-neutral-03"></span>
+                            <input class="generic-input" type="text" id="eventEndTimeEditar" placeholder="HH:MM">
+                        </label>
                         <span class="hora-fin-error-message-editar-evento"></span>
                     </div>
                 </div>
-    
+
                 <div class="ubicacion-evento-editar-input">
                     <label class="modal-editar-evento-label">Ubicación</label>
                     <div class="input-e-icono-location-editar-evento">
@@ -260,13 +266,13 @@
                     </div>
                     <span class="ubicacion-error-message-editar-evento"></span>
                 </div>
-    
+
                 <div class="descripcion-evento-editar-input">
                     <label class="modal-editar-evento-label">Descripción</label>
                     <textarea id="eventDescriptionEditar" class="modal-editar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
                     <span class="descripcion-error-message-editar-evento"></span>
                 </div>
-    
+
                 <div class="img-evento-editar-container">
                     <label class="modal-editar-evento-label">Imagen del evento</label>
 
@@ -279,7 +285,7 @@
                     </div>
                     <span class="img-error-message-editar-evento"></span>
                 </div>
-    
+
                 <div class="acciones-editar-evento">
                     <span class="icono-boton-editar-evento"></span>
                     <span class="boton-editar-evento primary-button cursor-pointer" id="btnEditarEventoFinal">Guardar cambios</span>

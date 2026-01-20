@@ -113,6 +113,10 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             crearEvento();
             break;
+        case 'actualizarEvento':
+            validarRol(['organizador']);
+            actualizarEvento();
+            break;
         case 'eliminarEvento':
             validarRol(['organizador']);
             eliminarEvento();
@@ -1245,6 +1249,60 @@ function crearEvento(){
         echo json_encode(["status" => "success", "message" => "Evento creado correctamente"]);
     } else {
         echo json_encode(["status" => "error", "message" => "Error al crear el evento"]);
+    }
+}
+
+/**
+ *  Actualizar evento
+ */
+function actualizarEvento(){
+    global $conexion;
+
+    $idEvento = (int) $_POST['idEvento'];
+    $nombre = $_POST['nombreEvento'];
+    $descripcion = $_POST['descripcionEvento'];
+    $ubicacion = $_POST['ubicacionEvento'];
+    $fecha = $_POST['fechaEvento'];
+    $horaInicio = $_POST['horaInicioEvento'];
+    $horaFin = $_POST['horaFinEvento'];
+    $idArchivoNuevo = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
+
+    $idArchivoAnterior = null;
+    $stmtArchivo = $conexion->prepare("SELECT id_archivo_imagen FROM evento WHERE id_evento = ?");
+    $stmtArchivo->bind_param("i", $idEvento);
+    $stmtArchivo->execute();
+    $res = $stmtArchivo->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $idArchivoAnterior = (int)$row['id_archivo_imagen'];
+    }
+
+    if ($idArchivoAnterior !== null && $idArchivoAnterior !== $idArchivoNuevo) {
+        $stmtRutas = $conexion->prepare("
+            SELECT 
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaVieja,
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaNueva
+        ");
+        $stmtRutas->bind_param("ii", $idArchivoAnterior, $idArchivoNuevo);
+        $stmtRutas->execute();
+        $rutas = $stmtRutas->get_result()->fetch_assoc();
+
+        if ($rutas['rutaVieja'] === $rutas['rutaNueva']) {
+            $conexion->query("DELETE FROM archivo WHERE id_archivo = $idArchivoNuevo");
+            $idArchivoNuevo = $idArchivoAnterior;
+            $idArchivoAnterior = null;
+        }
+    }
+
+    $stmt = $conexion->prepare("UPDATE evento SET nombre = ?, descripcion = ?, ubicacion = ?, fecha = ?, hora_inicio = ?, hora_fin = ?, id_archivo_imagen = ? WHERE id_evento = ?");
+    $stmt->bind_param("ssssssii", $nombre, $descripcion, $ubicacion, $fecha, $horaInicio, $horaFin, $idArchivoNuevo, $idEvento);
+    if ($stmt->execute()) {
+        // Solo eliminamos el anterior si realmente es un archivo distinto
+        if ($idArchivoAnterior !== null && $idArchivoAnterior !== $idArchivoNuevo) {
+            eliminarArchivoPorId($idArchivoAnterior);
+        }
+        echo json_encode(["status" => "success", "message" => "Evento actualizado correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al actualizar el evento"]);
     }
 }
 

@@ -416,6 +416,21 @@ async function crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, ho
     return await fetchAPI(formData);
 }
 
+async function actualizarEvento(idEvento, nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen) {
+    const formData = new FormData();
+    formData.append('action', 'actualizarEvento');
+    formData.append('idEvento', idEvento);
+    formData.append('nombreEvento', nombre);
+    formData.append('descripcionEvento', descripcion);
+    formData.append('ubicacionEvento', ubicacion);
+    formData.append('fechaEvento', fecha);
+    formData.append('horaInicioEvento', horaInicio);
+    formData.append('horaFinEvento', horaFin);
+    formData.append('idArchivoImagen', idArchivoImagen);
+
+    return await fetchAPI(formData);
+}
+
 async function eliminarEvento(idEvento) {
     const formData = new FormData();
     formData.append('action', 'eliminarEvento');
