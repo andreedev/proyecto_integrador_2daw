@@ -729,19 +729,6 @@ function convertToISODate(string) {
     return null;
 }
 
-const updateOrderNumbers = () => {
-    const items = galleryContainer.querySelectorAll('.gallery-item');
-    items.forEach((item, index) => {
-        item.querySelector('.order-badge').textContent = index + 1;
-    });
-    uploadedFilesCount.textContent = items.length;
-    if (items.length > 0) {
-        noFilesHelperText.classList.add('hidden-force');
-    } else {
-        noFilesHelperText.classList.remove('hidden-force');
-    }
-};
-
 function createGalleryItem(url, tipo, id=null) {
     const div = document.createElement('div');
     div.className = 'gallery-item';
@@ -835,5 +822,93 @@ function updateConfigStatus(status){
     }
 }
 
+
+
+function handleFiles(files) {
+    const fileArray = Array.from(files);
+    let invalidFiles = false;
+
+    fileArray.forEach(file => {
+        const isImage = file.type.startsWith('image/');
+        const isVideo = file.type.startsWith('video/');
+
+        if (!isImage && !isVideo) {
+            invalidFiles = true;
+            return;
+        }
+
+        const objectUrl = URL.createObjectURL(file);
+        const type = isImage ? 'imagen' : 'video';
+
+        const mediaElement = createGalleryItem(objectUrl, type);
+        mediaElement.dataset.isNew = "true";
+        mediaElement.filePayload = file;
+    });
+
+    if (invalidFiles) triggerShakeError(filesDropZone);
+}
+
+function triggerShakeError(element) {
+    const target = element || filesDropZone;
+
+    target.classList.add('shake-error');
+    setTimeout(() => {
+        target.classList.remove('shake-error');
+    }, 400);
+}
+
+const updateOrderNumbers = () => {
+    const items = galleryContainer.querySelectorAll('.gallery-item');
+    items.forEach((item, index) => {
+        item.querySelector('.order-badge').textContent = index + 1;
+    });
+    uploadedFilesCount.textContent = items.length;
+    if (items.length > 0) {
+        noFilesHelperText.classList.add('hidden-force');
+    } else {
+        noFilesHelperText.classList.remove('hidden-force');
+    }
+};
+
+function createGalleryItem(url, tipo, id=null) {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+
+    let mediaHtml = '';
+    if (tipo === 'video') {
+        const videoSrc = url.includes('#') ? url : url + '#t=0.5';
+        mediaHtml = `<video src="${videoSrc}" class="gallery-item-image" preload="metadata"></video>`;
+    } else {
+        mediaHtml = `<img src="${url}" class="gallery-item-image" alt="Uploaded">`;
+    }
+
+    div.innerHTML = `
+        <div class="order-badge">0</div>
+        ${mediaHtml}
+        <div class="gallery-item-overlay">
+            <div class="icon-container-2 bg-neutral-05 drag-handle">
+                <div class="icon-drag w-16px h-16px bg-neutral-01"></div>
+            </div>
+            <div class="icon-container-2 bg-neutral-05 btn-remove-file">
+                <div class="icon-close w-16px h-16px bg-neutral-01"></div>
+            </div>
+        </div>
+    `;
+
+    const mediaElement = div.querySelector('img, video');
+
+    if (id) {
+        mediaElement.dataset.idArchivo = id;
+    }
+
+    galleryContainer.appendChild(div);
+    updateOrderNumbers();
+
+    if (!loadingConfiguracion) {
+        revisarSiHayCambios();
+    }
+
+    return mediaElement;
+}
 
 loadConfig();
