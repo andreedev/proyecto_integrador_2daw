@@ -1,14 +1,4 @@
-dialog {
-    border:none;
-    padding:0px;
-    width: 100%;
-}
 
-@media (min-width: 768px) {
-    dialog {
-        max-width: 612px;
-    }
-}
 
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
@@ -121,13 +111,6 @@ dialog::backdrop {
 .boton-asignar-desasignar-background:hover{
     background-color: var(--primary-05);
     cursor: pointer;
-}
-
-.generic-modal{
-    box-shadow: var(--shadow-02);
-    background-color: var(--neutral-09);
-    width: 90%;
-    max-width: 400px;
 }
 
 .modal-header-text{

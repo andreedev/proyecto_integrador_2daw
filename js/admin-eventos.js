@@ -1,7 +1,7 @@
 const modalVerDetalleEvento = document.getElementById('modalVerDetalleEvento');
 
 const eventRows = document.querySelectorAll('.event-row');
-const btnEditarEvento = document.querySelector('.primary-button');
+const btnEditarEvento = document.getElementById('btnEditarEvento');
 
 const btnAgregarEvento = document.getElementById('btnAgregarEvento');
 const modalAgregarEvento = document.getElementById('modalAgregarEvento');
@@ -14,21 +14,6 @@ const ubicacionErrorMessageAgregarEvento = document.querySelector('.ubicacion-er
 const descripcionErrorMessageAgregarEvento = document.querySelector('.descripcion-error-message-agregar-evento');
 const imgErrorMessageAgregarEvento = document.querySelector('.img-error-message-agregar-evento');
 
-
-const eventNameEditar = document.getElementById('eventNameEditar');
-const eventDateEditar = document.getElementById('eventDateEditar');
-const eventEndTimeEditar = document.getElementById('eventEndTimeEditar');
-const eventLocationEditar = document.getElementById('eventLocationEditar');
-const eventDescriptionEditar = document.getElementById('eventDescriptionEditar');
-const eventImageEditar = document.getElementById('eventImageEditar');
-
-const nombreErrorMessageEditarEvento = document.querySelector('.nombre-error-message-editar-evento');
-const fechaErrorMessageEditarEvento = document.querySelector('.fecha-error-message-editar-evento');
-const horaInicioErrorMessageEditarEvento = document.querySelector('.hora-inicio-error-message-editar-evento');
-const horaFinErrorMessageEditarEvento = document.querySelector('.hora-fin-error-message-editar-evento');
-const ubicacionErrorMessageEditarEvento = document.querySelector('.ubicacion-error-message-editar-evento');
-const descripcionErrorMessageEditarEvento = document.querySelector('.descripcion-error-message-editar-evento');
-const imgErrorMessageEditarEvento = document.querySelector('.img-error-message-editar-evento');
 
 const filtroFechaInput = document.getElementById('filtroFechaInput');
 const fechaHumana = document.getElementById('fechaHumana');
@@ -347,10 +332,37 @@ function renderizarEventos(eventos) {
     eventsContainer.replaceChildren();
 
     // calcular espacios vacios entre eventos
+    let espaciosVacios = [];
+    for (let i = 0; i < eventos.length - 1; i++) {
+        for (let j = i + 1; j < eventos.length; j++) {
+            const eventoActual = eventos[i];
+            const siguienteEvento = eventos[j];
+
+            const endTimeActual = new Date(`1970-01-01T${eventoActual.horaFinEvento}Z`);
+            const startTimeSiguiente = new Date(`1970-01-01T${siguienteEvento.horaInicioEvento}Z`);
+
+            const diffInHours = (startTimeSiguiente - endTimeActual) / (1000 * 60 * 60);
+
+            if (diffInHours > 0) {
+                eventos[i].tieneEspacioDespues = true;
+                eventos[i].duracionEspacioDespues = diffInHours;
+                espaciosVacios.push({
+                    desdeIdEvento: eventoActual.idEvento,
+                    hastaIdEvento: siguienteEvento.idEvento,
+                    duracionMinutos: diffInHours * 60,
+                    duracionHoras: diffInHours
+                });
+            }
+        }
+    }
 
     eventos.forEach(evento => {
         const eventContainer = document.createElement('div');
         eventContainer.classList.add('event-row');
+
+        const leftSide = document.createElement('div');
+        leftSide.classList.add('d-flex', 'align-items-center', 'flex-grow-1', 'gap-8px');
+
         eventContainer.addEventListener('click', () => {
             imgDetalleEvento.src = evento.rutaImagenEvento;
             nombreDetalleEvento.textContent = evento.nombreEvento;
@@ -362,6 +374,8 @@ function renderizarEventos(eventos) {
             descripcionDetalleEvento.textContent = evento.descripcionEvento;
             modalVerDetalleEvento.showModal();
             eventoSeleccionado = evento;
+            horaInicioDateTimePicker.update({selectedDates: [new Date(`1970-01-01T${evento.horaInicioEvento}Z`)]});
+            horaFinEventoAgregarDatePicker.update({selectedDates: [new Date(`1970-01-01T${evento.horaFinEvento}Z`)]});
         });
 
         const eventStartDuration = document.createElement('div');
@@ -431,13 +445,43 @@ function renderizarEventos(eventos) {
         const verticalLine = document.createElement('span');
         verticalLine.classList.add('vertical-line');
 
-        eventContainer.appendChild(eventStartDuration);
-        eventContainer.appendChild(imgEvent);
-        eventContainer.appendChild(eventInfo);
+        leftSide.appendChild(eventStartDuration);
+        leftSide.appendChild(imgEvent);
+        leftSide.appendChild(eventInfo);
+
+        eventContainer.appendChild(leftSide);
         eventContainer.appendChild(verticalLine);
 
         eventsContainer.appendChild(eventContainer);
 
+        if (evento.tieneEspacioDespues) {
+            const espacioVacio = espaciosVacios.find(e => e.desdeIdEvento === evento.idEvento);
+            if (espacioVacio) {
+                const eventFreeTime = document.createElement('div');
+                eventFreeTime.classList.add('event-free-time');
+
+                const iconTime = document.createElement('span');
+                iconTime.classList.add('icon-time');
+
+                const freeTimeText = document.createElement('span');
+                freeTimeText.classList.add('free-time-text');
+                const duracionHoras = Math.floor(espacioVacio.duracionHoras);
+                const duracionMinutos = Math.round((espacioVacio.duracionHoras - duracionHoras) * 60);
+                let duracionTexto = '';
+                if (duracionHoras > 0) {
+                    duracionTexto += `${duracionHoras}h `;
+                }
+                if (duracionMinutos > 0) {
+                    duracionTexto += `${duracionMinutos}min `;
+                }
+                freeTimeText.textContent = `${duracionTexto.trim()} libre`;
+
+                eventFreeTime.appendChild(iconTime);
+                eventFreeTime.appendChild(freeTimeText);
+
+                eventsContainer.appendChild(eventFreeTime);
+            }
+        }
 
     });
 }
@@ -532,7 +576,7 @@ async function agregarEventoEvent() {
 }
 
 /**
- * Editar evento
+ * Eliminar evento
  */
 async function eliminarEventoEvent() {
     modalVerDetalleEvento.close();

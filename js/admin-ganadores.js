@@ -29,7 +29,6 @@ let idCandidaturaSeleccionada;
  * Renderiza las categorías
  */
 function renderizarCategorias(categorias){
-    console.log('renderizarCategorias')
     categoriesContainer.replaceChildren();
 
     categorias.forEach(categoria => {
@@ -158,16 +157,9 @@ function renderizarCategorias(categorias){
 
 }
 
-function cargarCategorias(){
-    listarCategorias()
-        .then(data => {
-            if (data.status === 'success'){
-                renderizarCategorias(data.data);
-            }
-        })
-        .catch(error => {
-            console.error('Error al cargar las categorías:', error);
-        });
+async function cargarCategorias() {
+    const response = await listarCategorias();
+    renderizarCategorias(response.data);
 }
 
 
@@ -176,7 +168,13 @@ function cargarCategorias(){
  */
 function renderizarFinalistasEnModal(finalistas) {
     const finalistasContainer = document.getElementById('finalistasContainer');
-    finalistasContainer.innerHTML = '';
+    finalistasContainer.replaceChildren();
+
+    if (finalistas.length === 0) {
+        finalistasContainer.innerHTML = '<p>No hay finalistas disponibles para asignar como ganador.</p>';
+        btnAceptarGanador.disabled = true;
+        return;
+    }
 
     finalistas.forEach(finalista => {
         const finalistaDiv = document.createElement('div');
@@ -221,9 +219,6 @@ function renderizarFinalistasEnModal(finalistas) {
         finalistasContainer.appendChild(finalistaDiv);
     });
 }
-
-cargarCategorias();
-
 
 btnDesasignarGanador.addEventListener('click', async () => {
     const response = await desasignarGanador(idPremioSeleccionado, idCandidaturaSeleccionada);

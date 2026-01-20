@@ -72,8 +72,8 @@ function crearBaseDatosSiNoExiste()
                 );
                 
                 CREATE TABLE premio_candidatura (
-                    id_premio INT NOT NULL,
-                    id_candidatura INT NOT NULL,
+                    id_premio INT NOT NULL UNIQUE,
+                    id_candidatura INT NOT NULL UNIQUE,
                     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     PRIMARY KEY (id_premio, id_candidatura),
                     FOREIGN KEY (id_premio) REFERENCES premio(id_premio),
@@ -209,7 +209,7 @@ function crearBaseDatosSiNoExiste()
                 (2, 'Corto ecológico sobre reciclaje.', 5, 6, 7, NULL, 'alumno', 'En revisión'),
                 (3, 'Animación stop motion artesanal.', 6, 7, 8, NULL, 'alumni', 'Aceptada'),
                 (4, 'Drama familiar intergeneracional.', 7, 8, 9, NULL, 'alumno', 'Rechazada'),
-                (5, 'Corto artístico abstracto.', 8, 9, 10, NULL, 'alumni', 'En revisión');
+                (5, 'Corto artístico abstracto.', 8, 9, 10, NULL, 'alumni', 'Finalista');
 
                 
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES

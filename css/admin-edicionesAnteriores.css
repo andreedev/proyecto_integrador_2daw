@@ -260,12 +260,6 @@ dialog{
     max-width: 90vw;
 }
 
-@media (min-width: 768px) {
-    dialog{
-        max-width: 612px;
-    }
-}
-
 /* Modal Crear Edicion Anterior */
 .modal-header {
     border-bottom: 2px solid var(--neutral-06);

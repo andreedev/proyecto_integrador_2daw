@@ -31,20 +31,14 @@
             <div class="admin-content">
 
                 <div class="box-shadow-01">
-                    <div class="date-event">
-                        <div class="buttons-and-calendar">
-                            <div class="primary-button-02" id="todayBtn">Hoy</div>
+                    <div class="date-event border-neutral-06 border-bottom-solid">
+                        <div class="buttons-and-calendar h-100">
+                            <div class="primary-button-02 h-100" id="todayBtn">Hoy</div>
                             <div class="date-container">
-                                <div class="left-arrow-container">
-                                    <span class="left-arrow"></span>
-                                </div>
                                 <label class="generic-input-wrapper">
                                     <input id="filtroFechaInput" class="generic-input">
                                     <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
                                 </label>
-                                <div class="right-arrow-container">
-                                    <span class="right-arrow"></span>
-                                </div>
                             </div>
                         </div>
                         <div class="big-date">
@@ -87,9 +81,9 @@
     <!-- Modal ver detalle evento -->
     <dialog class="modal-ver-detalle-container" id="modalVerDetalleEvento">
         <div class="modal-ver-detalle-content">
-            <div class="modal-ver-detalle-header">
+            <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
                 <h2 class="modal-ver-detalle-title">Detalle de evento</h2>
-                <span class="close-modal-ver-detalle close-modal"></span>
+                <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
             </div>
 
             <div class="modal-ver-detalle-body">
@@ -133,9 +127,7 @@
                 <div class="divider-line"></div>
                 <div class="ver-detalle-acciones d-flex-two-columns-responsive">
                     <div class="secondary-button-02 text-center" id="btnEliminarEvento">Eliminar</div>
-                    <div class="primary-button cursor-pointer">
-                        <span class="boton-editar-evento">Editar</span>
-                    </div>
+                    <div class="primary-button-01 text-center" id="btnEditarEvento">Editar</div>
                 </div>
             </div>
 
@@ -143,7 +135,7 @@
     </dialog>
 
 
-    <!-- Modal agregar evento -->
+    <!-- Modal agregar/editar evento -->
     <dialog class="modal-agregar-evento w-100" id="modalAgregarEvento">
         <div class="modal-ver-detalle-content">
             <div class="modal-agregar-evento-header">
@@ -208,7 +200,7 @@
                 
                 <div class="acciones-agregar-evento">
                     <span class="icono-boton-agregar-evento"></span>
-                    <span class="boton-agregar-evento primary-button cursor-pointer" id="btnConfirmarAgregarEvento">Agregar evento</span>
+                    <span class="primary-button-01 cursor-pointer" id="btnConfirmarAgregarEvento">Agregar evento</span>
                 </div>
             </div>
         </div>

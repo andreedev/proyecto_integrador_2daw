@@ -199,7 +199,7 @@ p{
     transition: all 200ms ease;
 }
 
-.primary-button-01.disabled{
+.primary-button-01.disabled, .primary-button-01:disabled{
     background-color: var(--primary-04);
     cursor: not-allowed;
 }
@@ -234,6 +234,17 @@ p{
 .primary-button-02:hover{
     background-color: var(--primary-03);
     color: var(--neutral-09);
+}
+
+.primary-button-02.disabled, .primary-button-02:disabled{
+    border: 1px solid var(--primary-04);
+    color: var(--primary-04);
+    cursor: not-allowed;
+}
+
+.primary-button-02:disabled:hover{
+    background-color: var(--neutral-09);
+    color: var(--primary-04);
 }
 
 .secondary-button-01{
