@@ -301,3 +301,9 @@ p{
     background-color: var(--neutral-01);
     color: var(--neutral-09);
 }
+
+.ghost{
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}

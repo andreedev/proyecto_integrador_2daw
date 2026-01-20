@@ -195,6 +195,25 @@ function humanizeDate(date) {
 }
 
 /**
+ * Function para humanizar duracion en minutos a formato legible
+ * Ejemplos:
+ * 90   -> "1h 30m"
+ * 45   -> "45m"
+ */
+function humanizeDuration(minutes) {
+    const hrs = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    let result = '';
+    if (hrs > 0) {
+        result += `${hrs}h `;
+    }
+    if (mins > 0) {
+        result += `${mins}m`;
+    }
+    return result.trim();
+}
+
+/**
  * Funcion para realizar peticiones a la API
  */
 async function fetchAPI( data = null) {

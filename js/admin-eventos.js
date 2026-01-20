@@ -186,9 +186,9 @@ const filtroFechaDateTimePicker = new AirDatepicker(filtroFechaInput, {
         },
         'clear'
     ],
-    onSelect({date}) {
-        fechaHumana.textContent= humanizeDate(date);
-        cargarEventos(convertDateToISOString(date));
+    async onSelect({date}) {
+        fechaHumana.textContent = humanizeDate(date);
+        await refreshEventos(convertDateToISOString(date));
     }
 });
 
@@ -374,8 +374,8 @@ function renderizarEventos(eventos) {
             descripcionDetalleEvento.textContent = evento.descripcionEvento;
             modalVerDetalleEvento.showModal();
             eventoSeleccionado = evento;
-            horaInicioDateTimePicker.update({selectedDates: [new Date(`1970-01-01T${evento.horaInicioEvento}Z`)]});
-            horaFinEventoAgregarDatePicker.update({selectedDates: [new Date(`1970-01-01T${evento.horaFinEvento}Z`)]});
+            horaInicioDateTimePicker.update({selectedDates: [new Date(`1970-01-01T${evento.horaInicioEvento}`)]});
+            horaFinEventoAgregarDatePicker.update({selectedDates: [new Date(`1970-01-01T${evento.horaFinEvento}`)]});
         });
 
         const eventStartDuration = document.createElement('div');
@@ -387,10 +387,10 @@ function renderizarEventos(eventos) {
 
         const startTime = new Date(`1970-01-01T${evento.horaInicioEvento}Z`);
         const endTime = new Date(`1970-01-01T${evento.horaFinEvento}Z`);
-        const durationInHours = (endTime - startTime) / (1000 * 60 * 60);
+        const durationInMinutes = (endTime - startTime) / (1000 * 60);
         const eventDuration = document.createElement('span');
         eventDuration.classList.add('event-duration');
-        eventDuration.textContent = `${durationInHours}h`;
+        eventDuration.textContent = humanizeDuration(durationInMinutes);
 
         eventStartDuration.appendChild(eventStartTime);
         eventStartDuration.appendChild(eventDuration);
@@ -486,10 +486,12 @@ function renderizarEventos(eventos) {
     });
 }
 
-async function cargarEventos(date) {
+async function refreshEventos(date) {
     if (!date) {
         date = convertDateToISOString(new Date());
     }
+    // if there is selected date in the date picker, use that date
+    date = filtroFechaDateTimePicker.selectedDates[0] ? convertDateToISOString(filtroFechaDateTimePicker.selectedDates[0]) : date;
     const response = await listarEventos(date);
     if (response.status === 'success') {
         renderizarEventos(response.data);
@@ -572,23 +574,24 @@ async function agregarEventoEvent() {
     descripcionEventoAgregar.value = '';
     imagenEventoDynamicDropZone.clear();
 
-    cargarEventos();
+    refreshEventos();
 }
 
 /**
  * Eliminar evento
  */
 async function eliminarEventoEvent() {
-    modalVerDetalleEvento.close();
     let response = await eliminarEvento(eventoSeleccionado.idEvento);
     if (response.status !== 'success') throw new Error('Error al eliminar el evento');
-    cargarEventos();
+
+    modalVerDetalleEvento.close();
+    refreshEventos();
 }
 
 
 
 /**
- * Agregar evento
+ * Actualizar evento
  */
 async function actualizarEventoEvent() {
     let isValid = true;
@@ -665,5 +668,6 @@ async function actualizarEventoEvent() {
     descripcionEventoAgregar.value = '';
     imagenEventoDynamicDropZone.clear();
 
-    await cargarEventos();
+
+    refreshEventos();
 }
