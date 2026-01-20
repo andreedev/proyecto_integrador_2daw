@@ -1205,7 +1205,7 @@ function listarEventos(){
 
     $query = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
                 e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
-                e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento
+                e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento, a.id_archivo as idArchivoImagenEvento
               FROM evento e
               LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . "ORDER BY e.fecha DESC, e.hora_inicio DESC";
 

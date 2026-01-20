@@ -128,7 +128,14 @@ function setupDynamicDropZone(container, allowedExtensions, maxSizeBytes, valida
     return {
         getFile: () => (input.files.length > 0 ? input.files[0] : null),
         clear: () => clearFile(),
-        getInputElement: () => input
+        getInputElement: () => input,
+        setAttachedMode: (fileName) => {
+            zone.classList.add('hidden-force');
+            card.classList.remove('hidden-force');
+            nameSpan.textContent = fileName;
+            sizeSpan.classList.add('hidden-force');
+            errorSpan.textContent = '';
+        }
     };
 }
 

@@ -6,8 +6,6 @@ const btnEditarEvento = document.querySelector('.primary-button');
 const btnAgregarEvento = document.getElementById('btnAgregarEvento');
 const modalAgregarEvento = document.getElementById('modalAgregarEvento');
 
-const modalEditarEvento = document.getElementById('modalEditarEvento');
-
 const nombreErrorMessageAgregarEvento = document.querySelector('.nombre-error-message-agregar-evento');
 const fechaErrorMessageAgregarEvento = document.getElementById('msgErrorFechaAgregarEvento');
 
@@ -58,13 +56,24 @@ const ubicacionEventoAgregar = document.getElementById('ubicacionEventoAgregar')
 const descripcionEventoAgregar = document.getElementById('descripcionEventoAgregar');
 const imagenEventoAgregar = document.getElementById('imagenEventoAgregar');
 
-const btnConfirmarAgregarEvento = document.getElementById('btnConfirmarAgregarEvento');
+const btnConfirmarEvento = document.getElementById('btnConfirmarAgregarEvento');
 
 const btnEliminarEvento = document.getElementById('btnEliminarEvento');
 
-const horaInicioEventoEditar = document.getElementById('horaInicioEventoEditar');
+const modalTitle = document.getElementById('modalTitle');
 
-let idEvento = null;
+let eventoSeleccionado = null;
+
+let tipoModal = 'agregar'; // agregar, editar
+
+const imagenEventoDynamicDropZone =  setupDynamicDropZone(
+    document.getElementById('imagenEventoAgregar'),
+    ['PNG', 'JPG', 'JPEG'],
+    5* 1024 * 1024, // 5MB
+    (file) => {
+        console.log('Archivo agregado:', file.name);
+    }
+);
 
 // Mensajes de error si se pierde el foco
 eventNameAgregar.addEventListener('blur', () => {
@@ -123,61 +132,6 @@ imagenEventoAgregar.addEventListener('blur', () => {
     }
 });
 
-eventNameEditar.addEventListener('blur', () => {
-    if(eventNameEditar.value.trim() === '') {
-        nombreErrorMessageEditarEvento.textContent = 'El nombre del evento es obligatorio.';
-    } else {
-        nombreErrorMessageEditarEvento.textContent = '';
-    }
-});
-
-eventDateEditar.addEventListener('blur', () => {
-    if(eventDateEditar.value.trim() === '') {
-        fechaErrorMessageEditarEvento.textContent = 'La fecha del evento es obligatoria.';
-    } else {
-        fechaErrorMessageEditarEvento.textContent = '';
-    }
-});
-
-horaInicioEventoEditar.addEventListener('blur', () => {
-    if(horaInicioEventoEditar.value.trim() === '') {
-        horaInicioErrorMessageEditarEvento.textContent = 'La hora de inicio es obligatoria.';
-    } else {
-        horaInicioErrorMessageEditarEvento.textContent = '';
-    }
-});
-
-eventEndTimeEditar.addEventListener('blur', () => {
-    if(eventEndTimeEditar.value.trim() === '') {
-        horaFinErrorMessageEditarEvento.textContent = 'La hora de finalización es obligatoria.';
-    } else {
-        horaFinErrorMessageEditarEvento.textContent = '';
-    }
-});
-
-eventLocationEditar.addEventListener('blur', () => {
-    if(eventLocationEditar.value.trim() === '') {
-        ubicacionErrorMessageEditarEvento.textContent = 'La ubicación del evento es obligatoria.';  
-    } else {
-        ubicacionErrorMessageEditarEvento.textContent = '';
-    }   
-});
-
-eventDescriptionEditar.addEventListener('blur', () => {
-    if(eventDescriptionEditar.value.trim() === '') {
-        descripcionErrorMessageEditarEvento.textContent = 'La descripción del evento es obligatoria.';
-    } else {
-        descripcionErrorMessageEditarEvento.textContent = '';
-    }
-});
-
-eventImageEditar.addEventListener('blur', () => {
-    if(eventImageEditar.files.length === 0) {
-        imgErrorMessageEditarEvento.textContent = 'La imagen del evento es obligatoria.';
-    } else {
-        imgErrorMessageEditarEvento.textContent = '';
-    }   
-});
 
 eventRows.forEach(row => {
     row.addEventListener('click', () => {
@@ -188,16 +142,32 @@ eventRows.forEach(row => {
 
 btnAgregarEvento.addEventListener('click', () => {
     modalAgregarEvento.showModal();
+    modalTitle.textContent = 'Agregar Evento';
+    btnConfirmarEvento.textContent = 'Agregar evento';
+    tipoModal = 'agregar';
 });
+
 
 
 btnEditarEvento.addEventListener('click', () => {
     modalVerDetalleEvento.close();
-    modalEditarEvento.showModal();
+    modalAgregarEvento.showModal();
+    modalTitle.textContent = 'Editar Evento';
+    eventNameAgregar.value = eventoSeleccionado.nombreEvento;
+    fechaEventoAgregar.value = eventoSeleccionado.fechaEvento;
+    horaInicioEventoAgregar.value = eventoSeleccionado.horaInicioEvento;
+    horaFinEventoAgregar.value = eventoSeleccionado.horaFinEvento;
+    ubicacionEventoAgregar.value = eventoSeleccionado.ubicacionEvento;
+    descripcionEventoAgregar.value = eventoSeleccionado.descripcionEvento;
+    const nombreArchivo = eventoSeleccionado.rutaImagenEvento.split('/').pop();
+    imagenEventoDynamicDropZone.setAttachedMode(nombreArchivo)
+    btnConfirmarEvento.textContent = 'Guardar cambios';
+    tipoModal = 'editar';
 });
 
-btnConfirmarAgregarEvento.addEventListener('click', () => {
-    agregarEventoEvent();
+btnConfirmarEvento.addEventListener('click', () => {
+    if (tipoModal === 'agregar') agregarEventoEvent();
+    if (tipoModal === 'editar') actualizarEventoEvent();
 });
 
 btnEliminarEvento.addEventListener('click', () => {
@@ -391,7 +361,7 @@ function renderizarEventos(eventos) {
             ubicacionDetalleEvento.textContent = evento.ubicacionEvento;
             descripcionDetalleEvento.textContent = evento.descripcionEvento;
             modalVerDetalleEvento.showModal();
-            idEvento = evento.idEvento;
+            eventoSeleccionado = evento;
         });
 
         const eventStartDuration = document.createElement('div');
@@ -472,21 +442,17 @@ function renderizarEventos(eventos) {
     });
 }
 
-async function cargarEventos(date='') {
+async function cargarEventos(date) {
+    if (!date) {
+        date = convertDateToISOString(new Date());
+    }
     const response = await listarEventos(date);
     if (response.status === 'success') {
         renderizarEventos(response.data);
     }
 }
 
-const imagenEventoDynamicDropZone =  setupDynamicDropZone(
-    document.getElementById('imagenEventoAgregar'),
-    ['PNG', 'JPG', 'JPEG'],
-    5* 1024 * 1024, // 5MB
-    (file) => {
-        console.log('Archivo agregado:', file.name);
-    }
-);
+
 
 /**
  * Agregar evento
@@ -565,9 +531,95 @@ async function agregarEventoEvent() {
     cargarEventos();
 }
 
+/**
+ * Editar evento
+ */
 async function eliminarEventoEvent() {
     modalVerDetalleEvento.close();
-    let response = await eliminarEvento(idEvento);
+    let response = await eliminarEvento(eventoSeleccionado.idEvento);
     if (response.status !== 'success') throw new Error('Error al eliminar el evento');
     cargarEventos();
+}
+
+
+
+/**
+ * Agregar evento
+ */
+async function actualizarEventoEvent() {
+    let isValid = true;
+
+    if (eventNameAgregar.value.trim() === '') {
+        nombreErrorMessageAgregarEvento.textContent = 'El nombre del evento es obligatorio.';
+        isValid = false;
+    } else {
+        nombreErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (fechaEventoAgregar.value.trim() === '') {
+        fechaErrorMessageAgregarEvento.textContent = 'La fecha del evento es obligatoria.';
+        isValid = false;
+    } else {
+        fechaErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (horaInicioEventoAgregar.value.trim() === '') {
+        msgErrorHoraInicioAgregar.textContent = 'La hora de inicio es obligatoria.';
+        isValid = false;
+    } else {
+        msgErrorHoraInicioAgregar.textContent = '';
+    }
+
+    if (horaFinEventoAgregar.value.trim() === '') {
+        msgErrorHoraFinAgregar.textContent = 'La hora de finalización es obligatoria.';
+        isValid = false;
+    } else {
+        msgErrorHoraFinAgregar.textContent = '';
+    }
+
+    if (ubicacionEventoAgregar.value.trim() === '') {
+        ubicacionErrorMessageAgregarEvento.textContent = 'La ubicación del evento es obligatoria.';
+        isValid = false;
+    } else {
+        ubicacionErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (descripcionEventoAgregar.value.trim() === '') {
+        descripcionErrorMessageAgregarEvento.textContent = 'La descripción del evento es obligatoria.';
+        isValid = false;
+    } else {
+        descripcionErrorMessageAgregarEvento.textContent = '';
+    }
+
+    if (!isValid) {
+        return;
+    }
+
+    const nombre = eventNameAgregar.value.trim();
+    const fecha = fechaEventoAgregar.value.trim();
+    const horaInicio = horaInicioEventoAgregar.value.trim();
+    const horaFin = horaFinEventoAgregar.value.trim();
+    const ubicacion = ubicacionEventoAgregar.value.trim();
+    const descripcion = descripcionEventoAgregar.value.trim();
+    const imagen = imagenEventoDynamicDropZone.getFile();
+
+    let idArchivoFinal = null;
+    if(imagen){
+        let responseUploadFile = await subirArchivo(imagen);
+        if (responseUploadFile.status !== 'success') throw new Error('Error al subir la imagen del evento');
+        idArchivoFinal = responseUploadFile.data.idArchivo;
+    } else {
+        idArchivoFinal = eventoSeleccionado.idArchivoImagenEvento;
+    }
+
+    let response = await actualizarEvento(eventoSeleccionado.idEvento, nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoFinal);
+    if (response.status !== 'success') throw new Error('Error al crear el evento');
+
+    modalAgregarEvento.close();
+    eventNameAgregar.value = '';
+    ubicacionEventoAgregar.value = '';
+    descripcionEventoAgregar.value = '';
+    imagenEventoDynamicDropZone.clear();
+
+    await cargarEventos();
 }
