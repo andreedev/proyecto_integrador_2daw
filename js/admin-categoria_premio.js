@@ -17,7 +17,15 @@ const cancelCreateBtn = document.getElementById('cancelCreateBtn');
 const categoriesGrid = document.getElementById('categoriesGrid');
 const errorMessage = document.querySelector(".error-message");
 
+// Modal confirmar eliminación
+const confirmDeleteModal = document.getElementById("confirmDeleteModal");
+const confirmDeleteMessage = document.getElementById("confirmDeleteMessage");
+const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+const closeDeleteBtn = document.querySelector('#confirmDeleteModal .close');
+
 let currentCategoryId = null;
+let categoriaAEliminar = null;
 
 // -------------------- VALIDACIONES --------------------
 newCategoryNameInput.addEventListener("blur", () => {
@@ -51,7 +59,8 @@ function addPrizeToModal(label = 'Nuevo premio', value = '', number = 1, idPremi
     `;
     prizesContainer.appendChild(prizeItem);
 
-    prizeItem.querySelector('.delete-btn').addEventListener('click', () => {
+    prizeItem.querySelector('.delete-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
         prizeItem.remove();
         updatePrizeNumbers();
     });
@@ -139,7 +148,8 @@ function addNewPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
     `;
     newPrizesContainer.appendChild(prizeItem);
 
-    prizeItem.querySelector('.delete-btn').addEventListener('click', () => {
+    prizeItem.querySelector('.delete-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
         prizeItem.remove();
         updateNewPrizeNumbers();
     });
@@ -243,32 +253,58 @@ function pintarCategorias(categorias) {
             <div class="category-header">
                 <div class="category-title">${categoria.nombre}</div>
                 <div class="category-icons">
-                    <span class="delete-icono" onclick="confirmarEliminarCategoria(${categoria.id_categoria}, '${categoria.nombre}')"></span>
+                    <span 
+                        class="delete-icono"
+                        data-id="${categoria.id_categoria}"
+                        data-nombre="${categoria.nombre}">
+                    </span>
                 </div>
             </div>
             <div class="prizes-list">${premiosHTML}</div>
         `;
 
-        categoryCard.addEventListener('click', () =>
-            openEditModal(categoria.id_categoria, categoria.nombre, categoria.premios)
-        );
+        // Abrir modal editar
+        categoryCard.addEventListener('click', () => {
+            openEditModal(categoria.id_categoria, categoria.nombre, categoria.premios);
+        });
+
+        // Botón eliminar (modal propio)
+        const deleteBtn = categoryCard.querySelector('.delete-icono');
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // CLAVE para que no se abra el modal de editar
+            categoriaAEliminar = deleteBtn.dataset.id;
+            confirmDeleteMessage.textContent = `¿Seguro que deseas eliminar "${deleteBtn.dataset.nombre}"?`;
+            confirmDeleteModal.classList.remove("hidden-force");
+        });
 
         categoriesGrid.appendChild(categoryCard);
     });
 }
 
-// -------------------- ELIMINAR CATEGORÍA --------------------
-async function confirmarEliminarCategoria(idCategoria, nombre) {
-    if (!confirm(`¿Seguro que deseas eliminar "${nombre}"?`)) return;
+// -------------------- MODAL CONFIRMAR ELIMINACIÓN --------------------
+cancelDeleteBtn.addEventListener('click', () => {
+    confirmDeleteModal.classList.add("hidden-force");
+    categoriaAEliminar = null;
+});
+
+closeDeleteBtn.addEventListener('click', () => {
+    confirmDeleteModal.classList.add("hidden-force");
+    categoriaAEliminar = null;
+});
+
+confirmDeleteBtn.addEventListener('click', async () => {
+    if (!categoriaAEliminar) return;
 
     try {
-        await eliminarCategoria(idCategoria);
+        await eliminarCategoria(categoriaAEliminar);
+        confirmDeleteModal.classList.add("hidden-force");
+        categoriaAEliminar = null;
         cargarCategorias();
     } catch (err) {
         console.error(err);
         alert("Error al eliminar categoría");
     }
-}
+});
 
 // -------------------- INICIALIZACIÓN --------------------
 document.addEventListener("DOMContentLoaded", () => cargarCategorias());
