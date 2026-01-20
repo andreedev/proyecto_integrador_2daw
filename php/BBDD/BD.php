@@ -1,7 +1,8 @@
 <?php
 require_once "connection.php";
 
-function crearBaseDatosSiNoExiste() {
+function crearBaseDatosSiNoExiste()
+{
     global $conexion, $db;
 
     $sql = "SHOW DATABASES LIKE '$db'";
@@ -189,11 +190,27 @@ function crearBaseDatosSiNoExiste() {
                 ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
                 
                 INSERT INTO candidatura (id_participante, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer, tipo_candidatura, estado) VALUES
-                (1, 'Cortometraje sobre la vida urbana.', 1, 2, 3, NULL, 'alumno', 'Finalista'),
-                (2, 'Documental sobre la naturaleza.', 4, 5, 6, NULL, 'alumno', 'Finalista'),
-                (3, 'Cortometraje de animación.', 7, 8, 9, NULL, 'alumni', 'Finalista'),
-                (4, 'Cortometraje de ficción dramática.', 10, 11, 12, NULL, 'alumno', 'Finalista'),
-                (5, 'Cortometraje experimental.', 1, 2, 3, NULL, 'alumni', 'Finalista');
+                (1, 'Corto urbano sobre la vida moderna.', 1, 2, 3, NULL, 'alumno', 'Aceptada'),
+                (2, 'Documental sobre la fauna local.', 2, 3, 4, NULL, 'alumno', 'En revisión'),
+                (3, 'Animación infantil educativa.', 3, 4, 5, NULL, 'alumni', 'Rechazada'),
+                (4, 'Drama social ambientado en un barrio.', 4, 5, 6, NULL, 'alumno', 'Aceptada'),
+                (5, 'Corto experimental en blanco y negro.', 5, 6, 7, NULL, 'alumni', 'En revisión'),
+                (1, 'Comedia sobre la universidad.', 6, 7, 8, NULL, 'alumno', 'Rechazada'),
+                (2, 'Thriller psicológico de suspense.', 7, 8, 9, NULL, 'alumno', 'Aceptada'),
+                (3, 'Fantasía épica de bajo presupuesto.', 8, 9, 10, NULL, 'alumni', 'En revisión'),
+                (4, 'Crítica social al consumismo.', 9, 10, 11, NULL, 'alumno', 'Rechazada'),
+                (5, 'Documental sobre música urbana.', 10, 11, 12, NULL, 'alumni', 'Aceptada'),
+                (1, 'Corto histórico ambientado en 1900.', 11, 12, 1, NULL, 'alumno', 'En revisión'),
+                (2, 'Relato futurista de ciencia ficción.', 12, 1, 2, NULL, 'alumno', 'Aceptada'),
+                (3, 'Terror psicológico en espacio cerrado.', 1, 2, 3, NULL, 'alumni', 'Rechazada'),
+                (4, 'Historia de superación personal.', 2, 3, 4, NULL, 'alumno', 'En revisión'),
+                (5, 'Corto musical con artistas locales.', 3, 4, 5, NULL, 'alumni', 'Aceptada'),
+                (1, 'Romance juvenil contemporáneo.', 4, 5, 6, NULL, 'alumno', 'Rechazada'),
+                (2, 'Corto ecológico sobre reciclaje.', 5, 6, 7, NULL, 'alumno', 'En revisión'),
+                (3, 'Animación stop motion artesanal.', 6, 7, 8, NULL, 'alumni', 'Aceptada'),
+                (4, 'Drama familiar intergeneracional.', 7, 8, 9, NULL, 'alumno', 'Rechazada'),
+                (5, 'Corto artístico abstracto.', 8, 9, 10, NULL, 'alumni', 'En revisión');
+
                 
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES
                 ('Primer premio', true, 600.00, 1),
@@ -256,13 +273,14 @@ function crearBaseDatosSiNoExiste() {
         if ($conexion->multi_query($sql_tables)) {
             // Vaciar los resultados de multi_query para evitar errores de sincronización
             do {
-                if ($res = $conexion->store_result()) { $res->free(); }
+                if ($res = $conexion->store_result()) {
+                    $res->free();
+                }
             } while ($conexion->more_results() && $conexion->next_result());
         } else {
             echo "Error creando tablas e inserts iniciales: " . $conexion->error;
             exit;
         }
-
     } else {
         seleccionarBaseDatos();
     }
