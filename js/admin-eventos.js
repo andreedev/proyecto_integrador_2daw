@@ -1,7 +1,6 @@
 const modalVerDetalleEvento = document.getElementById('modalVerDetalleEvento');
 
 const eventRows = document.querySelectorAll('.event-row');
-const btnEliminarEvento = document.querySelector('.neutral-button');
 const btnEditarEvento = document.querySelector('.primary-button');
 
 const btnAgregarEvento = document.getElementById('btnAgregarEvento');
@@ -62,6 +61,9 @@ const imagenEventoAgregar = document.getElementById('imagenEventoAgregar');
 
 const btnConfirmarAgregarEvento = document.getElementById('btnConfirmarAgregarEvento');
 
+const btnEliminarEvento = document.getElementById('btnEliminarEvento');
+
+let idEvento = null;
 
 // Mensajes de error si se pierde el foco
 eventNameAgregar.addEventListener('blur', () => {
@@ -176,12 +178,6 @@ eventImageEditar.addEventListener('blur', () => {
     }   
 });
 
-btnEliminarEvento.addEventListener('click', () => {
-   modalVerDetalleEvento.close();
-   eventRows[0].remove();
-});
-
-
 eventRows.forEach(row => {
     row.addEventListener('click', () => {
         modalVerDetalleEvento.showModal();
@@ -201,6 +197,10 @@ btnEditarEvento.addEventListener('click', () => {
 
 btnConfirmarAgregarEvento.addEventListener('click', () => {
     agregarEventoEvent();
+});
+
+btnEliminarEvento.addEventListener('click', () => {
+    eliminarEventoEvent();
 });
 
 const filtroFechaDateTimePicker = new AirDatepicker(filtroFechaInput, {
@@ -390,6 +390,7 @@ function renderizarEventos(eventos) {
             ubicacionDetalleEvento.textContent = evento.ubicacionEvento;
             descripcionDetalleEvento.textContent = evento.descripcionEvento;
             modalVerDetalleEvento.showModal();
+            idEvento = evento.idEvento;
         });
 
         const eventStartDuration = document.createElement('div');
@@ -560,5 +561,12 @@ async function agregarEventoEvent() {
     descripcionEventoAgregar.value = '';
     imagenEventoDynamicDropZone.clear();
 
+    cargarEventos();
+}
+
+async function eliminarEventoEvent() {
+    modalVerDetalleEvento.close();
+    let response = await eliminarEvento(idEvento);
+    if (response.status !== 'success') throw new Error('Error al eliminar el evento');
     cargarEventos();
 }

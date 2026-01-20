@@ -415,3 +415,11 @@ async function crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, ho
 
     return await fetchAPI(formData);
 }
+
+async function eliminarEvento(idEvento) {
+    const formData = new FormData();
+    formData.append('action', 'eliminarEvento');
+    formData.append('idEvento', idEvento);
+
+    return await fetchAPI(formData);
+}

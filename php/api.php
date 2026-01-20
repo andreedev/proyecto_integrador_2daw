@@ -113,6 +113,10 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             crearEvento();
             break;
+        case 'eliminarEvento':
+            validarRol(['organizador']);
+            eliminarEvento();
+            break;
         default:
             break;
     }
@@ -1243,5 +1247,31 @@ function crearEvento(){
         echo json_encode(["status" => "error", "message" => "Error al crear el evento"]);
     }
 }
+
+/**
+ * Eliminar evento
+ */
+function eliminarEvento(){
+    global $conexion;
+    $idEvento = (int) $_POST['idEvento'];
+
+    $stmt = $conexion->prepare("SELECT id_archivo_imagen FROM evento WHERE id_evento = ?");
+    $stmt->bind_param("i", $idEvento);
+    $stmt->execute();
+    $idArchivo = $stmt->get_result()->fetch_assoc()['id_archivo_imagen'] ?? null;
+
+    $stmtDel = $conexion->prepare("DELETE FROM evento WHERE id_evento = ?");
+    $stmtDel->bind_param("i", $idEvento);
+
+    if ($stmtDel->execute()) {
+        if ($idArchivo) {
+            eliminarArchivoPorId($idArchivo);
+        }
+        echo json_encode(["status" => "success", "message" => "Evento eliminado"]);
+    } else {
+        echo json_encode(["status" => "error"]);
+    }
+}
+
 
 cerrarConexion();
