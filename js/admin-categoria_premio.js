@@ -241,10 +241,10 @@ function pintarCategorias(categorias) {
 
         categoryCard.innerHTML = `
             <div class="category-header">
+                <div class="category-title">${categoria.nombre}</div>
                 <div class="category-icons">
                     <span class="delete-icono" onclick="confirmarEliminarCategoria(${categoria.id_categoria}, '${categoria.nombre}')"></span>
                 </div>
-                <div class="category-title">${categoria.nombre}</div>
             </div>
             <div class="prizes-list">${premiosHTML}</div>
         `;
