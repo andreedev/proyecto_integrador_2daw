@@ -157,11 +157,9 @@ inputYear.addEventListener("input", () => {
     if (inputYear.value.trim() !== "") {
         label.classList.add("label-arriba");
         icon.classList.add("check");
-        document.querySelector('.inputs .label').style.transform ='none'; 
     } else {
         label.classList.remove("label-arriba");
         icon.classList.remove("check");
-        document.querySelector('.inputs .label').style.transform ='-50%'; 
     }
 });
 

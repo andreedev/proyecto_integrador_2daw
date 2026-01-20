@@ -364,6 +364,7 @@ dialog{
     padding:4px 8px;
     border-radius: 0px;
     transform: translateY(-50%);
+    transition: transform 0.2s ease;
     top:16px;
 }
 
@@ -371,11 +372,6 @@ dialog{
 .label{
     color:var(--neutral-04);
     z-index:2;
-}
-
-.inputs:hover .label{
-    transform: translateY(-130%);
-    line-height: 18px;
 }
 
 .error-message-year{
@@ -425,7 +421,12 @@ dialog{
 }
 
 /*Para que se mantenga el label arriba cuando escribes*/
-.label-arriba{
+.inputs .label.label-arriba{
+    transform: translateY(-130%);
+    line-height: 18px;
+}
+
+.inputs:hover .label:not(.label-arriba){
     transform: translateY(-130%);
     line-height: 18px;
 }
