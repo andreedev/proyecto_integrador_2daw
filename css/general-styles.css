@@ -248,8 +248,8 @@ p{
 }
 
 .secondary-button-01{
-    background-color: var(--neutral-09);
-    color:  var(--neutral-01);
+    background-color: var(--neutral-01);
+    color: var(--neutral-09);
     border: 1px solid transparent;
     padding: 8px 24px;
     font-size: 16px;
@@ -261,8 +261,8 @@ p{
 }
 
 .secondary-button-01:hover, .secondary-button-01.active{
-    background-color: var(--neutral-01);
-    color: var(--neutral-09);
+    background-color: var(--neutral-09);
+    color: var(--neutral-01);
     border: 1px solid var(--neutral-01);
 }
 

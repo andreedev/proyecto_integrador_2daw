@@ -398,44 +398,6 @@
     text-align: center;
 }
 
-
-.primary-button-02{
-    background-color: var(--neutral-09);
-    border: 1px solid var(--primary-03);
-    color: var(--primary-03);
-    padding: 8px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: min-content;
-    width: 100%;
-    gap: 8px;
-    transition: all 300ms ease;
-}
-
-@media (min-width: 768px){
-    .primary-button-02 {
-        width: auto;
-    }
-    .primary-button-02 {
-        width: auto;
-    }
-}
-
-.primary-button-02:hover{
-    background-color: var(--primary-03);
-    color: var(--neutral-09);
-}
-
-.primary-button-02:hover .icon-external {
-    background-color: var(--neutral-09);
-    transition: all 300ms ease;
-}
-
 .streaming-card{
     width: 100%;
     transition: 0.3s;
@@ -839,26 +801,6 @@ remove-btn {
     background-color: var(--neutral-05);
 }
 
-
-.neutral-button{
-    background-color: var(--neutral-08);
-    color: var(--neutral-03);
-    border: none;
-    padding: 8px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: min-content;
-    gap: 8px;
-}
-
-.neutral-button:hover{
-    background-color: var(--neutral-06);
-}
 
 .warning-text-container{
     display: flex;

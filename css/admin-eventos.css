@@ -540,26 +540,6 @@ dialog{
     padding: 16px 20px;
 }
 
-.neutral-button{
-    background-color: var(--neutral-08);
-    color: var(--neutral-03);
-    border: none;
-    padding: 8px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: min-content;
-    gap: 8px;
-}
-
-.neutral-button:hover{
-    background-color: var(--neutral-06);
-}
-
 .divider-line{
     width: 100%;
     height: 1px;

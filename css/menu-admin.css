@@ -287,41 +287,6 @@ ul{
     align-items: center;
 }
 
-.admin-header-main-action-button{
-    background-color: var(--primary-03);
-    color: var(--neutral-09);
-    border: none;
-    padding: 8px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: min-content;
-    width: 100%;
-    gap: 8px;
-}
-
-@media (min-width: 768px){
-    .admin-header-main-action-button {
-        width: auto;
-    }
-    .admin-header-module-actions-container {
-        width: auto;
-    }
-}
-
-.admin-header-main-action-button:hover{
-    background-color: var(--primary-02);
-}
-
-.admin-header-main-action-button.disabled{
-    background-color: var(--primary-04);
-    cursor: not-allowed;
-}
-
 .admin-content{
     background-color: var(--neutral-08);
     padding: 16px;
