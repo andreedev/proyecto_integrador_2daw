@@ -37,10 +37,6 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             subirArchivo();
             break;
-        case 'listarCandidaturas':
-            validarRol(['organizador', 'participante']);
-            listarCandidaturas();
-            break;
         case 'listarPatrocinadores':
             validarRol(['organizador', 'participante']);
             listarPatrocinadores();
@@ -121,6 +117,22 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             eliminarEvento();
             break;
+        case 'mostrarCandidatura':
+            validarRol(['organizador']);
+            mostrarCandidaturas();
+            break;
+        case 'crearCandidatura':
+            validarRol(['organizador']);
+            crearCandidatura();
+            break;
+        case 'editarCandidatura':
+            validarRol(['organizador']);
+            editarCandidatura();
+            break;
+        case 'eliminarCandidatura':
+            validarRol(['organizador']);
+            eliminarCandidatura();
+            break;
         default:
             break;
     }
@@ -129,7 +141,8 @@ if (isset($_POST['action'])) {
 /**
  * Revisa si la sesión está iniciada y devuelve el estado
  */
-function revisarSesion(){
+function revisarSesion()
+{
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
             "status" => "inactive",
@@ -144,7 +157,8 @@ function revisarSesion(){
     ]);
 }
 
-function cerrarSesion(){
+function cerrarSesion()
+{
     session_unset();
     session_destroy();
     echo json_encode([
@@ -156,7 +170,8 @@ function cerrarSesion(){
 /**
  * Verifica las credenciales de un usuario en la tabla especificada
  */
-function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad){
+function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad)
+{
     global $conexion;
 
     $query = "SELECT * FROM $tabla WHERE $columnaId = ?";
@@ -182,7 +197,8 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
 /**
  * Iniciar sesión como Participante u Organizador
  */
-function login(){
+function login()
+{
     $numIdentidad = $_POST['numExpediente'] ?? '';
     $password = $_POST['password'] ?? '';
     $idEntidad = null;
@@ -225,7 +241,8 @@ function login(){
 /**
  * Valida que el rol sea uno de los permitidos
  */
-function validarRol($rolesPermitidos){
+function validarRol($rolesPermitidos)
+{
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode([
             "status" => "error",
@@ -246,7 +263,8 @@ function validarRol($rolesPermitidos){
 /**
  * Obtener configuración, archivos de la edición actual, y datos de la edición actual
  */
-function obtenerConfiguracion(){
+function obtenerConfiguracion()
+{
     global $conexion;
 
     $sqlConfig = "SELECT nombre, valor FROM configuracion";
@@ -316,7 +334,8 @@ function obtenerConfiguracion(){
 /**
  * Actualiza datos de pre-evento
  */
-function actualizarDatosPreEvento(){
+function actualizarDatosPreEvento()
+{
     global $conexion;
 
     $fechaActual = date("d/m/Y H:i");
@@ -370,7 +389,8 @@ function actualizarDatosPreEvento(){
 /**
  * Actualiza datos de post-evento
  */
-function actualizarDatosPostEvento(){
+function actualizarDatosPostEvento()
+{
     global $conexion;
 
     $resumenPostEvento = $_POST['resumenPostEvento'];
@@ -404,7 +424,8 @@ function actualizarDatosPostEvento(){
     echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
 }
 
-function obtenerIdEdicionActual(){
+function obtenerIdEdicionActual()
+{
     global $conexion;
 
     $query = "SELECT id_edicion FROM edicion WHERE tipo = 'actual' LIMIT 1";
@@ -425,7 +446,8 @@ function obtenerIdEdicionActual(){
  * Si es privado lo guarda en ./../uploads/private/
  * Por defecto se guardaa de manera publica
  */
-function subirArchivo(){
+function subirArchivo()
+{
     $privado = isset($_POST['privado']) && $_POST['privado'] === 'true';
     $directorioSubida = $privado ? './../uploads/private/' : './../uploads/public/';
 
@@ -478,7 +500,8 @@ function subirArchivo(){
  * Omite la eliminación del archivo físico si hay otras referencias
  *
  */
-function eliminarArchivoPorId($idArchivo){
+function eliminarArchivoPorId($idArchivo)
+{
     global $conexion;
 
     $stmt = $conexion->prepare("SELECT ruta FROM archivo WHERE id_archivo = ?");
@@ -515,38 +538,12 @@ function eliminarArchivoPorId($idArchivo){
 
     return false;
 }
-
-/**
- * Incompleto
- */
-function listarCandidaturas(){
-    global $conexion;
-
-    $query = "SELECT c.id_candidatura as idCandidatura, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, c.fecha_ultima_modificacion as fechaUltimaModificacion, a.ruta AS ruta_archivo_video as rutaArchivoVideo, pc.nombre AS nombre_participante, pc.correo as correoParticipante
-              FROM candidatura c
-              INNER JOIN participante pc ON c.id_participante = pc.id_participante
-              INNER JOIN archivo a ON c.id_archivo_video = a.id_archivo";
-
-    $stmt = $conexion->prepare($query);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $candidaturas = [];
-    while ($row = $result->fetch_assoc()) {
-        $candidaturas[] = $row;
-    }
-
-    echo json_encode([
-        "status" => "success",
-        "data" => $candidaturas
-    ]);
-}
-
 /**
  * Listar patrocinadores con su logo
  * Agrega la URL base de archivos a la ruta del logo
  */
-function listarPatrocinadores(){
+function listarPatrocinadores()
+{
     global $conexion;
 
     $query = "SELECT p.id_patrocinador as idPatrocinador, p.nombre as nombrePatrocinador, a.ruta as rutaArchivoLogo, a.id_archivo as idArchivoLogo FROM patrocinador p LEFT JOIN archivo a ON p.id_archivo_logo = a.id_archivo";
@@ -572,7 +569,8 @@ function listarPatrocinadores(){
  * Agregar un nuevo patrocinador
  * Verifica que no exista otro con el mismo nombre
  */
-function agregarPatrocinador(){
+function agregarPatrocinador()
+{
     global $conexion;
 
     $nombre = strtoupper($_POST['nombre']);
@@ -615,7 +613,8 @@ function agregarPatrocinador(){
  * Actualizar patrocinador
  * Maneja la lógica de no duplicar archivos si la ruta es la misma
  */
-function actualizarPatrocinador() {
+function actualizarPatrocinador()
+{
     global $conexion;
 
     $idPatrocinador = (int) $_POST['idPatrocinador'];
@@ -665,7 +664,8 @@ function actualizarPatrocinador() {
 /**
  * Eliminar un patrocinador
  */
-function eliminarPatrocinador(){
+function eliminarPatrocinador()
+{
     global $conexion;
     $idPatrocinador = (int) $_POST['idPatrocinador'];
 
@@ -691,7 +691,8 @@ function eliminarPatrocinador(){
  * Obtener la baseUrl desde la configuración
  * Esto se usa para construir las URLs completas de los archivos
  */
-function obtenerBaseUrl(){
+function obtenerBaseUrl()
+{
     global $conexion;
 
     $query = "SELECT valor FROM configuracion WHERE nombre = 'baseUrl' LIMIT 1";
@@ -708,7 +709,8 @@ function obtenerBaseUrl(){
 /**
  * Obtener categorías y sus premios asociados
  */
-function obtenerCategoriasYSusPremios(){
+function obtenerCategoriasYSusPremios()
+{
     global $conexion;
 
     $queryCategorias = "SELECT * FROM categoria";
@@ -820,7 +822,8 @@ function desasignarGanador()
 /**
  * Obtener todas las categorías con sus premios
  */
-function obtenerCategoriasConPremios() {
+function obtenerCategoriasConPremios()
+{
     global $conexion;
     $queryCategorias = "SELECT * FROM categoria";
     $resultCategorias = $conexion->query($queryCategorias);
@@ -858,7 +861,8 @@ function obtenerCategoriasConPremios() {
 /**
  * Agregar categoría con premios
  */
-function agregarCategoriaConPremios() {
+function agregarCategoriaConPremios()
+{
     global $conexion;
 
     $nombreCategoria = $_POST['nombreCategoria'] ?? null;
@@ -918,7 +922,8 @@ function agregarCategoriaConPremios() {
 /**
  * Editar categoría con premios
  */
-function editarCategoriaConPremios() {
+function editarCategoriaConPremios()
+{
     global $conexion;
 
     $idCategoria = $_POST['idCategoria'] ?? null;
@@ -977,7 +982,8 @@ function editarCategoriaConPremios() {
 /**
  * Eliminar categoría con premios
  */
-function eliminarCategoria() {
+function eliminarCategoria()
+{
     global $conexion;
 
     $idCategoria = $_POST['id_categoria'] ?? null;
@@ -1006,13 +1012,13 @@ function eliminarCategoria() {
         $conexion->rollback();
         echo json_encode(["status" => "error", "message" => $e->getMessage()]);
     }
-
 }
 
 /**
  * Actualizar una edición
  */
-function actualizarEdicion(){
+function actualizarEdicion()
+{
     global $conexion;
 
     $idEdicion = (int) $_POST['idEdicion'];
@@ -1035,7 +1041,8 @@ function actualizarEdicion(){
 /**
  * Contar participantes de la edición actual
  */
-function contarParticipantesEdicionActual() {
+function contarParticipantesEdicionActual()
+{
     global $conexion;
 
     $nroParticipantes = 0;
@@ -1057,45 +1064,46 @@ function contarParticipantesEdicionActual() {
  * Crea una nueva edicion actual para el proximo año
  * Actualiza el modo a 'pre-evento'
  */
-function enviarEdicionAAnteriores(){
+function enviarEdicionAAnteriores()
+{
     global $conexion;
 
-        $idEdicionActual = obtenerIdEdicionActual();
+    $idEdicionActual = obtenerIdEdicionActual();
 
-        $anioEdicion = (int) $_POST['anioEdicion'];
-        $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
-        $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
-        $nroParticipantes = contarParticipantesEdicionActual();
+    $anioEdicion = (int) $_POST['anioEdicion'];
+    $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
+    $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
+    $nroParticipantes = contarParticipantesEdicionActual();
 
 
-        $stmtTipo = $conexion->prepare("UPDATE edicion SET tipo = 'anterior', anio_edicion = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE tipo = 'actual'");
-        $stmtTipo->bind_param("iiss", $anioEdicion, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos);
+    $stmtTipo = $conexion->prepare("UPDATE edicion SET tipo = 'anterior', anio_edicion = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE tipo = 'actual'");
+    $stmtTipo->bind_param("iiss", $anioEdicion, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos);
 
-        if ($stmtTipo->execute()) {
+    if ($stmtTipo->execute()) {
 
-            // mover de tabla premio_candidatura a tabla ganadores_edicion
-            $queryGanadores = "SELECT c.id_candidatura, part.nombre AS nombreParticipante, cat.nombre AS categoria, p.nombre AS premio, c.id_archivo_video FROM premio_candidatura pc
+        // mover de tabla premio_candidatura a tabla ganadores_edicion
+        $queryGanadores = "SELECT c.id_candidatura, part.nombre AS nombreParticipante, cat.nombre AS categoria, p.nombre AS premio, c.id_archivo_video FROM premio_candidatura pc
                            INNER JOIN premio p ON pc.id_premio = p.id_premio
                            INNER JOIN categoria cat ON p.id_categoria = cat.id_categoria
                            INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
                            INNER JOIN participante part ON c.id_participante = part.id_participante";
 
-            $resultGanadores = $conexion->query($queryGanadores);
+        $resultGanadores = $conexion->query($queryGanadores);
 
-            $stmtInsertGanador = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
+        $stmtInsertGanador = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
 
-            // insertar cada ganador
-            while ($ganador = $resultGanadores->fetch_assoc()) {
-                $stmtInsertGanador->bind_param(
-                    "isssi",
-                    $idEdicionActual,
-                    $ganador['categoria'],
-                    $ganador['nombreParticipante'],
-                    $ganador['premio'],
-                    $ganador['id_archivo_video']
-                );
-                $stmtInsertGanador->execute();
-            }
+        // insertar cada ganador
+        while ($ganador = $resultGanadores->fetch_assoc()) {
+            $stmtInsertGanador->bind_param(
+                "isssi",
+                $idEdicionActual,
+                $ganador['categoria'],
+                $ganador['nombreParticipante'],
+                $ganador['premio'],
+                $ganador['id_archivo_video']
+            );
+            $stmtInsertGanador->execute();
+        }
 
         // eliminar historial_candidatura y candidaturas no ganadores
         $eliminarHistorialSql = "DELETE hc FROM historial_candidatura hc
@@ -1103,13 +1111,13 @@ function enviarEdicionAAnteriores(){
                              LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
                              WHERE pc.id_candidatura IS NULL";
 
-            $conexion->query($eliminarHistorialSql);
+        $conexion->query($eliminarHistorialSql);
 
         // eliminar candidaturas no ganadores
         $eliminarCandidaturasSql = "DELETE c FROM candidatura c
                                     LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
                                     WHERE pc.id_candidatura IS NULL";
-            $conexion->query($eliminarCandidaturasSql);
+        $conexion->query($eliminarCandidaturasSql);
 
         // eliminar premios asociados a candidaturas
         $eliminarPremiosSql = "DELETE pc FROM premio_candidatura pc
@@ -1117,27 +1125,28 @@ function enviarEdicionAAnteriores(){
         $conexion->query($eliminarPremiosSql);
 
 
-            // crear nueva edicion actual del proximo año
-            $nuevoAnioEdicion = $anioEdicion + 1;
-            $nuevoResumen = 'Resumen del año ' . $nuevoAnioEdicion;
-            $stmtNuevaEdicion = $conexion->prepare("INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, fecha_envio_email_informativo, fecha_borrado_datos, tipo, id_organizador) VALUES (?, ?, 0, CURDATE(), CURDATE(), 'actual', 1)");
-            $stmtNuevaEdicion->bind_param("is", $nuevoAnioEdicion, $nuevoResumen);
-            $stmtNuevaEdicion->execute();
+        // crear nueva edicion actual del proximo año
+        $nuevoAnioEdicion = $anioEdicion + 1;
+        $nuevoResumen = 'Resumen del año ' . $nuevoAnioEdicion;
+        $stmtNuevaEdicion = $conexion->prepare("INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, fecha_envio_email_informativo, fecha_borrado_datos, tipo, id_organizador) VALUES (?, ?, 0, CURDATE(), CURDATE(), 'actual', 1)");
+        $stmtNuevaEdicion->bind_param("is", $nuevoAnioEdicion, $nuevoResumen);
+        $stmtNuevaEdicion->execute();
 
-            // actualizar modo a pre-evento
-            $stmtModo = $conexion->prepare("UPDATE configuracion SET valor = 'pre-evento' WHERE nombre = 'modo'");
-            $stmtModo->execute();
+        // actualizar modo a pre-evento
+        $stmtModo = $conexion->prepare("UPDATE configuracion SET valor = 'pre-evento' WHERE nombre = 'modo'");
+        $stmtModo->execute();
 
-            echo json_encode(["status" => "success", "message" => "Edición enviada a anteriores correctamente"]);
-        } else {
-            echo json_encode(["status" => "error", "message" => "Error al enviar la edición a anteriores"]);
-        }
+        echo json_encode(["status" => "success", "message" => "Edición enviada a anteriores correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al enviar la edición a anteriores"]);
     }
+}
 
 /**
  * Listar noticias
  */
-function listarNoticias(){
+function listarNoticias()
+{
     global $conexion;
 
     $filtroNombre = isset($_POST['filtroNombre']) && !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
@@ -1150,7 +1159,7 @@ function listarNoticias(){
     $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
                 n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia
               FROM noticia n
-              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true ". $filtrosSql . " ORDER BY n.fecha DESC";
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . " ORDER BY n.fecha DESC";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();
@@ -1173,7 +1182,8 @@ function listarNoticias(){
 /**
  * Crear una nueva noticia
  */
-function crearNoticia(){
+function crearNoticia()
+{
     global $conexion;
 
     $nombre = $_POST['nombreNoticia'];
@@ -1194,7 +1204,8 @@ function crearNoticia(){
 /**
  * Listar eventos
  */
-function listarEventos(){
+function listarEventos()
+{
     global $conexion;
 
     $filtroFecha = isset($_POST['filtroFecha']) && !empty($_POST['filtroFecha']) ? $_POST['filtroFecha'] : null;
@@ -1231,7 +1242,8 @@ function listarEventos(){
 /**
  * Crear evento
  */
-function crearEvento(){
+function crearEvento()
+{
     global $conexion;
 
     $nombre = $_POST['nombreEvento'];
@@ -1255,7 +1267,8 @@ function crearEvento(){
 /**
  *  Actualizar evento
  */
-function actualizarEvento(){
+function actualizarEvento()
+{
     global $conexion;
 
     $idEvento = (int) $_POST['idEvento'];
@@ -1309,7 +1322,8 @@ function actualizarEvento(){
 /**
  * Eliminar evento
  */
-function eliminarEvento(){
+function eliminarEvento()
+{
     global $conexion;
     $idEvento = (int) $_POST['idEvento'];
 
@@ -1330,6 +1344,182 @@ function eliminarEvento(){
         echo json_encode(["status" => "error"]);
     }
 }
+
+
+/**
+ * Mostrar Candidaturas
+ */
+function mostrarCandidaturas()
+{
+    global $conexion;
+    $query = "SELECT c.id_candidatura, c.estado, c.tipo_candidatura, c.fecha_presentacion, c.fecha_ultima_modificacion,c.sinopsis,
+    p.nombre AS participante, p.dni, a1.ruta AS video, a2.ruta AS ficha, a3.ruta AS cartel, a4.ruta AS trailer FROM candidatura c
+    INNER JOIN participante p 
+    ON c.id_participante = p.id_participante
+    LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
+    LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
+    LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
+    LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
+    ORDER BY c.id_candidatura DESC;
+    ";
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $candidaturas = [];
+    while ($row = $result->fetch_assoc()) {
+        $candidaturas[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $candidaturas
+    ]);
+}
+
+
+/**
+ * Agregar candidatura
+ */
+
+function crearCandidatura()
+{
+    global $conexion; // mysqli
+
+    // Datos desde el formulario
+    $idParticipante = (int)$_POST['idParticipante'];
+    $sinopsis = $_POST['sinopsis'];
+    $tipoCandidatura = $_POST['tipoCandidatura'];
+    $idArchivoVideo = isset($_POST['idArchivoVideo']) ? (int)$_POST['idArchivoVideo'] : null;
+    $idArchivoFicha = isset($_POST['idArchivoFicha']) ? (int)$_POST['idArchivoFicha'] : null;
+    $idArchivoCartel = isset($_POST['idArchivoCartel']) ? (int)$_POST['idArchivoCartel'] : null;
+    $idArchivoTrailer = isset($_POST['idArchivoTrailer']) ? (int)$_POST['idArchivoTrailer'] : null;
+
+    // Preparar la query
+    $stmt = $conexion->prepare("
+        INSERT INTO candidatura 
+        (id_participante, sinopsis, tipo_candidatura, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ");
+
+    // Vincular parámetros (i = integer, s = string)
+    $stmt->bind_param("issiiii", $idParticipante, $sinopsis, $tipoCandidatura, $idArchivoVideo, $idArchivoFicha, $idArchivoCartel, $idArchivoTrailer);
+
+    // Ejecutar y devolver resultado en JSON
+    if ($stmt->execute()) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Candidatura creada correctamente",
+            "id_candidatura" => $conexion->insert_id
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al crear la candidatura: " . $stmt->error
+        ]);
+    }
+
+    $stmt->close();
+}
+
+/**
+ * Editar la candidatura
+ */
+
+function editarCandidatura()
+{
+    global $conexion;
+    $idCandidatura = (int)$_POST['idCandidatura'];
+    $sinopsis = $_POST['sinopsis'];
+    $tipoCandidatura = $_POST['tipoCandidatura'];
+    $estado = $_POST['estado'];
+    $idArchivoVideo = isset($_POST['idArchivoVideo']) ? (int)$_POST['idArchivoVideo'] : null;
+    $idArchivoFicha = isset($_POST['idArchivoFicha']) ? (int)$_POST['idArchivoFicha'] : null;
+    $idArchivoCartel = isset($_POST['idArchivoCartel']) ? (int)$_POST['idArchivoCartel'] : null;
+    $idArchivoTrailer = isset($_POST['idArchivoTrailer']) ? (int)$_POST['idArchivoTrailer'] : null;
+
+    $stmt = $conexion->prepare("
+        UPDATE candidatura
+        SET sinopsis = ?, 
+            tipo_candidatura = ?, 
+            estado = ?, 
+            id_archivo_video = ?, 
+            id_archivo_ficha = ?, 
+            id_archivo_cartel = ?, 
+            id_archivo_trailer = ?
+        WHERE id_candidatura = ?
+    ");
+
+    $stmt->bind_param(
+        "sssiiiii",
+        $sinopsis,
+        $tipoCandidatura,
+        $estado,
+        $idArchivoVideo,
+        $idArchivoFicha,
+        $idArchivoCartel,
+        $idArchivoTrailer,
+        $idCandidatura
+    );
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Candidatura editada correctamente"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al editar la candidatura: " . $stmt->error
+        ]);
+    }
+
+    $stmt->close();
+}
+
+/**
+ * Eliminar la candidatura
+ */
+function eliminarCandidatura()
+{
+    global $conexion;
+
+    $idCandidatura = (int)$_POST['idCandidatura'];
+
+    $stmtCheck = $conexion->prepare("SELECT id_candidatura FROM candidatura WHERE id_candidatura = ?");
+    $stmtCheck->bind_param("i", $idCandidatura);
+    $stmtCheck->execute();
+    $resultado = $stmtCheck->get_result();
+
+    if ($resultado->num_rows === 0) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "No se encontró la candidatura con ID: $idCandidatura"
+        ]);
+        $stmtCheck->close();
+        return;
+    }
+
+    $stmtCheck->close();
+
+    $stmt = $conexion->prepare("DELETE FROM candidatura WHERE id_candidatura = ?");
+    $stmt->bind_param("i", $idCandidatura);
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Candidatura eliminada correctamente"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al eliminar la candidatura: " . $stmt->error
+        ]);
+    }
+
+    $stmt->close();
+}
+
 
 
 cerrarConexion();
