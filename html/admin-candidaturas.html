@@ -59,93 +59,14 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            <!-- EN REVISIÓN -->
-                            <tr>
-                                <td data-label="Participante">
-                                    <div class="participant">Carlos del Prado Rodríguez</div>
-                                    <div class="email">cprado23@gmail.com</div>
-                                </td>
-                                <td data-label="Sinopsis" class="synopsis">
-                                    Escritor descubre los secretos en la casa heredada, una trama que desafía...
-                                </td>
-                                <td data-label="Estado">
-                                    <span class="badge review">
-                                        <img src="../img/icon/icon-sandclock.svg" alt="">
-                                        En revisión
-                                    </span>
-                                </td>
-                                <td data-label="Fecha presentación">15/09/2024</td>
-                                <td data-label="Últ. actualización">20/11/2024, 15:45</td>
-                                <td data-label="Acciones">
-                                    <div class="actions">
-                                        <button class="btn btn-detail">Detalle</button>
-                                        <button class="btn">Documentos</button>
-                                        <button class="btn">Historial</button>
-                                        <button class="btn change" data-estado="review">Cambiar</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- ACEPTADA -->
-                            <tr>
-                                <td data-label="Participante">
-                                    <div class="participant">Laura Sánchez Moreno</div>
-                                    <div class="email">laura.sanchez@email.com</div>
-                                </td>
-                                <td data-label="Sinopsis" class="synopsis">
-                                    Una novela intimista sobre la memoria familiar y los silencios heredados.
-                                </td>
-                                <td data-label="Estado">
-                                    <span class="badge accepted">
-                                        Aceptada
-                                    </span>
-                                </td>
-                                <td data-label="Fecha presentación">18/09/2024</td>
-                                <td data-label="Últ. actualización">22/11/2024, 10:12</td>
-                                <td data-label="Acciones">
-                                    <div class="actions">
-                                        <button class="btn btn-detail">Detalle</button>
-                                        <button class="btn">Documentos</button>
-                                        <button class="btn">Historial</button>
-                                        <button class="btn change" data-estado="review">Cambiar</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- RECHAZADA -->
-                            <tr data-reject-reason="La sinopsis no cumple con los requisitos temáticos del concurso.">
-                                <td data-label="Participante">
-                                    <div class="participant">Miguel Ángel Torres</div>
-                                    <div class="email">matorres@gmail.com</div>
-                                </td>
-                                <td data-label="Sinopsis" class="synopsis">
-                                    Relato experimental que mezcla ciencia ficción y poesía urbana.
-                                </td>
-                                <td data-label="Estado">
-                                    <span class="badge rejected">
-                                        <img src="../img/icon/CloseOutlineIcon.svg" alt="">
-                                        Rechazada
-                                    </span>
-                                </td>
-                                <td data-label="Fecha presentación">20/09/2024</td>
-                                <td data-label="Últ. actualización">25/11/2024, 18:03</td>
-                                <td data-label="Acciones">
-                                    <div class="actions">
-                                        <button class="btn btn-detail">Detalle</button>
-                                        <button class="btn">Documentos</button>
-                                        <button class="btn">Historial</button>
-                                        <button class="btn change" data-estado="review">Cambiar</button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <!-- Filas cargadas dinámicamente desde JS -->
                         </tbody>
                     </table>
 
                     <div class="table-footer">
                         <div class="pagination-info">
-                            Mostrando 10 de 25 candidaturas
+                            Mostrando 0 de 0 candidaturas
                         </div>
                         <div class="pagination">
                             <button class="pagination-btn"><span>Anterior</span></button>
@@ -155,24 +76,22 @@
                             <button class="pagination-btn"><span>Siguiente</span></button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- MODALES -->
+
     <!-- MODAL CAMBIAR ESTADO -->
     <div class="modal" id="changeModal">
         <div class="modal-overlay"></div>
-
         <div class="modal-content">
             <h2>Cambiar estado de candidatura</h2>
-
             <div class="modal-context">
                 <p><strong>Participante:</strong> <span id="modal-participant"></span></p>
                 <p><strong>Estado actual:</strong> <span id="modal-current-status"></span></p>
             </div>
-
             <label>
                 Nuevo estado
                 <select id="modalStatus">
@@ -182,13 +101,11 @@
                     <option value="finalist">Finalista</option>
                 </select>
             </label>
-
             <label id="rejectReasonWrapper" style="display: none;">
                 Motivo del rechazo *
                 <textarea id="rejectReason" rows="3"
                     placeholder="Indique el motivo del rechazo (visible para el participante)"></textarea>
             </label>
-
             <div class="modal-actions">
                 <button class="btn" id="closeModal">Cancelar</button>
                 <button class="btn change" id="saveModal">Guardar</button>
@@ -237,69 +154,58 @@
                 <h2>Detalle de Candidatura</h2>
                 <button class="close-btn" id="closeDetailModal">&times;</button>
             </div>
-
             <div class="detail-content">
-
                 <div class="detail-row">
-                    <span><strong>ID Candidatura:</strong> <span id="detail-id">CD001</span></span>
-                    <span><strong>Estado actual:</strong> <span id="detail-status" class="badge review">En
-                            revisión</span></span>
+                    <span><strong>ID Candidatura:</strong> <span id="detail-id"></span></span>
+                    <span><strong>Estado actual:</strong> <span id="detail-status" class="badge"></span></span>
                 </div>
-
                 <h3>Información del participante</h3>
                 <div class="participant-info">
                     <div class="info-item">
                         <img src="../img/icon/UserIcon.svg" alt="Nombre">
-                        <span id="detail-name">María García López</span>
+                        <span id="detail-name"></span>
                     </div>
                     <div class="info-item">
                         <img src="../img/icon/EmailIcon.svg" alt="Email">
-                        <span id="detail-email">maria.garcia@email.com</span>
+                        <span id="detail-email"></span>
                     </div>
                     <div class="info-item">
                         <img src="../img/icon/IdIcon.svg" alt="ID">
-                        <span id="detail-id-number">12345678A</span>
+                        <span id="detail-id-number"></span>
                     </div>
                     <div class="info-item">
                         <img src="../img/icon/HashIcon.svg" alt="Expediente">
-                        <span id="detail-exp">EXP-2025-001</span>
+                        <span id="detail-exp"></span>
                     </div>
                 </div>
-
                 <h3>Información de la candidatura</h3>
                 <div class="synopsis-detail">
                     <strong>Sinopsis</strong>
-                    <p id="detail-synopsis">Lorem ipsum dolor sit amet...</p>
+                    <p id="detail-synopsis"></p>
                 </div>
-
                 <div class="dates-row">
                     <div class="date-item">
                         <img src="../img/icon/CalendarIcon.svg" alt="Fecha presentación">
                         <div>
                             <strong>Fecha de presentación</strong>
-                            <div id="detail-date-presented">15/09/2024, 10:30</div>
+                            <div id="detail-date-presented"></div>
                         </div>
                     </div>
                     <div class="date-item">
                         <img src="../img/icon/CalendarIcon.svg" alt="Última actualización">
                         <div>
                             <strong>Última actualización</strong>
-                            <div id="detail-date-updated">10/12/2024, 18:00</div>
+                            <div id="detail-date-updated"></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Motivo de rechazo (solo si aplica) -->
                 <div class="reject-reason" id="detail-reject-reason" style="display: none; margin-top: 16px;">
                     <strong>Motivo del rechazo:</strong>
                     <p id="reject-reason-text"></p>
                 </div>
-
-                <!-- Botón de eliminar candidatura -->
                 <div class="modal-actions" style="margin-top: 24px; text-align: right;">
                     <button class="btn delete" id="deleteCandidatura">Eliminar candidatura</button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -314,50 +220,16 @@
             </div>
             <div class="history-body">
                 <div class="history-id">
-                    <strong>ID Candidatura:</strong> <span id="history-id">CD001</span>
+                    <strong>ID Candidatura:</strong> <span id="history-id"></span>
                 </div>
                 <div class="timeline">
-                    <div class="timeline-item review">
-                        <div class="timeline-icon"></div>
-                        <div class="timeline-content">
-                            <span class="timeline-badge review">En revisión</span>
-                            <span class="timeline-date">22/08/2024, 16:45</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item rejected">
-                        <div class="timeline-icon"></div>
-                        <div class="timeline-content">
-                            <span class="timeline-badge rejected">Rechazada</span>
-                            <span class="timeline-date">10/09/2024, 12:30</span>
-                            <div class="timeline-reason">
-                                <strong>Motivo del rechazo:</strong>
-                                Falta documentación: certificado de derechos de autor de la banda sonora.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item review">
-                        <div class="timeline-icon"></div>
-                        <div class="timeline-content">
-                            <span class="timeline-badge review">En revisión</span>
-                            <span class="timeline-date">10/09/2024, 12:30</span>
-                            <div class="timeline-fix">
-                                <strong>Subsanación enviada:</strong>
-                                Se adjunta certificado de derechos solicitado y declaración jurada del compositor.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item accepted">
-                        <div class="timeline-icon"></div>
-                        <div class="timeline-content">
-                            <span class="timeline-badge accepted">Aceptada</span>
-                            <span class="timeline-date">22/09/2024, 16:45</span>
-                        </div>
-                    </div>
+                    <!-- timeline cargado dinámicamente si quieres -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- MODAL DE CONFIRMACIÓN -->
+
+    <!-- MODAL CONFIRMACIÓN -->
     <div class="modal" id="confirmationModal">
         <div class="modal-content">
             <p id="confirmationMessage"></p>
@@ -368,7 +240,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE NOTIFICACIÓN -->
+    <!-- MODAL NOTIFICACIÓN -->
     <div class="modal" id="notificationModal">
         <div class="modal-content">
             <p id="notificationMessage"></p>
@@ -383,5 +255,4 @@
     <script src="../js/admin-candidaturas.js"></script>
     <script src="../js/menu-admin.js"></script>
 </body>
-
 </html>

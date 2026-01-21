@@ -453,16 +453,6 @@ async function mostrarCandidaturas() {
     return await fetchAPI(data);
 }
 
-// Función para crear una candidatura
-async function crearCandidatura(nombre, descripcion, idCategoria, idEdicion) {
-    const data = new FormData();
-    data.append('action', 'crearCandidatura');
-    data.append('nombre', nombre);
-    data.append('descripcion', descripcion);
-    data.append('idCategoria', idCategoria);
-    data.append('idEdicion', idEdicion);
-    return await fetchAPI(data);
-}
 
 //Función para editar una candidatura
 async function editarCandidatura(idCandidatura, nombre, descripcion, idCategoria) {

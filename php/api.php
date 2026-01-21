@@ -117,13 +117,9 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             eliminarEvento();
             break;
-        case 'mostrarCandidatura':
+        case 'mostrarCandidaturas':
             validarRol(['organizador']);
             mostrarCandidaturas();
-            break;
-        case 'crearCandidatura':
-            validarRol(['organizador']);
-            crearCandidatura();
             break;
         case 'editarCandidatura':
             validarRol(['organizador']);
@@ -1352,17 +1348,41 @@ function eliminarEvento()
 function mostrarCandidaturas()
 {
     global $conexion;
-    $query = "SELECT c.id_candidatura, c.estado, c.tipo_candidatura, c.fecha_presentacion, c.fecha_ultima_modificacion,c.sinopsis,
-    p.nombre AS participante, p.dni, a1.ruta AS video, a2.ruta AS ficha, a3.ruta AS cartel, a4.ruta AS trailer FROM candidatura c
-    INNER JOIN participante p 
-    ON c.id_participante = p.id_participante
-    LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
-    LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
-    LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
-    LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
-    ORDER BY c.id_candidatura DESC;
+
+    $query = "
+        SELECT 
+            c.id_candidatura,
+            c.estado,
+            c.tipo_candidatura,
+            c.fecha_presentacion,
+            c.fecha_ultima_modificacion,
+            c.sinopsis,
+            p.nombre AS participante,
+            p.dni,
+            a1.ruta AS video,
+            a2.ruta AS ficha,
+            a3.ruta AS cartel,
+            a4.ruta AS trailer
+        FROM candidatura c
+        INNER JOIN participante p 
+            ON c.id_participante = p.id_participante
+        LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
+        LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
+        LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
+        LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
+        ORDER BY c.id_candidatura DESC
     ";
+
     $stmt = $conexion->prepare($query);
+
+    if (!$stmt) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al preparar la consulta: " . $conexion->error
+        ]);
+        return;
+    }
+
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -1376,52 +1396,6 @@ function mostrarCandidaturas()
         "data" => $candidaturas
     ]);
 }
-
-
-/**
- * Agregar candidatura
- */
-
-function crearCandidatura()
-{
-    global $conexion; // mysqli
-
-    // Datos desde el formulario
-    $idParticipante = (int)$_POST['idParticipante'];
-    $sinopsis = $_POST['sinopsis'];
-    $tipoCandidatura = $_POST['tipoCandidatura'];
-    $idArchivoVideo = isset($_POST['idArchivoVideo']) ? (int)$_POST['idArchivoVideo'] : null;
-    $idArchivoFicha = isset($_POST['idArchivoFicha']) ? (int)$_POST['idArchivoFicha'] : null;
-    $idArchivoCartel = isset($_POST['idArchivoCartel']) ? (int)$_POST['idArchivoCartel'] : null;
-    $idArchivoTrailer = isset($_POST['idArchivoTrailer']) ? (int)$_POST['idArchivoTrailer'] : null;
-
-    // Preparar la query
-    $stmt = $conexion->prepare("
-        INSERT INTO candidatura 
-        (id_participante, sinopsis, tipo_candidatura, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ");
-
-    // Vincular parámetros (i = integer, s = string)
-    $stmt->bind_param("issiiii", $idParticipante, $sinopsis, $tipoCandidatura, $idArchivoVideo, $idArchivoFicha, $idArchivoCartel, $idArchivoTrailer);
-
-    // Ejecutar y devolver resultado en JSON
-    if ($stmt->execute()) {
-        echo json_encode([
-            "status" => "success",
-            "message" => "Candidatura creada correctamente",
-            "id_candidatura" => $conexion->insert_id
-        ]);
-    } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error al crear la candidatura: " . $stmt->error
-        ]);
-    }
-
-    $stmt->close();
-}
-
 /**
  * Editar la candidatura
  */
@@ -1429,18 +1403,20 @@ function crearCandidatura()
 function editarCandidatura()
 {
     global $conexion;
-    $idCandidatura = (int)$_POST['idCandidatura'];
-    $sinopsis = $_POST['sinopsis'];
-    $tipoCandidatura = $_POST['tipoCandidatura'];
-    $estado = $_POST['estado'];
-    $idArchivoVideo = isset($_POST['idArchivoVideo']) ? (int)$_POST['idArchivoVideo'] : null;
-    $idArchivoFicha = isset($_POST['idArchivoFicha']) ? (int)$_POST['idArchivoFicha'] : null;
-    $idArchivoCartel = isset($_POST['idArchivoCartel']) ? (int)$_POST['idArchivoCartel'] : null;
-    $idArchivoTrailer = isset($_POST['idArchivoTrailer']) ? (int)$_POST['idArchivoTrailer'] : null;
+
+    $idCandidatura    = (int)($_POST['idCandidatura'] ?? 0);
+    $sinopsis         = $_POST['sinopsis'] ?? '';
+    $tipoCandidatura  = $_POST['tipoCandidatura'] ?? '';
+    $estado           = $_POST['estado'] ?? '';
+    $idArchivoVideo   = isset($_POST['idArchivoVideo']) && $_POST['idArchivoVideo'] !== "" ? (int)$_POST['idArchivoVideo'] : null;
+    $idArchivoFicha   = isset($_POST['idArchivoFicha']) && $_POST['idArchivoFicha'] !== "" ? (int)$_POST['idArchivoFicha'] : null;
+    $idArchivoCartel  = isset($_POST['idArchivoCartel']) && $_POST['idArchivoCartel'] !== "" ? (int)$_POST['idArchivoCartel'] : null;
+    $idArchivoTrailer = isset($_POST['idArchivoTrailer']) && $_POST['idArchivoTrailer'] !== "" ? (int)$_POST['idArchivoTrailer'] : null;
 
     $stmt = $conexion->prepare("
         UPDATE candidatura
-        SET sinopsis = ?, 
+        SET 
+            sinopsis = ?, 
             tipo_candidatura = ?, 
             estado = ?, 
             id_archivo_video = ?, 
@@ -1449,6 +1425,14 @@ function editarCandidatura()
             id_archivo_trailer = ?
         WHERE id_candidatura = ?
     ");
+
+    if (!$stmt) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error preparando el UPDATE: " . $conexion->error
+        ]);
+        return;
+    }
 
     $stmt->bind_param(
         "sssiiiii",
@@ -1480,6 +1464,7 @@ function editarCandidatura()
 /**
  * Eliminar la candidatura
  */
+
 function eliminarCandidatura()
 {
     global $conexion;
@@ -1489,17 +1474,16 @@ function eliminarCandidatura()
     $stmtCheck = $conexion->prepare("SELECT id_candidatura FROM candidatura WHERE id_candidatura = ?");
     $stmtCheck->bind_param("i", $idCandidatura);
     $stmtCheck->execute();
-    $resultado = $stmtCheck->get_result();
+    $result = $stmtCheck->get_result();
 
-    if ($resultado->num_rows === 0) {
+    if ($result->num_rows === 0) {
         echo json_encode([
             "status" => "error",
-            "message" => "No se encontró la candidatura con ID: $idCandidatura"
+            "message" => "No existe la candidatura con ID: $idCandidatura"
         ]);
         $stmtCheck->close();
         return;
     }
-
     $stmtCheck->close();
 
     $stmt = $conexion->prepare("DELETE FROM candidatura WHERE id_candidatura = ?");
@@ -1519,7 +1503,6 @@ function eliminarCandidatura()
 
     $stmt->close();
 }
-
 
 
 cerrarConexion();
