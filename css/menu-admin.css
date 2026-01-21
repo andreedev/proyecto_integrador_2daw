@@ -29,16 +29,6 @@ ul{
     align-items: center;
 }
 
-.iconoAdminPanel{
-    width: 32px;
-    height: 32px;
-    background-color: var(--neutral-09);
-    mask-image: url('../img/icon/icon-landingglobalgrid.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 4px 0px 0px 4px;
-} 
 .cabeceraMenuLateral h1{
     font-size: 20px;
     color: var(--neutral-01);
@@ -66,101 +56,6 @@ ul{
 .menuGala ul{
     padding-top:0px;
     padding-left:24px;
-}
-
-/* Iconos del menu lateral */
-
-.iconoCandidaturas{
-    width:24px;
-    height:24px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-document.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-}
-.iconoFinalistas{
-    width:24px;
-    height:24px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-trophy.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-}
-.iconoNoticias{
-    width:28px;
-    height:28px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-news.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-} 
-.iconoCategorias{
-    width:20px;
-    height:20px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-tags.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-} 
-.iconoPatrocinadores{
-    width:20px;
-    height:20px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-network.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-}
-
-.iconoGala{
-    width:20px;
-    height:20px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-video.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-}
-
-.iconoEvento{
-    width:20px;
-    height:20px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-calendar.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-} 
-.iconoEdicionesAnteriores{
-    width:16px;
-    height:16px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-sandclock.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
-} 
-.iconoConfiguracionWeb{
-    width:16px;
-    height:16px;
-    background-color: var(--neutral-01);
-    mask-image: url('../img/icon/icon-settings.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 6px 0px 0px 6px;
 }
 
 
@@ -238,100 +133,8 @@ ul{
     
 }
 
-.admin-super-container{
-    display: flex;
-    flex-direction: column;
-}
-
-@media (min-width: 992px){
-    .admin-super-container{
-        flex-direction: row;
-    }
-}
-
-.admin-page-content{
-    flex-grow: 1;
-    background-color: var(--neutral-09);
-    width: 100%;
-}
-
-.admin-header{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px;
-    background-color: var(--neutral-08);
-    padding: 16px 16px;
-    flex-direction: row;
-}
-
-@media (min-width: 768px){
-    .admin-header {
-        padding: 16px 32px;
-    }
-}
-
-.admin-header-module-info-container{
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex-grow: 1;
-    min-width: 250px;
-}
-
-.admin-header-module-actions-container{
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    flex-shrink: 0;
-    align-items: center;
-}
-
-.admin-content{
-    background-color: var(--neutral-08);
-    padding: 16px;
-    height: 100%;
-}
-
-@media (min-width: 768px){
-    .admin-content{
-        padding: 16px 32px;
-    }
-}
-
-.admin-module-name{
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--neutral-01);
-}
-
-@media (min-width: 768px){
-    .admin-module-name{
-        font-size: 24px;
-    }
-}
-
-.admin-module-description{
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--neutral-03);
-    margin-top: 4px;
-    margin-bottom: 0px;
-}
-
-.icono-agregar {
-    width: 24px;
-    height: 24px;
-    background-color: var(--neutral-09);
-    mask-image: url('../img/icon/icon-plus.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    margin: 0px 8px 0px 0px;
-}
-
 .responsiveMenuAdmin{
-    border-bottom: 1px solid var(--neutral-04);
+    border-bottom: 1px solid var(--neutral-06);
     display: flex;
     flex-direction: row;
     padding: 8px;
@@ -342,12 +145,4 @@ ul{
     .responsiveMenuAdmin{
         display: none;
     }
-}
-
-.cerrarSesionAdmin{
-    display: flex;
-    flex-direction: row;
-    background-color: var(--primary-02);
-    border-radius:6px;
-
 }

@@ -1,6 +1,4 @@
-.admin-header {
-    background-color: var(--neutral-09);
-}
+
 /* Contenedor principal: deja espacio para el menú */
 .container {
     max-width: 1200px;
@@ -192,7 +190,6 @@
 
 .admin-content-body{
     background-color: var(--neutral-09);
-    padding: 24px;
     display: flex;
     flex-direction: column;
     gap:16px;
