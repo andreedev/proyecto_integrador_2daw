@@ -17,10 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusSelect = document.getElementById('modalStatus');
     const participantSpan = document.getElementById('modal-participant');
     const currentStatusSpan = document.getElementById('modal-current-status');
+    const deleteCandidaturaBtn = document.getElementById('deleteCandidatura');
+
+    // FILTROS
+    const searchInput = document.querySelector('.filter-search input');
+    const statusFilterSelect = document.querySelector('.filter-status select');
+    const dateInput = document.querySelector('.filter-date input');
+    const clearBtn = document.querySelector('.clear');
 
     let activeChangeRow = null;
     let activeDetailRow = null;
     let candidaturas = [];
+
+    // Variables para los filtros y paginación
+    let filtroBusqueda = '';
+    let filtroEstado = '';
+    let filtroFecha = '';
+    let paginaActual = 1;
+    const candidaturasPorPagina = 5;
 
     const statusLabels = {
         review: 'En revisión',
@@ -75,7 +89,65 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(fecha).toLocaleString('es-ES');
     }
 
-    // CARGA CANDIDATURAS DESDE API
+    // ACTUALIZAR TEXTO DE INFORMACIÓN
+    function actualizarInfoPaginacion(candidaturasMostradas, totalCandidaturas) {
+        const infoElement = document.querySelector('.pagination-info');
+        if (infoElement) {
+            infoElement.textContent = `Mostrando ${candidaturasMostradas} de ${totalCandidaturas} candidaturas`;
+        }
+    }
+
+    // PINTAR BOTONES DE PAGINACIÓN
+    function pintarPaginacion(paginaActualLocal, totalPaginas) {
+        const paginationContainer = document.querySelector('.pagination');
+        if (!paginationContainer) return;
+
+        paginationContainer.innerHTML = '';
+
+        // Botón Anterior
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.innerHTML = '<span>Anterior</span>';
+        prevBtn.disabled = paginaActualLocal <= 1;
+        prevBtn.addEventListener('click', () => {
+            if (paginaActual > 1) {
+                paginaActual--;
+                cargarCandidaturas();
+            }
+        });
+        paginationContainer.appendChild(prevBtn);
+
+        // Botones de páginas
+        for (let i = 1; i <= totalPaginas; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = 'pagination-btn';
+            pageBtn.textContent = i;
+            if (i === paginaActualLocal) {
+                pageBtn.classList.add('active');
+            }
+            pageBtn.addEventListener('click', (e) => {
+                const numPagina = parseInt(e.target.textContent);
+                paginaActual = numPagina;
+                cargarCandidaturas();
+            });
+            paginationContainer.appendChild(pageBtn);
+        }
+
+        // Botón Siguiente
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.innerHTML = '<span>Siguiente</span>';
+        nextBtn.disabled = paginaActualLocal >= totalPaginas;
+        nextBtn.addEventListener('click', () => {
+            if (paginaActual < totalPaginas) {
+                paginaActual++;
+                cargarCandidaturas();
+            }
+        });
+        paginationContainer.appendChild(nextBtn);
+    }
+
+    // CARGA CANDIDATURAS DESDE API (con filtros y paginación)
     async function cargarCandidaturas() {
         try {
             const response = await mostrarCandidaturas();
@@ -95,20 +167,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            pintarTabla();
+            // Aplicar filtros
+            let candidaturasFiltradas = [...candidaturas];
+
+            if (filtroBusqueda) {
+                candidaturasFiltradas = candidaturasFiltradas.filter(c =>
+                    c.participante.toLowerCase().includes(filtroBusqueda.toLowerCase()) ||
+                    (c.sinopsis && c.sinopsis.toLowerCase().includes(filtroBusqueda.toLowerCase()))
+                );
+            }
+
+            if (filtroEstado) {
+                candidaturasFiltradas = candidaturasFiltradas.filter(c => c.estado === filtroEstado);
+            }
+
+            if (filtroFecha) {
+                const fechaFiltro = new Date(filtroFecha).toISOString().split('T')[0];
+                candidaturasFiltradas = candidaturasFiltradas.filter(c => {
+                    const fechaPresentacion = new Date(c.fecha_presentacion).toISOString().split('T')[0];
+                    return fechaPresentacion === fechaFiltro;
+                });
+            }
+
+            // Calcular total de páginas
+            const totalPaginas = Math.ceil(candidaturasFiltradas.length / candidaturasPorPagina);
+
+            // Asegurar que la página actual sea válida
+            if (paginaActual > totalPaginas) {
+                paginaActual = totalPaginas;
+            }
+            if (paginaActual < 1) {
+                paginaActual = 1;
+            }
+
+            // Obtener candidaturas para la página actual
+            const indiceInicio = (paginaActual - 1) * candidaturasPorPagina;
+            const candidaturasPaginadas = candidaturasFiltradas.slice(indiceInicio, indiceInicio + candidaturasPorPagina);
+
+            pintarTabla(candidaturasPaginadas, candidaturasFiltradas.length, totalPaginas);
         } catch (e) {
             console.error(e);
             showNotification('Error de comunicación con el servidor');
         }
     }
 
-    // PINTAR TABLA
-    function pintarTabla() {
+    // PINTAR TABLA (con paginación)
+    function pintarTabla(candidaturasParaPintar = candidaturas, totalCandidaturas = candidaturas.length, totalPaginas = 1) {
         const tbody = document.querySelector('table tbody');
         if (!tbody) return;
         tbody.innerHTML = '';
 
-        candidaturas.forEach(c => {
+        if (candidaturasParaPintar.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No hay candidaturas para mostrar</td></tr>';
+            actualizarInfoPaginacion(0, totalCandidaturas);
+            pintarPaginacion(1, totalPaginas);
+            return;
+        }
+
+        candidaturasParaPintar.forEach(c => {
             const tr = document.createElement('tr');
             tr.dataset.id = c.id_candidatura;
             tr.dataset.estado = getEstadoKey(c.estado);
@@ -118,6 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.dataset.poster = c.poster || '';
             tr.dataset.technical = c.technical || '';
 
+            const estadoTexto = statusLabels[getEstadoKey(c.estado)] || c.estado;
+
             tr.innerHTML = `
                 <td>
                     <div class="participant">${c.participante}</div>
@@ -125,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </td>
                 <td class="synopsis">${c.sinopsis || '-'}</td>
                 <td>
-                    <span class="badge ${getBadgeClass(c.estado)}">${c.estado}</span>
+                    <span class="badge ${getBadgeClass(c.estado)}">${estadoTexto}</span>
                 </td>
                 <td>${formatDate(c.fecha_presentacion)}</td>
                 <td>${formatDate(c.fecha_ultima_modificacion)}</td>
@@ -142,6 +260,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         asignarEventos();
+
+        // Actualizar info de paginación
+        actualizarInfoPaginacion(candidaturasParaPintar.length, totalCandidaturas);
+        pintarPaginacion(paginaActual, totalPaginas);
     }
 
     // ASIGNAR EVENTOS
@@ -275,9 +397,37 @@ document.addEventListener('DOMContentLoaded', () => {
             rejectReasonDiv.style.display = 'none';
         }
 
+        deleteCandidaturaBtn.onclick = () => {
+            const idCandidatura = row.dataset.id;
+            showConfirmation(
+                `¿Estás seguro de que quieres eliminar la candidatura ${idCandidatura}?`,
+                async () => {
+                    try {
+                        const response = await eliminarCandidatura(idCandidatura);
+                        console.log('Eliminar candidatura response:', response);
+
+                        if (response.status === 'success') {
+                            candidaturas = candidaturas.filter(c => c.id_candidatura != idCandidatura);
+                            row.remove();
+                            detailModal.style.display = 'none';
+                            // Resetear paginación si es necesario
+                            if (candidaturas.length === 0) {
+                                paginaActual = 1;
+                            }
+                            cargarCandidaturas();
+                        } else {
+                            showNotification(response.message || 'Error al eliminar');
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        showNotification('Error al eliminar la candidatura');
+                    }
+                }
+            );
+        };
+
         detailModal.style.display = 'flex';
     }
-
 
     // CARGAR HISTORIAL
     function cargarHistorial(row) {
@@ -306,6 +456,36 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('closeHistoryModal').onclick = () => historyModal.style.display = 'none';
     document.getElementById('closeDocumentsModal').onclick = () => documentsModal.style.display = 'none';
 
-    // Inicio de la aplicación y del muestreo de tablas
+    // EVENTOS DE FILTROS
+    searchInput.addEventListener('input', () => {
+        filtroBusqueda = searchInput.value.trim();
+        paginaActual = 1; // Resetear a primera página al filtrar
+        cargarCandidaturas();
+    });
+
+    statusFilterSelect.addEventListener('change', () => {
+        filtroEstado = statusFilterSelect.value === 'Todos los estados' ? '' : statusFilterSelect.value;
+        paginaActual = 1; // Resetear a primera página al filtrar
+        cargarCandidaturas();
+    });
+
+    dateInput.addEventListener('change', () => {
+        filtroFecha = dateInput.value;
+        paginaActual = 1; // Resetear a primera página al filtrar
+        cargarCandidaturas();
+    });
+
+    clearBtn.addEventListener('click', () => {
+        filtroBusqueda = '';
+        filtroEstado = '';
+        filtroFecha = '';
+        searchInput.value = '';
+        statusFilterSelect.value = 'Todos los estados';
+        dateInput.value = '';
+        paginaActual = 1;
+        cargarCandidaturas();
+    });
+
+    // Inicio de la aplicación
     cargarCandidaturas();
 });
