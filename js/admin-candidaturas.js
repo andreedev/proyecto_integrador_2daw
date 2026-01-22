@@ -17,11 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusSelect = document.getElementById('modalStatus');
     const participantSpan = document.getElementById('modal-participant');
     const currentStatusSpan = document.getElementById('modal-current-status');
-    const deleteCandidaturaBtn = document.getElementById('deleteCandidatura'); // ← Añadido
+    const deleteCandidaturaBtn = document.getElementById('deleteCandidatura');
+
+    // FILTROS
+    const searchInput = document.querySelector('.filter-search input');
+    const statusFilterSelect = document.querySelector('.filter-status select');
+    const dateInput = document.querySelector('.filter-date input');
+    const clearBtn = document.querySelector('.clear');
 
     let activeChangeRow = null;
     let activeDetailRow = null;
     let candidaturas = [];
+
+    // Variables para los filtros
+    let filtroBusqueda = '';
+    let filtroEstado = '';
+    let filtroFecha = '';
 
     const statusLabels = {
         review: 'En revisión',
@@ -76,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(fecha).toLocaleString('es-ES');
     }
 
-    // CARGA CANDIDATURAS DESDE API
+    // CARGA CANDIDATURAS DESDE API (con filtros aplicados)
     async function cargarCandidaturas() {
         try {
             const response = await mostrarCandidaturas();
@@ -96,20 +107,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            pintarTabla();
+            // Aplicar filtros
+            let candidaturasFiltradas = [...candidaturas];
+
+            if (filtroBusqueda) {
+                candidaturasFiltradas = candidaturasFiltradas.filter(c =>
+                    c.participante.toLowerCase().includes(filtroBusqueda.toLowerCase()) ||
+                    (c.sinopsis && c.sinopsis.toLowerCase().includes(filtroBusqueda.toLowerCase()))
+                );
+            }
+
+            if (filtroEstado) {
+                candidaturasFiltradas = candidaturasFiltradas.filter(c => c.estado === filtroEstado);
+            }
+
+            if (filtroFecha) {
+                const fechaFiltro = new Date(filtroFecha).toISOString().split('T')[0];
+                candidaturasFiltradas = candidaturasFiltradas.filter(c => {
+                    const fechaPresentacion = new Date(c.fecha_presentacion).toISOString().split('T')[0];
+                    return fechaPresentacion === fechaFiltro;
+                });
+            }
+
+            pintarTabla(candidaturasFiltradas);
         } catch (e) {
             console.error(e);
             showNotification('Error de comunicación con el servidor');
         }
     }
 
-    // PINTAR TABLA
-    function pintarTabla() {
+    // PINTAR TABLA (acepta candidaturas filtradas)
+    function pintarTabla(candidaturasParaPintar = candidaturas) {
         const tbody = document.querySelector('table tbody');
         if (!tbody) return;
         tbody.innerHTML = '';
 
-        candidaturas.forEach(c => {
+        if (candidaturasParaPintar.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No hay candidaturas para mostrar</td></tr>';
+            return;
+        }
+
+        candidaturasParaPintar.forEach(c => {
             const tr = document.createElement('tr');
             tr.dataset.id = c.id_candidatura;
             tr.dataset.estado = getEstadoKey(c.estado);
@@ -119,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.dataset.poster = c.poster || '';
             tr.dataset.technical = c.technical || '';
 
-            // ✅ CORREGIDO: Mostrar texto legible del estado
             const estadoTexto = statusLabels[getEstadoKey(c.estado)] || c.estado;
 
             tr.innerHTML = `
@@ -279,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
             rejectReasonDiv.style.display = 'none';
         }
 
-        // ✅ AÑADIDO: Evento para eliminar candidatura
         deleteCandidaturaBtn.onclick = () => {
             const idCandidatura = row.dataset.id;
             showConfirmation(
@@ -290,15 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log('Eliminar candidatura response:', response);
 
                         if (response.status === 'success') {
-                            // Eliminar de la lista local
                             candidaturas = candidaturas.filter(c => c.id_candidatura != idCandidatura);
-
-                            // Eliminar de la tabla DOM
                             row.remove();
-
-                            // Cerrar el modal
                             detailModal.style.display = 'none';
-
                             showNotification('Candidatura eliminada correctamente');
                         } else {
                             showNotification(response.message || 'Error al eliminar');
@@ -341,6 +371,32 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('closeHistoryModal').onclick = () => historyModal.style.display = 'none';
     document.getElementById('closeDocumentsModal').onclick = () => documentsModal.style.display = 'none';
 
-    // Inicio de la aplicación y del muestreo de tablas
+    // EVENTOS DE FILTROS
+    searchInput.addEventListener('input', () => {
+        filtroBusqueda = searchInput.value.trim();
+        cargarCandidaturas();
+    });
+
+    statusFilterSelect.addEventListener('change', () => {
+        filtroEstado = statusFilterSelect.value === 'Todos los estados' ? '' : statusFilterSelect.value;
+        cargarCandidaturas();
+    });
+
+    dateInput.addEventListener('change', () => {
+        filtroFecha = dateInput.value;
+        cargarCandidaturas();
+    });
+
+    clearBtn.addEventListener('click', () => {
+        filtroBusqueda = '';
+        filtroEstado = '';
+        filtroFecha = '';
+        searchInput.value = '';
+        statusFilterSelect.value = 'Todos los estados';
+        dateInput.value = '';
+        cargarCandidaturas();
+    });
+
+    // Inicio de la aplicación
     cargarCandidaturas();
 });
