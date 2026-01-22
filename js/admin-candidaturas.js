@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusSelect = document.getElementById('modalStatus');
     const participantSpan = document.getElementById('modal-participant');
     const currentStatusSpan = document.getElementById('modal-current-status');
+    const deleteCandidaturaBtn = document.getElementById('deleteCandidatura'); // ← Añadido
 
     let activeChangeRow = null;
     let activeDetailRow = null;
@@ -118,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.dataset.poster = c.poster || '';
             tr.dataset.technical = c.technical || '';
 
+            // ✅ CORREGIDO: Mostrar texto legible del estado
+            const estadoTexto = statusLabels[getEstadoKey(c.estado)] || c.estado;
+
             tr.innerHTML = `
                 <td>
                     <div class="participant">${c.participante}</div>
@@ -125,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </td>
                 <td class="synopsis">${c.sinopsis || '-'}</td>
                 <td>
-                    <span class="badge ${getBadgeClass(c.estado)}">${c.estado}</span>
+                    <span class="badge ${getBadgeClass(c.estado)}">${estadoTexto}</span>
                 </td>
                 <td>${formatDate(c.fecha_presentacion)}</td>
                 <td>${formatDate(c.fecha_ultima_modificacion)}</td>
@@ -275,9 +279,40 @@ document.addEventListener('DOMContentLoaded', () => {
             rejectReasonDiv.style.display = 'none';
         }
 
+        // ✅ AÑADIDO: Evento para eliminar candidatura
+        deleteCandidaturaBtn.onclick = () => {
+            const idCandidatura = row.dataset.id;
+            showConfirmation(
+                `¿Estás seguro de que quieres eliminar la candidatura ${idCandidatura}?`,
+                async () => {
+                    try {
+                        const response = await eliminarCandidatura(idCandidatura);
+                        console.log('Eliminar candidatura response:', response);
+
+                        if (response.status === 'success') {
+                            // Eliminar de la lista local
+                            candidaturas = candidaturas.filter(c => c.id_candidatura != idCandidatura);
+
+                            // Eliminar de la tabla DOM
+                            row.remove();
+
+                            // Cerrar el modal
+                            detailModal.style.display = 'none';
+
+                            showNotification('Candidatura eliminada correctamente');
+                        } else {
+                            showNotification(response.message || 'Error al eliminar');
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        showNotification('Error al eliminar la candidatura');
+                    }
+                }
+            );
+        };
+
         detailModal.style.display = 'flex';
     }
-
 
     // CARGAR HISTORIAL
     function cargarHistorial(row) {
