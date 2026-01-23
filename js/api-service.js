@@ -259,3 +259,13 @@ async function eliminarCandidatura(idCandidatura) {
     data.append('idCandidatura', idCandidatura);
     return await fetchAPI(data);
 }
+
+/**
+ * Llama al API para obtener las bases legales
+ */
+async function obtenerBasesLegales(){
+    const data = new FormData();
+    data.append('action', 'obtenerBasesLegales');
+
+    return await fetchAPI(data);
+}

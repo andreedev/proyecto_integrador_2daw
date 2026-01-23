@@ -129,6 +129,9 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             eliminarCandidatura();
             break;
+        case 'obtenerBasesLegales':
+            obtenerBasesLegales();
+            break;
         default:
             break;
     }
@@ -1504,5 +1507,22 @@ function eliminarCandidatura()
     $stmt->close();
 }
 
+
+/**
+ * Obtener bases legales
+ */
+function obtenerBasesLegales(){
+    global $conexion;
+
+    $query = "SELECT valor FROM configuracion WHERE nombre = 'bases_legales' LIMIT 1";
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        echo json_encode(["status" => "success", "data" => $row['valor']]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "No se encontraron las bases legales"]);
+    }
+}
 
 cerrarConexion();
