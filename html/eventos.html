@@ -4,49 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias</title>
+    <title>Eventos</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/footer.css">
-    <link rel="stylesheet" href="../css/noticias.css">
+    <link rel="stylesheet" href="../css/eventos.css">
     <link rel="stylesheet" href="../css/utils.css">
 </head>
-
 <body>
     <home-header></home-header>
 
     <div class="page-content">
-        <div class="header-noticias">
-            <h1 class="title-header">Noticias</h1>
+        <div class="header-eventos">
+            <span class="bg-color"></span>
+            <h1 class="title-header">Eventos</h1>
             <div class="redirect-home">
                 <span class="icon-home"></span>
-                <span class="text">> Noticias</span>
+                <span class="text">> Eventos</span>
             </div>
         </div>
+        <div class="all-events">
+            <span class="title">Todos los eventos</span>
+        </div>
 
+        <!-- BLOQUE LISTADO DE EVENTOS -->
+        <main class="events-list">
 
-
-
-
-        <!-- BLOQUE LISTADO DE NOTICIAS -->
-        <main class="news-list">
-
-            <div class="news-post">
-                <img class="img-noticia" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen noticia 1">
-                <div class="news-post-content">
-                    <div class="news-date-location">
-                        <span class="news-location">Madrid</span>
-                        <span class="news-date">21 ene 2026</span>
+            <div class="event-post">
+                <img class="img-evento" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen evento 1">
+                <div class="event-post-content">
+                    <div class="event-icon-hora">
+                        <span class="event-icon"></span>
+                        <span class="event-hora">15 feb 2026</span>
                     </div>
-                    <div class="news-title">La Universidad Europea se una a QS One para impulsar el futuro de la educación superior</div>
+                    <div class="event-title">Conferencia sobre innovación tecnológica</div>
                 </div>
             </div>
-            
+
         </main>
 
-    </div>
+
     <home-footer></home-footer>
+   
+
 
     <script src="../js/common.js"></script>
     <script src="../js/header.js"></script>
