@@ -94,6 +94,7 @@
 }
 
 .header-button{
+    position: relative;
     width: auto;
     padding: 8px 32px;
     background-color: var(--neutral-09);
@@ -102,6 +103,21 @@
     transition: all 300ms ease;
     box-sizing: border-box;
     border-bottom: 1px solid transparent;
+}
+
+.header-button:hover:after{
+    content: "";
+    width: 7px;
+    height: 7px;
+    background-color: var(--primary-03);
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.header-button:hover{
+    font-weight: 500;
 }
 
 @media (min-width: 1100px) {
@@ -116,11 +132,6 @@
         font-size: 16px;
         font-weight: normal;
     }
-}
-
-.header-button:hover {
-    transition: all 300ms ease;
-    border-bottom: 1px solid var(--neutral-01);
 }
 
 .header-primary-action-button{
