@@ -148,68 +148,65 @@
     </div>
 
     <!-- MODAL DETALLE -->
-    <div class="modal" id="detailModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Detalle de Candidatura</h2>
-                <button class="close-btn" id="closeDetailModal">&times;</button>
+<div class="modal" id="detailModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Detalle de Candidatura</h2>
+            <button class="close-btn" id="closeDetailModal">&times;</button>
+        </div>
+        <div class="detail-content">
+            <div class="detail-row">
+                <span><strong>ID Candidatura:</strong> <span id="detail-id"></span></span>
+                <span><strong>Estado actual:</strong> <span id="detail-status" class="badge"></span></span>
             </div>
-            <div class="detail-content">
-                <div class="detail-row">
-                    <span><strong>ID Candidatura:</strong> <span id="detail-id"></span></span>
-                    <span><strong>Estado actual:</strong> <span id="detail-status" class="badge"></span></span>
+            <h3>Información del participante</h3>
+            <div class="participant-info">
+                <div class="info-item">
+                    <img src="../img/icon/UserIcon.svg" alt="Nombre">
+                    <span id="detail-name"></span>
                 </div>
-                <h3>Información del participante</h3>
-                <div class="participant-info">
-                    <div class="info-item">
-                        <img src="../img/icon/UserIcon.svg" alt="Nombre">
-                        <span id="detail-name"></span>
-                    </div>
-                    <div class="info-item">
-                        <img src="../img/icon/EmailIcon.svg" alt="Email">
-                        <span id="detail-email"></span>
-                    </div>
-                    <div class="info-item">
-                        <img src="../img/icon/IdIcon.svg" alt="ID">
-                        <span id="detail-id-number"></span>
-                    </div>
-                    <div class="info-item">
-                        <img src="../img/icon/HashIcon.svg" alt="Expediente">
-                        <span id="detail-exp"></span>
-                    </div>
+                <div class="info-item">
+                    <img src="../img/icon/EmailIcon.svg" alt="Email">
+                    <span id="detail-email"></span>
                 </div>
-                <h3>Información de la candidatura</h3>
-                <div class="synopsis-detail">
-                    <strong>Sinopsis</strong>
-                    <p id="detail-synopsis"></p>
+                <div class="info-item">
+                    <img src="../img/icon/IdIcon.svg" alt="ID">
+                    <span id="detail-id-number"></span>
                 </div>
-                <div class="dates-row">
-                    <div class="date-item">
-                        <img src="../img/icon/CalendarIcon.svg" alt="Fecha presentación">
-                        <div>
-                            <strong>Fecha de presentación</strong>
-                            <div id="detail-date-presented"></div>
-                        </div>
-                    </div>
-                    <div class="date-item">
-                        <img src="../img/icon/CalendarIcon.svg" alt="Última actualización">
-                        <div>
-                            <strong>Última actualización</strong>
-                            <div id="detail-date-updated"></div>
-                        </div>
+                <div class="info-item">
+                    <img src="../img/icon/HashIcon.svg" alt="Expediente">
+                    <span id="detail-exp"></span>
+                </div>
+            </div>
+            <h3>Información de la candidatura</h3>
+            <div class="synopsis-detail">
+                <strong>Sinopsis</strong>
+                <p id="detail-synopsis"></p>
+            </div>
+            <div class="dates-row">
+                <div class="date-item">
+                    <img src="../img/icon/CalendarIcon.svg" alt="Fecha presentación">
+                    <div>
+                        <strong>Fecha de presentación</strong>
+                        <div id="detail-date-presented"></div>
                     </div>
                 </div>
-                <div class="reject-reason" id="detail-reject-reason" style="display: none; margin-top: 16px;">
-                    <strong>Motivo del rechazo:</strong>
-                    <p id="reject-reason-text"></p>
+                <div class="date-item">
+                    <img src="../img/icon/CalendarIcon.svg" alt="Última actualización">
+                    <div>
+                        <strong>Última actualización</strong>
+                        <div id="detail-date-updated"></div>
+                    </div>
                 </div>
-                <div class="modal-actions" style="margin-top: 24px; text-align: right;">
-                    <button class="btn delete" id="deleteCandidatura">Eliminar candidatura</button>
-                </div>
+            </div>
+            <div class="reject-reason" id="detail-reject-reason" style="display: none; margin-top: 16px;">
+                <strong>Motivo del rechazo:</strong>
+                <p id="reject-reason-text"></p>
             </div>
         </div>
     </div>
+</div>
 
     <!-- MODAL HISTORIAL -->
     <div class="modal" id="historyModal">

@@ -251,11 +251,3 @@ async function editarCandidatura(idCandidatura, nombre, descripcion, idCategoria
     data.append('idCategoria', idCategoria);
     return await fetchAPI(data);
 }
-
-//Función para eliminar una candidatura
-async function eliminarCandidatura(idCandidatura) {
-    const data = new FormData();
-    data.append('action', 'eliminarCandidatura');
-    data.append('idCandidatura', idCandidatura);
-    return await fetchAPI(data);
-}

@@ -396,36 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             rejectReasonDiv.style.display = 'none';
         }
-
-        deleteCandidaturaBtn.onclick = () => {
-            const idCandidatura = row.dataset.id;
-            showConfirmation(
-                `¿Estás seguro de que quieres eliminar la candidatura ${idCandidatura}?`,
-                async () => {
-                    try {
-                        const response = await eliminarCandidatura(idCandidatura);
-                        console.log('Eliminar candidatura response:', response);
-
-                        if (response.status === 'success') {
-                            candidaturas = candidaturas.filter(c => c.id_candidatura != idCandidatura);
-                            row.remove();
-                            detailModal.style.display = 'none';
-                            // Resetear paginación si es necesario
-                            if (candidaturas.length === 0) {
-                                paginaActual = 1;
-                            }
-                            cargarCandidaturas();
-                        } else {
-                            showNotification(response.message || 'Error al eliminar');
-                        }
-                    } catch (e) {
-                        console.error(e);
-                        showNotification('Error al eliminar la candidatura');
-                    }
-                }
-            );
-        };
-
+        
         detailModal.style.display = 'flex';
     }
 
