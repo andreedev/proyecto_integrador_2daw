@@ -40,33 +40,7 @@
     font-display: swap;
 }
 
-/** Reset general */
-*{
-    font-family: 'Hellix', Helvetica, Arial, sans-serif;
-    font-optical-sizing: auto;
-    scroll-behavior: smooth;
-    box-sizing: border-box;
-}
 
-h1, h2, h3, h4, h5, h6{
-    margin: 0;
-    padding: 0;
-    font-weight: 600;
-}
-
-ul, li{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-button{
-    border-radius: 0;
-}
-
-input{
-    background-color: transparent;
-}
 
 /* Kit de componentes Figma */
 :root{
@@ -104,7 +78,33 @@ input{
     --shadow-02: 0 2px 20px 0 rgba(40, 40, 40, 0.12);
 }
 
-/* Eliminar estilos por defecto de elementos HTML */
+/** Reset general */
+*{
+    font-family: 'Hellix', Helvetica, Arial, sans-serif;
+    font-optical-sizing: auto;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6{
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+}
+
+ul, li{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button{
+    border-radius: 0;
+}
+
+input{
+    background-color: transparent;
+}
 
 body{
     margin: 0;
@@ -116,6 +116,10 @@ body{
 a{
     text-decoration: none;
     color: inherit;
+}
+
+a:focus-visible{
+    outline: none;
 }
 
 input {
