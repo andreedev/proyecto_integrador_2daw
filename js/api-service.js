@@ -242,22 +242,8 @@ async function mostrarCandidaturas() {
 
 
 //Función para editar una candidatura
-async function editarCandidatura(idCandidatura, nombre, descripcion, idCategoria) {
-    const data = new FormData();
-    data.append('action', 'editarCandidatura');
-    data.append('idCandidatura', idCandidatura);
-    data.append('nombre', nombre);
-    data.append('descripcion', descripcion);
-    data.append('idCategoria', idCategoria);
-    return await fetchAPI(data);
-}
-
-//Función para eliminar una candidatura
-async function eliminarCandidatura(idCandidatura) {
-    const data = new FormData();
-    data.append('action', 'eliminarCandidatura');
-    data.append('idCandidatura', idCandidatura);
-    return await fetchAPI(data);
+async function editarCandidatura(formData) {
+    return await fetchAPI(formData);
 }
 
 /**

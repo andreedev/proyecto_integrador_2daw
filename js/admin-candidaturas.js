@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reasonWrapper = document.getElementById('rejectReasonWrapper');
     const closeChangeBtn = document.getElementById('closeModal');
     const saveChangeBtn = document.getElementById('saveModal');
-    const statusSelect = document.getElementById('modalStatus');
+    const modalStatus = document.getElementById('modalStatus');
     const participantSpan = document.getElementById('modal-participant');
     const currentStatusSpan = document.getElementById('modal-current-status');
     const deleteCandidaturaBtn = document.getElementById('deleteCandidatura');
@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeChangeRow = null;
     let activeDetailRow = null;
     let candidaturas = [];
+    let candidaturaSeleccionada = null;
 
     // Variables para los filtros y paginación
     let filtroBusqueda = '';
@@ -256,6 +257,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </td>
             `;
+            tr.querySelector('.change').addEventListener('click', () => {
+                candidaturaSeleccionada = c;
+                modalStatus.replaceChildren();
+                let estadosDisponibles = [];
+                if (c.estado === 'En revisión') {
+                    estadosDisponibles = ['Aceptada', 'Rechazada'];
+                } else if (c.estado === 'Aceptada') {
+                    estadosDisponibles = ['Finalista'];
+                } else if (c.estado === 'Rechazada') {
+                    estadosDisponibles = ['En revisión'];
+                } 
+                estadosDisponibles.forEach(estado => {
+                    const option = document.createElement('option');
+                    option.value = estado;
+                    option.textContent = estado;
+                    modalStatus.appendChild(option);
+                });
+            });
             tbody.appendChild(tr);
         });
 
@@ -275,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeChangeRow = row;
                 participantSpan.textContent = row.querySelector('.participant')?.textContent || '-';
                 currentStatusSpan.textContent = statusLabels[row.dataset.estado] || row.dataset.estado;
-                statusSelect.value = row.dataset.estado || 'review';
+                modalStatus.value = row.dataset.estado || 'review';
                 document.getElementById('rejectReason').value = row.dataset.rejectReason || '';
                 reasonWrapper.style.display = row.dataset.estado === 'rejected' ? 'block' : 'none';
                 changeModal.style.display = 'flex';
@@ -331,18 +350,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // GUARDAR CAMBIO DE ESTADO
     saveChangeBtn.addEventListener('click', async () => {
         if (!activeChangeRow) return;
-        const idCandidatura = activeChangeRow.dataset.id;
-        const newEstado = statusSelect.value;
-        const reason = newEstado === 'rejected' ? document.getElementById('rejectReason').value.trim() : '';
+        
+        const newEstado = modalStatus.value;
+        console.log(newEstado);
+        const reason = document.querySelector('#rejectReason').value.trim();
 
         if (newEstado === 'rejected' && !reason) {
             showNotification('Debe indicar un motivo para el rechazo');
             return;
         }
+        console.log(candidaturaSeleccionada.id_candidatura);
+        
 
         const formData = new FormData();
         formData.append('action', 'editarCandidatura');
-        formData.append('idCandidatura', idCandidatura);
+        formData.append('idCandidatura', candidaturaSeleccionada.id_candidatura);
         formData.append('estado', newEstado);
         formData.append('reject_reason', reason);
 
@@ -350,20 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await editarCandidatura(formData);
             console.log('Editar candidatura response:', response);
             if (response.status === 'success') {
-                const index = candidaturas.findIndex(c => c.id_candidatura == idCandidatura);
-                if (index !== -1) {
-                    candidaturas[index].estado = newEstado;
-                    candidaturas[index].reject_reason = reason;
-                    candidaturas[index].historial.push({ fecha: new Date(), estado: newEstado });
-                }
-
-                activeChangeRow.dataset.estado = newEstado;
-                activeChangeRow.dataset.rejectReason = reason;
-
-                const badge = activeChangeRow.querySelector('.badge');
-                badge.textContent = statusLabels[newEstado];
-                badge.className = 'badge ' + newEstado;
-
+                cargarCandidaturas();
                 changeModal.style.display = 'none';
                 showNotification('Estado actualizado correctamente');
             } else {
@@ -396,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             rejectReasonDiv.style.display = 'none';
         }
-        
+
         detailModal.style.display = 'flex';
     }
 
@@ -417,8 +426,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // MOTIVO DE RECHAZO
-    statusSelect.addEventListener('change', () => {
-        reasonWrapper.style.display = statusSelect.value === 'rejected' ? 'block' : 'none';
+    modalStatus.addEventListener('change', () => {
+        reasonWrapper.style.display = modalStatus.value === 'Rechazada' ? 'block' : 'none';
     });
 
     // CIERRE MODALES

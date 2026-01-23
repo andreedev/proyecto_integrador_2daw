@@ -1403,25 +1403,14 @@ function editarCandidatura()
 {
     global $conexion;
 
-    $idCandidatura    = (int)($_POST['idCandidatura'] ?? 0);
-    $sinopsis         = $_POST['sinopsis'] ?? '';
-    $tipoCandidatura  = $_POST['tipoCandidatura'] ?? '';
-    $estado           = $_POST['estado'] ?? '';
-    $idArchivoVideo   = isset($_POST['idArchivoVideo']) && $_POST['idArchivoVideo'] !== "" ? (int)$_POST['idArchivoVideo'] : null;
-    $idArchivoFicha   = isset($_POST['idArchivoFicha']) && $_POST['idArchivoFicha'] !== "" ? (int)$_POST['idArchivoFicha'] : null;
-    $idArchivoCartel  = isset($_POST['idArchivoCartel']) && $_POST['idArchivoCartel'] !== "" ? (int)$_POST['idArchivoCartel'] : null;
-    $idArchivoTrailer = isset($_POST['idArchivoTrailer']) && $_POST['idArchivoTrailer'] !== "" ? (int)$_POST['idArchivoTrailer'] : null;
+    $idCandidatura = (int)($_POST['idCandidatura'] ?? 0);
+    $estado = $_POST['estado'] ?? '';
+    $motivoRechazo = $_POST['reject_reason'];
 
     $stmt = $conexion->prepare("
         UPDATE candidatura
         SET 
-            sinopsis = ?, 
-            tipo_candidatura = ?, 
-            estado = ?, 
-            id_archivo_video = ?, 
-            id_archivo_ficha = ?, 
-            id_archivo_cartel = ?, 
-            id_archivo_trailer = ?
+            estado = ?
         WHERE id_candidatura = ?
     ");
 
@@ -1434,26 +1423,27 @@ function editarCandidatura()
     }
 
     $stmt->bind_param(
-        "sssiiiii",
-        $sinopsis,
-        $tipoCandidatura,
+        "si",
         $estado,
-        $idArchivoVideo,
-        $idArchivoFicha,
-        $idArchivoCartel,
-        $idArchivoTrailer,
         $idCandidatura
     );
 
     if ($stmt->execute()) {
+        $sqlInsertHistorial = $conexion->prepare("INSERT INTO historial_candidatura (id_candidatura, estado, motivo)
+VALUES (?, ?, ?)");
+
+        $sqlInsertHistorial->bind_param("iss", $idCandidatura, $estado, $motivoRechazo);
+
+        $sqlInsertHistorial->execute();
+
         echo json_encode([
             "status" => "success",
-            "message" => "Candidatura editada correctamente"
+            "message" => "Estado actualizado correctamente"
         ]);
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "Error al editar la candidatura: " . $stmt->error
+            "message" => "Error al editar el estado de la candidatura: " . $stmt->error
         ]);
     }
 
