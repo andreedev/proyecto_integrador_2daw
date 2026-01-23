@@ -1457,7 +1457,7 @@ VALUES (?, ?, ?)");
 function obtenerBasesLegales(){
     global $conexion;
 
-    $query = "SELECT valor FROM configuracion WHERE nombre = 'bases_legales' LIMIT 1";
+    $query = "SELECT valor FROM configuracion WHERE nombre = 'basesLegales' LIMIT 1";
     $stmt = $conexion->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result();
