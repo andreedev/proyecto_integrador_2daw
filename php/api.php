@@ -125,10 +125,6 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             editarCandidatura();
             break;
-        case 'eliminarCandidatura':
-            validarRol(['organizador']);
-            eliminarCandidatura();
-            break;
         case 'obtenerBasesLegales':
             obtenerBasesLegales();
             break;
