@@ -125,10 +125,6 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             editarCandidatura();
             break;
-        case 'eliminarCandidatura':
-            validarRol(['organizador']);
-            eliminarCandidatura();
-            break;
         default:
             break;
     }
@@ -1461,48 +1457,7 @@ function editarCandidatura()
     $stmt->close();
 }
 
-/**
- * Eliminar la candidatura
- */
 
-function eliminarCandidatura()
-{
-    global $conexion;
-
-    $idCandidatura = (int)$_POST['idCandidatura'];
-
-    $stmtCheck = $conexion->prepare("SELECT id_candidatura FROM candidatura WHERE id_candidatura = ?");
-    $stmtCheck->bind_param("i", $idCandidatura);
-    $stmtCheck->execute();
-    $result = $stmtCheck->get_result();
-
-    if ($result->num_rows === 0) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "No existe la candidatura con ID: $idCandidatura"
-        ]);
-        $stmtCheck->close();
-        return;
-    }
-    $stmtCheck->close();
-
-    $stmt = $conexion->prepare("DELETE FROM candidatura WHERE id_candidatura = ?");
-    $stmt->bind_param("i", $idCandidatura);
-
-    if ($stmt->execute()) {
-        echo json_encode([
-            "status" => "success",
-            "message" => "Candidatura eliminada correctamente"
-        ]);
-    } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error al eliminar la candidatura: " . $stmt->error
-        ]);
-    }
-
-    $stmt->close();
-}
 
 
 cerrarConexion();
