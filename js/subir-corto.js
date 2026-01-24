@@ -1,17 +1,28 @@
 let step = 1;
 
-const nombreInput = document.getElementById('nombreInput');
+const nombreInput = document.getElementById('inputNamePar');
 const nombreErrorMessage = document.getElementById('nombreErrorMessage');
-const correoInput = document.getElementById('correoInput');
+const correoInput = document.getElementById('inputCorreo');
 const correoErrorMessage = document.getElementById('correoErrorMessage');
 const switchPasswordVisible = document.getElementById('switchPasswordVisible');
-const passwordInput = document.getElementById('passwordInput');
+const passwordInput = document.getElementById('inputPassword');
 const passwordErrorMessage = document.getElementById('passwordErrorMessage');
 const passwordHelperText = document.getElementById('passwordHelperText');
 const dniInput = document.getElementById('dniInput');
 const dniErrorMessage = document.getElementById('dniErrorMessage');
 const nroExpedienteInput = document.getElementById('nroExpedienteInput');
 const nroExpedienteErrorMessage = document.getElementById('nroExpedienteErrorMessage');
+
+const iconNombre = document.getElementById('iconNombre');
+const iconCorreo = document.getElementById('iconCorreo');
+const iconPassword = document.getElementById('iconPassword');
+const iconDni = document.getElementById('iconDni');
+const iconNroExpediente = document.getElementById('iconNroExpediente');
+const labelNombre = document.getElementById('labelNombre');
+const labelCorreo = document.getElementById('labelCorreo');
+const labelPassword = document.getElementById('labelPassword');
+const labelDni = document.getElementById('labelDni');
+const labelNroExpediente = document.getElementById('labelNroExpediente');
 
 const step1 = document.getElementById('step1');
 const step2 = document.getElementById('step2');
@@ -46,8 +57,10 @@ const sinopsisInput = document.getElementById('sinopsisInput');
 const MAX_SINOPSIS_WORDS = 100;
 const sinopsisTotalWords = document.getElementById('sinopsisTotalWords');
 const sinopsisErrorMessage = document.getElementById('sinopsisErrorMessage');
+const iconSinopsis = document.getElementById('iconSinopsis');
+const labelSinopsis = document.getElementById('labelSinopsis');
 
-switchPasswordVisible.addEventListener('click', switchPasswordVisibility);
+//switchPasswordVisible.addEventListener('click', switchPasswordVisibility);
 
 nombreInput.addEventListener('blur', ()=> validateNombreInput(true));
 correoInput.addEventListener('blur', ()=> validateEmailInput(true));
@@ -107,10 +120,17 @@ function validateNombreInput(messageOnError) {
     nombreInput.value = nombreInput.value.replace(/\s+/g, ' ').trim();
 
     if (nombreInput.value === ''){
-        if (messageOnError) nombreErrorMessage.textContent = 'Ingresa tus nombres y apellidos';
+        if (messageOnError) nombreErrorMessage.textContent = '* Ingresa tus nombres y apellidos';
+        iconNombre.classList.add("cross");
+        labelNombre.classList.add("incorrecto");
+        labelNombre.classList.remove("label-arriba");
         return false;
     }
-    nombreErrorMessage.textContent = '';
+    nombreErrorMessage.textContent = ''; 
+    iconNombre.classList.remove("cross");
+    labelNombre.classList.remove("incorrecto");
+    iconNombre.classList.add("check");
+    labelNombre.classList.add("label-arriba");
     return true;
 }
 
@@ -119,14 +139,23 @@ function validateEmailInput(messageOnError) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (correoInput.value === '') {
-        if (messageOnError) correoErrorMessage.textContent = 'Ingresa tu correo electrónico';
+        if (messageOnError) correoErrorMessage.textContent = '* Ingresa tu correo electrónico';
+        labelCorreo.classList.add("incorrecto");
+        iconCorreo.classList.add("cross");
         return false;
     }
     if (!emailRegex.test(correoInput.value)) {
-        if (messageOnError)  correoErrorMessage.textContent = 'Ingresa un correo electrónico válido';
+        if (messageOnError)  correoErrorMessage.textContent = '* Ingresa un correo electrónico válido';
+        labelCorreo.classList.add("incorrecto");
+        iconCorreo.classList.add("cross");
+        labelCorreo.classList.add("label-arriba");
         return false;
     }
     correoErrorMessage.textContent = '';
+    labelCorreo.classList.remove("incorrecto");
+    iconCorreo.classList.remove("cross");
+    iconCorreo.classList.add("check");
+    labelCorreo.classList.add("label-arriba");
     return true;
 }
 
@@ -134,23 +163,34 @@ function validatePasswordInput(messageOnError) {
     passwordInput.value = passwordInput.value.replace(/\s+/g, '');
 
     if (passwordInput.value === '') {
-        if (messageOnError) passwordErrorMessage.textContent = 'Ingresa una contraseña';
+        if (messageOnError) passwordErrorMessage.textContent = '* Ingresa una contraseña';
+        labelPassword.classList.add("incorrecto");
+        iconPassword.classList.add("cross");
         if (messageOnError) passwordHelperText.style.display = 'none';
         return false;
     }
     if (passwordInput.value.length < 8) {
-        if (messageOnError) passwordErrorMessage.textContent = 'La contraseña debe tener al menos 8 caracteres';
+        if (messageOnError) passwordErrorMessage.textContent = '* La contraseña debe tener al menos 8 caracteres';
+        labelPassword.classList.add("incorrecto");
+        iconPassword.classList.add("cross");
+        labelPassword.classList.add("label-arriba");
         if (messageOnError)passwordHelperText.style.display = 'none';
         return false;
     }
     const numberRegex = /[0-9]/;
     if (!numberRegex.test(passwordInput.value)) {
-        if (messageOnError) passwordErrorMessage.textContent = 'La contraseña debe incluir al menos un número';
+        if (messageOnError) passwordErrorMessage.textContent = '* La contraseña debe incluir al menos un número';
         if (messageOnError) passwordHelperText.style.display = 'none';
+        labelPassword.classList.add("incorrecto");
+        iconPassword.classList.add("cross");
         return false;
     }
     passwordHelperText.style.display = 'block';
     passwordErrorMessage.textContent = '';
+    labelPassword.classList.remove("incorrecto");
+    iconPassword.classList.remove("cross");
+    iconPassword.classList.add("check");
+    labelPassword.classList.add("label-arriba");
     return true;
 }
 
@@ -158,14 +198,23 @@ function validateDniInput(messageOnError) {
     dniInput.value = dniInput.value.replace(/\s+/g, '');
 
     if (dniInput.value === '') {
-        if (messageOnError) dniErrorMessage.textContent = 'Ingresa tu DNI o pasaporte';
+        if (messageOnError) dniErrorMessage.textContent = '* Ingresa tu DNI o pasaporte';
+        labelDni.classList.add("incorrecto");
+        iconDni.classList.add("cross");
         return false;
     }
     if (dniInput.value.length < 8 || dniInput.value.length > 15) {
-        if (messageOnError) dniErrorMessage.textContent = 'El DNI o pasaporte debe tener entre 8 y 15 dígitos';
+        if (messageOnError) dniErrorMessage.textContent = '* El DNI o pasaporte debe tener entre 8 y 15 dígitos';
+        labelDni.classList.add("incorrecto");
+        iconDni.classList.add("cross");
+        labelDni.classList.add("label-arriba");
         return false;
     }
     dniErrorMessage.textContent = '';
+    labelDni.classList.remove("incorrecto");
+    iconDni.classList.remove("cross");
+    iconDni.classList.add("check");
+    labelDni.classList.add("label-arriba");
     return true;
 }
 
@@ -173,10 +222,16 @@ function validateNroExpedienteInput(messageOnError) {
     nroExpedienteInput.value = nroExpedienteInput.value.replace(/\s+/g, '');
 
     if (nroExpedienteInput.value === '') {
-        if (messageOnError) nroExpedienteErrorMessage.textContent = 'Ingresa tu número de expediente';
+        if (messageOnError) nroExpedienteErrorMessage.textContent = '* Ingresa tu número de expediente';
+        labelNroExpediente.classList.add("incorrecto");
+        iconNroExpediente.classList.add("cross");
         return false;
     }
     nroExpedienteErrorMessage.textContent = '';
+    labelNroExpediente.classList.remove("incorrecto");
+    iconNroExpediente.classList.remove("cross");
+    iconNroExpediente.classList.add("check");
+    labelNroExpediente.classList.add("label-arriba");
     return true;
 }
 
@@ -389,16 +444,25 @@ function validatePosterInput(messageOnError) {
 function validateSinopsisInput(messageOnError) {
     if (sinopsisInput.value.trim() === '') {
         if (messageOnError) sinopsisErrorMessage.textContent = 'Por favor, escribe la sinopsis del cortometraje';
+        labelSinopsis.classList.add("incorrecto");
+        iconSinopsis.classList.add("cross");
         return false;
     }
 
     const words = sinopsisInput.value.trim().split(/\s+/);
     if (words.length > MAX_SINOPSIS_WORDS) {
         if (messageOnError) sinopsisErrorMessage.textContent = `La sinopsis no debe exceder de ${MAX_SINOPSIS_WORDS} palabras`;
+        labelSinopsis.classList.add("incorrecto");
+        iconSinopsis.classList.add("cross");
+        labelSinopsis.classList.add("label-arriba");
         return false;
     }
 
     sinopsisErrorMessage.textContent = '';
+    labelSinopsis.classList.remove("incorrecto");
+    iconSinopsis.classList.remove("cross");
+    iconSinopsis.classList.add("check");
+    labelSinopsis.classList.add("label-arriba");
     return true;
 }
 

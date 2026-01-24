@@ -49,57 +49,51 @@
             <div class="upload-short-firm-card-body">
 
                 <div id="cardBodyStep1" class="upload-short-film-card-body-step">
-                    <div class="upload-short-film-input-group">
-                        <span class="upload-short-film-input-label">Nombre Completo</span>
-                        <label class="upload-short-film-input-wrapper" for="nombreInput">
-                            <span class="icon icon-user"></span>
-                            <input id="nombreInput" class="upload-short-film-input" placeholder="Mario Vete Rinario">
-                        </label>
+                    <div class="inputs">
+                        <label for="inputNamePar" class="label" id="labelNombre">Nombre Completo</label>
+                        <span class="icon-checked-cross" id="iconNombre"></span>
+                        <input type="text" id="inputNamePar" class="input">
                         <span id="nombreErrorMessage" class="error-message"></span>
                     </div>
                     <div class="upload-short-film-input-row">
-                        <div class="upload-short-film-input-group">
-                            <span class="upload-short-film-input-label">Correo Electrónico</span>
-                            <label class="upload-short-film-input-wrapper" for="correoInput">
-                                <span class="icon icon-email"></span>
-                                <input id="correoInput" class="upload-short-film-input" placeholder="correo@gmail.com">
-                            </label>
+                        <div class="inputs">
+                            <label for="inputCorreo" class="label" id="labelCorreo">Correo Electrónico</label>
+                            <span class="icon-checked-cross" id="iconCorreo"></span>
+                            <input type="email" id="inputCorreo" class="input">
                             <span id="correoErrorMessage" class="error-message"></span>
                         </div>
-                        <div class="upload-short-film-input-group">
-                            <span class="upload-short-film-input-label">Contraseña</span>
-                            <label class="upload-short-film-input-wrapper" for="passwordInput">
-                                <span class="icon icon-lock"></span>
-                                <input id="passwordInput" class="upload-short-film-input" placeholder="*********" type="password">
-                                <span class="icon icon-eye" id="switchPasswordVisible"></span>
-                            </label>
+                        <div class="inputs">
+                            <label for="inputPassword" class="label" id="labelPassword">Contraseña</label>
+                            <span class="icon-checked-cross" id="iconPassword"></span>
+                            <input type="password" id="inputPassword" class="input">
                             <span id="passwordHelperText" class="helper-text">La contraseña debe tener al menos 8 caracteres e incluir al menos un número</span>
                             <span id="passwordErrorMessage" class="error-message"></span>
                         </div>
                     </div>
-                    <div class="upload-short-film-divider-container">
-                        <span class="divider-line"></span>
-                        <span class="divider-text">IDENTIFICACIÓN</span>
-                        <span class="divider-line"></span>
-                    </div>
-                    <div class="upload-short-film-input-row">
-                        <div class="upload-short-film-input-group">
-                            <span class="upload-short-film-input-label">DNI / Pasaporte</span>
-                            <label class="upload-short-film-input-wrapper" for="dniInput">
-                                <span class="icon icon-id"></span>
-                                <input id="dniInput" class="upload-short-film-input" placeholder="36580582W">
-                            </label>
-                            <span id="dniErrorMessage" class="error-message"></span>
+
+                    <div class="divider-inputs">
+                        <div class="upload-short-film-divider-container">
+                            <span class="divider-line"></span>
+                            <span class="divider-text">IDENTIFICACIÓN</span>
+                            <span class="divider-line"></span>
                         </div>
-                        <div class="upload-short-film-input-group">
-                            <span class="upload-short-film-input-label">Número de Expediente</span>
-                            <label class="upload-short-film-input-wrapper" for="nroExpedienteInput">
-                                <span class="icon icon-hashtag"></span>
-                                <input id="nroExpedienteInput" class="upload-short-film-input" placeholder="A12345678B">
-                            </label>
-                            <span id="nroExpedienteErrorMessage" class="error-message"></span>
+                        
+                        <div class="upload-short-film-input-row">
+                            <div class="inputs">
+                                <label for="dniInput" class="label" id="labelDni">DNI / NIE / Pasaporte</label>
+                                <span class="icon-checked-cross" id="iconDni"></span>
+                                <input type="text" id="dniInput" class="input">
+                                <span id="dniErrorMessage" class="error-message"></span>
+                            </div>
+                            <div class="inputs">
+                                <label for="nroExpedienteInput" class="label" id="labelNroExpediente">Número de Expediente</label>
+                                <span class="icon-checked-cross" id="iconNroExpediente"></span>
+                                <input type="text" id="nroExpedienteInput" class="input">
+                                <span id="nroExpedienteErrorMessage" class="error-message"></span>
+                            </div>
                         </div>
                     </div>
+
                     <div class="upload-short-film-divider-container">
                         <span class="divider-line"></span>
                     </div>
@@ -173,14 +167,13 @@
                         <span id="posterErrorMessage" class="error-message"></span>
                     </div>
                     <div class="upload-short-film-large-input-group">
-                        <div class="upload-short-film-large-input-group-header">
-                            <span class="upload-short-film-large-input-group-label-text">Sinopsis de la obra</span>
+                        <div class="inputs">
+                            <label for="inputSinopsis" class="label" id="labelSinopsis">Sinopsis de la obra</label>
+                            <span class="icon-check-cross" id="iconSinopsis"></span>
+                            <textarea id="sinopsisInput" class="upload-short-film-textarea-input input-text-area"></textarea>
                             <span class="upload-short-film-large-input-group-secondary-text"><span id="sinopsisTotalWords">0</span>/100 palabras</span>
+                            <span id="sinopsisErrorMessage" class="error-message"></span>
                         </div>
-                        <div class="upload-short-film-large-input-group-body">
-                            <textarea id="sinopsisInput" class="upload-short-film-textarea-input" placeholder="Describe brevemente tu cortometraje. Máximo 100 palabras..."></textarea>
-                        </div>
-                        <span id="sinopsisErrorMessage" class="error-message"></span>
                     </div>
                     <div class="upload-short-film-divider-container">
                         <span class="divider-line"></span>

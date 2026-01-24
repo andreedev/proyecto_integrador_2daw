@@ -80,7 +80,7 @@ btnCancelarModal.addEventListener("click", () => {
 // Focus si está vacío el imput
 inputYear.addEventListener("blur", () => {
     if (inputYear.value.trim() === "") {
-        errorMessageYear.textContent = "El año de edición es obligatorio.";
+        errorMessageYear.textContent = "* El año de edición es obligatorio.";
         label.classList.add("incorrecto");
         icon.classList.add("cross");
 
@@ -105,7 +105,7 @@ inputNumParticipantes.addEventListener("blur", () => {
 
 inputResumen.addEventListener("blur", () => {
     if (inputResumen.value.trim() === "") {
-        errorMessageResumen.textContent= "El resumen es obligatorio.";
+        errorMessageResumen.textContent= "* El resumen es obligatorio.";
         labelResumen.classList.add("incorrecto");
         iconResumen.classList.add("cross");
     } else {
@@ -117,7 +117,7 @@ inputResumen.addEventListener("blur", () => {
 
 inputNombre.addEventListener("blur", () => {
     if (inputNombre.value.trim() === "") {
-        errorMessageNombre.textContent = "El nombre es obligatorio.";
+        errorMessageNombre.textContent = "* El nombre es obligatorio.";
         labelNom.classList.add("incorrecto");
         iconNom.classList.add("cross");
     } else {
@@ -129,7 +129,7 @@ inputNombre.addEventListener("blur", () => {
 
 inputCategoria.addEventListener("blur", () => {
     if (inputCategoria.value.trim() === "") {
-        errorMessageCategoria.textContent = "La categoría es obligatoria.";
+        errorMessageCategoria.textContent = "* La categoría es obligatoria.";
         labelCategoria.classList.add("incorrecto");
         iconCategoria.classList.add("cross");
     } else {
@@ -141,7 +141,7 @@ inputCategoria.addEventListener("blur", () => {
 
 inputPuesto.addEventListener("blur", () => {
     if (inputPuesto.value.trim() === "") {
-        errorMessagePuesto.textContent = "El puesto es obligatorio.";
+        errorMessagePuesto.textContent = "* El puesto es obligatorio.";
         labelPuesto.classList.add("incorrecto");
         iconPuesto.classList.add("cross");
     } else {

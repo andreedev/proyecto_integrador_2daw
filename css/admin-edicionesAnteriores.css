@@ -344,7 +344,7 @@ dialog{
 }
 
 .input:focus{
-    border-bottom:2px solid var(--primary-01);
+    border-bottom:2px solid var(--neutral-01);
 }
 
 .inputs .label{
@@ -365,23 +365,12 @@ dialog{
     z-index:2;
 }
 
-.error-message-year{
-    color: var(--error-01);
+.error-message{
+    color: var(--error-02);
     font-size: 12px;
     margin-top:4px;
 }
 
-.error-message-num-participantes{
-    color: var(--error-01);
-    font-size: 12px;
-    margin-top:4px;
-}
-
-.error-message-resumen{
-    color: var(--error-01);
-    font-size: 12px;
-    margin-top:4px;
-}
 
 /* Iconos del imput valid/invalid */
 
@@ -778,19 +767,3 @@ hr{
     background-color: var(--neutral-01);
 }
 
-
-.error-message-nombre{
-    color: var(--error-01);
-    font-size: 12px;
-    margin-top:4px;
-}
-.error-message-puesto{
-    color: var(--error-01);
-    font-size: 12px;
-    margin-top:4px;
-}
-.error-message-categoria{
-    color: var(--error-01);
-    font-size: 12px;
-    margin-top:4px;
-}
