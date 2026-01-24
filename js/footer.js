@@ -9,7 +9,7 @@ class HomeFooter extends HTMLElement {
                 <div class="footer-content">
                     <div class="footer-container-1">
                         <img src="./../img/canon-logo.png" alt="Logo" class="footer-image">
-                        <img src="./../img/logo.svg" alt="Logo" class="footer-image">
+                        <img src="./../img/Vector-ue.svg" alt="Logo" class="footer-image ue-logo">
                     </div>
                     <div class="footer-container-2">
                         <p class="footer-text">C/Tajo, s/n, 28670</p>
@@ -26,17 +26,16 @@ class HomeFooter extends HTMLElement {
                     <div class="footer-container-4">
                         <p class="footer-secondary-text">Redes sociales</p>
                         <div class="social-media-container">
-                            <a href="#">
-                                <img src="./../img/icon/YoutubeIcon.svg" class="social-media-icon" alt="YouTube">
-                            </a>
-                            <a href="#">
-                                <img src="./../img/icon/InstagramIcon.svg" class="social-media-icon" alt="Instagram">
-                            </a>
-                            <a href="#">
-                                <img src="./../img/icon/TiktokIcon.svg" class="social-media-icon" alt="TikTok">
-                            </a>
+                            <span class="social-media-icon icon-facebook"></span>
+                            <span class="social-media-icon icon-instagram"></span>
+                            <span class="social-media-icon icon-youtube"></span>
+                            <span class="social-media-icon icon-linkedin"></span>
+                            <span class="social-media-icon icon-twitter"></span>
                         </div>
                     </div>
+                </div>
+                <div class="footer-bottom-bar">
+                    <p class="footer-bottom-bar-text">© 2024 Canon. Todos los derechos reservados.</p>
                 </div>
             </div>
         `;

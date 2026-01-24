@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evento</title>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/general-styles.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/detalle_evento.css">
+    <link rel="stylesheet" href="../css/utils.css">
+</head>
+
+<body>
+    <home-header></home-header>
+    <div class="page-content">
+        
+        <div class="parte-izquierda">
+            <span class="bg-color"></span>
+            <div class="izquierda-header">
+                <div class="content-evento-izquierdo">
+                    <div class="header-home">
+                        <span class="icon-home" id="iconHome"></span>
+                        <span class="signo">></span>
+                        <span class="eventos" id="eventos">Eventos</span>
+                        <span class="signo">></span>
+                        <span class="evento-small-title" id="smallEventTitle">Nombre evento</span>
+                    </div>
+                    <h1 class="evento-title" id="eventoTitle">Nombre evento</h1>
+                    <div class="info-evento">
+                        <div class="fecha">
+                            <div class="icono-texto">
+                                <span class="icono-calendario"></span>
+                                <span class="text">¿Cuándo?</span>
+                            </div>
+                            <span class="fecha-hora" id="eventoFecha">El 12 de diciembre de 2023 de 13:30 a 15:30</span>
+                        </div>
+                        <div class="ubicacion">
+                            <div class="icono-texto">
+                                <span class="icono-ubicacion"></span>
+                                <span class="text">¿Dónde?</span>
+                            </div>
+                            <div class="text" id="eventoUbicacion">
+                                <span class="lugar" id="lugar">Auditorio del Edificio B, Campus de Villaviciosa de Odón.</span>
+                                <span class="universidad" id="universidad">Universidad Europea de Madrid</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="parte-derecha">
+            <img src="../img/img-evento.png" alt="Imagen del evento" class="img-evento-derecho" id="imgEventoDerecho">
+            <span class="evento-descripcion" id="eventoDescripcion">
+                El campus Villaviciosa de Odón acoge el próximo 2 de febrero la III edición de Meeting Club, un evento en el que los clubes de la Universidad Europea dan a conocer sus proyectos frente al resto de estudiantes y profesores con el objetivo de establecer sinergias y potenciar la creatividad de cada uno de ellos.
+
+                Como cada año, el propósito de este evento es que la comunidad académica e institucional conozca de primera mano lo que están trabajando nuestros clubes, quienes elaboran proyectos que nutren de transversalidad, iniciativa y compromiso nuestro modelo académico y la materialización de estas. Es un espacio para escuchar las iniciativas de nuestros estudiantes, aprender unos de otros y empezar a pensar en futuras colaboraciones.
+            </span>
+        </div>
+    </div>
+    <home-footer></home-footer>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/header.js"></script>
+    <script src="../js/footer.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="../js/detalle_evento.js"></script>
+</body>
+</html>
