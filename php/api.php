@@ -128,6 +128,9 @@ if (isset($_POST['action'])) {
         case 'obtenerBasesLegales':
             obtenerBasesLegales();
             break;
+        case 'obtenerPreguntasFrecuentes':
+            obtenerPreguntasFrecuentes();
+            break;
         default:
             break;
     }
@@ -1465,6 +1468,33 @@ function obtenerBasesLegales(){
         echo json_encode(["status" => "success", "data" => $row['valor']]);
     } else {
         echo json_encode(["status" => "error", "message" => "No se encontraron las bases legales"]);
+    }
+}
+
+/**
+ * Obtener las preguntas frecuentes
+ */
+function obtenerPreguntasFrecuentes() {
+    global $conexion;
+
+    $query = "SELECT id, pregunta, respuesta FROM preguntas_frecuentes WHERE estado = 1 ORDER BY id ASC";
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $preguntas = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $preguntas[] = [
+            'id' => $row['id'],
+            'pregunta' => $row['pregunta'],
+            'respuesta' => $row['respuesta']
+        ];
+    }
+
+    if (!empty($preguntas)) {
+        echo json_encode(["status" => "success", "data" => $preguntas], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_LINE_TERMINATORS);
+    } else {
+        echo json_encode(["status" => "error", "message" => "No se encontraron preguntas frecuentes"], JSON_UNESCAPED_UNICODE);
     }
 }
 
