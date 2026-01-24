@@ -255,12 +255,3 @@ async function obtenerBasesLegales(){
 
     return await fetchAPI(data);
 }
-
-/**
- * Llama a la API para obtener las FAQs
- */
-async function obtenerPreguntasFrecuentes(){
-    const data = new FormData();
-    data.append('action', 'obtenerPreguntasFrecuentes');
-    return await fetchAPI(data);
-}

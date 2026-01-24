@@ -159,15 +159,6 @@ function crearBaseDatosSiNoExiste()
                     id_archivo_logo INT,
                     FOREIGN KEY (id_archivo_logo) REFERENCES archivo(id_archivo)
                 );
-
-                CREATE TABLE preguntas_frecuentes(
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                pregunta VARCHAR(500) NOT NULL,
-                respuesta TEXT NOT NULL,
-                fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                estado TINYINT(1) DEFAULT 1
-                );
                 
                 -- =========================
                 -- INSERTS
@@ -419,15 +410,6 @@ Las presentes bases que serán publicadas en la presente página y en la web des
                 
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
                 ('Canon', 1);
-
-                INSERT INTO faqs (pregunta, respuesta) VALUES
-                ('¿Quiénes pueden participar exactamente?','Pueden participar alumnos actuales de Ciclos Formativos, Grado o Máster de la UE. También antiguos alumnos (Alumni) que se hayan graduado en 2024/2025 (Categoría UE) o en los últimos cinco cursos académicos desde el 2019/2020 (Categoría Alumni).'),
-                ('¿El concurso es individual o por equipos?','La inscripción es individual. Como participante, deberás aportar tu número de expediente y documento de identidad oficial.'),
-                ('Si soy Alumni de hace 3 años, ¿en qué categoría entro?','Entrarías en la categoría 'Mejor Cortometraje Alumni', destinada a graduados de los cursos 2019/20 hasta el 2023/24.'),
-                ('¿Qué duración debe tener mi corto?','La duración máxima es de 20 minutos, incluyendo los títulos de crédito. ¡Asegúrate de no pasarte ni un segundo!'),
-                ('¿Puedo presentarlo en un idioma que no sea castellano?','Sí, aceptamos cortos en cualquier idioma, pero es obligatorio que incluyan subtítulos en castellano.'),
-                ('¿Cuáles son las especificaciones técnicas del archivo?','Para que tu corto se vea perfecto en la gala, debe cumplir estos requisitos:\n\nFormato: QuickTime MOV (H.264) o MP4.\nResolución: 1920 x 1080p a 25 fps.\nAspecto: 16:9 con audio estéreo.'),
-                ('¿Cómo se eligen a los ganadores?','El concurso tiene dos fases: primero, un comité de profesores realizará una Fase de Visionado para elegir 3 finalistas por categoría. Después, un jurado experto decidirá los ganadores definitivos.');
             ";
 
         if ($conexion->multi_query($sql_tables)) {

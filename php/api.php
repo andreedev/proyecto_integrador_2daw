@@ -128,9 +128,6 @@ if (isset($_POST['action'])) {
         case 'obtenerBasesLegales':
             obtenerBasesLegales();
             break;
-        case 'obtenerPreguntasFrecuentes':
-            obtenerPreguntasFrecuentes();
-            break;
         default:
             break;
     }
@@ -1471,48 +1468,6 @@ function obtenerBasesLegales()
         echo json_encode(["status" => "error", "message" => "No se encontraron las bases legales"]);
     }
 }
-
-/**
- * Obtener las preguntas frecuentes
- */
-function obtenerPreguntasFrecuentes()
-{
-    global $conexion;
-
-    $estado = 1;
-    $stmt = $conexion->prepare("SELECT pregunta, respuesta FROM preguntas_frecuentes WHERE estado = ? ORDER BY id ASC");
-
-    if (!$stmt) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error en prepare: " . $conexion->error
-        ]);
-        return;
-    }
-
-    $stmt->bind_param("i", $estado);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    $data = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-
-    if (!empty($data)) {
-        echo json_encode([
-            "status" => "success",
-            "data" => $data
-        ], JSON_UNESCAPED_UNICODE);
-    } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => "No se encontraron preguntas frecuentes"
-        ]);
-    }
-}
-
 
 
 cerrarConexion();

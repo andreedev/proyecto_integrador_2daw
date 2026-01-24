@@ -1,0 +1,141 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--neutral-07);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 0;
+    background: var(--neutral-09);
+    border-radius: 8px;
+    box-shadow: var(--shadow-01);
+}
+
+.hero-text {
+    flex: 1;
+    text-align: center;
+    padding: 0 30px;
+}
+
+.hero-text h1 {
+    font-size: 2.2rem;
+    margin: 0 0 12px 0;
+    color: var(--neutral-01);
+}
+
+.hero-text p {
+    color: var(--neutral-03);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: center;
+    padding: 0 30px;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.faq-container {
+    background: var(--neutral-09);
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-01);
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--neutral-05);
+    padding: 16px 0;
+    cursor: pointer;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-question {
+    font-weight: bold;
+    font-size: 1.05rem;
+    color: var(--neutral-01);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-question::after {
+    content: "▼";
+    font-size: 0.7rem;
+    transition: transform 0.25s ease;
+}
+
+.faq-item.active .faq-question::after {
+    transform: rotate(180deg);
+}
+
+/* Animación para la respuesta */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 0 0 0;
+    margin-top: 12px;
+    color: var(--neutral-03);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 300px; /* Ajusta si hay respuestas muy largas */
+    padding: 12px 0 0 0;
+}
+
+.contact-info {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--neutral-08);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: var(--neutral-03);
+}
+
+.contact-info a {
+    color: var(--primary-02);
+    text-decoration: none;
+}
+
+/* Imagen más grande en escritorio */
+@media (min-width: 768px) {
+    .hero-image img {
+        max-width: 450px;
+    }
+}
+
+/* Diseño apilado y centrado en móviles */
+@media (max-width: 767px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .hero-text,
+    .hero-image {
+        padding: 0;
+        width: 100%;
+    }
+}
