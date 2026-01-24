@@ -1457,7 +1457,8 @@ VALUES (?, ?, ?)");
 /**
  * Obtener bases legales
  */
-function obtenerBasesLegales(){
+function obtenerBasesLegales()
+{
     global $conexion;
 
     $query = "SELECT valor FROM configuracion WHERE nombre = 'basesLegales' LIMIT 1";
@@ -1474,28 +1475,60 @@ function obtenerBasesLegales(){
 /**
  * Obtener las preguntas frecuentes
  */
-function obtenerPreguntasFrecuentes() {
+function obtenerPreguntasFrecuentes(){
     global $conexion;
 
-    $query = "SELECT id, pregunta, respuesta FROM preguntas_frecuentes WHERE estado = 1 ORDER BY id ASC";
-    $stmt = $conexion->prepare($query);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $preguntas = [];
+    $query = "SELECT pregunta, respuesta FROM preguntas_frecuentes WHERE estado = ? ORDER BY id ASC";
+    $estado = 1;
 
-    while ($row = $result->fetch_assoc()) {
-        $preguntas[] = [
-            'id' => $row['id'],
-            'pregunta' => $row['pregunta'],
-            'respuesta' => $row['respuesta']
-        ];
+    $stmt = $conexion->prepare($query);
+
+    if (!$stmt) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error en prepare: " . $conexion->error
+        ]);
+        return;
     }
 
-    if (!empty($preguntas)) {
-        echo json_encode(["status" => "success", "data" => $preguntas], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_LINE_TERMINATORS);
+    // Bind del parámetro
+    $stmt->bind_param("i", $estado);
+
+    if (!$stmt->execute()) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al ejecutar la consulta: " . $stmt->error
+        ]);
+        return;
+    }
+
+    $result = $stmt->get_result();
+    if ($result === false) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error al obtener resultados"
+        ]);
+        return;
+    }
+
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+
+    if (!empty($data)) {
+        echo json_encode([
+            "status" => "success",
+            "data" => $data
+        ], JSON_UNESCAPED_UNICODE);
     } else {
-        echo json_encode(["status" => "error", "message" => "No se encontraron preguntas frecuentes"], JSON_UNESCAPED_UNICODE);
+        echo json_encode([
+            "status" => "error",
+            "message" => "No se encontraron preguntas frecuentes"
+        ]);
     }
 }
+
+
 
 cerrarConexion();
