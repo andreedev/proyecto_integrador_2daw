@@ -1475,13 +1475,12 @@ function obtenerBasesLegales()
 /**
  * Obtener las preguntas frecuentes
  */
-function obtenerPreguntasFrecuentes(){
+function obtenerPreguntasFrecuentes()
+{
     global $conexion;
 
-    $query = "SELECT pregunta, respuesta FROM preguntas_frecuentes WHERE estado = ? ORDER BY id ASC";
     $estado = 1;
-
-    $stmt = $conexion->prepare($query);
+    $stmt = $conexion->prepare("SELECT pregunta, respuesta FROM preguntas_frecuentes WHERE estado = ? ORDER BY id ASC");
 
     if (!$stmt) {
         echo json_encode([
@@ -1491,27 +1490,12 @@ function obtenerPreguntasFrecuentes(){
         return;
     }
 
-    // Bind del parámetro
     $stmt->bind_param("i", $estado);
-
-    if (!$stmt->execute()) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error al ejecutar la consulta: " . $stmt->error
-        ]);
-        return;
-    }
+    $stmt->execute();
 
     $result = $stmt->get_result();
-    if ($result === false) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error al obtener resultados"
-        ]);
-        return;
-    }
-
     $data = [];
+
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
