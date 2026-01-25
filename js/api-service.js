@@ -187,6 +187,14 @@ async function listarNoticias(filtroNombre) {
     return await fetchAPI(formData);
 }
 
+async function obtenerNoticiaPorId(idNoticia) {
+    const formData = new FormData();
+    formData.append('action', 'obtenerNoticiaPorId');
+    formData.append('idNoticia', idNoticia);
+
+    return await fetchAPI(formData);
+}
+
 
 async function listarEventos(filtroFecha) {
     const formData = new FormData();
