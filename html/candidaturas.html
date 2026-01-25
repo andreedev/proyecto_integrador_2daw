@@ -8,15 +8,143 @@
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/footer.css">
-    <link rel="stylesheet" href="../css/subir-corto.css">
+    <link rel="stylesheet" href="../css/candidaturas.css">
     <link rel="stylesheet" href="../css/utils.css">
 </head>
 <body>
     <home-header></home-header>
-    <div>
-        Contenido de mis candidaturas
+    <div class="page-content">
+        <div class="left-side">
+            <div class="mis-candidaturas-container" id="misCandidaturasContainer">
+                <h1 class="title">Mis Candidaturas</h1>
+                <div class="candidatura-mini-card-component">
+                    <span class="estado-candidatura" id="textEstadoCandidatura">En revisión</span>
+                    <span class="title-cortometraje" id="titleCortometraje">Cortometraje de ejemplo</span>
+                    <div class="hora-presentada">
+                        <span class="icon-hora"></span>
+                        <span class="fecha-presentada" id="fechaPresentada">Presentado: 15/01/2025</span>
+                    </div>
+                    <div class="ultima-actualizacion">
+                        <span class="icon-hora"></span>
+                        <span class="fecha-actualizacion" id="fechaActualizacion">Última actualización: 20/01/2025</span>
+                    </div>
+                </div>
+            </div>
+            <div class="page-button-container" id="pageButtonCointainer">
+                <div class="button1" id="button1">
+                    <span class="numero" id="numero1">1</span>
+                </div>
+                <div class="button2" id="button2">
+                    <span class="numero" id="numero2">2</span>
+                </div>
+                <span class="flecha" id="flechaDerecha">>></span>
+            </div>
+            <div class="btn-subir-nuevo-corto" id="btnSubirNuevoCorto">
+                <span class="text-btn-subir-corto">Subir nuevo corto</span>
+            </div>
+        </div>
+
+
+        <div class="right-side">
+            <div class="status-card-revision" id="statusCardRevision">
+                <span class="icono-film"></span>
+                <div class="text-revision">
+                    <span class="title-revision">Tu candidatura se encuentra en revisión</span>
+                    <span class="description-revision" id="descriptionRevision">Asegúrate que tu vídeo cumpla con los requisitos establecidos, al igual que el contenido de la ficha técnica </span>
+                </div>
+            </div>
+
+            <div class="status-card-aceptada" id="statusCardAceptada">
+                <span class="icono-star"></span>
+                <div class="text-aceptada">
+                    <span class="title-aceptada">¡Enhorabuena!</span>
+                    <span class="description-aceptada" id="descriptionAceptada">Tu candidatura se encuentra dentro de los cortometrajes finalistas. Necesitamos que subas un vídeo traíler de tu cortometraje para continuar en el concurso.</span>
+                </div>
+
+            </div>
+
+            <div class="status-card-rechazada" id="statusCardRechazada">
+                <div class="icono-text">
+                    <span class="icono-exclamacion"></span>
+                    <div class="text-rechazada">
+                        <span class="title-rechazada">Motivo del Rechazo:</span>
+                        <span class="description-rechazada" id="descriptionRechazada">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
+                    </div>
+                </div>
+                <div class="btn-subsanar" id="btnSubsanar">
+                    <span>Subsanar</span>
+                </div>
+            </div>
+
+            <div class="status-card-rechazada-subsanar" id="statusCardRechazadaSubsanar">
+                <div class="icono-text">
+                    <span class="icono-exclamacion"></span>
+                    <div class="text-rechazada">
+                        <span class="title-rechazada">Motivo del Rechazo:</span>
+                        <span class="description-rechazada-subsanar" id="descriptionRechazada">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
+                    </div>
+                </div>
+                <div class="mensaje-para-subsanar">
+                    <span class="mensaje">Mensaje para los Organizadores:</span>
+                    <textarea class="textarea" id="mensajeTextarea" placeholder="Explica como has resuelto los motivos del rechazo"></textarea>
+                </div>
+                <div class="subsanar-action">
+                    <span class="volver" id="volver">Volver</span>
+                    <span class="enviar-subsanacion" id="btnEnviarSubsanación">Enviar Subsanación</span>
+                </div>
+            </div>
+
+            <div class="datos-candidatura">
+                <h1 class="title-datos"> Datos de mi candidatura</h1>
+                <div class="video-candidatura">
+                    <div class="icono-texto-candidadatura">
+                        <div class="icono-video-candidatura">
+                            <span class="icon-video"></span>
+                            <span class="texto-video">Video del cortometraje</span>
+                        </div>
+                        <span class="info-texto-video">El vídeo no se puede editar una vez subido</span>
+                    </div>
+                    <span class="btn-ver-video" id="btnVerVideo">Ver vídeo</span>
+                </div>
+
+                <div class="inputs">
+                    <label for="textSinopsis" class="label" id="label">Sinopsis de la obra</label>
+                    <span class="icon-check-cross" id="iconSinopsis"></span>
+                    <textarea id="sinopsisInput" class="input-text-area"></textarea>
+                    <span class="upload-short-film-large-input-group-secondary-text"><span id="sinopsisTotalWords">0</span>/100 palabras</span>
+                    <span id="sinopsisErrorMessage" class="error-message"></span>
+                </div>
+
+                <drop-zone-component></drop-zone-component>
+
+                <span class="linea"></span>
+
+                <div class="btn-guardar-cambios primary-button-01 disabled" id="btnGuardarCambios">
+                    <span class="btn-text">Guardar cambios</span>
+                </div>
+            </div>
+        </div>
+
     </div>
     <home-footer></home-footer>
+
+    <div class="modal-mostrar-video hidden-force" id="modalMostrarVideo">
+        <div class="modal-mostrar-video-content">
+            <div class="play-video">
+                <span class="icon-play-video"></span>
+            </div>
+            <div class="text-icon">
+                <h1 class="modal-text">Video de la candidatura</h1>
+                <span class="icon-cerrar"></span>
+            </div>
+            <span class="linea-modal"></span>
+            <div class="video-container">
+                <video class="video-element" controls>
+                    <source id="videoSource" src="" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
 
 
     <script src="../js/common.js"></script>
