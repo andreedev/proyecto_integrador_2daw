@@ -62,12 +62,13 @@
 }
 
 .faq-question {
-    font-weight: bold;
-    font-size: 1.05rem;
+    font-size: 25px;
+    font-weight: 600;
     color: var(--neutral-01);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    line-height: 120%;
 }
 
 /* Flecha como imagen SVG */
@@ -93,7 +94,7 @@
     max-height: 0;
     overflow: hidden;
     padding: 0 0 0 0;
-    margin-top: 12px;
+    margin-top: 16px;
     color: var(--neutral-03);
     line-height: 1.6;
     font-size: 0.95rem;
@@ -102,13 +103,13 @@
 
 .faq-item.active .faq-answer {
     max-height: 300px;
-    padding: 12px 0 0 0;
+    padding: 12px 0 12px 0;
 }
 
 .contact-info {
     margin-top: 32px;
     padding: 16px;
-    background: var(--neutral-08);
+    background: var(--neutral-09);
     font-size: 1rem;
     color: var(--neutral-03);
     margin-bottom: 32px;
