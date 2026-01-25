@@ -7,10 +7,7 @@ class HomeHeader extends HTMLElement {
     }
 
     async connectedCallback() {
-        console.log("Header: Waiting for session check...");
         await window.sessionReady;
-        console.log("Header: Session check complete. Rendering.");
-
         this.render();
     }
 
@@ -33,8 +30,8 @@ class HomeHeader extends HTMLElement {
 
         this.innerHTML = `
             <div class="header-container">
-                <a href="./" class="header-logo-container">
-                    <img src="./../img/logo.svg" alt="Logo" class="header-logo-image">
+                <a href=".." class="header-logo-container">
+                    <img src="../img/logo.svg" alt="Logo" class="header-logo-image">
                 </a>
                 <div class="icon-menu-bards-container">
                     <span class="icon-bars w-32px h-32px bg-neutral-01"></span>

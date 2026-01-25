@@ -401,7 +401,12 @@ Las presentes bases que serán publicadas en la presente página y en la web des
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador, id_archivo_imagen) VALUES
                 ('Anuncio del festival', 'Lanzamiento oficial del festival de cortometrajes.', '2024-05-01', 1, 1),
                 ('Jurado confirmado', 'Presentación del jurado para esta edición.', '2024-05-10', 1, 3),
-                ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 5);
+                ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 5),
+                ('Ganadores 2024', 'Lista de ganadores del festival de cortometrajes 2024.', '2024-12-20', 1, 7),
+                ('Convocatoria 2025', 'Apertura de inscripciones para la edición 2025.', '2024-12-31', 1, 9),
+                ('Evento especial', 'Anuncio de un evento especial durante el festival.', '2024-06-20', 1, 11),
+                ('Colaboración con escuelas', 'Nuevas colaboraciones con escuelas de cine.', '2024-07-05', 1, 1),
+                ('Talleres para participantes', 'Talleres gratuitos para los inscritos en el festival.', '2024-08-15', 1, 3);
                 
                 INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_organizador, id_archivo_imagen) VALUES
                 ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', CURDATE(), '19:00', '21:00', 1, 1),

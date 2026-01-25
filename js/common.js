@@ -1,7 +1,13 @@
-// constantes y variables generales
+/** Constantes globales */
 const URL_API = "./../php/api.php";
 
-/** Funciones comunes en toda la aplicacion */
+/**
+ *
+ *
+ * Funciones comunes en toda la aplicación
+ *
+ *
+ */
 
 
 /**
@@ -177,7 +183,7 @@ function convertISOStringToDate(string) {
 }
 
 /**
- * Convertir objecto Date a ISO String YYYY-MM-DD
+ * Convertir objeto Date a ISO String YYYY-MM-DD
  */
 function convertDateToISOString(date) {
     const year = date.getFullYear();
@@ -187,7 +193,7 @@ function convertDateToISOString(date) {
 }
 
 /**
- * Formatea una fecha a formato legible en español
+ * Formatea una fecha de tipo Date a formato legible en español
  */
 function humanizeDate(date) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };

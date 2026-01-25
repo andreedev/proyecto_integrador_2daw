@@ -94,7 +94,6 @@ if (isset($_POST['action'])) {
             enviarEdicionAAnteriores();
             break;
         case 'listarNoticias':
-            validarRol(['organizador', 'participante']);
             listarNoticias();
             break;
         case 'crearNoticia':

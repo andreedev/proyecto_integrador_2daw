@@ -8,8 +8,8 @@ class HomeFooter extends HTMLElement {
             <div class="footer-container">
                 <div class="footer-content">
                     <div class="footer-container-1">
-                        <img src="./../img/canon-logo.png" alt="Logo" class="footer-image">
-                        <img src="./../img/Vector-ue.svg" alt="Logo" class="footer-image ue-logo">
+                        <img src="../img/canon-logo.png" alt="Logo" class="footer-image">
+                        <img src="../img/Vector-ue.svg" alt="Logo" class="footer-image ue-logo">
                     </div>
                     <div class="footer-container-2">
                         <p class="footer-text">C/Tajo, s/n, 28670</p>
