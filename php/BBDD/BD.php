@@ -223,7 +223,7 @@ function crearBaseDatosSiNoExiste()
                 INSERT INTO organizador (nro_empresa, nombre, correo, contrasena, dni) VALUES
                 ('EMP-001', 'Organizador Madrid', 'admin@gmail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999999Z');
                
-               INSERT INTO configuracion (nombre, valor, id_organizador) VALUES
+                INSERT INTO configuracion (nombre, valor, id_organizador) VALUES
                     ('modo', 'pre-evento', 1),
                     ('minCandidaturas', '2', 1),
                     ('maxCandidaturas', '5', 1),
@@ -234,152 +234,126 @@ function crearBaseDatosSiNoExiste()
                     ('galaPreEventoUbicacion', 'Auditorio Principal', 1),
                     ('galaPreEventoDescripcion', '¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni', 1),
                     ('galaPreEventoStreamingActivo', 'true', 1),
-                    ('galaPreEventoStreamingUrl', 'https://streaming.ejemplo.com/gala2026', 1),
+                    ('galaPreEventoStreamingUrl', 'https://streaming.ejemplo.com/gala2026  ', 1),
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1),
-                    ('basesLegales', 'Festival Universitario de Cortometrajes de Animación - II Edición  <br>
-<br>
-Creative Campus Universidad Europea   <br>
-<br>
- <br>
-ANTECEDENTES  <br>
-<br>
-Creative Campus de la Universidad Europea de Madrid, en colaboración con Digital Monster Collective y MIA, lanza el segundo festival de cortometrajes de animación con la intención de:  <br>
-<br>
-1) Generar un espacio donde los estudiantes de diferentes universidades e institutos puedan compartir sus mejores trabajos <br>
-<br>
-2) Premiar el talento y la creatividad en el mundo de la animación audiovisual. <br>
-<br>
- <br>
-<br>
-Características de las obras:  <br>
-<br>
- 1) Cortometrajes de menos de 10 minutos realizados con cualquier técnica de animación durante 2024 hasta la fecha de entrega de este concurso en 2025. <br>
-<br>
-2) El formato deberá ser MP4 o Mov (H.264) con resolución HD 1080  <br>
-<br>
-3) Las obras podrán estar en cualquier idioma oficial del territorio español y deberán incluir subtítulos en español. <br>
-<br>
-4) Podrán ser obras de temática libre, siempre que no incurran en la discriminación, promuevan el odio o la xenofobia y no sean obras de carácter sexual explícito.  <br>
-<br>
-5) Se aceptarán cortometrajes tanto narrativos como experimentales, videoclips o piezas promocionales, así como cinemáticas de videojuegos, siempre y cuando el autor o autora posea los derechos de explotación de la obra y la marca que en ella figure. <br>
-<br>
-6) Las obras deberán ser originales y el autor o autora deberá ser el propietario de los derechos de explotación de la obra presentada. <br>
-<br>
-7) No se permite el uso de inteligencias artificiales generativas para la realización de los cortometrajes. <br>
-<br>
- <br>
-<br>
-Requisitos de participación: <br>
-<br>
-  <br>
-Habrá dos categorías: estudiante y profesional <br>
-<br>
--Categoría estudiante: podrán optar todos los estudiantes mayores de 16 o alumni que se hayan graduado máximo en 2024.  <br>
-<br>
--Categoría profesional: profesionales de la industria de la animación o los videojuegos con proyectos audiovisuales que cumplan los requisitos anteriormente expuestos. <br>
-<br>
- <br>
-Inscripción <br>
-<br>
-La fecha límite para la inscripción de cortometrajes es el 1 de septiembre de 2025. <br>
-<br>
-La inscripción se realizará mediante la página FESTHOME  <br>
-<br>
-La inscripción es gratuita. <br>
-<br>
-La inscripción de una obra conlleva la aceptación de las bases. <br>
-<br>
-No serán admitidas las candidaturas entregadas fuera de plazo, así como aquellas que no se adecuen a los criterios establecidos en la convocatoria (cualquier obra en la que se detecte plagio, uso de IA, una vulneración de los derechos de autor o contemple contenidos o una duración no aceptados será rechazada del festival y la competición). <br>
-<br>
-Para participar en la categoría de estudiantes, junto con el cortometraje, se presentarán evidencias de tener una matrícula en vigor en alguna universidad, instituto o centro adscrito en el momento de la inscripción, o de haberse graduado entre 2024 y 2025. Además, incluirán un teaser del cortometraje para la difusión del evento en caso de resultar seleccionados finalistas, en el mismo formato que el cortometraje. También se presentará un cartel de la obra para promocionar en caso de resultar seleccionados finalistas. <br>
-<br>
-Categorías y premios: <br>
-<br>
--Premio al mejor cortometraje de animación.  <br>
-<br>
-<br>
-Premio Digital Monster Collective a Mejor Cortometraje de Animación de Estudiantes: 500€  <br>
-<br>
-Premio Creative Campus a Mejor Cortometraje de Animación Profesional: 1000€ <br>
- <br>
-<br>
--Premio del público: 250€ <br>
- <br>
-<br>
-*Se reserva la posibilidad de un accésit o mención especial si hubiera alguna obra meritoria <br>
-<br>
- <br>
-<br>
-Criterios para concesión de los premios:  <br>
-<br>
-Los criterios que se valorarán para la concesión de los premios serán originalidad, la calidad técnica, la profundidad narrativa o complejidad de la técnica empleada en el caso de obras experimentales y el aporte de valor en cuanto a la elección del tema. <br>
-<br>
- <br>
-<br>
-Cesión de derechos de propiedad intelectual: <br>
-<br>
-La participación en la presente convocatoria supone la cesión gratuita, no exclusiva, universal y sin límite de tiempo, así como la capacidad de cesión a terceros (prensa, redes sociales y medios) de los derechos de propiedad intelectual de los trabajos presentados, con la finalidad de: <br>
-<br>
-    Proyección en la plataforma digital online los días del festival de los cortometrajes finalistas. <br>
-<br>
-    Promoción del evento en redes sociales y prensa utilizando fragmentos del vídeo, o teasers. <br>
-<br>
-    Promoción en futuras ediciones del evento utilizando fragmentos del vídeo o teasers. <br>
-<br>
-    En concreto, los cortometrajes ganadores, serán proyectados de nuevo en un evento público presencial <br>
-<br>
-    Promoción en redes sociales y notas de prensa utilizando los carteles presentados. <br>
-<br>
- <br>
-<br>
-Esta cesión abarca, de manera enunciativa pero no limitativa, los derechos de reproducción, distribución, comunicación pública, transformación, y cualquier otro derecho de propiedad intelectual o industrial reconocido por la legislación aplicable, siempre limitado a las aplicaciones anteriormente expuestas.  <br>
-<br>
- <br>
-<br>
-Jurado y Resolución:  <br>
-<br>
-El fallo del jurado, que será inapelable y los proyectos ganadores, se anunciarán el 25 de septiembre de 2025, en el Campus Creativo de la Universidad Europea en la calle María de Molina 39, durante el evento realizado a tal efecto a partir de las 18 horas. <br>
-<br>
- <br>
-<br>
-Los finalistas serán anunciados el 19 de septiembre en redes sociales y se comunicará vía mail a los participantes.  <br>
-<br>
- <br>
-<br>
-El Jurado estará compuesto por miembros designados por la UNIVERSIDAD EUROPEA DE MADRID.  <br>
-<br>
-El jurado podrá declarar desierto el Premio. En este caso, la cuantía del Premio se reservará para la siguiente edición.  <br>
-<br>
- <br>
-<br>
-El premio del público se recogerá de las votaciones realizadas a través de la cuenta oficial de Instagram de Creative Campus y serán votados los cortometrajes seleccionados finalistas por el jurado. La votación comenzará desde el momento que se anuncie la lista finalista del jurado hasta que se visionen los cortometrajes en la gala de entrega de premios. El ganador será el que más votos haya obtenido. <br>
-<br>
-Los premiados se comprometen a hacer figurar en el cortometraje y sus comunicaciones públicas el laurel del festival. <br>
-<br>
-Datos de carácter personal  <br>
-<br>
-El Candidato otorga pleno consentimiento y acepta en su totalidad las bases de participación en la presente convocatoria. Los datos que se faciliten a la UNIVERSIDAD en virtud de las presentes bases serán tratados por el responsable del tratamiento, UNIVERSIDAD EUROPEA DE MADRID, S.A.U., para las finalidades de gestión de la presente convocatoria y gestión de actividades varias para las cuales entrega sus datos, así como la remisión de publicidad y actividades de la Universidad que pudiera ser del interés del titular de los datos. Los datos facilitados en virtud de la presente solicitud se incluirán en los sistemas del responsable. Asimismo, de no manifestar fehacientemente lo contrario, usted consiente expresamente el tratamiento de dichos datos por el tiempo que sea necesario para cumplir con los fines indicados. El titular de los datos tiene derecho a acceder, rectificar y suprimir los datos, limitar su tratamiento, oponerse al tratamiento y ejercer su derecho a la portabilidad de los datos de carácter personal, todo ello de forma gratuita, tal como se detalla en la Política de Privacidad de las citadas entidades, en el enlace https://universidadeuropea.es/politica-de-privacidad. Podrá efectuar cualquier consulta en relación con el tratamiento de sus datos personales, así como ejercer los derechos antedichos, en la dirección que prefiera: dpo@universidadeuropea.es  <br>
-<br>
- <br>
-<br>
-DISPOSICIONES FINALES  <br>
-<br>
-El Comité Organizador formado por 3 profesores de la Universidad Europea de Madrid, será el responsable del buen desarrollo del concurso. <br>
-<br>
-El Comité Organizador se reservará el derecho de aplicar cualquier cambio a estas bases que ayude a mejorar la consecución de los objetivos del presente concurso.  <br>
-<br>
-El Comité Organizador del concurso se reservará el derecho de anular o cancelar la totalidad o parte del concurso en caso de detectar el fraude o incumplimiento de las normas. En este caso, se reservará el derecho de no dar un premio a cualquier participante fraudulento. Una acción fraudulenta descalificará inmediatamente a la persona que la cometa.  <br>
-<br>
-El Comité Organizador será quien determine y comunique cualquier cambio o excepción que afecte las presentes bases.  <br>
-<br>
- <br>
-<br>
-Aceptación de las Bases:  <br>
-<br>
-Los participantes, por el hecho de presentar sus candidaturas, aceptan las presentes bases y la decisión del Jurado, renunciando a toda reclamación.  <br>
-<br>
-Las presentes bases que serán publicadas en la presente página y en la web designada de la Universidad Europea, se aplicarán a partir de la fecha de su publicación.', 1);
+                    ('basesLegales', '<div style=\"font-family\": \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 8px;\">
+
+  <div style=\"text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #e60012;\">
+    <span style=\"font-size: 2.5em; font-weight: 700; color: #000;\">Festival Universitario de Cortometrajes de Animación - II Edición</span><br>
+    <span style=\"font-size: 1.4em; color: #000; margin-top: 10px; display: block;\">Creative Campus Universidad Europea</span>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">ANTECEDENTES</span>
+    Creative Campus de la Universidad Europea de Madrid, en colaboración con Digital Monster Collective y MIA, lanza el segundo festival de cortometrajes de animación con la intención de:
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Generar un espacio donde los estudiantes de diferentes universidades e institutos puedan compartir sus mejores trabajos</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premiar el talento y la creatividad en el mundo de la animación audiovisual.</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Características de las obras:</span>
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Cortometrajes de menos de 10 minutos realizados con cualquier técnica de animación durante 2024 hasta la fecha de entrega de este concurso en 2025.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El formato deberá ser MP4 o Mov (H.264) con resolución HD 1080</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Las obras podrán estar en cualquier idioma oficial del territorio español y deberán incluir subtítulos en español.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Podrán ser obras de temática libre, siempre que no incurran en la discriminación, promuevan el odio o la xenofobia y no sean obras de carácter sexual explícito.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Se aceptarán cortometrajes tanto narrativos como experimentales, videoclips o piezas promocionales, así como cinemáticas de videojuegos, siempre y cuando el autor o autora posea los derechos de explotación de la obra y la marca que en ella figure.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Las obras deberán ser originales y el autor o autora deberá ser el propietario de los derechos de explotación de la obra presentada.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> No se permite el uso de inteligencias artificiales generativas para la realización de los cortometrajes.</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Requisitos de participación:</span>
+    Habrá dos categorías: estudiante y profesional
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> <strong>Categoría estudiante:</strong> podrán optar todos los estudiantes mayores de 16 o alumni que se hayan graduado máximo en 2024.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> <strong>Categoría profesional:</strong> profesionales de la industria de la animación o los videojuegos con proyectos audiovisuales que cumplan los requisitos anteriormente expuestos.</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Inscripción</span>
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La fecha límite para la inscripción de cortometrajes es el 1 de septiembre de 2025.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La inscripción se realizará mediante la página FESTHOME</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La inscripción es gratuita.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La inscripción de una obra conlleva la aceptación de las bases.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> No serán admitidas las candidaturas entregadas fuera de plazo, así como aquellas que no se adecuen a los criterios establecidos en la convocatoria (cualquier obra en la que se detecte plagio, uso de IA, una vulneración de los derechos de autor o contemple contenidos o una duración no aceptados será rechazada del festival y la competición).</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Para participar en la categoría de estudiantes, junto con el cortometraje, se presentarán evidencias de tener una matrícula en vigor en alguna universidad, instituto o centro adscrito en el momento de la inscripción, o de haberse graduado entre 2024 y 2025. Además, incluirán un teaser del cortometraje para la difusión del evento en caso de resultar seleccionados finalistas, en el mismo formato que el cortometraje. También se presentará un cartel de la obra para promocionar en caso de resultar seleccionados finalistas.</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Categorías y premios:</span>
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio al mejor cortometraje de animación.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio Digital Monster Collective a Mejor Cortometraje de Animación de Estudiantes: 500€</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio Creative Campus a Mejor Cortometraje de Animación Profesional: 1000€</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio del público: 250€</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Se reserva la posibilidad de un accésit o mención especial si hubiera alguna obra meritoria</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Criterios para concesión de los premios:</span>
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los criterios que se valorarán para la concesión de los premios serán originalidad, la calidad técnica, la profundidad narrativa o complejidad de la técnica empleada en el caso de obras experimentales y el aporte de valor en cuanto a la elección del tema.</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Cesión de derechos de propiedad intelectual:</span>
+    La participación en la presente convocatoria supone la cesión gratuita, no exclusiva, universal y sin límite de tiempo, así como la capacidad de cesión a terceros (prensa, redes sociales y medios) de los derechos de propiedad intelectual de los trabajos presentados, con la finalidad de:
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Proyección en la plataforma digital online los días del festival de los cortometrajes finalistas.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Promoción del evento en redes sociales y prensa utilizando fragmentos del vídeo, o teasers.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Promoción en futuras ediciones del evento utilizando fragmentos del vídeo o teasers.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> En concreto, los cortometrajes ganadores, serán proyectados de nuevo en un evento público presencial</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Promoción en redes sociales y notas de prensa utilizando los carteles presentados.</li>
+    </ul>
+    <p style=\"margin-top: 12px;\">Esta cesión abarca, de manera enunciativa pero no limitativa, los derechos de reproducción, distribución, comunicación pública, transformación, y cualquier otro derecho de propiedad intelectual o industrial reconocido por la legislación aplicable, siempre limitado a las aplicaciones anteriormente expuestas.</p>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Jurado y Resolución:</span>
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El fallo del jurado, que será inapelable y los proyectos ganadores, se anunciarán el 25 de septiembre de 2025, en el Campus Creativo de la Universidad Europea en la calle María de Molina 39, durante el evento realizado a tal efecto a partir de las 18 horas.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los finalistas serán anunciados el 19 de septiembre en redes sociales y se comunicará vía mail a los participantes.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Jurado estará compuesto por miembros designados por la UNIVERSIDAD EUROPEA DE MADRID.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El jurado podrá declarar desierto el Premio. En este caso, la cuantía del Premio se reservará para la siguiente edición.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El premio del público se recogerá de las votaciones realizadas a través de la cuenta oficial de Instagram de Creative Campus y serán votados los cortometrajes seleccionados finalistas por el jurado. La votación comenzará desde el momento que se anuncie la lista finalista del jurado hasta que se visionen los cortometrajes en la gala de entrega de premios. El ganador será el que más votos haya obtenido.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los premiados se comprometen a hacer figurar en el cortometraje y sus comunicaciones públicas el laurel del festival.</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Datos de carácter personal</span>
+    <p style=\"margin: 0;\">El Candidato otorga pleno consentimiento y acepta en su totalidad las bases de participación en la presente convocatoria. Los datos que se faciliten a la UNIVERSIDAD en virtud de las presentes bases serán tratados por el responsable del tratamiento, UNIVERSIDAD EUROPEA DE MADRID, S.A.U., para las finalidades de gestión de la presente convocatoria y gestión de actividades varias para las cuales entrega sus datos, así como la remisión de publicidad y actividades de la Universidad que pudiera ser del interés del titular de los datos. Los datos facilitados en virtud de la presente solicitud se incluirán en los sistemas del responsable. Asimismo, de no manifestar fehacientemente lo contrario, usted consiente expresamente el tratamiento de dichos datos por el tiempo que sea necesario para cumplir con los fines indicados. El titular de los datos tiene derecho a acceder, rectificar y suprimir los datos, limitar su tratamiento, oponerse al tratamiento y ejercer su derecho a la portabilidad de los datos de carácter personal, todo ello de forma gratuita, tal como se detalla en la Política de Privacidad de las citadas entidades, en el enlace https://universidadeuropea.es/politica-de-privacidad. Podrá efectuar cualquier consulta en relación con el tratamiento de sus datos personales, así como ejercer los derechos antedichos, en la dirección que prefiera: dpo@universidadeuropea.es</p>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">DISPOSICIONES FINALES</span>
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador formado por 3 profesores de la Universidad Europea de Madrid, será el responsable del buen desarrollo del concurso.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador se reservará el derecho de aplicar cualquier cambio a estas bases que ayude a mejorar la consecución de los objetivos del presente concurso.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador del concurso se reservará el derecho de anular o cancelar la totalidad o parte del concurso en caso de detectar el fraude o incumplimiento de las normas. En este caso, se reservará el derecho de no dar un premio a cualquier participante fraudulento. Una acción fraudulenta descalificará inmediatamente a la persona que la cometa.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador será quien determine y comunique cualquier cambio o excepción que afecte las presentes bases.</li>
+    </ul>
+  </div>
+
+  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Aceptación de las Bases:</span>
+    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los participantes, por el hecho de presentar sus candidaturas, aceptan las presentes bases y la decisión del Jurado, renunciando a toda reclamación.</li>
+      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Las presentes bases que serán publicadas en la presente página y en la web designada de la Universidad Europea, se aplicarán a partir de la fecha de su publicación.</li>
+    </ul>
+  </div>
+
+</div>)',1;
                     
                 INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador, fecha_envio_email_informativo, fecha_borrado_datos) VALUES
                     (2024, 'Resumen 2024', 120, 'anterior', 1, CURDATE(), CURDATE()),
