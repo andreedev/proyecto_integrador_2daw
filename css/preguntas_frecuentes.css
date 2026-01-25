@@ -17,7 +17,6 @@ body {
     justify-content: space-between;
     padding: 40px 0;
     background: var(--neutral-09);
-    box-shadow: var(--shadow-01);
 }
 
 .hero-text {
@@ -53,13 +52,11 @@ body {
     background: var(--neutral-09);
     margin-top: 30px;
     padding: 30px;
-    border-radius: 8px;
-    box-shadow: var(--shadow-01);
 }
 
 .faq-item {
-    border-bottom: 1px dashed var(--neutral-05);
-    padding: 16px 0;
+    border-bottom: 1px dotted var(--neutral-05);
+    padding: 16px 32px;
     cursor: pointer;
 }
 
@@ -94,7 +91,7 @@ body {
     transform: none;
 }
 
-/* Animación para la respuesta */
+
 .faq-answer {
     max-height: 0;
     overflow: hidden;
@@ -107,17 +104,17 @@ body {
 }
 
 .faq-item.active .faq-answer {
-    max-height: 300px; /* Ajusta si hay respuestas muy largas */
+    max-height: 300px;
     padding: 12px 0 0 0;
 }
 
 .contact-info {
-    margin-top: 30px;
-    padding: 20px;
+    margin-top: 32px;
+    padding: 16px;
     background: var(--neutral-08);
-    border-radius: 6px;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--neutral-03);
+    margin-bottom: 32px;
 }
 
 .contact-info a {
@@ -125,14 +122,14 @@ body {
     text-decoration: none;
 }
 
-/* Imagen más grande en escritorio */
+/*Diseño responsive*/
 @media (min-width: 768px) {
     .hero-image img {
         max-width: 450px;
     }
 }
 
-/* Diseño apilado y centrado en móviles */
+
 @media (max-width: 767px) {
     .hero-section {
         flex-direction: column;
