@@ -36,6 +36,7 @@ window.sessionReady = new Promise((resolve) => {
  */
 const checkSessionStatus = async () => {
     const splash = createSplash();
+    let isRedirecting = false;
 
     const getNormalizedPage = () => {
         const p = window.location.pathname.split("/").pop().toLowerCase();
@@ -66,10 +67,12 @@ const checkSessionStatus = async () => {
 
             if (currentPage === 'login' || previousPage.includes('login')) {
                 if (role === 'participante' && currentPage === 'login') {
+                    isRedirecting = true;
                     window.location.href = 'index.html';
                     return;
                 }
                 if (role === 'organizador' && currentPage === 'login') {
+                    isRedirecting = true;
                     window.location.href = 'admin-candidaturas.html';
                     return;
                 }
@@ -77,6 +80,7 @@ const checkSessionStatus = async () => {
 
             if (role === 'participante' && window.location.pathname.includes('admin-')) {
                 window.location.href = 'index.html';
+                isRedirecting = true;
                 return;
             }
 
@@ -84,6 +88,7 @@ const checkSessionStatus = async () => {
                 const isAdminPage = window.location.pathname.includes('admin-');
                 const isLoginPage = currentPage === 'login';
                 if (!isAdminPage && !isLoginPage) {
+                    isRedirecting = true;
                     window.location.href = 'admin-candidaturas.html';
                     return;
                 }
@@ -92,6 +97,7 @@ const checkSessionStatus = async () => {
         } else if (result.status === 'inactive') {
             sessionStorage.setItem('sesionIniciada', 'false');
             if (currentPage.startsWith('admin-')) {
+                isRedirecting = true;
                 window.location.href = 'login.html';
                 return;
             }
@@ -99,18 +105,21 @@ const checkSessionStatus = async () => {
     } catch (error) {
         console.error("Error revisando sesión:", error);
     } finally {
-        if (splash) {
-            splash.classList.add('hidden');
-            setTimeout(() => splash.remove(), 300);
+        if (!isRedirecting) {
+            if (splash) {
+                splash.classList.add('hidden');
+                setTimeout(() => splash.remove(), 300);
+            }
+            window.sessionState.resolve();
+        } else {
+            console.log("Redirecting... keeping splash visible.");
         }
-        window.sessionState.resolve();
     }
 };
 
 checkSessionStatus();
 
 window.addEventListener('pageshow', (event) => {
-    console.log('pageshow event:', event);
     if (event.persisted) {
         window.sessionReady = new Promise((resolve) => {
             window.sessionState.resolve = resolve;
