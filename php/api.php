@@ -237,19 +237,19 @@ function obtenerConfiguracion() {
     global $conexion;
 
     $sqlConfig = "SELECT nombre, valor FROM configuracion";
-    $conexion->prepare($sqlConfig);
-    $resultConfig = $conexion->prepare($sqlConfig);
-    $resultConfig->execute();
+    $stmtConfig = $conexion->prepare($sqlConfig);
+    $stmtConfig->execute();
+    $resultConfig = $stmtConfig->get_result();
 
     $config = [];
     $baseUrl = '';
-
-    while ($row = $resultConfig->get_result()->fetch_assoc()) {
+    while ($row = $resultConfig->fetch_assoc()) {
         $config[$row['nombre']] = $row['valor'];
         if ($row['nombre'] === 'baseUrl') {
             $baseUrl = $row['valor'];
         }
     }
+    $stmtConfig->close();
 
     $sqlGallery = "SELECT a.id_archivo, a.ruta 
                    FROM archivo a
@@ -258,9 +258,9 @@ function obtenerConfiguracion() {
                    WHERE e.tipo = 'actual'
                    ORDER BY ea.id ASC";
 
-    $connectionGallery = $conexion->prepare($sqlGallery);
-    $connectionGallery->execute();
-    $resultGallery = $connectionGallery->get_result();
+    $stmtGallery = $conexion->prepare($sqlGallery);
+    $stmtGallery->execute();
+    $resultGallery = $stmtGallery->get_result();
 
     $archivosPostEvento = [];
     $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
@@ -276,22 +276,29 @@ function obtenerConfiguracion() {
             $archivosPostEvento[] = ["id" => $idArchivo, "url" => $baseUrl . $rutaRelativa, "ruta_relativa" => $rutaRelativa, "tipo" => $tipo];
         }
     }
+    $stmtGallery->close();
 
     // obtener datos de la edicion actual
     $sqlEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, fecha_envio_email_informativo as fechaEnvioEmailInformativo, fecha_borrado_datos as fechaBorradoDatos
                     FROM edicion WHERE tipo = ? LIMIT 1";
-    $conexion->prepare($sqlEdicion);
     $stmtEdicion = $conexion->prepare($sqlEdicion);
-    $stmtEdicion->bind_param("s", 'actual');
+    $tipoActual = 'actual';
+    $stmtEdicion->bind_param("s", $tipoActual);
     $stmtEdicion->execute();
     $resultadoEdicion = $stmtEdicion->get_result();
+
     $edicionActual = null;
     if ($resultadoEdicion && $resultadoEdicion->num_rows > 0) {
         $edicionActual = $resultadoEdicion->fetch_assoc();
         $edicionActual['nroParticipantes'] = contarParticipantesEdicionActual();
     }
+    $stmtEdicion->close();
 
-    $configuracionCompleta = ["archivosPostEvento" => $archivosPostEvento, "configuracion" => $config, "edicionActual" => $edicionActual];
+    $configuracionCompleta = [
+        "archivosPostEvento" => $archivosPostEvento,
+        "configuracion" => $config,
+        "edicionActual" => $edicionActual
+    ];
 
     echo json_encode(["status" => "success", "data" => $configuracionCompleta]);
 }
