@@ -1,15 +1,31 @@
+injectExternalStyles('../css/footer.css', 'footer-home-styles');
+/**
+ * Componente de footer para la página principal
+ */
 class HomeFooter extends HTMLElement {
     constructor() {
         super();
+        this.style.visibility = 'hidden';
     }
 
-    connectedCallback() {
+    async connectedCallback() {
+        await Promise.all([
+            window.sessionReady,
+            injectExternalStyles('../css/footer.css', 'footer-home-styles')
+        ]);
+
+        this.render();
+
+        this.style.visibility = 'visible';
+    }
+
+    render() {
         this.innerHTML = `
             <div class="footer-container">
                 <div class="footer-content">
                     <div class="footer-container-1">
-                        <img src="./../img/canon-logo.png" alt="Logo" class="footer-image">
-                        <img src="./../img/Vector-ue.svg" alt="Logo" class="footer-image ue-logo">
+                        <img src="../img/canon-logo.png" alt="Logo" class="footer-image">
+                        <img src="../img/Vector-ue.svg" alt="Logo" class="footer-image ue-logo">
                     </div>
                     <div class="footer-container-2">
                         <p class="footer-text">C/Tajo, s/n, 28670</p>

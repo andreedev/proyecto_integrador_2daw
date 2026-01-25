@@ -7,10 +7,12 @@
     <title>Noticias</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/general-styles.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/noticias.css">
     <link rel="stylesheet" href="../css/utils.css">
+
+    <script src="../js/common.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="../js/check-session.js"></script>
 </head>
 
 <body>
@@ -25,29 +27,22 @@
             </div>
         </div>
 
-        <!-- BLOQUE LISTADO DE NOTICIAS -->
-        <main class="news-list">
 
-            <div class="news-post" id="newsPost">
-                <img class="img-noticia" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen noticia" id="imgNoticia">
-                <div class="news-post-content">
-                    <div class="news-date-title-text">
-                        <span class="news-date" id="newsDate">21 ene 2026</span>
-                        <div class="news-title" id="newsTitle">La Universidad Europea se una a QS One para impulsar el futuro de la educación superior</div>
-                        <div class="news-description" id="newsDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, illo! Minima libero ad quae sequi tenetur distinctio qui maiores deserunt! Possimus quisquam inventore aspernatur autem nihil, repellat earum voluptates quam!</div>
-                    </div>
-                </div>
+        <div class="d-flex justify-content-center px-16px py-24px">
+            <div class="max-w-1200px d-flex flex-column gap-24px w-100">
+                <h2>Todas las noticias</h2>
+                <main id="newsContainer" class="d-grid grid-template-columns-1 grid-xs-template-columns-2 grid-md-template-columns-3 grid-lg-template-columns-4 gap-24px">
+
+                </main>
             </div>
-            
-        </main>
+
+        </div>
 
     </div>
     <home-footer></home-footer>
 
-    <script src="../js/common.js"></script>
-    <script src="../js/header.js"></script>
-    <script src="../js/footer.js"></script>
-    <script src="../js/api-service.js"></script>
+    <script src="../js/components/header.js"></script>
+    <script src="../js/components/footer.js"></script>
     <script src="../js/noticias.js"></script>
 </body>
 </html>

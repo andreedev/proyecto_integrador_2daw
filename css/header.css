@@ -31,23 +31,6 @@
     }
 }
 
-
-.icon-menu-bars {
-    width: 48px;
-    height: 48px;
-    background-color: var(--neutral-03);
-    mask-image: url('../img/icon/icon-bars.svg');
-    display: inline-block;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: center;
-    transition: all 300ms ease;
-}
-
-.icon-menu-bars:hover {
-    background-color: var(--neutral-02);
-}
-
 .icon-menu-bards-container {
     display: flex;
     align-items: center;
@@ -61,14 +44,6 @@
     .icon-menu-bards-container {
         display: none;
     }
-}
-
-.icon-menu-bards-container:hover {
-    border-color: var(--neutral-04);
-}
-
-.icon-menu-bards-container:hover .icon-menu-bars {
-    background-color: var(--neutral-02);
 }
 
 .header-logo-container{
@@ -93,19 +68,18 @@
     }
 }
 
-.header-button{
+.header-base-button{
     position: relative;
     width: auto;
     padding: 8px 32px;
     background-color: var(--neutral-09);
-    font-size: 12px;
-    font-weight: 500;
+    font-weight: normal;
     transition: all 300ms ease;
     box-sizing: border-box;
     border-bottom: 1px solid transparent;
 }
 
-.header-button:hover:after{
+.header-base-button:hover:after{
     content: "";
     width: 7px;
     height: 7px;
@@ -116,43 +90,22 @@
     transform: translateX(-50%);
 }
 
-.header-button:hover{
+.header-base-button:hover{
     font-weight: 500;
 }
 
+.header-base-button-responsive-font-size{
+    font-size: 12px;
+}
+
 @media (min-width: 1100px) {
-    .header-button{
+    .header-base-button-responsive-font-size{
         font-size: 14px;
-        font-weight: normal;
     }
 }
 
 @media (min-width: 1200px) {
-    .header-button{
+    .header-base-button-responsive-font-size{
         font-size: 16px;
-        font-weight: normal;
     }
-}
-
-.header-primary-action-button{
-    background-color: var(--primary-03);
-    color: var(--neutral-09);
-}
-
-.header-primary-action-button:hover {
-    background-color: var(--neutral-09);
-    outline: 1px solid var(--primary-03);
-    color: var(--primary-03);
-}
-
-.header-secondary-action-button{
-    background-color: var(--neutral-02);
-    outline: 1px solid var(--neutral-02);
-    color: var(--neutral-09);
-}
-
-.header-secondary-action-button:hover {
-    background-color: var(--neutral-09);
-    outline: 1px solid var(--neutral-02);
-    color: var(--neutral-02);
 }

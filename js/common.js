@@ -1,7 +1,13 @@
-// constantes y variables generales
+/** Constantes globales */
 const URL_API = "./../php/api.php";
 
-/** Funciones comunes en toda la aplicacion */
+/**
+ *
+ *
+ * Funciones comunes en toda la aplicación
+ *
+ *
+ */
 
 
 /**
@@ -177,7 +183,7 @@ function convertISOStringToDate(string) {
 }
 
 /**
- * Convertir objecto Date a ISO String YYYY-MM-DD
+ * Convertir objeto Date a ISO String YYYY-MM-DD
  */
 function convertDateToISOString(date) {
     const year = date.getFullYear();
@@ -187,7 +193,7 @@ function convertDateToISOString(date) {
 }
 
 /**
- * Formatea una fecha a formato legible en español
+ * Formatea una fecha de tipo Date a formato legible en español
  */
 function humanizeDate(date) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -213,6 +219,12 @@ function humanizeDuration(minutes) {
     return result.trim();
 }
 
+
+/**
+ * Funcion para pausar la ejecucion por un tiempo determinado
+ */
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 /**
  * Funcion para realizar peticiones a la API
  */
@@ -231,4 +243,33 @@ async function fetchAPI( data = null) {
             console.error('Error:', error);
             throw error;
         });
-} 
+}
+
+
+/**
+ * Inyectar estilos CSS externos en el documento
+ * @param {string} url - URL del archivo CSS externo
+ * @param {string} id - ID único para el elemento <style>
+ */
+window.injectExternalStyles = async function(url, id) {
+    if (document.getElementById(id)) return Promise.resolve();
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to load: ${url}`);
+        const cssText = await response.text();
+
+        const style = document.createElement('style');
+        style.id = id;
+        style.textContent = cssText;
+
+        const utilsLink = document.querySelector('link[href*="utils.css"]');
+        if (utilsLink) {
+            utilsLink.parentNode.insertBefore(style, utilsLink);
+        } else {
+            document.head.appendChild(style);
+        }
+    } catch (err) {
+        console.error("CSS Injection Error:", err);
+    }
+};
