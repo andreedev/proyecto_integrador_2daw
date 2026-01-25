@@ -1231,6 +1231,117 @@ dialog::backdrop {
     padding-bottom: 24px;
 }
 
+.m-0{
+    margin: 0;
+}
+
+.m-4px{
+    margin: 4px;
+}
+
+.m-8px{
+    margin: 8px;
+}
+
+.m-12px{
+    margin: 12px;
+}
+
+.m-16px{
+    margin: 16px;
+}
+
+.m-20px{
+    margin: 20px;
+}
+
+.m-24px{
+    margin: 24px;
+}
+
+.m-32px{
+    margin: 32px;
+}
+
+.m-40px{
+    margin: 40px;
+}
+
+.mx-4px{
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.mx-8px{
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.mx-12px{
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.mx-16px{
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.mx-20px{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.mx-24px{
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.my-4px{
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.my-8px{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.my-12px{
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.my-16px{
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.my-20px{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.my-24px{
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.my-32px{
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.my-40px{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.my-48px{
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
 
 .top-0{
     top: 0;
