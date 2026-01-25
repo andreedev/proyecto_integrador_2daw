@@ -1,4 +1,3 @@
-injectExternalStyles('../css/header.css', 'home-header-styles');
 /**
  * Header para la página principal
  */

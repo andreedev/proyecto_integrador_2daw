@@ -1,4 +1,3 @@
-injectExternalStyles('../css/footer.css', 'footer-home-styles');
 /**
  * Componente de footer para la página principal
  */
@@ -13,9 +12,7 @@ class HomeFooter extends HTMLElement {
             window.sessionReady,
             injectExternalStyles('../css/footer.css', 'footer-home-styles')
         ]);
-
         this.render();
-
         this.style.visibility = 'visible';
     }
 

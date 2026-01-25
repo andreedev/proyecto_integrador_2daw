@@ -251,25 +251,34 @@ async function fetchAPI( data = null) {
  * @param {string} url - URL del archivo CSS externo
  * @param {string} id - ID único para el elemento <style>
  */
+const pendingStyles = {};
 window.injectExternalStyles = async function(url, id) {
-    if (document.getElementById(id)) return Promise.resolve();
+    if (document.getElementById(id)) return;
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Failed to load: ${url}`);
-        const cssText = await response.text();
+    if (pendingStyles[id]) return pendingStyles[id]
 
-        const style = document.createElement('style');
-        style.id = id;
-        style.textContent = cssText;
+    pendingStyles[id] = (async () => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Failed to load: ${url}`);
+            const cssText = await response.text();
 
-        const utilsLink = document.querySelector('link[href*="utils.css"]');
-        if (utilsLink) {
-            utilsLink.parentNode.insertBefore(style, utilsLink);
-        } else {
-            document.head.appendChild(style);
+            const style = document.createElement('style');
+            style.id = id;
+            style.textContent = cssText;
+
+            const utilsLink = document.querySelector('link[href*="utils.css"]');
+            if (utilsLink) {
+                utilsLink.parentNode.insertBefore(style, utilsLink);
+            } else {
+                document.head.appendChild(style);
+            }
+        } catch (err) {
+            console.error("CSS Injection Error:", err);
+        } finally {
+            delete pendingStyles[id];
         }
-    } catch (err) {
-        console.error("CSS Injection Error:", err);
-    }
+    })();
+
+    return pendingStyles[id];
 };
