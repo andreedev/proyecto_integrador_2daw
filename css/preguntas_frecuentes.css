@@ -17,7 +17,6 @@ body {
     justify-content: space-between;
     padding: 40px 0;
     background: var(--neutral-09);
-    border-radius: 8px;
     box-shadow: var(--shadow-01);
 }
 
@@ -90,7 +89,7 @@ body {
 }
 
 .faq-item.active .faq-question::after {
-    background: url('../img/icon/icon-uparrow.svg') no-repeat center;
+    background: url('../img/icon/icon-toparrow.svg') no-repeat center;
     background-size: contain;
     transform: none;
 }
