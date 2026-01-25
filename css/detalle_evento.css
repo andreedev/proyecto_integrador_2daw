@@ -14,6 +14,7 @@
 }
 
 .izquierda-header{
+    --header-bg: none;
     height:320px;
     display: flex;
     flex-direction: column;
@@ -21,7 +22,7 @@
     align-items: flex-start;
     gap: 24px;
     color:var(--neutral-09);
-    background-image: url("../img/img-evento.png");
+    background-image: var(--header-bg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -30,7 +31,7 @@
 
 @media (min-width: 1024px) {
     .izquierda-header{
-        background-image: none;
+        background-image: none !important;
         color:var(--neutral-01);
         margin-left:96px;
         margin-top:60px;

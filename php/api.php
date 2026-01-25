@@ -107,6 +107,9 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             listarEventos();
             break;
+        case 'obtenerEventoPorId':
+            obtenerEventoPorId();
+            break;
         case 'crearEvento':
             validarRol(['organizador', 'participante']);
             crearEvento();
@@ -1163,6 +1166,39 @@ function listarEventos() {
     }
 
     echo json_encode(["status" => "success", "data" => $eventos]);
+}
+
+
+/**
+ * Obtener un evento por id
+ */
+function obtenerEventoPorId() {
+    global $conexion;
+
+    $idEvento = (int)$_POST['idEvento'];
+
+    $query = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
+                e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
+                e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento, a.id_archivo as idArchivoImagenEvento
+              FROM evento e
+              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo
+              WHERE e.id_evento = ?";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idEvento);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+    $evento = null;
+    if ($row = $result->fetch_assoc()) {
+        if ($row['rutaImagenEvento']) {
+            $row['rutaImagenEvento'] = $baseUrl . $row['rutaImagenEvento'];
+        }
+        $evento = $row;
+    }
+
+    echo json_encode(["status" => "success", "data" => $evento]);
 }
 
 /**

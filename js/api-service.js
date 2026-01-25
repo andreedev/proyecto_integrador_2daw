@@ -204,6 +204,14 @@ async function listarEventos(filtroFecha) {
     return await fetchAPI(formData);
 }
 
+async function obtenerEventoPorId(idEvento) {
+    const formData = new FormData();
+    formData.append('action', 'obtenerEventoPorId');
+    formData.append('idEvento', idEvento);
+
+    return await fetchAPI(formData);
+}
+
 async function crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen) {
     const formData = new FormData();
     formData.append('action', 'crearEvento');
