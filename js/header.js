@@ -21,13 +21,13 @@ class HomeHeader extends HTMLElement {
 
         if (sesionIniciada) {
             botonesAccion = `
-                <a href="./candidaturas.html" class="header-button header-primary-action-button">Candidaturas</a>
-                <a href="#" id="logout-btn" class="header-button header-secondary-action-button">Cerrar sesión</a>
+                <a href="./candidaturas.html" class="header-base-button-responsive-font-size primary-button-01">Candidaturas</a>
+                <a href="#" id="logout-btn" class="header-base-button-responsive-font-size secondary-button-02">Cerrar sesión</a>
             `;
         } else {
             botonesAccion = `
-                <a href="./subir-corto.html" class="header-button header-primary-action-button">Registrarse</a>
-                <a href="./login.html" class="header-button header-secondary-action-button">Iniciar sesión</a>
+                <a href="./subir-corto.html" class="header-base-button-responsive-font-size primary-button-01">Registrarse</a>
+                <a href="./login.html" class="header-base-button-responsive-font-size secondary-button-01 w-auto">Iniciar sesión</a>
             `;
         }
 
@@ -37,14 +37,14 @@ class HomeHeader extends HTMLElement {
                     <img src="./../img/logo.svg" alt="Logo" class="header-logo-image">
                 </a>
                 <div class="icon-menu-bards-container">
-                    <span class="icon-menu-bars"></span>
+                    <span class="icon-bars w-32px h-32px bg-neutral-01"></span>
                 </div>
                 <div class="header-buttons-desktop-container">
-                    <a href="./noticias.html" class="header-button">Noticias</a>
-                    <a href="./eventos.html" class="header-button">Eventos</a>
-                    <a href="./preguntas-frecuentes.html" class="header-button">Preguntas frecuentes</a>
-                    <a href="./gala.html" class="header-button">Gala</a>
-                    <a href="./bases-legales.html" class="header-button">Bases legales</a>
+                    <a href="./noticias.html" class="header-base-button header-base-button-responsive-font-size header-button">Noticias</a>
+                    <a href="./eventos.html" class="header-base-button header-base-button-responsive-font-size header-button">Eventos</a>
+                    <a href="./preguntas-frecuentes.html" class="header-base-button header-base-button-responsive-font-size header-button">Preguntas frecuentes</a>
+                    <a href="./gala.html" class="header-base-button header-base-button-responsive-font-size header-button">Gala</a>
+                    <a href="./bases-legales.html" class="header-base-button header-base-button-responsive-font-size header-button">Bases legales</a>
                     ${botonesAccion}
                 </div>
             </div>
