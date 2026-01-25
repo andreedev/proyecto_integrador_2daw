@@ -353,7 +353,7 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-</div>)',1;
+</div>',1);
                     
                 INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador, fecha_envio_email_informativo, fecha_borrado_datos) VALUES
                     (2024, 'Resumen 2024', 120, 'anterior', 1, CURDATE(), CURDATE()),

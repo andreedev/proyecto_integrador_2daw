@@ -3,10 +3,6 @@ window.sessionState = {};
 window.sessionReady = new Promise((resolve) => {
     window.sessionState.resolve = resolve;
 });
-/**
- * Funcion para pausar la ejecucion por un tiempo determinado
- */
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Revisar si la sesión del usuario está activa o inactiva al cargar la página.
@@ -72,7 +68,6 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         } else if (result.status === 'inactive') {
             sessionStorage.setItem('sesionIniciada', 'false');
-            console.log('No active session');
             if (currentPage.startsWith('admin-')) {
                 window.location.href = 'login.html';
                 return;

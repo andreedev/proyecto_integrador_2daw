@@ -219,6 +219,12 @@ function humanizeDuration(minutes) {
     return result.trim();
 }
 
+
+/**
+ * Funcion para pausar la ejecucion por un tiempo determinado
+ */
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 /**
  * Funcion para realizar peticiones a la API
  */
@@ -237,4 +243,4 @@ async function fetchAPI( data = null) {
             console.error('Error:', error);
             throw error;
         });
-} 
+}

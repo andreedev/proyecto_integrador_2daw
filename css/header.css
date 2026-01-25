@@ -90,7 +90,7 @@
     width: auto;
     padding: 8px 32px;
     background-color: var(--neutral-09);
-    font-weight: 500;
+    font-weight: normal;
     transition: all 300ms ease;
     box-sizing: border-box;
     border-bottom: 1px solid transparent;

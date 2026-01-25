@@ -13,7 +13,6 @@ class HomeHeader extends HTMLElement {
 
     render() {
         const sesionIniciada = sessionStorage.getItem('sesionIniciada') === 'true';
-        console.log('Sesión iniciada:', sesionIniciada);
         let botonesAccion = '';
 
         if (sesionIniciada) {
@@ -30,7 +29,7 @@ class HomeHeader extends HTMLElement {
 
         this.innerHTML = `
             <div class="header-container">
-                <a href=".." class="header-logo-container">
+                <a href="./" class="header-logo-container">
                     <img src="../img/logo.svg" alt="Logo" class="header-logo-image">
                 </a>
                 <div class="icon-menu-bards-container">
