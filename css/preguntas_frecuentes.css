@@ -49,8 +49,12 @@
 
 .faq-item {
     border-bottom: 1px dotted var(--neutral-05);
-    padding: 16px 32px;
+    padding: 16px 0px;
     cursor: pointer;
+    background-image: repeating-linear-gradient(to right, black, black 2px, transparent 1px, transparent 6px);
+    background-position: bottom left;
+    background-size: auto 2px;
+    background-repeat: repeat-x;
 }
 
 .faq-item:last-child {
