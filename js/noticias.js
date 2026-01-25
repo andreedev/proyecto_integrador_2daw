@@ -45,7 +45,7 @@ function renderizarNoticias(noticias) {
         noticiaElemento.appendChild(contenidoNoticia);
 
         noticiaElemento.addEventListener('click', () => {
-            window.location.href = `detalle_noticia.html?id=${noticia.id}`;
+            window.location.href = `detalle_noticia.html?id=${noticia.idNoticia}`;
         });
 
         newsContainer.appendChild(noticiaElemento);

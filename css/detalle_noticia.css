@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 32px 96px;
 }
 
 @media (min-width: 992px) {
@@ -95,7 +94,6 @@
 
 @media (min-width: 992px) {
     .img-noticia-detailed{
-        padding: 0 216px;
         object-fit: cover;
     }
 }
@@ -105,10 +103,4 @@
     font-weight: 400;
     color: var(--neutral-02);
     line-height: 24px;
-}
-
-@media (min-width: 992px) {
-    .noticia-description{
-        padding: 0 216px;
-    }
 }
