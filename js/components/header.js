@@ -1,14 +1,20 @@
+injectExternalStyles('../css/header.css', 'home-header-styles');
 /**
  * Header para la página principal
  */
 class HomeHeader extends HTMLElement {
     constructor() {
         super();
+        this.style.visibility = 'hidden';
     }
 
     async connectedCallback() {
-        await window.sessionReady;
+        await Promise.all([
+            window.sessionReady,
+            injectExternalStyles('../css/header.css', 'home-header-styles')
+        ]);
         this.render();
+        this.style.visibility = 'visible';
     }
 
     render() {
@@ -18,7 +24,7 @@ class HomeHeader extends HTMLElement {
         if (sesionIniciada) {
             botonesAccion = `
                 <a href="./candidaturas.html" class="header-base-button-responsive-font-size primary-button-01">Candidaturas</a>
-                <a href="#" id="logout-btn" class="header-base-button-responsive-font-size secondary-button-02">Cerrar sesión</a>
+                <a href="#" id="logout-btn" class="header-base-button-responsive-font-size secondary-button-01 w-auto">Cerrar sesión</a>
             `;
         } else {
             botonesAccion = `

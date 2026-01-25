@@ -244,3 +244,32 @@ async function fetchAPI( data = null) {
             throw error;
         });
 }
+
+
+/**
+ * Inyectar estilos CSS externos en el documento
+ * @param {string} url - URL del archivo CSS externo
+ * @param {string} id - ID único para el elemento <style>
+ */
+window.injectExternalStyles = async function(url, id) {
+    if (document.getElementById(id)) return Promise.resolve();
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to load: ${url}`);
+        const cssText = await response.text();
+
+        const style = document.createElement('style');
+        style.id = id;
+        style.textContent = cssText;
+
+        const utilsLink = document.querySelector('link[href*="utils.css"]');
+        if (utilsLink) {
+            utilsLink.parentNode.insertBefore(style, utilsLink);
+        } else {
+            document.head.appendChild(style);
+        }
+    } catch (err) {
+        console.error("CSS Injection Error:", err);
+    }
+};

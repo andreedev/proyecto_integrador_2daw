@@ -1,3 +1,29 @@
+/**
+ * Crea el splash de carga
+ */
+const createSplash = () => {
+    if (document.getElementById('splash')) return document.getElementById('splash');
+
+    const splashDiv = document.createElement('div');
+    splashDiv.id = 'splash';
+    splashDiv.innerHTML = `<img src="../img/logo-loading.gif" alt="Cargando...">`;
+
+    if (document.body) {
+        document.body.prepend(splashDiv);
+    } else {
+        const observer = new MutationObserver((mutations, obs) => {
+            if (document.body) {
+                document.body.prepend(splashDiv);
+                obs.disconnect();
+            }
+        });
+        observer.observe(document.documentElement, { childList: true });
+    }
+
+    return splashDiv;
+};
+
+
 /** Promesa global que se resuelve cuando se determina el estado de la sesión */
 window.sessionState = {};
 window.sessionReady = new Promise((resolve) => {
@@ -8,8 +34,8 @@ window.sessionReady = new Promise((resolve) => {
  * Revisar si la sesión del usuario está activa o inactiva al cargar la página.
  * Redirigir al usuario a la página correspondiente según el estado de la sesión
  */
-(async () => {
-    const splash = document.getElementById('splash');
+const checkSessionStatus = async () => {
+    const splash = createSplash();
 
     const getNormalizedPage = () => {
         const p = window.location.pathname.split("/").pop().toLowerCase();
@@ -21,19 +47,19 @@ window.sessionReady = new Promise((resolve) => {
     const referrerPath = document.referrer ? new URL(document.referrer).pathname : "";
     const previousPage = referrerPath.split("/").pop().toLowerCase() || "home";
 
-    const formData = new FormData();
-    formData.append('action', 'revisarSesion');
-
-    const httpResponse = await fetch(URL_API, {
-        method: 'POST',
-        body: formData
-    });
-
-    const result = await httpResponse.json();
-    await sleep(300);
-    splash.style.display = 'none';
-
     try {
+        const formData = new FormData();
+        formData.append('action', 'revisarSesion');
+
+        const httpResponse = await fetch(URL_API, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await httpResponse.json();
+
+        await new Promise(r => setTimeout(r, 400));
+
         if (result.status === 'active') {
             sessionStorage.setItem('sesionIniciada', 'true');
             const role = result.rol;
@@ -49,17 +75,14 @@ window.sessionReady = new Promise((resolve) => {
                 }
             }
 
-            if (role === 'participante') {
-                if (window.location.pathname.includes('admin-')) {
-                    window.location.href = 'index.html';
-                    return;
-                }
+            if (role === 'participante' && window.location.pathname.includes('admin-')) {
+                window.location.href = 'index.html';
+                return;
             }
 
             if (role === 'organizador') {
                 const isAdminPage = window.location.pathname.includes('admin-');
                 const isLoginPage = currentPage === 'login';
-
                 if (!isAdminPage && !isLoginPage) {
                     window.location.href = 'admin-candidaturas.html';
                     return;
@@ -73,9 +96,25 @@ window.sessionReady = new Promise((resolve) => {
                 return;
             }
         }
+    } catch (error) {
+        console.error("Error revisando sesión:", error);
     } finally {
+        if (splash) {
+            splash.classList.add('hidden');
+            setTimeout(() => splash.remove(), 300);
+        }
         window.sessionState.resolve();
-        if(splash) splash.style.display = 'none';
     }
+};
 
-})();
+checkSessionStatus();
+
+window.addEventListener('pageshow', (event) => {
+    console.log('pageshow event:', event);
+    if (event.persisted) {
+        window.sessionReady = new Promise((resolve) => {
+            window.sessionState.resolve = resolve;
+        });
+        checkSessionStatus();
+    }
+});
