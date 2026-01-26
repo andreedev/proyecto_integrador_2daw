@@ -1,0 +1,89 @@
+.solid-input-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.solid-input-field {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--neutral-04);
+    padding: 24px 32px 8px 0;
+    outline: none;
+    transition: border-color 0.2s ease;
+    border-radius: 0;
+    font-size: 16px;
+    color: var(--neutral-01);
+}
+
+.solid-input-field:disabled {
+    border-bottom: 1px dotted var(--neutral-04);
+    color: var(--neutral-04);
+    cursor: not-allowed;
+}
+
+.solid-input-label {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    pointer-events: none;
+    transition: 0.2s ease all;
+    transform-origin: left top;
+    line-height: 1;
+}
+
+.solid-input-icon-container {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    pointer-events: none;
+}
+
+
+.solid-input-container.is-focused .solid-input-field {
+    border-bottom: 1px solid var(--neutral-01);
+}
+
+.solid-input-container.is-focused .solid-input-label,
+.solid-input-container.has-value .solid-input-label {
+    transform: translateY(-20px) scale(0.85);
+    color: var(--neutral-01);
+}
+
+.solid-input-container.state-error .solid-input-field {
+    border-bottom: 2px solid var(--error-02);
+    color: var(--error-02);
+}
+
+.solid-input-container.state-error .solid-input-label {
+    color: var(--error-02);
+}
+
+.solid-input-error-text {
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.solid-input-container.variant-textarea {
+    min-height: 100px;
+}
+
+.solid-input-container.variant-textarea .solid-input-field {
+    height: 100px;
+    resize: none;
+    padding-top: 32px;
+    padding-right: 40px;
+    line-height: 1.5;
+    display: block;
+    overflow-y: auto;
+}
+
+.solid-input-container.variant-textarea .solid-input-icon-container {
+    top: 32px;
+    bottom: auto;
+}
+
+.solid-input-container.variant-textarea.is-focused .solid-input-label,
+.solid-input-container.variant-textarea.has-value .solid-input-label {
+    transform: translateY(-24px) scale(0.85);
+}

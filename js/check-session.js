@@ -96,7 +96,7 @@ const checkSessionStatus = async () => {
 
         } else if (result.status === 'inactive') {
             sessionStorage.setItem('sesionIniciada', 'false');
-            if (currentPage.startsWith('admin-')) {
+            if (currentPage.startsWith('admin-') || currentPage === 'candidaturas' || currentPage === 'perfil') {
                 isRedirecting = true;
                 window.location.href = 'login.html';
                 return;

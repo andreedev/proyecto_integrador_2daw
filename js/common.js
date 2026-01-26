@@ -32,9 +32,9 @@ function setupDynamicDropZone(container, allowedExtensions, maxSizeBytes, valida
                     <div class="border-radius-50 bg-success-03 p-8px d-flex justify-center align-items-center ">
                         <span class="icon-small-check w-24px h-24px bg-neutral-02 d-flex"></span>
                     </div>
-                    <div class="datosArchivo flex-grow-1 min-w-0">
-                        <div class="archivo-nombre text-truncate"></div>
-                        <div class="archivo-tamanio"></div>
+                    <div class="d-flex flex-column me-0 flex-grow-1 min-w-0">
+                        <div class="fs-14px text-truncate"></div>
+                        <div class="fs-12px text-neutral-02"></div>
                     </div>
                     <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer btnEliminarArchivo"></span>
                 </div>
@@ -151,13 +151,17 @@ function setupDynamicDropZone(container, allowedExtensions, maxSizeBytes, valida
 /**
  * Cerrar modales al hacer clic en elementos con la clase 'close-modal'
  */
-const closeModalList = document.querySelectorAll('.close-modal');
-closeModalList.forEach(closeModal => {
-    closeModal.addEventListener('click', () => {
-        const dialog = closeModal.closest('dialog');
-        if (dialog) dialog.close();
+(function setupModalCloseButtons() {
+    document.addEventListener('DOMContentLoaded', () => {
+        const closeModalList = document.querySelectorAll('.close-modal');
+        closeModalList.forEach(closeModal => {
+            closeModal.addEventListener('click', () => {
+                const dialog = closeModal.closest('dialog');
+                if (dialog) dialog.close();
+            });
+        });
     });
-});
+})();
 
 /**
  * Formatear bytes a una unidad legible

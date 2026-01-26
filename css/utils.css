@@ -1346,6 +1346,165 @@ dialog::backdrop {
     margin-bottom: 48px;
 }
 
+.mt-0{
+    margin-top: 0;
+}
+
+.mt-4px{
+    margin-top: 4px;
+}
+
+.mt-8px{
+    margin-top: 8px;
+}
+
+.mt-12px{
+    margin-top: 12px;
+}
+
+.mt-16px{
+    margin-top: 16px;
+}
+
+.mt-20px{
+    margin-top: 20px;
+}
+
+.mt-24px{
+    margin-top: 24px;
+}
+
+.mt-32px{
+    margin-top: 32px;
+}
+
+.mt-40px{
+    margin-top: 40px;
+}
+
+.mt-48px{
+    margin-top: 48px;
+}
+
+.mb-0{
+    margin-bottom: 0;
+}
+
+.mb-4px{
+    margin-bottom: 4px;
+}
+
+.mb-8px{
+    margin-bottom: 8px;
+}
+
+.mb-12px{
+    margin-bottom: 12px;
+}
+
+.mb-16px{
+    margin-bottom: 16px;
+}
+
+.mb-20px{
+    margin-bottom: 20px;
+}
+
+.mb-24px{
+    margin-bottom: 24px;
+}
+
+.mb-32px{
+    margin-bottom: 32px;
+}
+
+.mb-40px{
+    margin-bottom: 40px;
+}
+
+.mb-48px{
+    margin-bottom: 48px;
+}
+
+.ms-0{
+    margin-left: 0;
+}
+
+.ms-4px{
+    margin-left: 4px;
+}
+
+.ms-8px{
+    margin-left: 8px;
+}
+
+.ms-12px{
+    margin-left: 12px;
+}
+
+.ms-16px{
+    margin-left: 16px;
+}
+
+.ms-20px{
+    margin-left: 20px;
+}
+
+.ms-24px{
+    margin-left: 24px;
+}
+
+.ms-32px{
+    margin-left: 32px;
+}
+
+.ms-40px{
+    margin-left: 40px;
+}
+
+.ms-48px{
+    margin-left: 48px;
+}
+
+.me-0{
+    margin-right: 0;
+}
+
+.me-4px{
+    margin-right: 4px;
+}
+
+.me-8px{
+    margin-right: 8px;
+}
+
+.me-12px{
+    margin-right: 12px;
+}
+
+.me-16px{
+    margin-right: 16px;
+}
+
+.me-20px{
+    margin-right: 20px;
+}
+
+.me-24px{
+    margin-right: 24px;
+}
+
+.me-32px{
+    margin-right: 32px;
+}
+
+.me-40px{
+    margin-right: 40px;
+}
+
+.me-48px{
+    margin-right: 48px;
+}
 
 .top-0{
     top: 0;
