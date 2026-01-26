@@ -173,7 +173,7 @@ function cerrarSesion() {
 /**
  * Verifica las credenciales de un usuario en la tabla especificada
  */
-function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad) {
+function verificarUsuario($tabla, $columnaId, $identificador, $password) {
     global $conexion;
 
     $query = "SELECT * FROM $tabla WHERE $columnaId = ?";
@@ -185,11 +185,6 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
     if ($resultado && $resultado->num_rows > 0) {
         $usuario = $resultado->fetch_assoc();
         if (password_verify($password, $usuario['contrasena'])) {
-            if ($tabla === 'participante') {
-                $idEntidad = $usuario['id_participante'];
-            } elseif ($tabla === 'organizador') {
-                $idEntidad = $usuario['id_organizador'];
-            }
             return $usuario;
         }
     }
@@ -202,7 +197,6 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
 function login() {
     $numIdentidad = $_POST['numExpediente'] ?? '';
     $password = $_POST['password'] ?? '';
-    $idEntidad = null;
 
     if (empty($numIdentidad) || empty($password)) {
         echo json_encode(["status" => "error", "message" => "Faltan datos de inicio de sesión"]);
@@ -210,13 +204,13 @@ function login() {
     }
 
     // Intentar como Participante
-    $datos = verificarUsuario('participante', 'nro_expediente', $numIdentidad, $password, $idEntidad);
+    $datos = verificarUsuario('participante', 'nro_expediente', $numIdentidad, $password);
     $rol = 'participante';
     $redirect = './index.html';
 
     // Intentar como Organizador
     if (!$datos) {
-        $datos = verificarUsuario('organizador', 'nro_empresa', $numIdentidad, $password, $idEntidad);
+        $datos = verificarUsuario('organizador', 'nro_empresa', $numIdentidad, $password);
         $rol = 'organizador';
         $redirect = './admin-candidaturas.html';
     }
@@ -224,7 +218,7 @@ function login() {
     if ($datos) {
         $_SESSION['iniciada'] = true;
         $_SESSION['rol'] = $rol;
-        $_SESSION['id'] = $idEntidad;
+        $_SESSION['id'] = $datos[$rol === 'participante' ? 'id_participante' : 'id_organizador'];
 
         echo json_encode(["status" => "success", "message" => "Sesión iniciada como $rol, redireccionando...", "redirect" => $redirect]);
     } else {
@@ -1552,26 +1546,6 @@ function guardarCandidatura() {
 /**
  * Listar candidaturas de un participante
  */
-/**
- * CREATE TABLE candidatura (
- * id_candidatura INT AUTO_INCREMENT PRIMARY KEY,
- * id_participante INT NOT NULL,
- * estado ENUM('En revisión', 'Aceptada', 'Rechazada', 'Finalista') DEFAULT 'En revisión',
- * tipo_candidatura ENUM('alumno', 'alumni') NOT NULL,
- * fecha_presentacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- * fecha_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- * sinopsis TEXT,
- * id_archivo_video INT comment 'Archivo del video del cortometraje',
- * id_archivo_ficha INT comment 'Archivo de la ficha técnica del cortometraje',
- * id_archivo_cartel INT comment 'Archivo del cartel del cortometraje',
- * id_archivo_trailer INT comment 'Archivo del trailer del cortometraje',
- * FOREIGN KEY (id_participante) REFERENCES participante(id_participante),
- * FOREIGN KEY (id_archivo_video) REFERENCES archivo(id_archivo),
- * FOREIGN KEY (id_archivo_ficha) REFERENCES archivo(id_archivo),
- * FOREIGN KEY (id_archivo_cartel) REFERENCES archivo(id_archivo),
- * FOREIGN KEY (id_archivo_trailer) REFERENCES archivo(id_archivo)
- * );
- */
 function listarCandidaturasParticipante() {
     global $conexion;
 
@@ -1628,7 +1602,11 @@ function listarCandidaturasParticipante() {
         $candidaturas[] = $row;
     }
 
-    echo json_encode(["status" => "success", "data" => $candidaturas]);
+    echo json_encode([
+        "status" => "success",
+        "data" => $candidaturas,
+        "idParticipante" => $idParticipante
+    ]);
 }
 
 cerrarConexion();

@@ -22,12 +22,12 @@ class HomeHeader extends HTMLElement {
 
         if (sesionIniciada) {
             botonesAccion = `
-                <a href="./candidaturas.html" class="header-base-button-responsive-font-size primary-button-01">Candidaturas</a>
+                <a href="./candidaturas.html" class="header-base-button-responsive-font-size primary-button-01 w-auto">Candidaturas</a>
                 <a href="#" id="logout-btn" class="header-base-button-responsive-font-size secondary-button-01 w-auto">Cerrar sesión</a>
             `;
         } else {
             botonesAccion = `
-                <a href="./subir-corto.html" class="header-base-button-responsive-font-size primary-button-01">Registrarse</a>
+                <a href="./subir-corto.html" class="header-base-button-responsive-font-size primary-button-01 w-auto">Registrarse</a>
                 <a href="./login.html" class="header-base-button-responsive-font-size secondary-button-01 w-auto">Iniciar sesión</a>
             `;
         }
@@ -70,6 +70,7 @@ class HomeHeader extends HTMLElement {
                 body: formData
             });
             const result = await response.json();
+            window.location.reload();
         } catch (error) {
             console.error('Error:', error);
         } finally {

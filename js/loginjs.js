@@ -1,34 +1,8 @@
 // Elementos del login
 const formLogin = document.querySelector(".formLogin")
-const inputExpediente = document.querySelector(".numExpediente");
-const inputPassword = document.querySelector(".password");
+const numExpedienteInput = document.querySelector("#numExpediente");
+const passwordInput = document.querySelector("#password");
 const mensajeSpan = document.querySelector(".mensaje");
-
-
-/**
- * Validaciones del campo del expediente
- */
-inputExpediente.addEventListener('blur', (event) => {
-    if (inputExpediente.value.trim() === '') {
-        mensajeSpan.textContent = 'Ingresa tu número de expediente';
-        mensajeSpan.classList.add('error');
-    } else {
-        mensajeSpan.textContent = '';
-    }   
-});
-
-/**
- * Validaciones del campo de la contraseña
- */
-inputPassword.addEventListener('blur', (event) => {
-    if (inputPassword.value.trim() === '') {
-        mensajeSpan.textContent = 'Ingresa tu contraseña';
-        mensajeSpan.classList.add('error');
-    } else {
-        mensajeSpan.textContent = '';
-    }   
-});
-
 
 /**
  * Evento para el envio del formulario de login
@@ -42,11 +16,16 @@ formLogin.addEventListener('submit', (event) =>{
  * Función para iniciar sesión
  */
 async function login(){
-    if (!validarCampos()) return;
+    const validarNumExpediente = numExpedienteInput.validate().valid;
+    const validarPassword = passwordInput.validate().valid;
+
+    if(!validarNumExpediente || !validarPassword){
+        return;
+    }
 
     // Obtener los valores de los campos
-    const expediente = inputExpediente.value;
-    const password = inputPassword.value;
+    const expediente = numExpedienteInput.value.trim();
+    const password = passwordInput.value.trim();
 
     // Crear el objeto de datos a enviar
     const datos = new FormData();
@@ -60,7 +39,6 @@ async function login(){
         body: datos
     });
 
-    // Limpiar el mensaje de error
     mensajeSpan.textContent = '';
 
     // Procesar la respuesta de la API
@@ -80,23 +58,4 @@ async function login(){
         mensajeSpan.classList.add('error');
     }
 
-}
-
-/**
- * Función para validar los campos del formulario
- */
-function validarCampos() {
-    if (inputExpediente.value.trim() === '') {
-        mensajeSpan.textContent = 'Ingresa tu número de expediente';
-        mensajeSpan.classList.add('error');
-        return false;
-    }
-
-    if (inputPassword.value.trim() === '') {
-        mensajeSpan.textContent = 'Ingresa tu contraseña';
-        mensajeSpan.classList.add('error');
-        return false;
-    }
-
-    return true;
 }

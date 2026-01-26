@@ -52,8 +52,8 @@
 
 
         <div class="right-side">
-            <div class="status-card-revision" id="statusCardRevision">
-                <span class="icono-film"></span>
+            <div class="status-card-revision d-flex flex-row" id="statusCardRevision">
+                <span class="icono-film flex-shrink-0"></span>
                 <div class="text-revision">
                     <span class="title-revision">Tu candidatura se encuentra en revisión</span>
                     <span class="description-revision" id="descriptionRevision">Asegúrate que tu vídeo cumpla con los requisitos establecidos, al igual que el contenido de la ficha técnica </span>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="status-card-aceptada" id="statusCardAceptada">
-                <span class="icono-star"></span>
+                <span class="icono-star flex-shrink-0"></span>
                 <div class="text-aceptada">
                     <span class="title-aceptada">¡Enhorabuena!</span>
                     <span class="description-aceptada" id="descriptionAceptada">Tu candidatura se encuentra dentro de los cortometrajes finalistas. Necesitamos que subas un vídeo traíler de tu cortometraje para continuar en el concurso.</span>
@@ -70,21 +70,19 @@
             </div>
 
             <div class="status-card-rechazada" id="statusCardRechazada">
-                <div class="icono-text">
-                    <span class="icono-exclamacion"></span>
+                <div class="d-flex flex-row ">
+                    <span class="icono-exclamacion flex-shrink-0"></span>
                     <div class="text-rechazada">
                         <span class="title-rechazada">Motivo del Rechazo:</span>
                         <span class="description-rechazada" id="descriptionRechazada">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
                     </div>
                 </div>
-                <div class="btn-subsanar" id="btnSubsanar">
-                    <span>Subsanar</span>
-                </div>
+                <div class="primary-button-01 w-auto">Subsanar</div>
             </div>
 
             <div class="status-card-rechazada-subsanar" id="statusCardRechazadaSubsanar">
-                <div class="icono-text">
-                    <span class="icono-exclamacion"></span>
+                <div class="d-flex flex-row gap-8px">
+                    <span class="icono-exclamacion flex-shrink-0"></span>
                     <div class="text-rechazada">
                         <span class="title-rechazada">Motivo del Rechazo:</span>
                         <span class="description-rechazada-subsanar" id="descriptionRechazada2">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
