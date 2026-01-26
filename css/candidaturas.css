@@ -201,18 +201,11 @@
     padding: 24px;
     display:flex;
     flex-direction: row;
-    align-items: center;
     gap:16px;
     margin-bottom: 28px;
     border: 1px solid var(--warning-02);
     background-color: var(--warning-04);
     width:100%;
-}
-
-@media (max-width: 1295px) {
-    .status-card-revision{
-        flex-direction: column;
-    }
 }
 
 .icono-film{
@@ -278,19 +271,6 @@
     mask-size: cover;
 }
 
-@media (max-width: 1295px) {
-    .icono-star{
-        width:129px;
-        height:36px;
-    }
-}
-
-@media (max-width: 768px) {
-    .icono-star{
-        width:40px;
-    }
-}
-
 .text-aceptada{
     display:flex;
     flex-direction: column;
@@ -345,18 +325,6 @@
     mask-size: cover;
 }
 
-@media (max-width: 1295px) {
-    .icono-exclamacion{
-        width:124px;
-    }
-}
-
-@media (max-width: 768px) {
-    .icono-exclamacion{
-        width:38px;
-    }
-}
-
 .text-rechazada{
     display:flex;
     flex-direction: column;
@@ -404,18 +372,6 @@
     border: 1px solid var(--error-01);
     background-color: var(--primary-05);
     width:100%;
-}
-
-@media (max-width: 1295px) {
-    .icono-exclamacion{
-        width:124px;
-    }
-}
-
-@media (max-width: 768px) {
-    .icono-exclamacion{
-        width:39px;
-    }
 }
 
 .text-rechazada{

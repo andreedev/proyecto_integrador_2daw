@@ -9,3 +9,5 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 /php.xml
+/codeStyles/codeStyleConfig.xml
+/copyright/profiles_settings.xml

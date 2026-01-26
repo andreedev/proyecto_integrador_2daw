@@ -57,7 +57,7 @@ function renderizarCandidaturas(candidaturas) {
 
         misCandidaturasContainer.appendChild(candidaturaElement);
     });
-    mostrarDetallesCandidatura(candidaturas[0]);
+    // mostrarDetallesCandidatura(candidaturas[0]);
 }
 
 function mostrarDetallesCandidatura(candidatura){
