@@ -286,3 +286,13 @@ window.injectExternalStyles = async function(url, id) {
 
     return pendingStyles[id];
 };
+
+/**
+ * Extrae el nombre del archivo de una ruta completa o URL
+ * @param {string} path - La ruta o URL del archivo
+ * @returns {string} El nombre del archivo con su extensión
+ */
+function getFileNameFromPath(path) {
+    if (!path || typeof path !== 'string') return '';
+    return path.split(/[\\/]/).pop();
+}

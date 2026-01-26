@@ -89,13 +89,19 @@ class DateComponent extends HTMLElement {
     }
 
     /**
-     * Public Method: Set date from String or Date object
+     * Metodo publico para establecer la fecha/hora seleccionada
+     * @param {Date|string} val - Objeto Date o cadena en formato ISO
      */
     setDate(val) {
-        if (!val || !this._datepicker) return;
+        if (!val) {
+            if (this._datepicker) this._datepicker.clear();
+            this._handleFloatingLabel('');
+            return;
+        }
+
+        if (!this._datepicker) return;
 
         let date;
-        // If it's a time string "HH:mm", we need to create a valid date object
         if (typeof val === 'string' && val.includes(':') && !val.includes('-')) {
             date = new Date();
             const [hours, minutes] = val.split(':');
@@ -183,6 +189,18 @@ class DateComponent extends HTMLElement {
             monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
             today: 'Hoy', clear: 'Limpiar', firstDay: 1
         };
+    }
+
+    clear() {
+        if (!this._datepicker) return;
+
+        this._datepicker.clear();
+
+        const hoy = new Date();
+        this.setDate(hoy);
+
+        const input = this.querySelector('input');
+        if (input) this._handleFloatingLabel(input.value);
     }
 }
 

@@ -103,6 +103,14 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             crearNoticia();
             break;
+        case 'actualizarNoticia':
+            validarRol(['organizador']);
+            actualizarNoticia();
+            break;
+        case 'eliminarNoticia':
+            validarRol(['organizador']);
+            eliminarNoticia();
+            break;
         case 'listarEventos':
             validarRol(['organizador', 'participante']);
             listarEventos();
@@ -1063,7 +1071,7 @@ function listarNoticias() {
 
     $baseUrl = obtenerBaseUrl();
     $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
-                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia
+                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia, a.id_archivo as idArchivoImagenNoticia
               FROM noticia n
               LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . " ORDER BY n.fecha DESC";
 
@@ -1121,7 +1129,7 @@ function crearNoticia() {
 
     $nombre = $_POST['nombreNoticia'];
     $descripcion = $_POST['descripcionNoticia'];
-    $fecha = $_POST['fechaNoticia'];
+    $fecha = $_POST['fechaPublicacionNoticia'];
     $idArchivoImagen = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
 
     $stmt = $conexion->prepare("INSERT INTO noticia (nombre, descripcion, fecha, id_archivo_imagen) VALUES (?, ?, ?, ?)");
@@ -1131,6 +1139,85 @@ function crearNoticia() {
         echo json_encode(["status" => "success", "message" => "Noticia creada correctamente"]);
     } else {
         echo json_encode(["status" => "error", "message" => "Error al crear la noticia"]);
+    }
+}
+
+/**
+ * Actualizar una noticia
+ */
+function actualizarNoticia() {
+    global $conexion;
+
+    $idNoticia = (int)$_POST['idNoticia'];
+    $nombre = $_POST['nombreNoticia'];
+    $descripcion = $_POST['descripcionNoticia'];
+    $fecha = $_POST['fechaPublicacionNoticia'];
+    $idArchivoNuevo = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
+
+    $idArchivoAnterior = null;
+    $stmtArchivo = $conexion->prepare("SELECT id_archivo_imagen FROM noticia WHERE id_noticia = ?");
+    $stmtArchivo->bind_param("i", $idNoticia);
+    $stmtArchivo->execute();
+    $res = $stmtArchivo->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $idArchivoAnterior = (int)$row['id_archivo_imagen'];
+    }
+
+    if ($idArchivoAnterior !== null && $idArchivoAnterior !== $idArchivoNuevo) {
+        $stmtRutas = $conexion->prepare("
+            SELECT 
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaVieja,
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaNueva
+        ");
+        $stmtRutas->bind_param("ii", $idArchivoAnterior, $idArchivoNuevo);
+        $stmtRutas->execute();
+        $rutas = $stmtRutas->get_result()->fetch_assoc();
+
+        if ($rutas['rutaVieja'] === $rutas['rutaNueva']) {
+            $conexion->prepare("DELETE FROM archivo WHERE id_archivo = ?")
+                ->bind_param("i", $idArchivoNuevo)
+                ->execute();
+            $idArchivoNuevo = $idArchivoAnterior;
+            $idArchivoAnterior = null;
+        }
+    }
+
+    $stmt = $conexion->prepare("UPDATE noticia SET nombre = ?, descripcion = ?, fecha = ?, id_archivo_imagen = ? WHERE id_noticia = ?");
+    $stmt->bind_param("sssii", $nombre, $descripcion, $fecha, $idArchivoNuevo, $idNoticia);
+
+    if ($stmt->execute()) {
+        // Solo eliminamos el anterior si realmente es un archivo distinto
+        if ($idArchivoAnterior !== null && $idArchivoAnterior !== $idArchivoNuevo) {
+            eliminarArchivoPorId($idArchivoAnterior);
+        }
+        echo json_encode(["status" => "success"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al actualizar"]);
+    }
+}
+
+/**
+ * Eliminar una noticia
+ */
+function eliminarNoticia() {
+    global $conexion;
+    $idNoticia = (int)$_POST['idNoticia'];
+
+    $stmt = $conexion->prepare("SELECT id_archivo_imagen FROM noticia WHERE id_noticia = ?");
+    $stmt->bind_param("i", $idNoticia);
+    $stmt->execute();
+    $idArchivo = $stmt->get_result()->fetch_assoc()['id_archivo_imagen'] ?? null;
+
+    $stmtDel = $conexion->prepare("DELETE FROM noticia WHERE id_noticia = ?");
+    $stmtDel->bind_param("i", $idNoticia);
+
+    if ($stmtDel->execute()) {
+        if ($idArchivo) {
+            eliminarArchivoPorId($idArchivo);
+        }
+        echo json_encode(["status" => "success", "message" => "Noticia eliminada"]);
+    } else {
+        echo json_encode(["status" => "error"]);
     }
 }
 

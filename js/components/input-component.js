@@ -279,10 +279,17 @@ class InputComponent extends HTMLElement {
         this._handleFloatingLabel(currentValue);
     }
 
-    reset() {
+    clear() {
         this._touched = false;
+
         this.setValue('', false);
-        this.querySelector('.solid-input-container')?.classList.remove('has-value', 'is-focused');
+
+        const container = this.querySelector('.solid-input-container');
+        if (container) {
+            container.classList.remove('has-value', 'is-focused', 'state-error', 'state-success');
+        }
+
+        this._clearUIState();
     }
 }
 

@@ -28,18 +28,23 @@
  *
  * Eventos:
  * - 'file-change': Se dispara cuando se selecciona o elimina un archivo.
- *   El detalle del evento contiene el archivo seleccionado o null si se eliminó
+ *  El detalle del evento contiene el archivo seleccionado o null si se eliminó.
  *
- * Métodos Públicos:
- * - getFile(): Retorna el archivo seleccionado o null si no hay ninguno.
- * - validate(): Valida si hay un archivo cargado si el campo es obligatorio.
- * - setAttachedMode(fileName): Configura el componente en modo "archivo existente"
+ *  Métodos públicos:
+ * - getFile(): Retorna el archivo actualmente seleccionado (File) o null
+ * - getData(): Retorna un objeto con { file, fileId, isChanged }
+ * - validate(): Valida el campo y muestra mensajes de error si es necesario. Retorna true/false
+ * - setAttachedMode(fileName, fileId): Configura el componente en modo adjuntado con un archivo existente
+ * - uploadIfNeeded(): Sube el archivo al servidor si ha cambiado. Retorna el ID del archivo subido.
+ * - clear(): Limpia el archivo seleccionado y resetea el componente
  *
  */
 class FileComponent extends HTMLElement {
     constructor() {
         super();
         this._file = null;
+        this._fileId = null;
+        this._isChanged = false;
         this.style.visibility = 'hidden';
     }
 
@@ -61,27 +66,66 @@ class FileComponent extends HTMLElement {
         return this._file;
     }
 
+    getData() {
+        return {
+            file: this._file,
+            fileId: this._fileId,
+            isChanged: this._isChanged
+        };
+    }
+
     validate() {
         const errorSpan = this.querySelector('.mensajeError');
-        if (this.hasAttribute('required') && !this._file) {
+
+        // Un campo es válido si:
+        // No es obligatorio
+        // Es obligatorio y tiene un archivo seleccionado (_file)
+        // Es obligatorio y tiene un archivo adjuntado (_fileId)
+        const hasFile = !!this._file || !!this._fileId;
+
+        if (this.hasAttribute('required') && !hasFile) {
             errorSpan.textContent = this.getAttribute('error-required') || "Este archivo es obligatorio";
             this._triggerShake();
             return false;
         }
+
         errorSpan.textContent = "";
         return true;
     }
 
-    setAttachedMode(fileName) {
-        this._file = { name: fileName, isExisting: true };
-        this._updateUI(this._file);
-        const sizeSpan = this.querySelector('.archivo-tamanio');
-        if (sizeSpan) sizeSpan.classList.add('hidden-force');
-        this.querySelector('.mensajeError').textContent = "";
+    setAttachedMode(filePath, fileId) {
+        const fileName = getFileNameFromPath(filePath);
+
+        this._file = null;
+        this._fileId = fileId;
+        this._isChanged = false;
+
+        this._updateUI({ name: fileName, isExisting: true });
+
+        const errorSpan = this.querySelector('.mensajeError');
+        if (errorSpan) errorSpan.textContent = "";
+    }
+
+    async uploadIfNeeded() {
+        if (!this._isChanged || !this._file) {
+            return this._fileId;
+        }
+
+        try {
+            const result = await subirArchivo(this._file);
+            this._fileId = result.data.idArchivo;
+            this._isChanged = false;
+            return this._fileId;
+        } catch (error) {
+            this.querySelector('.mensajeError').textContent = "Error al subir archivo al servidor";
+            throw error;
+        }
     }
 
     clear() {
         this._file = null;
+        this._fileId = null;
+        this._isChanged = true;
         const input = this.querySelector('input[type="file"]');
         if (input) input.value = '';
         this.querySelector('.imageDropZone').classList.remove('hidden-force');
@@ -130,6 +174,8 @@ class FileComponent extends HTMLElement {
     _handleFileSelection(file) {
         if (this._validateFile(file)) {
             this._file = file;
+            this._fileId = null;
+            this._isChanged = true;
             this._updateUI(file);
             this._dispatchChangeEvent(file);
         }
@@ -220,7 +266,7 @@ class FileComponent extends HTMLElement {
                         </div>
                     </div>
                     
-                    <div class="mensajeError text-error-01 fs-12px mt-8px"></div>
+                    <div class="mensajeError text-error-02 fs-12px mt-8px"></div>
                 </div>
             </div>
         `;

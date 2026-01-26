@@ -187,6 +187,37 @@ async function listarNoticias(filtroNombre) {
     return await fetchAPI(formData);
 }
 
+async function crearNoticia(nombre, descripcion, fechaPublicacion, idArchivoImagen) {
+    const formData = new FormData();
+    formData.append('action', 'crearNoticia');
+    formData.append('nombreNoticia', nombre);
+    formData.append('descripcionNoticia', descripcion);
+    formData.append('fechaPublicacionNoticia', fechaPublicacion);
+    formData.append('idArchivoImagen', idArchivoImagen);
+
+    return await fetchAPI(formData);
+}
+
+async function actualizarNoticia(idNoticia, nombre, descripcion, fechaPublicacion, idArchivoImagen) {
+    const formData = new FormData();
+    formData.append('action', 'actualizarNoticia');
+    formData.append('idNoticia', idNoticia);
+    formData.append('nombreNoticia', nombre);
+    formData.append('descripcionNoticia', descripcion);
+    formData.append('fechaPublicacionNoticia', fechaPublicacion);
+    formData.append('idArchivoImagen', idArchivoImagen);
+
+    return await fetchAPI(formData);
+}
+
+async function eliminarNoticia(idNoticia) {
+    const formData = new FormData();
+    formData.append('action', 'eliminarNoticia');
+    formData.append('idNoticia', idNoticia);
+
+    return await fetchAPI(formData);
+}
+
 async function obtenerNoticiaPorId(idNoticia) {
     const formData = new FormData();
     formData.append('action', 'obtenerNoticiaPorId');
