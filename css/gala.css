@@ -1,0 +1,232 @@
+.page-content{
+    margin: 0 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pre-evento-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+}
+
+.pre-evento-info{
+    margin-top:54px;
+    margin-bottom:54px;
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap:24px;
+    position:relative;
+}
+
+.bloque1{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 245px;
+    height: 164px;
+    background-color: var(--primary-03);
+    position: absolute;
+    left:-275px;
+    top:-65px;
+}
+
+.pre-evento-title{
+    font-weight: 600;
+    font-size: 49px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.pre-evento-subtitle{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.icon-text-calendario{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-calendario{
+    width:24px;
+    height:24px;
+    mask-image: url("../img/icon/icon-calendar.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.text-calendario{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.icon-text-ubicacion{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-ubicacion{
+    width:24px;
+    height:24px;
+    mask-image: url("../img/icon/icon-location.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.text-ubicacion{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.btn-calendario{
+    padding: 8px 24px;
+    width:224px;
+    color:var(--neutral-09);
+    background-color: var(--neutral-01);
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-calendario:hover{
+    background-color: var(--neutral-09);
+    color: var(--neutral-01);
+    cursor: pointer;
+    border: 1px solid var(--neutral-01);
+}
+
+.bloque2{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 287px;
+    height: 102px;
+    background-color: var(--primary-03);
+    position: absolute;
+    right:72px;
+    bottom:-117px;
+    rotate: 180deg;
+}
+
+.pre-evento-video{
+    margin-top:54px;
+    margin-bottom:54px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap:24px;
+    position:relative;
+    z-index:2;
+}
+
+
+n
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .carousel {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.carousel-track-container {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.4s ease;
+}
+
+.carousel-item {
+    min-width: 100%;
+    height: 200px;
+    background: #e5e5e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.carousel-btn {
+    background: none;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dot.active {
+    background-color: var(--primary-03);
+}
+
+.prev:hover{
+    color: var(--primary-03);
+}
+
+.next:hover{
+    color: var(--primary-03);
+} */
