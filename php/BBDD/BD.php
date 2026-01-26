@@ -345,7 +345,7 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Aceptación de las Bases:</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los participantes, por el hecho de presentar sus candidaturas, aceptan las presentes bases y la decisión del Jurado, renunciando a toda reclamación.</li>
