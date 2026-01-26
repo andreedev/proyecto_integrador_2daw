@@ -277,6 +277,7 @@ class InputComponent extends HTMLElement {
         const type = this.getAttribute('type') || 'text';
         const width = this.getAttribute('width') || '100%';
         const currentValue = (this.getAttribute('value') || '').replace(/"/g, '&quot;');
+        const disabled = this.hasAttribute('disabled') ? 'disabled' : '';
 
         const isRequired = this.hasAttribute('required') ? 'required' : '';
         const minLengthAttr = this.getAttribute('min-length') ? `minlength="${this.getAttribute('min-length')}"` : '';
@@ -284,7 +285,7 @@ class InputComponent extends HTMLElement {
 
         const inputTag = isTextarea ?
             `<textarea class="solid-input-field is-textarea" ${isRequired} ${minLengthAttr} ${maxLengthAttr}>${currentValue}</textarea>` :
-            `<input class="solid-input-field" type="${type}" value="${currentValue}" ${isRequired} ${minLengthAttr} ${maxLengthAttr} />`;
+            `<input class="solid-input-field" type="${type}" value="${currentValue}" ${isRequired} ${minLengthAttr} ${maxLengthAttr} ${disabled}/>`;
 
         this.innerHTML = `
             <div class="solid-input-container ${isTextarea ? 'variant-textarea' : ''}" style="width: ${width};">

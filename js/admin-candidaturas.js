@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const participantSpan = document.getElementById('modal-participant');
     const currentStatusSpan = document.getElementById('modal-current-status');
     const deleteCandidaturaBtn = document.getElementById('deleteCandidatura');
+    const nombreParticipanteInput = document.getElementById('nombreParticipanteInput');
 
     // FILTROS
     const searchInput = document.querySelector('.filter-search input');
@@ -389,7 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!row) return;
         activeDetailRow = row;
         document.getElementById('detail-id').textContent = row.dataset.id;
-        document.getElementById('detail-name').textContent = row.querySelector('.participant')?.textContent || '-';
+        const nombre = row.querySelector('.participant')?.textContent;
+        nombreParticipanteInput.setValue(nombre);
         document.getElementById('detail-email').textContent = row.querySelector('.email')?.textContent || '-';
         document.getElementById('detail-synopsis').textContent = row.querySelector('.synopsis')?.textContent || '-';
 
