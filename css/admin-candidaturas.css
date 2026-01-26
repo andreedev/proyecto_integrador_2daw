@@ -152,26 +152,7 @@ th {
     color: var(--neutral-09);
 }
 
-/* Badge icon filters */
-.review img {
-    filter: invert(41%) sepia(82%) saturate(376%) hue-rotate(2deg) brightness(96%) contrast(92%);
-}
 
-.accepted img {
-    filter: invert(33%) sepia(86%) saturate(384%) hue-rotate(88deg) brightness(92%) contrast(90%);
-}
-
-.rejected img {
-    filter: invert(24%) sepia(86%) saturate(2626%) hue-rotate(344deg) brightness(96%) contrast(95%);
-}
-
-.finalist img {
-    filter: invert(24%) sepia(91%) saturate(1756%) hue-rotate(198deg) brightness(94%) contrast(92%);
-}
-
-.winner img {
-    filter: invert(63%) sepia(72%) saturate(356%) hue-rotate(8deg) brightness(101%) contrast(92%);
-}
 
 /* ACTIONS */
 .actions {
@@ -718,6 +699,111 @@ th {
 #notificationModal .btn:hover {
     background-color: var(--primary-02, #b71c1c);
 }
+
+/* Estructura del Modal */
+.history-modal-custom {
+    max-width: 750px !important;
+    padding: 30px 45px !important;
+    background-color: var(--neutral-09);
+    border-radius: 4px;
+}
+
+/* Timeline */
+.timeline-item {
+    display: flex;
+    gap: 25px;
+}
+
+.timeline-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+}
+
+.icon-clock-bg {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    border: 1.5px solid transparent;
+}
+
+.icon-clock-bg svg { width: 22px; height: 22px; }
+
+.connector-line {
+    width: 1.5px;
+    background-color: var(--neutral-05);
+    flex-grow: 1;
+    margin: 4px 0;
+}
+
+.timeline-item:last-child .connector-line { display: none; }
+
+/* COLORES POR ESTADO (Usando tus variables) */
+.st-review .icon-clock-bg   { background: var(--warning-04); color: var(--warning-01); border-color: var(--warning-03); }
+.st-rejected .icon-clock-bg { background: var(--error-04); color: var(--error-01); border-color: var(--error-03); }
+.st-accepted .icon-clock-bg { background: var(--success-03); color: var(--success-01); border-color: var(--success-02); }
+.st-finalist .icon-clock-bg { background: var(--information-04); color: var(--information-01); border-color: var(--information-03); }
+.st-winner .icon-clock-bg   { background: var(--primary-05); color: var(--primary-02); border-color: var(--primary-04); }
+
+/* BADGES */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 110px;
+    text-align: center;
+}
+
+.badge-warning { background: var(--warning-04); color: var(--warning-01); }
+.badge-error   { background: var(--error-04); color: var(--error-01); }
+.badge-success { background: var(--success-03); color: var(--success-01); }
+.badge-info    { background: var(--information-02); color: var(--neutral-09); }
+.badge-primary { background: var(--primary-03); color: var(--neutral-09); }
+
+.status-date { color: var(--neutral-04); font-size: 14px; }
+
+/* CAJAS DE MENSAJE */
+.status-msg-box {
+    display: flex;
+    gap: 15px;
+    padding: 18px;
+    border-radius: 4px;
+    margin: 15px 0 35px 0;
+    width: 95%;
+}
+
+.msg-error { 
+    background: var(--error-04); 
+    border: 1px solid var(--error-03); 
+    color: var(--error-01); 
+}
+
+.msg-info { 
+    background: var(--information-04); 
+    border: 1px solid var(--information-03); 
+    color: var(--information-01); 
+}
+
+.msg-icon-circle {
+    width: 24px;
+    height: 24px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.msg-text strong { color: inherit; font-size: 14px; }
+.msg-text p { margin-top: 5px; font-size: 14px; line-height: 1.4; color: var(--neutral-02); }
 
 /* Diseño responsive*/
 @media (max-width: 768px) {
