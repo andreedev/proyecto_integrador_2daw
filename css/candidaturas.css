@@ -46,6 +46,13 @@
     gap:16px;
     position:relative;
     border-bottom: 1px solid var(--neutral-05);
+    background-color: var(--neutral-09);
+    transition: all 0.3s ease;
+}
+
+.candidatura-mini-card-component:hover{
+    background-color: var(--neutral-07);
+    transition: all 0.3s ease;
 }
 
 .estado-candidatura{
@@ -140,17 +147,18 @@
 .button2{
     width: 28px;
     height: 28px;
-    background-color: var(--primary-09);
-    color: var(--neutral-01);
+    color: var(--neutral-03);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .button2:hover{
     background-color: var(--neutral-01);
     color: var(--neutral-09);
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .numero{
@@ -213,12 +221,6 @@
     background-color: var(--warning-01);
     mask-image: url("../img/icon/icon-film.svg");
     mask-size: cover;
-}
-
-@media (max-width: 1295px) {
-    .icono-film{
-        width:80px;
-    }
 }
 
 @media (max-width: 768px) {

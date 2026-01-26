@@ -296,3 +296,37 @@ function getFileNameFromPath(path) {
     if (!path || typeof path !== 'string') return '';
     return path.split(/[\\/]/).pop();
 }
+
+/**
+ * Valida si un string tiene un formato de email válido
+ * @param {string} email
+ * @returns {boolean}
+ */
+function isValidEmail(email) {
+    if (!email) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+/**
+ * Formatea una fecha (string o Date) a formato DD/MM/YYYY
+ * Soporta formatos con hora como "2026-01-26 03:52:04"
+ * @param {string|Date} dateSource
+ * @returns {string} Fecha formateada o string vacío si es inválida
+ */
+function formatDateToSpanish(dateSource) {
+    if (!dateSource) return '';
+    const normalizedSource = typeof dateSource === 'string'
+        ? dateSource.replace(' ', 'T')
+        : dateSource;
+
+    const date = new Date(normalizedSource);
+
+    if (isNaN(date.getTime())) return '';
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}

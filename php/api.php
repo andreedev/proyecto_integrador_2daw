@@ -34,7 +34,6 @@ if (isset($_POST['action'])) {
             actualizarDatosPostEvento();
             break;
         case 'subirArchivo':
-            validarRol(['organizador', 'participante']);
             subirArchivo();
             break;
         case 'listarPatrocinadores':
@@ -140,6 +139,13 @@ if (isset($_POST['action'])) {
             break;
         case 'obtenerBasesLegales':
             obtenerBasesLegales();
+            break;
+        case 'guardarCandidatura':
+            guardarCandidatura();
+            break;
+        case 'listarCandidaturasParticipante':
+            validarRol(['participante']);
+            listarCandidaturasParticipante();
             break;
         default:
             break;
@@ -1500,5 +1506,129 @@ function obtenerBasesLegales() {
     }
 }
 
+
+/**
+ * Crear candidatura
+ */
+function guardarCandidatura() {
+    global $conexion;
+
+    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : null;
+    $correo = isset($_POST['correo']) ? $_POST['correo'] : null;
+    $password = isset($_POST['password']) ? $_POST['password'] : null;
+    $dni = isset($_POST['dni']) ? $_POST['dni'] : null;
+    $nroExpediente = $_POST['nroExpediente'];
+    $idVideo = isset($_POST['idVideo']) ? (int)$_POST['idVideo'] : null;
+    $idPoster = isset($_POST['idPoster']) ? (int)$_POST['idPoster'] : null;
+    $sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : null;
+    $idFichaTecnica = isset($_POST['idFichaTecnica']) ? (int)$_POST['idFichaTecnica'] : null;
+
+    $sqlInsert = $conexion->prepare("INSERT INTO participante (nombre, correo, contrasena, dni, nro_expediente) VALUES (?, ?, ?, ?, ?)");
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    $sqlInsert->bind_param("sssss", $nombre, $correo, $hashedPassword, $dni, $nroExpediente);
+    if (!$sqlInsert->execute()) {
+        echo json_encode(["status" => "error", "message" => "Error al crear el participante: " . $sqlInsert->error]);
+        return;
+    }
+
+    $idParticipante = $conexion->insert_id;
+
+    // crear sesion
+    $_SESSION['iniciada'] = true;
+    $_SESSION['rol'] = 'participante';
+    $_SESSION['id'] = $idParticipante;
+
+    $sqlInsertCandidatura = $conexion->prepare("INSERT INTO candidatura (id_participante, estado, tipo_candidatura, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel) VALUES (?, 'En revisión', 'alumno', ?, ?, ?, ?)");
+    $sqlInsertCandidatura->bind_param("issii", $idParticipante, $sinopsis, $idVideo, $idFichaTecnica, $idPoster);
+    if (!$sqlInsertCandidatura->execute()) {
+        echo json_encode(["status" => "error", "message" => "Error al crear la candidatura: " . $sqlInsertCandidatura->error]);
+    }
+
+    echo json_encode(["status" => "success", "message" => "Candidatura creada correctamente"]);
+
+}
+
+
+/**
+ * Listar candidaturas de un participante
+ */
+/**
+ * CREATE TABLE candidatura (
+ * id_candidatura INT AUTO_INCREMENT PRIMARY KEY,
+ * id_participante INT NOT NULL,
+ * estado ENUM('En revisión', 'Aceptada', 'Rechazada', 'Finalista') DEFAULT 'En revisión',
+ * tipo_candidatura ENUM('alumno', 'alumni') NOT NULL,
+ * fecha_presentacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ * fecha_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ * sinopsis TEXT,
+ * id_archivo_video INT comment 'Archivo del video del cortometraje',
+ * id_archivo_ficha INT comment 'Archivo de la ficha técnica del cortometraje',
+ * id_archivo_cartel INT comment 'Archivo del cartel del cortometraje',
+ * id_archivo_trailer INT comment 'Archivo del trailer del cortometraje',
+ * FOREIGN KEY (id_participante) REFERENCES participante(id_participante),
+ * FOREIGN KEY (id_archivo_video) REFERENCES archivo(id_archivo),
+ * FOREIGN KEY (id_archivo_ficha) REFERENCES archivo(id_archivo),
+ * FOREIGN KEY (id_archivo_cartel) REFERENCES archivo(id_archivo),
+ * FOREIGN KEY (id_archivo_trailer) REFERENCES archivo(id_archivo)
+ * );
+ */
+function listarCandidaturasParticipante() {
+    global $conexion;
+
+    $idParticipante = (int)$_SESSION['id'];
+
+    $query = "
+        SELECT 
+            c.id_candidatura as idCandidatura,
+            c.estado,
+            c.tipo_candidatura as tipoCandidatura,
+            c.fecha_presentacion as fechaPresentacion,
+            c.fecha_ultima_modificacion as fechaUltimaModificacion,
+            c.sinopsis as sinopsis,
+            a1.ruta as rutaVideo,
+            a2.ruta as rutaFicha,
+            a3.ruta as rutaCartel,
+            a4.ruta as rutaTrailer
+        FROM candidatura c
+        LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
+        LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
+        LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
+        LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
+        WHERE c.id_participante = ?
+        ORDER BY c.id_candidatura DESC
+    ";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idParticipante);
+
+    if (!$stmt) {
+        echo json_encode(["status" => "error", "message" => "Error al preparar la consulta: " . $conexion->error]);
+        return;
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+
+    $candidaturas = [];
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaVideo']) {
+            $row['rutaVideo'] = $baseUrl . $row['rutaVideo'];
+        }
+        if ($row['rutaFicha']) {
+            $row['rutaFicha'] = $baseUrl . $row['rutaFicha'];
+        }
+        if ($row['rutaCartel']) {
+            $row['rutaCartel'] = $baseUrl . $row['rutaCartel'];
+        }
+        if ($row['rutaTrailer']) {
+            $row['rutaTrailer'] = $baseUrl . $row['rutaTrailer'];
+        }
+        $candidaturas[] = $row;
+    }
+
+    echo json_encode(["status" => "success", "data" => $candidaturas]);
+}
 
 cerrarConexion();

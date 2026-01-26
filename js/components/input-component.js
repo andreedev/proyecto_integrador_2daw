@@ -35,8 +35,8 @@ class InputComponent extends HTMLElement {
     static get observedAttributes() {
         return [
             'label', 'type', 'width', 'disabled', 'value',
-            'error-message', 'required', 'min-length', 'required-message',
-            'validate-on-load', 'textarea', 'max-words'
+            'error-message', 'required', 'min-length', 'max-length', 'required-message',
+            'validate-on-load', 'textarea', 'max-words', 'invalid-message'
         ];
     }
 
@@ -235,13 +235,40 @@ class InputComponent extends HTMLElement {
 
     _getNativeValidity(input) {
         const validity = input.validity;
-        if (validity.valid) return { valid: true, message: '' };
+        const type = this.getAttribute('type');
+        const value = input.value;
+        const minL = parseInt(this.getAttribute('min-length'));
+        const maxL = parseInt(this.getAttribute('max-length'));
 
-        let message = input.validationMessage;
-        if (validity.valueMissing) message = this.getAttribute('required-message') || "Obligatorio";
-        else if (validity.tooShort) message = this.getAttribute('error-message') || `Mínimo ${this.getAttribute('min-length')} caracteres`;
+        if (validity.valueMissing) {
+            return {
+                valid: false,
+                message: this.getAttribute('required-message') || "Este campo es obligatorio"
+            };
+        }
 
-        return { valid: false, message };
+        if (value.length > 0) {
+            const tooShort = minL && value.length < minL;
+            const tooLong = maxL && value.length > maxL;
+
+            if (tooShort || tooLong) {
+                return {
+                    valid: false,
+                    message: this.getAttribute('error-message') || `Debe tener entre ${minL} y ${maxL} caracteres`
+                };
+            }
+        }
+
+        if (type === 'email' && value.length > 0) {
+            if (validity.typeMismatch || !isValidEmail(value)) {
+                return {
+                    valid: false,
+                    message: this.getAttribute('invalid-message') || "Correo electrónico no válido"
+                };
+            }
+        }
+
+        return { valid: true, message: '' };
     }
 
     render() {
@@ -253,10 +280,11 @@ class InputComponent extends HTMLElement {
 
         const isRequired = this.hasAttribute('required') ? 'required' : '';
         const minLengthAttr = this.getAttribute('min-length') ? `minlength="${this.getAttribute('min-length')}"` : '';
+        const maxLengthAttr = this.getAttribute('max-length') ? `maxlength="${this.getAttribute('max-length')}"` : '';
 
         const inputTag = isTextarea ?
-            `<textarea class="solid-input-field is-textarea" ${isRequired} ${minLengthAttr}>${currentValue}</textarea>` :
-            `<input class="solid-input-field" type="${type}" value="${currentValue}" ${isRequired} ${minLengthAttr} />`;
+            `<textarea class="solid-input-field is-textarea" ${isRequired} ${minLengthAttr} ${maxLengthAttr}>${currentValue}</textarea>` :
+            `<input class="solid-input-field" type="${type}" value="${currentValue}" ${isRequired} ${minLengthAttr} ${maxLengthAttr} />`;
 
         this.innerHTML = `
             <div class="solid-input-container ${isTextarea ? 'variant-textarea' : ''}" style="width: ${width};">

@@ -22,7 +22,7 @@
             <div id="step1" class="step active-step">
                 <span class="step-number-container">
                     <span class="step-number-text">1</span>
-                    <span class="icon-checked"></span>
+                    <span class="icon-check w-20px h-20px bg-neutral-09"></span>
                 </span>
                 <span class="step-text">Datos del Participante</span>
             </div>
@@ -30,7 +30,7 @@
             <div id="step2" class="step">
                 <span class="step-number-container">
                     <span class="step-number-text">2</span>
-                    <span class="icon-checked"></span>
+                    <span class="icon-check w-20px h-20px bg-neutral-09"></span>
                 </span>
                 <span class="step-text">Datos del Cortometraje</span>
             </div>
@@ -38,7 +38,7 @@
             <div id="step3" class="step">
                 <span class="step-number-container">
                     <span class="step-number-text">3</span>
-                    <span class="icon-checked"></span>
+<!--                    <span class="icon-check w-20px h-20px bg-neutral-09"></span>-->
                 </span>
                 <span class="step-text">Documentación</span>
             </div>
@@ -48,29 +48,38 @@
                 <span class="upload-short-film-card-header-text">Registro del Participante</span>
                 <span class="upload-short-film-card-header-subtext">Paso 1 de 3</span>
             </div>
-            <div class="upload-short-firm-card-body">
+            <div class="d-flex flex-column p-24px gap-12px bg-neutral-09">
 
                 <div id="cardBodyStep1" class="upload-short-film-card-body-step">
-                    <div class="inputs">
-                        <label for="inputNamePar" class="label" id="labelNombre">Nombre Completo</label>
-                        <span class="icon-checked-cross" id="iconNombre"></span>
-                        <input type="text" id="inputNamePar" class="input">
-                        <span id="nombreErrorMessage" class="error-message"></span>
-                    </div>
-                    <div class="upload-short-film-input-row">
-                        <div class="inputs">
-                            <label for="inputCorreo" class="label" id="labelCorreo">Correo Electrónico</label>
-                            <span class="icon-checked-cross" id="iconCorreo"></span>
-                            <input type="email" id="inputCorreo" class="input">
-                            <span id="correoErrorMessage" class="error-message"></span>
-                        </div>
-                        <div class="inputs">
-                            <label for="inputPassword" class="label" id="labelPassword">Contraseña</label>
-                            <span class="icon-checked-cross" id="iconPassword"></span>
-                            <input type="password" id="inputPassword" class="input">
-                            <span id="passwordHelperText" class="helper-text">La contraseña debe tener al menos 8 caracteres e incluir al menos un número</span>
-                            <span id="passwordErrorMessage" class="error-message"></span>
-                        </div>
+                    <input-component
+                            label="Nombre Completo"
+                            id="nombreInput"
+                            width="100%"
+                            required
+                            required-message="El nombre no puede estar vacío">
+                    </input-component>
+
+                    <div class="d-flex-two-columns-responsive">
+                        <input-component
+                                label="Correo Electrónico"
+                                id="correoInput"
+                                type="email"
+                                width="auto"
+                                required
+                                required-message="El correo no puede estar vacío"
+                                invalid-message="Por favor, introduce un correo válido (ej: usuario@dominio.com)">
+                        </input-component>
+
+                        <input-component
+                                label="Contraseña"
+                                id="passwordInput"
+                                type="password"
+                                width="auto"
+                                required
+                                required-message="La contraseña no puede estar vacía"
+                                min-length="8"
+                                error-message="La contraseña debe tener al menos 8 caracteres">
+                        </input-component>
                     </div>
 
                     <div class="divider-inputs">
@@ -79,20 +88,26 @@
                             <span class="divider-text">IDENTIFICACIÓN</span>
                             <span class="divider-line"></span>
                         </div>
-                        
-                        <div class="upload-short-film-input-row">
-                            <div class="inputs">
-                                <label for="dniInput" class="label" id="labelDni">DNI / NIE / Pasaporte</label>
-                                <span class="icon-checked-cross" id="iconDni"></span>
-                                <input type="text" id="dniInput" class="input">
-                                <span id="dniErrorMessage" class="error-message"></span>
-                            </div>
-                            <div class="inputs">
-                                <label for="nroExpedienteInput" class="label" id="labelNroExpediente">Número de Expediente</label>
-                                <span class="icon-checked-cross" id="iconNroExpediente"></span>
-                                <input type="text" id="nroExpedienteInput" class="input">
-                                <span id="nroExpedienteErrorMessage" class="error-message"></span>
-                            </div>
+
+                        <div class="d-flex-two-columns-responsive">
+                            <input-component
+                                    label="DNI / NIE / Pasaporte"
+                                    id="dniInput"
+                                    width="auto"
+                                    required
+                                    min-length="8"
+                                    max-length="15"
+                                    required-message="El documento es obligatorio"
+                                    error-message="El DNI o pasaporte debe tener entre 8 y 15 dígitos">
+                            </input-component>
+
+                            <input-component
+                                    label="Numero de expediente"
+                                    id="nroExpedienteInput"
+                                    width="auto"
+                                    required
+                                    required-message="El número de expediente es obligatorio">
+                            </input-component>
                         </div>
                     </div>
 
@@ -101,107 +116,81 @@
                     </div>
                     <div class="upload-short-film-input-space-between-row">
                         <p class="upload-short-film-terms-text">Al continuar, confirmo que he leído y acepto las <a href="#" class="upload-short-film-link">bases legales</a> del concurso.</p>
-                        <button id="step1ContinueBtn" class="upload-short-film-primary-button" disabled>
-                            <span class="upload-short-film-primary-button-text">Continuar</span>
-                            <span class="icon icon-right-arrow upload-short-film-primary-button-icon"></span>
-                        </button>
+                        <button class="primary-button-01" id="step1ContinueBtn">Continuar</button>
                     </div>
                 </div>
 
                 <div id="cardBodyStep2" class="upload-short-film-card-body-step step-2 hidden-force">
-                    <div class="upload-short-film-large-input-group">
-                        <div class="upload-short-film-large-input-group-header">
-                            <span class="upload-short-film-large-input-group-label-text">Vídeo del Cortometraje</span>
-                        </div>
-                        <div id="videoDropZone" class="upload-short-film-large-input-group-body video">
-                            <input type="file" id="videoInput" class="file-input" accept="video/mp4,video/quicktime" hidden>
-                            <div class="upload-content">
-                                <div class="upload-content-icon-container video">
-                                    <span class="icon-video-file"></span>
-                                </div>
-                                <p class="upload-text">Arrastra tu archivo aquí o haz clic para seleccionar</p>
-                                <p class="upload-subtext">MOV o MP4, máximo 2GB</p>
-                            </div>
-                        </div>
-                        <div id="videoFileUpdatedCard" class="file-updated-card hidden-force">
-                            <div class="file-updated-card-row">
-                                <div class="file-updated-card-icon-container">
-                                    <span class="icon icon-check width-height-24px"></span>
-                                </div>
-                                <div class="file-updated-card-file-info">
-                                    <span id="videoFileName" class="file-updated-card-file-name">file_example_MP4_480_1_5MG.mp4</span>
-                                    <span id="videoFileSize" class="file-updated-card-file-size">1.15 GB</span>
-                                </div>
-                            </div>
-                            <span class="icon icon-close width-height-24px cursor-pointer" id="removeVideoFileBtn"></span>
-                        </div>
-                        <div class="upload-short-film-large-input-group-helper-text">
-                            <span>El archivo debe enviarse en formato QuickTime MOV o MP4, con compresión H.264, resolución 1920 x 1080 píxeles, 25 fps, formato 16:9 y audio mezclado en estéreo.</span>
-                        </div>
-                        <span id="videoErrorMessage" class="error-message"></span>
+                    <div>
+                        <file-component
+                                id="videoInput"
+                                label="Archivo de vídeo del cortometraje"
+                                primary-text="Arrastra y suelta tu vídeo aquí o haz clic para seleccionar"
+                                secondary-text="MOV o MP4 (Máx. 2GB)"
+                                accept=".mov,.mp4"
+                                max-size="2147483648"
+                                required
+                                error-type="Formato no válido. Solo se permiten archivos .mov y .mp4"
+                                error-size="El vídeo es demasiado pesado. El máximo permitido son 2GB"
+                                error-required="Debes subir un vídeo para completar el registro"
+                        ></file-component>
+
+                        <span class="fs-14px">El archivo debe enviarse en formato QuickTime MOV o MP4, con compresión H.264, resolución 1920 x 1080 píxeles, 25 fps, formato 16:9 y audio mezclado en estéreo.</span>
                     </div>
-                    <div class="upload-short-film-large-input-group">
-                        <div class="upload-short-film-large-input-group-header">
-                            <span class="upload-short-film-large-input-group-label-text">Cartel o Fotografía Representativa</span>
-                        </div>
-                        <div id="posterDropZone" class="upload-short-film-large-input-group-body poster">
-                            <input type="file" id="posterInput" class="file-input" accept="image/tiff, image/jpeg" hidden>
-                            <div class="upload-content">
-                                <div class="upload-content-icon-container poster">
-                                    <span class="icon-image"></span>
-                                </div>
-                                <p class="upload-text">Arrasta o selecciona una imagen</p>
-                                <p class="upload-subtext">TIF o JPG, máximo 10MB</p>
-                            </div>
-                        </div>
-                        <div id="posterFileUpdatedCard" class="file-updated-card hidden-force">
-                            <div class="file-updated-card-row">
-                                <div class="file-updated-card-icon-container">
-                                    <span class="icon icon-check width-height-24px"></span>
-                                </div>
-                                <div class="file-updated-card-file-info">
-                                    <span id="posterFileName" class="file-updated-card-file-name">file_example_JPG_500kB.jpg</span>
-                                    <span id="posterFileSize" class="file-updated-card-file-size">0.53 MB</span>
-                                </div>
-                            </div>
-                            <span class="icon icon-close width-height-24px cursor-pointer" id="removePosterFileBtn"></span>
-                        </div>
-                        <span id="posterErrorMessage" class="error-message"></span>
-                    </div>
-                    <div class="upload-short-film-large-input-group">
-                        <div class="inputs">
-                            <label for="inputSinopsis" class="label" id="labelSinopsis">Sinopsis de la obra</label>
-                            <span class="icon-check-cross" id="iconSinopsis"></span>
-                            <textarea id="sinopsisInput" class="upload-short-film-textarea-input input-text-area"></textarea>
-                            <span class="upload-short-film-large-input-group-secondary-text"><span id="sinopsisTotalWords">0</span>/100 palabras</span>
-                            <span id="sinopsisErrorMessage" class="error-message"></span>
-                        </div>
-                    </div>
+
+                    <file-component
+                            id="posterInput"
+                            label="Póster del cortometraje"
+                            primary-text="Arrastra y suelta el póster aquí o haz clic para seleccionar"
+                            secondary-text="JPG o TIF (Máx. 10MB)"
+                            accept=".jpg,.jpeg,.tif,.tiff"
+                            max-size="10485760"
+                            required
+                            error-type="Formato no válido. Usa JPG o TIF"
+                            error-size="La imagen es muy pesada. El máximo permitido son 10MB"
+                            error-required="El póster es obligatorio"
+                    ></file-component>
+
+                    <input-component
+                            id="sinopsisInput"
+                            label="Sinopsis de la obra"
+                            textarea
+                            width="100%"
+                            required
+                            max-words="100"
+                            required-message="La sinopsis es obligatoria para conocer tu obra"
+                            error-message="La sinopsis es demasiado larga. Máximo 100 palabras"
+                    ></input-component>
+
+                    <span class="fs-14px neutral-03"><span id="sinopsisTotalWords">0</span>/100 palabras</span>
+
                     <div class="upload-short-film-divider-container">
                         <span class="divider-line"></span>
                     </div>
-                    <div class="upload-short-film-input-space-between-row">
-                        <button id="step2BackBtn" class="upload-short-film-secondary-button">
-                            <span class="icon icon-left-arrow upload-short-film-secondary-button-icon"></span>
-                            <span class="upload-short-film-secondary-button-text">Volver</span>
-                        </button>
-                        <button id="step2ContinueBtn" class="upload-short-film-primary-button" disabled>
-                            <span class="upload-short-film-primary-button-text">Continuar</span>
-                            <span class="icon icon-right-arrow upload-short-film-primary-button-icon"></span>
-                        </button>
+
+                    <div class="d-flex-two-columns-responsive">
+                        <button id="step2BackBtn" class="secondary-button-02">Volver</button>
+                        <button id="step2ContinueBtn" class="primary-button-01">Continuar</button>
                     </div>
                 </div>
 
                 <div id="cardBodyStep3" class="upload-short-film-card-body-step hidden-force">
-                    <div class="upload-short-film-input-space-between-row">
-                        <button id="step3BackBtn" class="upload-short-film-secondary-button">
-                            <span class="icon icon-left-arrow upload-short-film-secondary-button-icon"></span>
-                            <span class="upload-short-film-secondary-button-text">Volver</span>
-                        </button>
-                        <button id="step3ContinueBtn" class="upload-short-film-primary-button" disabled>
-                            <span class="icon icon-checked upload-short-film-primary-button-icon"></span>
-                            <span class="upload-short-film-primary-button-text">Enviar candidatura</span>
-                        </button>
+                    <span>Ya casi terminamos. Sube la ficha técnico-artística de tu obra para completar la candidatura.</span>
+                    <file-component
+                            id="fichaTecnicaInput"
+                            label="Ficha técnica"
+                            primary-text="Arrastra y suelta la ficha técnica aquí o haz clic para seleccionar"
+                            secondary-text="Solo PDF (Máx. 5MB)"
+                            accept=".pdf"
+                            max-size="5242880"
+                            required
+                            error-type="Formato no válido. Solo se permiten archivos PDF"
+                            error-size="El archivo es demasiado pesado. El máximo permitido son 5MB"
+                            error-required="La ficha técnica es obligatoria para procesar la inscripción"
+                    ></file-component>
+                    <div class="d-flex-two-columns-responsive">
+                        <button id="step3BackBtn" class="secondary-button-02">Volver</button>
+                        <button id="step3ContinueBtn" class="primary-button-01">Continuar</button>
                     </div>
                 </div>
 
@@ -213,7 +202,10 @@
     </div>
     <home-footer></home-footer>
 
-
+    <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/subir-corto.js"></script>
