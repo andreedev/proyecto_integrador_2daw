@@ -1,25 +1,24 @@
-.page-content{
-    margin: 0 96px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.pre-evento{
+    display:flex;
+    flex-direction: column;
+
+    gap:40px;
+}
+
+.btn-calendario{
+    z-index:2;
 }
 
 .pre-evento-header{
-    display: flex;
-    flex-direction: row;
     justify-content: center;
     gap: 24px;
 }
 
 .pre-evento-info{
-    margin-top:54px;
-    margin-bottom:54px;
     display:flex;
     flex-direction: column;
     align-items: flex-start;
     gap:24px;
-    position:relative;
 }
 
 .bloque1{
@@ -30,8 +29,8 @@
     height: 164px;
     background-color: var(--primary-03);
     position: absolute;
-    left:-275px;
-    top:-65px;
+    left: -162px;
+    top: 0px;
 }
 
 .pre-evento-title{
@@ -93,60 +92,156 @@
     color: var(--neutral-01);
 }
 
-.btn-calendario{
-    padding: 8px 24px;
-    width:224px;
-    color:var(--neutral-09);
-    background-color: var(--neutral-01);
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-calendario:hover{
-    background-color: var(--neutral-09);
-    color: var(--neutral-01);
-    cursor: pointer;
-    border: 1px solid var(--neutral-01);
-}
-
 .bloque2{
     mask-image: url("../img/icon/icon-griddecorationthin.svg");
     mask-size: contain;
     mask-repeat: no-repeat;
-    width: 287px;
-    height: 102px;
+   width: 245px;
+    height: 164px;
     background-color: var(--primary-03);
     position: absolute;
     right:72px;
-    bottom:-117px;
+    bottom:-25px;
     rotate: 180deg;
+    z-index:1;
 }
 
 .pre-evento-video{
-    margin-top:54px;
-    margin-bottom:54px;
     display:flex;
     flex-direction: column;
-    align-items: center;
     gap:24px;
     position:relative;
     z-index:2;
 }
 
+.video-container{
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index:2;
+}
 
-n
+.pre-evento-video-text{
+    font-size: 31px;
+    font-weight: 600;
+    line-height: 120%;
+    display: flex;
+    justify-content: flex-end;
+    color: var(--neutral-01);
+    z-index:2;
+}
 
+.video-gala{
+    width:429px;
+    height:286px;
+}
 
+.bloque3{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 245px;
+    height: 164px;
+    background-color: var(--primary-03);
+    position: absolute;
+    left:23px;
+    top: 26px;
+    transform: rotateX(180deg);
+}
 
+.bloque4{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 245px;
+    height: 164px;
+    background-color: var(--primary-03);
+    position: absolute;
+    left:489px;
+    bottom: 59px;
+    transform:rotateZ(90deg) rotateX(180deg);
+    z-index:1;
+}
 
+.agenda-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
 
+.agenda-container-text{
+    font-size: 39px;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
 
+.evento-nombre-ubicacion{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap:16px;
+}
 
+.linea-puntos{
+    transform: rotateZ(90deg);
+    margin-bottom:40px;
+}
 
+.hora-evento{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--neutral-01);
+    width:100%;
+    padding-bottom:88px;
+}
 
+.hora-puntitos{
+    width: 100%;
+}
 
+.nombre-evento{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
 
+.descripcion-evento{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
+    color: var(--neutral-01);
+    white-space: normal;
+}
 
+.icon-text{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-ubicacion{
+    width:16px;
+    height:16px;
+    mask-image: url("../img/icon/icon-location.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-02);
+}
+
+.ubicacion-text{
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 120%;
+    color: var(--neutral-02);
+}
 
 
 

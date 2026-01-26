@@ -419,6 +419,26 @@
     gap: 24px;
 }
 
+.gap-32px{
+    gap: 32px;
+}
+
+.gap-36px{
+    gap: 36px;
+}
+
+.gap-40px{
+    gap: 40px;
+}
+
+.gap-44px{
+    gap: 44px;
+}
+
+.gap-48px{
+    gap: 48px;
+}
+
 .bg-neutral-01{
     background-color: var(--neutral-01);
 }
@@ -545,6 +565,10 @@
 
 .min-w-1px{
     min-width: 1px;
+}
+
+.w-max-content{
+    width: max-content;
 }
 
 .w-auto{
@@ -1235,6 +1259,21 @@ dialog::backdrop {
     padding-bottom: 24px;
 }
 
+.py-32px{
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+.py-40px{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.py-48px{
+    padding-top: 48px;
+    padding-bottom: 48px;
+}
+
 .m-0{
     margin: 0;
 }
@@ -1611,4 +1650,8 @@ dialog::backdrop {
     padding-left: calc(var(--bs-gutter-x) * .5);
     margin-right: auto;
     margin-left: auto;
+}
+
+.overflow-hidden{
+    overflow: hidden;
 }

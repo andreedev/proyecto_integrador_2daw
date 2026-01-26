@@ -6,8 +6,8 @@
     <title>Noticias</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/general-styles.css">
-    <link rel="stylesheet" href="../css/utils.css">
     <link rel="stylesheet" href="../css/gala.css">
+    <link rel="stylesheet" href="../css/utils.css">
 
     <script src="../js/common.js"></script>
     <script src="../js/api-service.js"></script>
@@ -16,41 +16,58 @@
 <body>
     <home-header></home-header>
 
-    <div class="page-content">
+    <div class="container-fluid">
 
         <div class="pre-evento">
-            <div class="pre-evento-header">
-                <div class="pre-evento-info">
+            <div class="position-relative overflow-hidden">
+                <div class="pre-evento-header container d-grid grid-template-columns-1 grid-md-template-columns-2 gap-32px align-items-center py-48px">
                     <span class="bloque1"></span>
-                    <h1 class="pre-evento-title">El gran estreno: Gala de Premios</h1>
-                    <p class="pre-evento-subtitle">Luces, cámara y reconocimiento. Acompáñanos en la gala oficial del Festival de Cortos UE para celebrar el talento de nuestra comunidad y descubrir quiénes se llevarán los premios de esta edición. Una cita con la creatividad que no querrás perderte.</p>
-                    <div class="icon-text-calendario">
-                        <span class="icon-calendario"></span>
-                        <span class="text-calendario">23 de enero de 2026</span>
+                    <div class="pre-evento-info position-relative">
+                        <h1 class="pre-evento-title">El gran estreno: Gala de Premios</h1>
+                        <p class="pre-evento-subtitle">Luces, cámara y reconocimiento. Acompáñanos en la gala oficial del Festival de Cortos UE para celebrar el talento de nuestra comunidad y descubrir quiénes se llevarán los premios de esta edición. Una cita con la creatividad que no querrás perderte.</p>
+                        <div class="icon-text-calendario">
+                            <span class="icon-calendario"></span>
+                            <span class="text-calendario">23 de enero de 2026</span>
+                        </div>
+                        
+                        <div class="icon-text-ubicacion">
+                            <span class="icon-ubicacion"></span>
+                            <span class="text-ubicacion">Auditorio Principal</span>
+                        </div>
+                        <span class="secondary-button-01 w-auto btn-calendario" id="btnCalendario">Añadir a mi calendario</span>
+                        <span class="bloque2"></span>
                     </div>
-                    
-                    <div class="icon-text-ubicacion">
-                        <span class="icon-ubicacion"></span>
-                        <span class="text-ubicacion">Auditorio Principal</span>
-                    </div>
-                    <span class="btn-calendario">Añadir a mi calendario</span>
-                    <span class="bloque2"></span>
-                </div>
-                <div class="pre-evento-video">
-                    <span class="bloque3"></span>
-                    <span class="bloque4"></span>
-                    <div class="video-container">
-                        <span class="video-play"></span>
-                        <video class="video-gala" controls>
-                            <source src="../videos/gala_premios.mp4" type="video/mp4">
-                        </video>
+                    <div class="pre-evento-video align-items-center justify-content-center position-relative">
+                        <span class="bloque3"></span>
+                        <span class="bloque4"></span>
+                        <span class="pre-evento-video-text">Transmisión en directo</span>
+                        <div class="video-container d-flex justify-content-center">
+                            <span class="video-play"></span>
+                            <video class="video-gala" controls>
+                                <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
+                            </video>
+                        </div>
                     </div>
                 </div>
             </div>
         
-            <div class="agenda-container">
+            <div class="agenda-container d-flex container gap-32px px-24px py-48px position-relative">
+                <h1 class="agenda-container-text">Agenda</h1>
 
-
+                <div class="evento-nombre-ubicacion">
+                    <div clas="hora-puntitos">
+                        <div class="fw-600  w-max-content hora-evento">17h45 -18h00</div>
+                        <div class="linea-puntos">.........................................</div>
+                    </div>
+                    <div class="d-flex flex-column min-w-0 flex-grow-1 gap-8px info-evento">
+                        <span class="nombre-evento" id="nombreEvento">Photocall & Welcome Drink</span>
+                        <div class="descripcion-evento" id="descripcionEvento">¡Luce tu mejor perfil! Inauguramos la tarde con fotos oficiales y un cóctel de bienvenida</div>
+                        <div class="icon-text">
+                            <span class="icon-ubicacion"></span>
+                            <span class="ubicacion-text">Auditorio Principal</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
