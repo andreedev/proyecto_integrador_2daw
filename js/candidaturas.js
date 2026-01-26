@@ -8,6 +8,25 @@ const statusCardAceptada = document.getElementById('statusCardAceptada');
 const statusCardRechazada = document.getElementById('statusCardRechazada');
 const statusCardRechazadaSubsanar = document.getElementById('statusCardRechazadaSubsanar');
 
+function buildBadge(candidatura) {
+    const span = document.createElement('span');
+    span.classList.add('estado-candidatura');
+    if (candidatura.estado === 'En revisión') {
+        span.classList.add('border-solid', 'border-warning-03', 'text-warning-01', 'bg-warning-04');
+    }
+    if (candidatura.estado === 'Aceptada') {
+        span.classList.add('border-solid', 'border-success-03', 'text-success-03', 'bg-success-04');
+    }
+    if (candidatura.estado === 'Rechazada') {
+        span.classList.add('border-solid', 'border-error-03', 'text-error-01', 'bg-error-04');
+    }
+    if (candidatura.estado === 'Nominado'){
+        span.classList.add('border-solid', 'border-information-03', 'text-information-01', 'bg-information-04');
+    }
+    span.id = 'textEstadoCandidatura';
+    span.textContent = candidatura.estado;
+    return span;
+}
 
 function renderizarCandidaturas(candidaturas) {
     misCandidaturasContainer.replaceChildren();
@@ -15,11 +34,8 @@ function renderizarCandidaturas(candidaturas) {
         const candidaturaElement = document.createElement('div');
         candidaturaElement.classList.add('candidatura-mini-card-component', 'cursor-pointer');
 
-        const estadoCandidatura = document.createElement('span');
-        estadoCandidatura.classList.add('estado-candidatura');
-        estadoCandidatura.id = 'textEstadoCandidatura';
-        estadoCandidatura.textContent = candidatura.estado;
-        candidaturaElement.appendChild(estadoCandidatura);
+
+        candidaturaElement.appendChild(buildBadge(candidatura));
 
         const titleCortometraje = document.createElement('span');
         titleCortometraje.classList.add('title-cortometraje');

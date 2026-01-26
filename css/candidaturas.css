@@ -59,9 +59,6 @@
     display:flex;
     align-items: flex-start;
     padding: 4px 12px;
-    border: solid var(--warning-03);
-    color: var(--warning-01);
-    background-color: var(--warning-04);
     position:absolute;
     font-size:10px;
     font-weight: 600;
@@ -216,12 +213,6 @@
     mask-size: cover;
 }
 
-@media (max-width: 768px) {
-    .icono-film{
-        width:39px;
-    }
-}
-
 .text-revision{
     display:flex;
     flex-direction: column;
@@ -239,28 +230,6 @@
     font-weight: 500;
     line-height:120%;
     color:var(--warning-01);
-}
-
-
-
-
-
-.status-card-aceptada{
-    padding: 24px;
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    gap:16px;
-    margin-bottom: 28px;
-    border: 1px solid var(--information-01);
-    background-color: var(--information-04);
-    width:100%;
-}
-
-@media (max-width: 1295px) {
-    .status-card-aceptada{
-        flex-direction: column;
-    }
 }
 
 .icono-star{
