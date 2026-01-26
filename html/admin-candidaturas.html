@@ -148,95 +148,82 @@
     </div>
 
     <!-- MODAL DETALLE -->
-<div class="modal" id="detailModal">
-    <div class="modal-overlay"></div>
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Detalle de Candidatura</h2>
-            <button class="close-btn" id="closeDetailModal">&times;</button>
+    <div class="modal" id="detailModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content detail-modal-custom">
+            <div class="modal-header">
+                <h2>Detalle de Candidatura</h2>
+                <button class="close-btn" id="closeDetailModal">&times;</button>
+            </div>
+
+            <div class="detail-content">
+                <div class="status-header-row">
+                    <span class="label-inline">Estado:</span>
+                    <span id="detail-status-badge" class="badge-status-yellow">En revisión</span>
+                </div>
+
+                <div class="participant-info">
+                    <div class="full-width-row">
+                        <input-component id="nombreCortoInput" label="Nombre del cortometraje"
+                            disabled></input-component>
+                    </div>
+
+                    <div class="full-width-row">
+                        <input-component id="nombreParticipanteInput" label="Nombre del participante"
+                            disabled></input-component>
+                    </div>
+
+                    <div class="flex-row">
+                        <input-component id="nroExpedienteInput" label="Nro expediente:" disabled></input-component>
+                        <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>
+                    </div>
+
+                    <div class="full-width-row">
+                        <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea
+                            disabled></input-component>
+                        <span class="word-counter">100/100 palabras</span>
+                    </div>
+
+                    <div class="flex-row">
+                        <div class="input-with-icon">
+                            <span class="icon-calendar"></span>
+                            <input-component id="fechaPresentacionInput" label="Fecha de presentación"
+                                disabled></input-component>
+                        </div>
+                        <div class="input-with-icon">
+                            <span class="icon-calendar"></span>
+                            <input-component id="fechaActualizacionInput" label="Última actualización"
+                                disabled></input-component>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-actions">
+                    <button class="btn-ver-documentos">Ver documentos</button>
+                </div>
+
+                <div class="reject-reason" id="detail-reject-reason" style="display: none;">
+                    <strong>Motivo del rechazo:</strong>
+                    <p id="reject-reason-text"></p>
+                </div>
+            </div>
         </div>
-        <div class="detail-content">
-            <div class="detail-row">
-                <span><strong>ID Candidatura:</strong> <span id="detail-id"></span></span>
-                <span><strong>Estado actual:</strong> <span id="detail-status" class="badge"></span></span>
-            </div>
-            <h3>Información del participante</h3>
-            <div class="participant-info">
-                <div class="info-item">
-                    <img src="../img/icon/UserIcon.svg" alt="Nombre">
-                    <span id="detail-name"></span>
+    </div>
+    <!-- MODAL HISTORIAL -->
+    <div class="modal" id="historyModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content history-modal-custom">
+        <div class="modal-header">
+            <h2>Historial de estados</h2>
+            <button class="close-btn" id="closeHistoryModal">&times;</button>
+        </div>
+        
+        <div class="history-body">
+            <div class="timeline" id="timeline-container">
                 </div>
-                <div class="info-item">
-                    <img src="../img/icon/EmailIcon.svg" alt="Email">
-                    <span id="detail-email"></span>
-                </div>
-                <div class="info-item">
-                    <img src="../img/icon/IdIcon.svg" alt="ID">
-                    <span id="detail-id-number"></span>
-                </div>
-                <div class="info-item">
-                    <img src="../img/icon/HashIcon.svg" alt="Expediente">
-                    <span id="detail-exp"></span>
-                </div>
-            </div>
-            <h3>Información de la candidatura</h3>
-            <div class="synopsis-detail">
-                <strong>Sinopsis</strong>
-                <p id="detail-synopsis"></p>
-            </div>
-            <div class="dates-row">
-                <div class="date-item">
-                    <img src="../img/icon/CalendarIcon.svg" alt="Fecha presentación">
-                    <div>
-                        <strong>Fecha de presentación</strong>
-                        <div id="detail-date-presented"></div>
-                    </div>
-                </div>
-                <div class="date-item">
-                    <img src="../img/icon/CalendarIcon.svg" alt="Última actualización">
-                    <div>
-                        <strong>Última actualización</strong>
-                        <div id="detail-date-updated"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="reject-reason" id="detail-reject-reason" style="display: none; margin-top: 16px;">
-                <strong>Motivo del rechazo:</strong>
-                <p id="reject-reason-text"></p>
-            </div>
         </div>
     </div>
 </div>
-
-    <!-- MODAL HISTORIAL -->
-    <div class="modal" id="historyModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content history-modal">
-            <div class="modal-header">
-                <h2>Historial de estados</h2>
-                <button class="close-btn" id="closeHistoryModal">&times;</button>
-            </div>
-            <div class="history-body">
-                <div class="history-id">
-                    <strong>ID Candidatura:</strong> <span id="history-id"></span>
-                </div>
-                <div class="timeline">
-                    <!-- timeline cargado dinámicamente si quieres -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL CONFIRMACIÓN -->
-    <div class="modal" id="confirmationModal">
-        <div class="modal-content">
-            <p id="confirmationMessage"></p>
-            <div class="modal-actions">
-                <button class="btn" id="confirmNo">Cancelar</button>
-                <button class="btn" id="confirmYes">Aceptar</button>
-            </div>
-        </div>
-    </div>
 
     <!-- MODAL NOTIFICACIÓN -->
     <div class="modal" id="notificationModal">
@@ -248,7 +235,9 @@
         </div>
     </div>
 
+    <script src="../js/components/input-component.js"></script>
     <script src="../js/admin-candidaturas.js"></script>
     <script src="../js/menu-admin.js"></script>
 </body>
+
 </html>

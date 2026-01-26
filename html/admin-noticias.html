@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noticias</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/libraries/air-datepicker.min.css">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
     <link rel="stylesheet" href="../css/admin-noticias.css">
@@ -40,63 +41,68 @@
         </div>
     </div>
 
-    <dialog id="addModal" class="bg-neutral-09">
+    <dialog id="modalNoticia" class="bg-neutral-09">
+        <button autofocus class="ghost">Ghost focus</button>
         <div class="modal-header d-flex justify-space-between align-center">
             <div class="modal-header-left-side">
                 <span class="modal-header-title">Añadir Noticia</span>
-                <span class="modal-header-subtitle">Añade una noticia</span>
             </div>
             <div class="modal-header-right-side">
-                <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer" id="closeAddModal"></span>
+                <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer close-modal"></span>
             </div>
         </div>
         <div class="modal-body">
-            <span class="labels">Título de la noticia:</span>
-            <input type="text" id="newsTitleInput" class="input-field" placeholder="Introduce el título de la noticia">
-            <span class="error-news-title-input" id="errorNewsTitleInput"></span>
+            <input-component
+                    label="Título"
+                    id="tituloInput"
+                    width="100%"
+                    required
+                    required-message="¡Ups! El título no puede estar vacío"
+                    min-length="5"
+                    error-message="El título es demasiado corto (mínimo 5 letras)">
+            </input-component>
 
-            <span class="labels">Descripción:</span>
-            <textarea id="newsDescriptionInput" class="input-textArea" placeholder="Introduce la descripción de la noticia"></textarea>
-            <span class="error-news-description-input" id="errorNewsDescriptionInput"></span>
+            <input-component
+                    label="Descripción"
+                    textarea
+                    id="descripcionInput"
+                    required
+                    required-message="¡Ups! La descripción no puede estar vacía"
+            >
+            </input-component>
 
-            <span class="labels">Fecha de publicación:</span>
-            <input type="text" id="newsDateInput" placeholder="DD/MM/AAAA" class="input-field">
-            <span class="error-news-date-input" id="errorNewsDateInput"></span>
+            <date-component
+                    label="Fecha de publicación"
+                    container="#modalNoticia"
+                    id="fechaPublicacion">
+            </date-component>
 
-            <div class="input-img-news">
-                <label for="newsImageInput" class="labels">Imagen de la noticia:</label>
-                <div id="posterDropZoneAdd" class="input-container">
-                    <input type="file" id="newsImageInput" accept="image/png, image/jpeg, image/jpg" hidden>
-                    <div class="input-objects">
-                        <div class="input-icon-background">
-                            <span class="input-icon"></span>
-                        </div>
-                        <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar un archivo</p>
-                    </div>
-                </div>
-                <div class="img-accepted hidden-force" id="imgAccepted">
-                    <div class="info-card">
-                        <div class="icon-background">
-                            <span class="icon-accepted"></span>
-                        </div>
-                        <div class="archive-data">
-                            <span class="archive-name" id="imgName">archivo_ejemplo_JPG_500kB.j</span>
-                            <span class="archive-size" id="imgSize">1.53MB</span>
-                        </div>
-                        <span class="icon-delete-img" id="deleteImg"></span>
-                    </div>
-                </div>
-                <span id="errorMessage" class="error-message"></span>                            
-            </div>
-            <div class="buttons-add-modal">
-                <button type="submit" class="cancel-modal-add" id="btnCancelModalAdd">Cancelar</button>
-                <button type="submit" class="add-modal-add" id="primaryActionBtn">Agregar noticia</button>
+            <file-component
+                    id="imagenInput"
+                    label="Imagen de la noticia"
+                    primary-text="Arrastra y suelta tu imagen aquí o haz clic para seleccionar"
+                    secondary-text="JPG, PNG, WEBP or AVIF (Max. 10MB)"
+                    accept=".jpg,.jpeg,.png,.webp,.avif"
+                    max-size="10485760"
+                    required
+                    error-type="Formato no válido. Usa JPG, PNG, WEBP o AVIF"
+                    error-size="La imagen es muy pesada. El máximo permitido son 10MB"
+                    error-required="Debes subir una foto para continuar"
+            ></file-component>
+
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
+                <div class="primary-button-02 text-center" id="primaryModalActionBtn">Agregar noticia</div>
             </div>
         </div>
     </dialog>
 
+
+    <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
     <script src="../js/menu-admin.js"></script>
-    <script src="../js/check-session.js"></script>
     <script src="../js/admin-noticias.js"></script>
 </body>
 </html>

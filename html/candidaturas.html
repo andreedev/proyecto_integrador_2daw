@@ -10,23 +10,29 @@
     <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/candidaturas.css">
     <link rel="stylesheet" href="../css/utils.css">
+
+    <script src="../js/common.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="../js/check-session.js"></script>
 </head>
 <body>
     <home-header></home-header>
-    <div class="page-content">
+    <div class="d-flex flex-row gap-24px p-32px container container-lg">
         <div class="left-side">
-            <div class="mis-candidaturas-container" id="misCandidaturasContainer">
+            <div class="mis-candidaturas-container">
                 <h1 class="title">Mis Candidaturas</h1>
-                <div class="candidatura-mini-card-component">
-                    <span class="estado-candidatura" id="textEstadoCandidatura">En revisión</span>
-                    <span class="title-cortometraje" id="titleCortometraje">Cortometraje de ejemplo</span>
-                    <div class="hora-presentada">
-                        <span class="icon-hora"></span>
-                        <span class="fecha-presentada" id="fechaPresentada">Presentado: 15/01/2025</span>
-                    </div>
-                    <div class="ultima-actualizacion">
-                        <span class="icon-hora"></span>
-                        <span class="fecha-actualizacion" id="fechaActualizacion">Última actualización: 20/01/2025</span>
+                <div id="misCandidaturasContainer">
+                    <div class="candidatura-mini-card-component">
+                        <span class="estado-candidatura" id="textEstadoCandidatura">En revisión</span>
+                        <span class="title-cortometraje" id="titleCortometraje">Cortometraje de ejemplo</span>
+                        <div class="hora-presentada">
+                            <span class="icon-hora w-20px h-20px"></span>
+                            <span class="fecha-presentada" id="fechaPresentada">Presentado: 15/01/2025</span>
+                        </div>
+                        <div class="ultima-actualizacion">
+                            <span class="icon-hora w-20px h-20px"></span>
+                            <span class="fecha-actualizacion" id="fechaActualizacion">Última actualización: 20/01/2025</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -39,23 +45,23 @@
                 </div>
                 <span class="flecha" id="flechaDerecha">>></span>
             </div>
-            <div class="btn-subir-nuevo-corto" id="btnSubirNuevoCorto">
-                <span class="text-btn-subir-corto">Subir nuevo corto</span>
-            </div>
+            <a class="primary-button-02" href="subir-corto.html">
+                Subir nuevo corto
+            </a>
         </div>
 
 
-        <div class="right-side">
-            <div class="status-card-revision" id="statusCardRevision">
-                <span class="icono-film"></span>
+        <div class="right-side d-flex gap-12px">
+            <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-bg-warning-04-01 border-solid bg-warning-04 text-warning-01" id="statusCardRevision">
+                <span class="icono-film flex-shrink-0"></span>
                 <div class="text-revision">
                     <span class="title-revision">Tu candidatura se encuentra en revisión</span>
                     <span class="description-revision" id="descriptionRevision">Asegúrate que tu vídeo cumpla con los requisitos establecidos, al igual que el contenido de la ficha técnica </span>
                 </div>
             </div>
 
-            <div class="status-card-aceptada" id="statusCardAceptada">
-                <span class="icono-star"></span>
+            <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-information-01 border-solid bg-information-04" id="statusCardAceptada">
+                <span class="icon-star w-36px h-36px bg-information-01 flex-shrink-0"></span>
                 <div class="text-aceptada">
                     <span class="title-aceptada">¡Enhorabuena!</span>
                     <span class="description-aceptada" id="descriptionAceptada">Tu candidatura se encuentra dentro de los cortometrajes finalistas. Necesitamos que subas un vídeo traíler de tu cortometraje para continuar en el concurso.</span>
@@ -64,24 +70,22 @@
             </div>
 
             <div class="status-card-rechazada" id="statusCardRechazada">
-                <div class="icono-text">
-                    <span class="icono-exclamacion"></span>
+                <div class="d-flex flex-row ">
+                    <span class="icono-exclamacion flex-shrink-0"></span>
                     <div class="text-rechazada">
                         <span class="title-rechazada">Motivo del Rechazo:</span>
                         <span class="description-rechazada" id="descriptionRechazada">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
                     </div>
                 </div>
-                <div class="btn-subsanar" id="btnSubsanar">
-                    <span>Subsanar</span>
-                </div>
+                <div class="primary-button-01 w-auto">Subsanar</div>
             </div>
 
             <div class="status-card-rechazada-subsanar" id="statusCardRechazadaSubsanar">
-                <div class="icono-text">
-                    <span class="icono-exclamacion"></span>
+                <div class="d-flex flex-row gap-8px">
+                    <span class="icono-exclamacion flex-shrink-0"></span>
                     <div class="text-rechazada">
                         <span class="title-rechazada">Motivo del Rechazo:</span>
-                        <span class="description-rechazada-subsanar" id="descriptionRechazada">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
+                        <span class="description-rechazada-subsanar" id="descriptionRechazada2">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
                     </div>
                 </div>
                 <div class="mensaje-para-subsanar">
@@ -107,21 +111,24 @@
                     <span class="btn-ver-video" id="btnVerVideo">Ver vídeo</span>
                 </div>
 
-                <div class="inputs">
-                    <label for="textSinopsis" class="label" id="label">Sinopsis de la obra</label>
-                    <span class="icon-check-cross" id="iconSinopsis"></span>
-                    <textarea id="sinopsisInput" class="input-text-area"></textarea>
-                    <span class="upload-short-film-large-input-group-secondary-text"><span id="sinopsisTotalWords">0</span>/100 palabras</span>
-                    <span id="sinopsisErrorMessage" class="error-message"></span>
-                </div>
+                <input-component
+                        id="sinopsisInput"
+                        label="Sinopsis de la obra"
+                        textarea
+                        width="100%"
+                        required
+                        max-words="100"
+                        required-message="La sinopsis es obligatoria para conocer tu obra"
+                        error-message="La sinopsis es demasiado larga. Máximo 100 palabras"
+                ></input-component>
 
                 <drop-zone-component></drop-zone-component>
 
-                <span class="linea"></span>
+<!--                <span class="linea"></span>-->
 
-                <div class="btn-guardar-cambios primary-button-01 disabled" id="btnGuardarCambios">
-                    <span class="btn-text">Guardar cambios</span>
-                </div>
+               <div class="d-flex justify-content-end w-100">
+                   <button class="primary-button-01 w-auto" id="btnGuardarCambios" disabled>Guardar cambios</button>
+               </div>
             </div>
         </div>
 
@@ -147,10 +154,12 @@
     </div>
 
 
-    <script src="../js/common.js"></script>
+    <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
-    <script src="../js/api-service.js"></script>
     <script src="../js/candidaturas.js"></script>
 </body>
 </html>

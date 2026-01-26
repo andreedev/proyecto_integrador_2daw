@@ -239,12 +239,12 @@ function crearBaseDatosSiNoExiste()
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1),
                     ('basesLegales', '<div style=\"font-family\": \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 8px;\">
 
-  <div style=\"text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #e60012;\">
+  <div style=\"text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #e60012; margin-left: 32px; margin-right: 32px;\">
     <span style=\"font-size: 2.5em; font-weight: 700; color: #000;\">Festival Universitario de Cortometrajes de Animación - II Edición</span><br>
     <span style=\"font-size: 1.4em; color: #000; margin-top: 10px; display: block;\">Creative Campus Universidad Europea</span>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">ANTECEDENTES</span>
     Creative Campus de la Universidad Europea de Madrid, en colaboración con Digital Monster Collective y MIA, lanza el segundo festival de cortometrajes de animación con la intención de:
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
@@ -253,7 +253,7 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Características de las obras:</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Cortometrajes de menos de 10 minutos realizados con cualquier técnica de animación durante 2024 hasta la fecha de entrega de este concurso en 2025.</li>
@@ -266,7 +266,7 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Requisitos de participación:</span>
     Habrá dos categorías: estudiante y profesional
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
@@ -275,7 +275,7 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Inscripción</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La fecha límite para la inscripción de cortometrajes es el 1 de septiembre de 2025.</li>
@@ -287,7 +287,7 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left:32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Categorías y premios:</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio al mejor cortometraje de animación.</li>
@@ -298,14 +298,14 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Criterios para concesión de los premios:</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los criterios que se valorarán para la concesión de los premios serán originalidad, la calidad técnica, la profundidad narrativa o complejidad de la técnica empleada en el caso de obras experimentales y el aporte de valor en cuanto a la elección del tema.</li>
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Cesión de derechos de propiedad intelectual:</span>
     La participación en la presente convocatoria supone la cesión gratuita, no exclusiva, universal y sin límite de tiempo, así como la capacidad de cesión a terceros (prensa, redes sociales y medios) de los derechos de propiedad intelectual de los trabajos presentados, con la finalidad de:
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
@@ -318,7 +318,7 @@ function crearBaseDatosSiNoExiste()
     <p style=\"margin-top: 12px;\">Esta cesión abarca, de manera enunciativa pero no limitativa, los derechos de reproducción, distribución, comunicación pública, transformación, y cualquier otro derecho de propiedad intelectual o industrial reconocido por la legislación aplicable, siempre limitado a las aplicaciones anteriormente expuestas.</p>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Jurado y Resolución:</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El fallo del jurado, que será inapelable y los proyectos ganadores, se anunciarán el 25 de septiembre de 2025, en el Campus Creativo de la Universidad Europea en la calle María de Molina 39, durante el evento realizado a tal efecto a partir de las 18 horas.</li>
@@ -330,12 +330,12 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Datos de carácter personal</span>
     <p style=\"margin: 0;\">El Candidato otorga pleno consentimiento y acepta en su totalidad las bases de participación en la presente convocatoria. Los datos que se faciliten a la UNIVERSIDAD en virtud de las presentes bases serán tratados por el responsable del tratamiento, UNIVERSIDAD EUROPEA DE MADRID, S.A.U., para las finalidades de gestión de la presente convocatoria y gestión de actividades varias para las cuales entrega sus datos, así como la remisión de publicidad y actividades de la Universidad que pudiera ser del interés del titular de los datos. Los datos facilitados en virtud de la presente solicitud se incluirán en los sistemas del responsable. Asimismo, de no manifestar fehacientemente lo contrario, usted consiente expresamente el tratamiento de dichos datos por el tiempo que sea necesario para cumplir con los fines indicados. El titular de los datos tiene derecho a acceder, rectificar y suprimir los datos, limitar su tratamiento, oponerse al tratamiento y ejercer su derecho a la portabilidad de los datos de carácter personal, todo ello de forma gratuita, tal como se detalla en la Política de Privacidad de las citadas entidades, en el enlace https://universidadeuropea.es/politica-de-privacidad. Podrá efectuar cualquier consulta en relación con el tratamiento de sus datos personales, así como ejercer los derechos antedichos, en la dirección que prefiera: dpo@universidadeuropea.es</p>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px;  border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">DISPOSICIONES FINALES</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador formado por 3 profesores de la Universidad Europea de Madrid, será el responsable del buen desarrollo del concurso.</li>
@@ -345,7 +345,7 @@ function crearBaseDatosSiNoExiste()
     </ul>
   </div>
 
-  <div style=\"margin: 25px 0; padding: 15px; background-color: #fafafa; border-radius: 4px;\">
+  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
     <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Aceptación de las Bases:</span>
     <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
       <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los participantes, por el hecho de presentar sus candidaturas, aceptan las presentes bases y la decisión del Jurado, renunciando a toda reclamación.</li>

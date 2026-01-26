@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const participantSpan = document.getElementById('modal-participant');
     const currentStatusSpan = document.getElementById('modal-current-status');
     const deleteCandidaturaBtn = document.getElementById('deleteCandidatura');
+    const nombreParticipanteInput = document.getElementById('nombreParticipanteInput');
 
     // FILTROS
     const searchInput = document.querySelector('.filter-search input');
@@ -267,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     estadosDisponibles = ['Finalista'];
                 } else if (c.estado === 'Rechazada') {
                     estadosDisponibles = ['En revisión'];
-                } 
+                }
                 estadosDisponibles.forEach(estado => {
                     const option = document.createElement('option');
                     option.value = estado;
@@ -350,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // GUARDAR CAMBIO DE ESTADO
     saveChangeBtn.addEventListener('click', async () => {
         if (!activeChangeRow) return;
-        
+
         const newEstado = modalStatus.value;
         console.log(newEstado);
         const reason = document.querySelector('#rejectReason').value.trim();
@@ -360,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         console.log(candidaturaSeleccionada.id_candidatura);
-        
+
 
         const formData = new FormData();
         formData.append('action', 'editarCandidatura');
@@ -388,22 +389,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function abrirDetalle(row) {
         if (!row) return;
         activeDetailRow = row;
-        document.getElementById('detail-id').textContent = row.dataset.id;
-        document.getElementById('detail-name').textContent = row.querySelector('.participant')?.textContent || '-';
-        document.getElementById('detail-email').textContent = row.querySelector('.email')?.textContent || '-';
-        document.getElementById('detail-synopsis').textContent = row.querySelector('.synopsis')?.textContent || '-';
 
-        const badge = document.getElementById('detail-status');
-        badge.textContent = statusLabels[row.dataset.estado] || row.dataset.estado;
-        badge.className = 'badge ' + row.dataset.estado;
+        const id = row.dataset.id;
+        const c = candidaturas.find(item => item.id_candidatura == id);
+
+        if (!c) return;
+
+        const tituloCandidatura = document.getElementById('detail-title');
+        if (tituloCandidatura) tituloCandidatura.textContent = `Detalle de Candidatura`;
+
+        document.getElementById('nombreCortoInput').setValue(c.nombre_cortometraje || 'Sin título');
+        document.getElementById('nombreParticipanteInput').setValue(c.participante || '-');
+        document.getElementById('nroExpedienteInput').setValue(c.nro_expediente || 'EXP-2025-001');
+        document.getElementById('nroDocumentoInput').setValue(c.dni || '-');
+        document.getElementById('sinopsisInput').setValue(c.sinopsis || '-');
+        document.getElementById('fechaPresentacionInput').setValue(formatDate(c.fecha_presentacion));
+        document.getElementById('fechaActualizacionInput').setValue(formatDate(c.fecha_ultima_modificacion));
+
+        const badge = document.getElementById('detail-status-badge');
+        if (badge) {
+            const estadoClave = getEstadoKey(c.estado);
+            badge.textContent = statusLabels[estadoClave] || c.estado;
+            badge.className = `badge ${getBadgeClass(c.estado)}`;
+        }
 
         const rejectReasonDiv = document.getElementById('detail-reject-reason');
         const rejectReasonText = document.getElementById('reject-reason-text');
-        if (row.dataset.estado === 'rejected' && row.dataset.rejectReason) {
-            rejectReasonText.textContent = row.dataset.rejectReason;
-            rejectReasonDiv.style.display = 'block';
+        if (c.estado === 'Rechazada' && c.reject_reason) {
+            if (rejectReasonText) rejectReasonText.textContent = c.reject_reason;
+            if (rejectReasonDiv) rejectReasonDiv.style.display = 'block';
         } else {
-            rejectReasonDiv.style.display = 'none';
+            if (rejectReasonDiv) rejectReasonDiv.style.display = 'none';
         }
 
         detailModal.style.display = 'flex';
@@ -411,17 +427,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CARGAR HISTORIAL
     function cargarHistorial(row) {
-        const timelineContainer = historyModal.querySelector('.timeline');
-        timelineContainer.innerHTML = '';
+        const container = document.getElementById('timeline-container');
+        container.innerHTML = '';
+
         const historial = row.dataset.historial ? JSON.parse(row.dataset.historial) : [];
-        historial.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'timeline-item';
-            div.innerHTML = `
-                <span class="timeline-date">${formatDate(item.fecha)}</span>
-                <span class="timeline-status">${statusLabels[item.estado] || item.estado}</span>
-            `;
-            timelineContainer.appendChild(div);
+
+        // Mapeo de estados usando tus clases de colores
+        const statusConfig = {
+            'review': { class: 'st-review', label: 'En revisión', badge: 'badge-warning' },
+            'rejected': { class: 'st-rejected', label: 'Rechazada', badge: 'badge-error' },
+            'accepted': { class: 'st-accepted', label: 'Aceptada', badge: 'badge-success' },
+            'finalist': { class: 'st-finalist', label: 'Nominado', badge: 'badge-info' },
+            'winner': { class: 'st-winner', label: 'Ganador', badge: 'badge-primary' }
+        };
+
+        historial.forEach((item) => {
+            const config = statusConfig[item.estado] || statusConfig['review'];
+            const itemDiv = document.createElement('div');
+            itemDiv.className = `timeline-item ${config.class}`;
+
+            let messageHtml = '';
+            // Caja de Error (Rechazo)
+            if (item.estado === 'rejected' && row.dataset.rejectReason) {
+                messageHtml = `
+                <div class="status-msg-box msg-error">
+                    <span class="msg-icon-circle">!</span>
+                    <div class="msg-text">
+                        <strong>Motivo del Rechazo:</strong>
+                        <p>${row.dataset.rejectReason}</p>
+                    </div>
+                </div>`;
+            }
+            // Caja de Información (Subsanación - si existe en tus datos)
+            else if (item.subsanacion) {
+                messageHtml = `
+                <div class="status-msg-box msg-info">
+                    <span class="msg-icon-circle">!</span>
+                    <div class="msg-text">
+                        <strong>Subsanación enviada:</strong>
+                        <p>${item.subsanacion}</p>
+                    </div>
+                </div>`;
+            }
+
+            itemDiv.innerHTML = `
+            <div class="timeline-visual">
+                <div class="icon-clock-bg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <div class="connector-line"></div>
+            </div>
+            <div class="timeline-details">
+                <div class="status-row">
+                    <span class="status-badge ${config.badge}">${config.label}</span>
+                    <span class="status-date">${formatDate(item.fecha)}</span>
+                </div>
+                ${messageHtml}
+            </div>
+        `;
+            container.appendChild(itemDiv);
         });
     }
 

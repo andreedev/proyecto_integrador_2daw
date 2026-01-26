@@ -34,7 +34,6 @@ if (isset($_POST['action'])) {
             actualizarDatosPostEvento();
             break;
         case 'subirArchivo':
-            validarRol(['organizador', 'participante']);
             subirArchivo();
             break;
         case 'listarPatrocinadores':
@@ -103,6 +102,14 @@ if (isset($_POST['action'])) {
             validarRol(['organizador', 'participante']);
             crearNoticia();
             break;
+        case 'actualizarNoticia':
+            validarRol(['organizador']);
+            actualizarNoticia();
+            break;
+        case 'eliminarNoticia':
+            validarRol(['organizador']);
+            eliminarNoticia();
+            break;
         case 'listarEventos':
             validarRol(['organizador', 'participante']);
             listarEventos();
@@ -133,6 +140,13 @@ if (isset($_POST['action'])) {
         case 'obtenerBasesLegales':
             obtenerBasesLegales();
             break;
+        case 'guardarCandidatura':
+            guardarCandidatura();
+            break;
+        case 'listarCandidaturasParticipante':
+            validarRol(['participante']);
+            listarCandidaturasParticipante();
+            break;
         default:
             break;
     }
@@ -159,7 +173,7 @@ function cerrarSesion() {
 /**
  * Verifica las credenciales de un usuario en la tabla especificada
  */
-function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEntidad) {
+function verificarUsuario($tabla, $columnaId, $identificador, $password) {
     global $conexion;
 
     $query = "SELECT * FROM $tabla WHERE $columnaId = ?";
@@ -171,11 +185,6 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
     if ($resultado && $resultado->num_rows > 0) {
         $usuario = $resultado->fetch_assoc();
         if (password_verify($password, $usuario['contrasena'])) {
-            if ($tabla === 'participante') {
-                $idEntidad = $usuario['id_participante'];
-            } elseif ($tabla === 'organizador') {
-                $idEntidad = $usuario['id_organizador'];
-            }
             return $usuario;
         }
     }
@@ -188,7 +197,6 @@ function verificarUsuario($tabla, $columnaId, $identificador, $password, $idEnti
 function login() {
     $numIdentidad = $_POST['numExpediente'] ?? '';
     $password = $_POST['password'] ?? '';
-    $idEntidad = null;
 
     if (empty($numIdentidad) || empty($password)) {
         echo json_encode(["status" => "error", "message" => "Faltan datos de inicio de sesión"]);
@@ -196,13 +204,13 @@ function login() {
     }
 
     // Intentar como Participante
-    $datos = verificarUsuario('participante', 'nro_expediente', $numIdentidad, $password, $idEntidad);
+    $datos = verificarUsuario('participante', 'nro_expediente', $numIdentidad, $password);
     $rol = 'participante';
     $redirect = './index.html';
 
     // Intentar como Organizador
     if (!$datos) {
-        $datos = verificarUsuario('organizador', 'nro_empresa', $numIdentidad, $password, $idEntidad);
+        $datos = verificarUsuario('organizador', 'nro_empresa', $numIdentidad, $password);
         $rol = 'organizador';
         $redirect = './admin-candidaturas.html';
     }
@@ -210,7 +218,7 @@ function login() {
     if ($datos) {
         $_SESSION['iniciada'] = true;
         $_SESSION['rol'] = $rol;
-        $_SESSION['id'] = $idEntidad;
+        $_SESSION['id'] = $datos[$rol === 'participante' ? 'id_participante' : 'id_organizador'];
 
         echo json_encode(["status" => "success", "message" => "Sesión iniciada como $rol, redireccionando...", "redirect" => $redirect]);
     } else {
@@ -1063,7 +1071,7 @@ function listarNoticias() {
 
     $baseUrl = obtenerBaseUrl();
     $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
-                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia
+                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia, a.id_archivo as idArchivoImagenNoticia
               FROM noticia n
               LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . " ORDER BY n.fecha DESC";
 
@@ -1121,7 +1129,7 @@ function crearNoticia() {
 
     $nombre = $_POST['nombreNoticia'];
     $descripcion = $_POST['descripcionNoticia'];
-    $fecha = $_POST['fechaNoticia'];
+    $fecha = $_POST['fechaPublicacionNoticia'];
     $idArchivoImagen = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
 
     $stmt = $conexion->prepare("INSERT INTO noticia (nombre, descripcion, fecha, id_archivo_imagen) VALUES (?, ?, ?, ?)");
@@ -1131,6 +1139,85 @@ function crearNoticia() {
         echo json_encode(["status" => "success", "message" => "Noticia creada correctamente"]);
     } else {
         echo json_encode(["status" => "error", "message" => "Error al crear la noticia"]);
+    }
+}
+
+/**
+ * Actualizar una noticia
+ */
+function actualizarNoticia() {
+    global $conexion;
+
+    $idNoticia = (int)$_POST['idNoticia'];
+    $nombre = $_POST['nombreNoticia'];
+    $descripcion = $_POST['descripcionNoticia'];
+    $fecha = $_POST['fechaPublicacionNoticia'];
+    $idArchivoNuevo = isset($_POST['idArchivoImagen']) ? (int)$_POST['idArchivoImagen'] : null;
+
+    $idArchivoAnterior = null;
+    $stmtArchivo = $conexion->prepare("SELECT id_archivo_imagen FROM noticia WHERE id_noticia = ?");
+    $stmtArchivo->bind_param("i", $idNoticia);
+    $stmtArchivo->execute();
+    $res = $stmtArchivo->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $idArchivoAnterior = (int)$row['id_archivo_imagen'];
+    }
+
+    if ($idArchivoAnterior !== null && $idArchivoAnterior !== $idArchivoNuevo) {
+        $stmtRutas = $conexion->prepare("
+            SELECT 
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaVieja,
+                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaNueva
+        ");
+        $stmtRutas->bind_param("ii", $idArchivoAnterior, $idArchivoNuevo);
+        $stmtRutas->execute();
+        $rutas = $stmtRutas->get_result()->fetch_assoc();
+
+        if ($rutas['rutaVieja'] === $rutas['rutaNueva']) {
+            $conexion->prepare("DELETE FROM archivo WHERE id_archivo = ?")
+                ->bind_param("i", $idArchivoNuevo)
+                ->execute();
+            $idArchivoNuevo = $idArchivoAnterior;
+            $idArchivoAnterior = null;
+        }
+    }
+
+    $stmt = $conexion->prepare("UPDATE noticia SET nombre = ?, descripcion = ?, fecha = ?, id_archivo_imagen = ? WHERE id_noticia = ?");
+    $stmt->bind_param("sssii", $nombre, $descripcion, $fecha, $idArchivoNuevo, $idNoticia);
+
+    if ($stmt->execute()) {
+        // Solo eliminamos el anterior si realmente es un archivo distinto
+        if ($idArchivoAnterior !== null && $idArchivoAnterior !== $idArchivoNuevo) {
+            eliminarArchivoPorId($idArchivoAnterior);
+        }
+        echo json_encode(["status" => "success"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al actualizar"]);
+    }
+}
+
+/**
+ * Eliminar una noticia
+ */
+function eliminarNoticia() {
+    global $conexion;
+    $idNoticia = (int)$_POST['idNoticia'];
+
+    $stmt = $conexion->prepare("SELECT id_archivo_imagen FROM noticia WHERE id_noticia = ?");
+    $stmt->bind_param("i", $idNoticia);
+    $stmt->execute();
+    $idArchivo = $stmt->get_result()->fetch_assoc()['id_archivo_imagen'] ?? null;
+
+    $stmtDel = $conexion->prepare("DELETE FROM noticia WHERE id_noticia = ?");
+    $stmtDel->bind_param("i", $idNoticia);
+
+    if ($stmtDel->execute()) {
+        if ($idArchivo) {
+            eliminarArchivoPorId($idArchivo);
+        }
+        echo json_encode(["status" => "success", "message" => "Noticia eliminada"]);
+    } else {
+        echo json_encode(["status" => "error"]);
     }
 }
 
@@ -1413,5 +1500,113 @@ function obtenerBasesLegales() {
     }
 }
 
+
+/**
+ * Crear candidatura
+ */
+function guardarCandidatura() {
+    global $conexion;
+
+    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : null;
+    $correo = isset($_POST['correo']) ? $_POST['correo'] : null;
+    $password = isset($_POST['password']) ? $_POST['password'] : null;
+    $dni = isset($_POST['dni']) ? $_POST['dni'] : null;
+    $nroExpediente = $_POST['nroExpediente'];
+    $idVideo = isset($_POST['idVideo']) ? (int)$_POST['idVideo'] : null;
+    $idPoster = isset($_POST['idPoster']) ? (int)$_POST['idPoster'] : null;
+    $sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : null;
+    $idFichaTecnica = isset($_POST['idFichaTecnica']) ? (int)$_POST['idFichaTecnica'] : null;
+
+    $sqlInsert = $conexion->prepare("INSERT INTO participante (nombre, correo, contrasena, dni, nro_expediente) VALUES (?, ?, ?, ?, ?)");
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    $sqlInsert->bind_param("sssss", $nombre, $correo, $hashedPassword, $dni, $nroExpediente);
+    if (!$sqlInsert->execute()) {
+        echo json_encode(["status" => "error", "message" => "Error al crear el participante: " . $sqlInsert->error]);
+        return;
+    }
+
+    $idParticipante = $conexion->insert_id;
+
+    // crear sesion
+    $_SESSION['iniciada'] = true;
+    $_SESSION['rol'] = 'participante';
+    $_SESSION['id'] = $idParticipante;
+
+    $sqlInsertCandidatura = $conexion->prepare("INSERT INTO candidatura (id_participante, estado, tipo_candidatura, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel) VALUES (?, 'En revisión', 'alumno', ?, ?, ?, ?)");
+    $sqlInsertCandidatura->bind_param("issii", $idParticipante, $sinopsis, $idVideo, $idFichaTecnica, $idPoster);
+    if (!$sqlInsertCandidatura->execute()) {
+        echo json_encode(["status" => "error", "message" => "Error al crear la candidatura: " . $sqlInsertCandidatura->error]);
+    }
+
+    echo json_encode(["status" => "success", "message" => "Candidatura creada correctamente"]);
+
+}
+
+
+/**
+ * Listar candidaturas de un participante
+ */
+function listarCandidaturasParticipante() {
+    global $conexion;
+
+    $idParticipante = (int)$_SESSION['id'];
+
+    $query = "
+        SELECT 
+            c.id_candidatura as idCandidatura,
+            c.estado,
+            c.tipo_candidatura as tipoCandidatura,
+            c.fecha_presentacion as fechaPresentacion,
+            c.fecha_ultima_modificacion as fechaUltimaModificacion,
+            c.sinopsis as sinopsis,
+            a1.ruta as rutaVideo,
+            a2.ruta as rutaFicha,
+            a3.ruta as rutaCartel,
+            a4.ruta as rutaTrailer
+        FROM candidatura c
+        LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
+        LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
+        LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
+        LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
+        WHERE c.id_participante = ?
+        ORDER BY c.id_candidatura DESC
+    ";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idParticipante);
+
+    if (!$stmt) {
+        echo json_encode(["status" => "error", "message" => "Error al preparar la consulta: " . $conexion->error]);
+        return;
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+
+    $candidaturas = [];
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaVideo']) {
+            $row['rutaVideo'] = $baseUrl . $row['rutaVideo'];
+        }
+        if ($row['rutaFicha']) {
+            $row['rutaFicha'] = $baseUrl . $row['rutaFicha'];
+        }
+        if ($row['rutaCartel']) {
+            $row['rutaCartel'] = $baseUrl . $row['rutaCartel'];
+        }
+        if ($row['rutaTrailer']) {
+            $row['rutaTrailer'] = $baseUrl . $row['rutaTrailer'];
+        }
+        $candidaturas[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $candidaturas,
+        "idParticipante" => $idParticipante
+    ]);
+}
 
 cerrarConexion();

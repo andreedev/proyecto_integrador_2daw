@@ -27,10 +27,23 @@
                 </div>
                 <div class="bloqueLogin">
                     <h1 class="iniciarSesionTexto">Iniciar Sesión</h1>
-                    <form class="formLogin">
-                        <input type="text" class="numExpediente" placeholder="Número de Expediente">
-                        <input type="password" class="password" placeholder="Contraseña">
-                        <span class="mensaje">&nbsp;</span>
+                    <form class="formLogin" novalidate>
+                        <input-component
+                                id="numExpediente"
+                                label="Número de expediente"
+                                width="100%"
+                                required
+                                error-message="El número de expediente es obligatorio"
+                        ></input-component>
+                        <input-component
+                                id="password"
+                                label="Contraseña"
+                                type="password"
+                                width="100%"
+                                required
+                                error-message="La contraseña es obligatoria"
+                        ></input-component>
+                        <span class="mensaje">&nbsp</span>
                         <button type="submit" class="btnLogin">Continuar</button>
                     </form>
                 </div>
@@ -40,5 +53,6 @@
 </body>
 
 
+<script src="../js/components/input-component.js"></script>
 <script src="../js/loginjs.js"></script>
 </html>

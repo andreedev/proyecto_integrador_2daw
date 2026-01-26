@@ -187,6 +187,37 @@ async function listarNoticias(filtroNombre) {
     return await fetchAPI(formData);
 }
 
+async function crearNoticia(nombre, descripcion, fechaPublicacion, idArchivoImagen) {
+    const formData = new FormData();
+    formData.append('action', 'crearNoticia');
+    formData.append('nombreNoticia', nombre);
+    formData.append('descripcionNoticia', descripcion);
+    formData.append('fechaPublicacionNoticia', fechaPublicacion);
+    formData.append('idArchivoImagen', idArchivoImagen);
+
+    return await fetchAPI(formData);
+}
+
+async function actualizarNoticia(idNoticia, nombre, descripcion, fechaPublicacion, idArchivoImagen) {
+    const formData = new FormData();
+    formData.append('action', 'actualizarNoticia');
+    formData.append('idNoticia', idNoticia);
+    formData.append('nombreNoticia', nombre);
+    formData.append('descripcionNoticia', descripcion);
+    formData.append('fechaPublicacionNoticia', fechaPublicacion);
+    formData.append('idArchivoImagen', idArchivoImagen);
+
+    return await fetchAPI(formData);
+}
+
+async function eliminarNoticia(idNoticia) {
+    const formData = new FormData();
+    formData.append('action', 'eliminarNoticia');
+    formData.append('idNoticia', idNoticia);
+
+    return await fetchAPI(formData);
+}
+
 async function obtenerNoticiaPorId(idNoticia) {
     const formData = new FormData();
     formData.append('action', 'obtenerNoticiaPorId');
@@ -268,6 +299,41 @@ async function editarCandidatura(formData) {
 async function obtenerBasesLegales(){
     const data = new FormData();
     data.append('action', 'obtenerBasesLegales');
+
+    return await fetchAPI(data);
+}
+
+/**
+ * Guarda la candidatura
+ * @param {string} nombre
+ * @param {string} correo
+ * @param {string} password
+ * @param {string} dni
+ * @param {string} nroExpediente
+ * @param {string} idVideo
+ * @param {string} idPoster
+ * @param {string} sinopsis
+ * @param {string} idFichaTecnica
+ */
+async function guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, sinopsis, idFichaTecnica) {
+    const data = new FormData();
+    data.append('action', 'guardarCandidatura');
+    data.append('nombre', nombre);
+    data.append('correo', correo);
+    data.append('password', password);
+    data.append('dni', dni);
+    data.append('nroExpediente', nroExpediente);
+    data.append('idVideo', idVideo);
+    data.append('idPoster', idPoster);
+    data.append('sinopsis', sinopsis);
+    data.append('idFichaTecnica', idFichaTecnica);
+
+    return await fetchAPI(data);
+}
+
+async function listarCandidaturasParticipante(){
+    const data = new FormData();
+    data.append('action', 'listarCandidaturasParticipante');
 
     return await fetchAPI(data);
 }

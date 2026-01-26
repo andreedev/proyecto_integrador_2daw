@@ -32,9 +32,9 @@ function setupDynamicDropZone(container, allowedExtensions, maxSizeBytes, valida
                     <div class="border-radius-50 bg-success-03 p-8px d-flex justify-center align-items-center ">
                         <span class="icon-small-check w-24px h-24px bg-neutral-02 d-flex"></span>
                     </div>
-                    <div class="datosArchivo flex-grow-1 min-w-0">
-                        <div class="archivo-nombre text-truncate"></div>
-                        <div class="archivo-tamanio"></div>
+                    <div class="d-flex flex-column me-0 flex-grow-1 min-w-0">
+                        <div class="fs-14px text-truncate"></div>
+                        <div class="fs-12px text-neutral-02"></div>
                     </div>
                     <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer btnEliminarArchivo"></span>
                 </div>
@@ -151,13 +151,17 @@ function setupDynamicDropZone(container, allowedExtensions, maxSizeBytes, valida
 /**
  * Cerrar modales al hacer clic en elementos con la clase 'close-modal'
  */
-const closeModalList = document.querySelectorAll('.close-modal');
-closeModalList.forEach(closeModal => {
-    closeModal.addEventListener('click', () => {
-        const dialog = closeModal.closest('dialog');
-        if (dialog) dialog.close();
+(function setupModalCloseButtons() {
+    document.addEventListener('DOMContentLoaded', () => {
+        const closeModalList = document.querySelectorAll('.close-modal');
+        closeModalList.forEach(closeModal => {
+            closeModal.addEventListener('click', () => {
+                const dialog = closeModal.closest('dialog');
+                if (dialog) dialog.close();
+            });
+        });
     });
-});
+})();
 
 /**
  * Formatear bytes a una unidad legible
@@ -282,3 +286,47 @@ window.injectExternalStyles = async function(url, id) {
 
     return pendingStyles[id];
 };
+
+/**
+ * Extrae el nombre del archivo de una ruta completa o URL
+ * @param {string} path - La ruta o URL del archivo
+ * @returns {string} El nombre del archivo con su extensión
+ */
+function getFileNameFromPath(path) {
+    if (!path || typeof path !== 'string') return '';
+    return path.split(/[\\/]/).pop();
+}
+
+/**
+ * Valida si un string tiene un formato de email válido
+ * @param {string} email
+ * @returns {boolean}
+ */
+function isValidEmail(email) {
+    if (!email) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+/**
+ * Formatea una fecha (string o Date) a formato DD/MM/YYYY
+ * Soporta formatos con hora como "2026-01-26 03:52:04"
+ * @param {string|Date} dateSource
+ * @returns {string} Fecha formateada o string vacío si es inválida
+ */
+function formatDateToSpanish(dateSource) {
+    if (!dateSource) return '';
+    const normalizedSource = typeof dateSource === 'string'
+        ? dateSource.replace(' ', 'T')
+        : dateSource;
+
+    const date = new Date(normalizedSource);
+
+    if (isNaN(date.getTime())) return '';
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}

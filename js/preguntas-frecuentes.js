@@ -1,31 +1,31 @@
 const faqData = [
     {
         question: "¿Quiénes pueden participar exactamente?",
-        answer: "Pueden participar estudiantes actuales de cualquier universidad, así como egresados de los últimos 3 años."
+        answer: "Pueden participar estudiantes actuales de Ciclos Formativos, Grado o Máster de la UE.También antiguos alumnos(Alumni) que se hayan graduado en 2024/2025 (Categoría UE) o en los últimos cinco cursos académicos desde el 2019/2020 (Categoría Alumni)."
     },
     {
         question: "¿El concurso es individual o por equipos?",
-        answer: "El concurso puede ser tanto individual como por equipos de hasta 3 personas."
+        answer: "La inscipción es individual.Como participante, deberás aportar tu número de expediente y documento de identidad oficial"
     },
     {
         question: "Si soy Alumni de hace 3 años, ¿en qué categoría entro?",
-        answer: "Los alumni de hasta 3 años pueden participar en la categoría 'Egresados' o 'Profesionales Emergentes'."
+        answer: "Entrarías en la categoría 'Mejor Cortometraje Alumni', destinada a graduados de los cursos 2019/20 hasta el 2023/24"
     },
     {
         question: "¿Qué duración debe tener mi corto?",
-        answer: "La duración máxima permitida es de 10 minutos, incluyendo créditos."
+        answer: "La duración máxima  es de 20 minutos, incluyendo los títulos de crédito. ¡Asegúrate de no pasarte ni un segundo!."
     },
     {
         question: "¿Puedo presentarlo en un idioma que no sea castellano?",
-        answer: "Sí, puedes presentar tu corto en cualquier idioma, pero debe incluir subtítulos en castellano."
+        answer: "Sí, aceptamos cortos en cualquier idioma, pero es obligatorio que incluyan subtítulos en castellano."
     },
     {
         question: "¿Cuáles son las especificaciones técnicas del archivo?",
-        answer: "Formato MP4, resolución mínima 1080p, codec H.264, audio AAC estéreo."
+        answer: "Para que tu corto se vea perfecto en la gala, debe cumpplir estos requisitos:Formato: QuickTime MOV (H.264) o MP4. Resolución: 1920X1080p a 25 fps. Aspecto: 16:9 con audio estéreo."
     },
     {
         question: "¿Cómo se eligen a los ganadores?",
-        answer: "Un jurado compuesto por profesionales del cine y académicos evalúa los trabajos según creatividad, técnica y narrativa."
+        answer: "El concurso tiene dos frases. primero, un comité de profesores realizará una Fase de Visionado para elegir 3 finalistas por categoría. Después, un jurado experto decidirá los ganadores definitivos."
     }
 ];
 

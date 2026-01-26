@@ -46,15 +46,19 @@
     gap:16px;
     position:relative;
     border-bottom: 1px solid var(--neutral-05);
+    background-color: var(--neutral-09);
+    transition: all 0.3s ease;
+}
+
+.candidatura-mini-card-component:hover{
+    background-color: var(--neutral-07);
+    transition: all 0.3s ease;
 }
 
 .estado-candidatura{
     display:flex;
     align-items: flex-start;
     padding: 4px 12px;
-    border: solid var(--warning-03);
-    color: var(--warning-01);
-    background-color: var(--warning-04);
     position:absolute;
     font-size:10px;
     font-weight: 600;
@@ -140,17 +144,18 @@
 .button2{
     width: 28px;
     height: 28px;
-    background-color: var(--primary-09);
-    color: var(--neutral-01);
+    color: var(--neutral-03);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .button2:hover{
     background-color: var(--neutral-01);
     color: var(--neutral-09);
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .numero{
@@ -193,18 +198,11 @@
     padding: 24px;
     display:flex;
     flex-direction: row;
-    align-items: center;
     gap:16px;
     margin-bottom: 28px;
     border: 1px solid var(--warning-02);
     background-color: var(--warning-04);
     width:100%;
-}
-
-@media (max-width: 1295px) {
-    .status-card-revision{
-        flex-direction: column;
-    }
 }
 
 .icono-film{
@@ -213,18 +211,6 @@
     background-color: var(--warning-01);
     mask-image: url("../img/icon/icon-film.svg");
     mask-size: cover;
-}
-
-@media (max-width: 1295px) {
-    .icono-film{
-        width:80px;
-    }
-}
-
-@media (max-width: 768px) {
-    .icono-film{
-        width:39px;
-    }
 }
 
 .text-revision{
@@ -246,47 +232,12 @@
     color:var(--warning-01);
 }
 
-
-
-
-
-.status-card-aceptada{
-    padding: 24px;
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    gap:16px;
-    margin-bottom: 28px;
-    border: 1px solid var(--information-01);
-    background-color: var(--information-04);
-    width:100%;
-}
-
-@media (max-width: 1295px) {
-    .status-card-aceptada{
-        flex-direction: column;
-    }
-}
-
 .icono-star{
     width:57px;
     height:36px;
     background-color: var(--information-01);
     mask-image: url("../img/icon/icon-star.svg");
     mask-size: cover;
-}
-
-@media (max-width: 1295px) {
-    .icono-star{
-        width:129px;
-        height:36px;
-    }
-}
-
-@media (max-width: 768px) {
-    .icono-star{
-        width:40px;
-    }
 }
 
 .text-aceptada{
@@ -343,18 +294,6 @@
     mask-size: cover;
 }
 
-@media (max-width: 1295px) {
-    .icono-exclamacion{
-        width:124px;
-    }
-}
-
-@media (max-width: 768px) {
-    .icono-exclamacion{
-        width:38px;
-    }
-}
-
 .text-rechazada{
     display:flex;
     flex-direction: column;
@@ -402,18 +341,6 @@
     border: 1px solid var(--error-01);
     background-color: var(--primary-05);
     width:100%;
-}
-
-@media (max-width: 1295px) {
-    .icono-exclamacion{
-        width:124px;
-    }
-}
-
-@media (max-width: 768px) {
-    .icono-exclamacion{
-        width:39px;
-    }
 }
 
 .text-rechazada{
