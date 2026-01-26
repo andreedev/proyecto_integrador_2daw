@@ -17,7 +17,7 @@
 </head>
 <body>
     <home-header></home-header>
-    <div class="d-flex flex-row gap-24px p-32px container">
+    <div class="d-flex flex-row gap-24px p-32px container container-lg">
         <div class="left-side">
             <div class="mis-candidaturas-container">
                 <h1 class="title">Mis Candidaturas</h1>
@@ -51,8 +51,8 @@
         </div>
 
 
-        <div class="right-side">
-            <div class="status-card-revision d-flex flex-row" id="statusCardRevision">
+        <div class="right-side d-flex gap-12px">
+            <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-bg-warning-04-01 border-solid bg-warning-04 text-warning-01" id="statusCardRevision">
                 <span class="icono-film flex-shrink-0"></span>
                 <div class="text-revision">
                     <span class="title-revision">Tu candidatura se encuentra en revisión</span>
@@ -60,8 +60,8 @@
                 </div>
             </div>
 
-            <div class="status-card-aceptada bg-information-04" id="statusCardAceptada">
-                <span class="icono-star flex-shrink-0"></span>
+            <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-information-01 border-solid bg-information-04" id="statusCardAceptada">
+                <span class="icon-star w-36px h-36px bg-information-01 flex-shrink-0"></span>
                 <div class="text-aceptada">
                     <span class="title-aceptada">¡Enhorabuena!</span>
                     <span class="description-aceptada" id="descriptionAceptada">Tu candidatura se encuentra dentro de los cortometrajes finalistas. Necesitamos que subas un vídeo traíler de tu cortometraje para continuar en el concurso.</span>

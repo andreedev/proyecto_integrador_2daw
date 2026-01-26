@@ -21,29 +21,29 @@
         <div class="steps-container">
             <div id="step1" class="step active-step">
                 <span class="step-number-container">
-                    <span class="step-number-text">1</span>
-                    <span class="icon-check w-20px h-20px bg-neutral-09"></span>
+                    <span id="numberStep1" class="step-number-text">1</span>
+                    <span id="checkIconStep1" class="icon-check w-20px h-20px bg-neutral-09 d-none"></span>
                 </span>
                 <span class="step-text">Datos del Participante</span>
             </div>
             <div class="step-line-divider"></div>
-            <div id="step2" class="step">
+            <div id="step2" class="step active-step">
                 <span class="step-number-container">
-                    <span class="step-number-text">2</span>
-                    <span class="icon-check w-20px h-20px bg-neutral-09"></span>
+                    <span id="numberStep2" class="step-number-text">2</span>
+                    <span id="checkIconStep2" class="icon-check w-20px h-20px bg-neutral-09 d-none"></span>
                 </span>
                 <span class="step-text">Datos del Cortometraje</span>
             </div>
             <div class="step-line-divider"></div>
             <div id="step3" class="step">
                 <span class="step-number-container">
-                    <span class="step-number-text">3</span>
-<!--                    <span class="icon-check w-20px h-20px bg-neutral-09"></span>-->
+                    <span id="numberStep3" class="step-number-text">3</span>
+                    <span id="checkIconStep3" class="icon-check w-20px h-20px bg-neutral-09 d-none"></span>
                 </span>
                 <span class="step-text">Documentación</span>
             </div>
         </div>
-        <div class="upload-short-film-card-container">
+        <div class="upload-short-film-card-container" id="uploadShortFilmCard">
             <div class="upload-short-film-card-header step-1">
                 <span class="upload-short-film-card-header-text">Registro del Participante</span>
                 <span class="upload-short-film-card-header-subtext">Paso 1 de 3</span>
@@ -120,7 +120,7 @@
                     </div>
                 </div>
 
-                <div id="cardBodyStep2" class="upload-short-film-card-body-step step-2 hidden-force">
+                <div id="cardBodyStep2" class="upload-short-film-card-body-step step-2 d-none">
                     <div>
                         <file-component
                                 id="videoInput"
@@ -174,7 +174,7 @@
                     </div>
                 </div>
 
-                <div id="cardBodyStep3" class="upload-short-film-card-body-step hidden-force">
+                <div id="cardBodyStep3" class="upload-short-film-card-body-step d-none">
                     <span>Ya casi terminamos. Sube la ficha técnico-artística de tu obra para completar la candidatura.</span>
                     <file-component
                             id="fichaTecnicaInput"
@@ -195,9 +195,13 @@
                 </div>
 
             </div>
-            <div class="upload-short-film-card-successfully-completed hidden-force">
-
+        </div>
+        <div class="d-none container-md box-shadow-02" id="cortoSubidoExitoCard">
+            <div class="bg-success-03 p-8px d-flex justify-center align-items-center border-radius-50 w">
+                <span class="icon-small-check w-20px h-20px bg-neutral-02 d-block"></span>
             </div>
+            <h4>¡Candidatura enviada con éxito!</h4>
+
         </div>
     </div>
     <home-footer></home-footer>
