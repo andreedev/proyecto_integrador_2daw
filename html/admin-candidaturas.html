@@ -148,74 +148,71 @@
     </div>
 
     <!-- MODAL DETALLE -->
-<div class="modal" id="detailModal">
-    <div class="modal-overlay"></div>
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Detalle de Candidatura</h2>
-            <button class="close-btn" id="closeDetailModal">&times;</button>
-        </div>
-        <div class="detail-content">
-            <div class="detail-row">
-                <span><strong>ID Candidatura:</strong> <span id="detail-id"></span></span>
-                <span><strong>Estado actual:</strong> <span id="detail-status" class="badge"></span></span>
+    <div class="modal" id="detailModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalle de Candidatura</h2>
+                <button class="close-btn" id="closeDetailModal">&times;</button>
             </div>
-            <h3>Información del participante</h3>
-            <div class="participant-info">
-                <input-component
-                        id="nombreParticipanteInput"
-                        label="Nombre"
-                        width="100%"
-                        value="Gabi"
-                        required
-                        disabled
-                ></input-component>
+            <div class="detail-content">
+                <div class="detail-row">
+                    <span><strong>ID Candidatura:</strong> <span id="detail-id"></span></span>
+                    <span><strong>Estado actual:</strong> <span id="detail-status" class="badge"></span></span>
+                </div>
+                <h3>Información del participante</h3>
+                <div class="participant-info">
+                    <input-component id="nombreCortoInput" label="Nombre del cortometraje" required
+                        disabled></input-component>
 
-                <div class="info-item">
-                    <img src="../img/icon/UserIcon.svg" alt="Nombre">
-                    <span id="detail-name"></span>
-                </div>
-                <div class="info-item">
-                    <img src="../img/icon/EmailIcon.svg" alt="Email">
-                    <span id="detail-email"></span>
-                </div>
-                <div class="info-item">
-                    <img src="../img/icon/IdIcon.svg" alt="ID">
-                    <span id="detail-id-number"></span>
-                </div>
-                <div class="info-item">
-                    <img src="../img/icon/HashIcon.svg" alt="Expediente">
-                    <span id="detail-exp"></span>
-                </div>
-            </div>
-            <h3>Información de la candidatura</h3>
-            <div class="synopsis-detail">
-                <strong>Sinopsis</strong>
-                <p id="detail-synopsis"></p>
-            </div>
-            <div class="dates-row">
-                <div class="date-item">
-                    <img src="../img/icon/CalendarIcon.svg" alt="Fecha presentación">
+                    <input-component id="nombreParticipanteInput" label="Nombre del participante" required
+                        disabled></input-component>
+
+                    <div style="display: flex; gap: 16px;">
+                        <input-component id="nroExpedienteInput" label="Nro expediente:" required
+                            disabled></input-component>
+
+                        <input-component id="nroDocumentoInput" label="Nro documento" required
+                            disabled></input-component>
+                    </div>
+
+                    <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea max-words="100"
+                     required disabled></input-component>
+
                     <div>
-                        <strong>Fecha de presentación</strong>
-                        <div id="detail-date-presented"></div>
+                        <input-component id="fechaPresentacionInput" label="Fecha de presentación" disabled></input-component>
+
+                        <input-component id="fechaActualizacionInput" label="Última actualización" disabled></input-component>
                     </div>
                 </div>
-                <div class="date-item">
-                    <img src="../img/icon/CalendarIcon.svg" alt="Última actualización">
-                    <div>
-                        <strong>Última actualización</strong>
-                        <div id="detail-date-updated"></div>
+                <h3>Información de la candidatura</h3>
+                <div class="synopsis-detail">
+                    <strong>Sinopsis</strong>
+                    <p id="detail-synopsis"></p>
+                </div>
+                <div class="dates-row">
+                    <div class="date-item">
+                        <img src="../img/icon/CalendarIcon.svg" alt="Fecha presentación">
+                        <div>
+                            <strong>Fecha de presentación</strong>
+                            <div id="detail-date-presented"></div>
+                        </div>
+                    </div>
+                    <div class="date-item">
+                        <img src="../img/icon/CalendarIcon.svg" alt="Última actualización">
+                        <div>
+                            <strong>Última actualización</strong>
+                            <div id="detail-date-updated"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="reject-reason" id="detail-reject-reason" style="display: none; margin-top: 16px;">
-                <strong>Motivo del rechazo:</strong>
-                <p id="reject-reason-text"></p>
+                <div class="reject-reason" id="detail-reject-reason" style="display: none; margin-top: 16px;">
+                    <strong>Motivo del rechazo:</strong>
+                    <p id="reject-reason-text"></p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- MODAL HISTORIAL -->
     <div class="modal" id="historyModal">
@@ -261,4 +258,5 @@
     <script src="../js/admin-candidaturas.js"></script>
     <script src="../js/menu-admin.js"></script>
 </body>
+
 </html>
