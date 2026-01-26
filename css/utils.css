@@ -951,6 +951,11 @@
     cursor: pointer;
 }
 
+.icon-film{
+    mask-image: url('../img/icon/icon-film.svg');
+    mask-repeat: no-repeat;
+}
+
 .icon-sand-clock{
     mask-image: url('../img/icon/icon-sandclock.svg');
     mask-repeat: no-repeat;
