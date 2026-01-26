@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     estadosDisponibles = ['Finalista'];
                 } else if (c.estado === 'Rechazada') {
                     estadosDisponibles = ['En revisión'];
-                } 
+                }
                 estadosDisponibles.forEach(estado => {
                     const option = document.createElement('option');
                     option.value = estado;
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // GUARDAR CAMBIO DE ESTADO
     saveChangeBtn.addEventListener('click', async () => {
         if (!activeChangeRow) return;
-        
+
         const newEstado = modalStatus.value;
         console.log(newEstado);
         const reason = document.querySelector('#rejectReason').value.trim();
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         console.log(candidaturaSeleccionada.id_candidatura);
-        
+
 
         const formData = new FormData();
         formData.append('action', 'editarCandidatura');
@@ -389,23 +389,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function abrirDetalle(row) {
         if (!row) return;
         activeDetailRow = row;
-        document.getElementById('detail-id').textContent = row.dataset.id;
-        const nombre = row.querySelector('.participant')?.textContent;
-        nombreParticipanteInput.setValue(nombre);
-        document.getElementById('detail-email').textContent = row.querySelector('.email')?.textContent || '-';
-        document.getElementById('detail-synopsis').textContent = row.querySelector('.synopsis')?.textContent || '-';
 
-        const badge = document.getElementById('detail-status');
-        badge.textContent = statusLabels[row.dataset.estado] || row.dataset.estado;
-        badge.className = 'badge ' + row.dataset.estado;
+        const id = row.dataset.id;
+        const c = candidaturas.find(item => item.id_candidatura == id);
+
+        if (!c) return;
+
+        const tituloCandidatura = document.getElementById('detail-title');
+        if (tituloCandidatura) tituloCandidatura.textContent = `Detalle de Candidatura`;
+
+        document.getElementById('nombreCortoInput').setValue(c.nombre_cortometraje || 'Sin título');
+        document.getElementById('nombreParticipanteInput').setValue(c.participante || '-');
+        document.getElementById('nroExpedienteInput').setValue(c.nro_expediente || 'EXP-2025-001');
+        document.getElementById('nroDocumentoInput').setValue(c.dni || '-');
+        document.getElementById('sinopsisInput').setValue(c.sinopsis || '-');
+        document.getElementById('fechaPresentacionInput').setValue(formatDate(c.fecha_presentacion));
+        document.getElementById('fechaActualizacionInput').setValue(formatDate(c.fecha_ultima_modificacion));
+
+        const badge = document.getElementById('detail-status-badge');
+        if (badge) {
+            const estadoClave = getEstadoKey(c.estado);
+            badge.textContent = statusLabels[estadoClave] || c.estado;
+            badge.className = `badge ${getBadgeClass(c.estado)}`;
+        }
 
         const rejectReasonDiv = document.getElementById('detail-reject-reason');
         const rejectReasonText = document.getElementById('reject-reason-text');
-        if (row.dataset.estado === 'rejected' && row.dataset.rejectReason) {
-            rejectReasonText.textContent = row.dataset.rejectReason;
-            rejectReasonDiv.style.display = 'block';
+        if (c.estado === 'Rechazada' && c.reject_reason) {
+            if (rejectReasonText) rejectReasonText.textContent = c.reject_reason;
+            if (rejectReasonDiv) rejectReasonDiv.style.display = 'block';
         } else {
-            rejectReasonDiv.style.display = 'none';
+            if (rejectReasonDiv) rejectReasonDiv.style.display = 'none';
         }
 
         detailModal.style.display = 'flex';
