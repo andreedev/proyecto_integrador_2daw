@@ -87,3 +87,25 @@
 .solid-input-container.variant-textarea.has-value .solid-input-label {
     transform: translateY(-24px) scale(0.85);
 }
+
+.solid-select-field {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    cursor: pointer;
+    padding-right: 30px;
+}
+
+.solid-select-field:focus,
+.solid-select-field:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--neutral-01) !important;
+    background-color: transparent !important;
+}
+
+.solid-input-container.state-error .solid-select-field {
+    border-bottom: 1px solid var(--neutral-04) !important;
+    color: var(--neutral-01) !important;
+}

@@ -36,6 +36,7 @@ const passwordInput = document.getElementById('passwordInput');
 const dniInput = document.getElementById('dniInput');
 const nroExpedienteInput = document.getElementById('nroExpedienteInput');
 
+const tipoCandidaturaSelect = document.getElementById('tipoCandidaturaSelect');
 const videoInput = document.getElementById('videoInput');
 const posterInput = document.getElementById('posterInput');
 const sinopsisInput = document.getElementById('sinopsisInput');
@@ -155,6 +156,9 @@ function switchStep(targetStep) {
 
         uploadShortFilmCard.classList.add('d-none');
         cortoSubidoExitoCard.classList.remove('d-none');
+        setTimeout(() => {
+            window.location.href = 'candidaturas.html';
+        }, 3000);
     }
 }
 
@@ -187,6 +191,9 @@ sinopsisInput.addEventListener('solid-input-word-count', (e) => {
     }
 });
 
+tipoCandidaturaSelect.setOptions([
+    { value: 'alumno', label: 'Alumno'},
+    { value :'alumni', label: 'Alumni'}
+])
 
-
-switchStep(4);
+switchStep(3);

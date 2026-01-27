@@ -111,7 +111,6 @@ if (isset($_POST['action'])) {
             eliminarNoticia();
             break;
         case 'listarEventos':
-            validarRol(['organizador', 'participante']);
             listarEventos();
             break;
         case 'obtenerEventoPorId':
