@@ -163,40 +163,34 @@
                 </div>
 
                 <div class="participant-info">
-                    <div class="full-width-row">
-                        <input-component id="nombreCortoInput" label="Nombre del cortometraje"
+
+                    <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>
+
+                    <input-component id="nombreParticipanteInput" label="Nombre del participante"
+                        disabled></input-component>
+
+                    <input-component id="nroExpedienteInput" label="Nro expediente:" disabled></input-component>
+
+                    <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>
+
+                    <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea disabled></input-component>
+
+                    <span class="word-counter">100/100 palabras</span>
+
+                    <div class="input-with-icon">
+                        <span class="icon-calendar"></span>
+                        <input-component id="fechaPresentacionInput" label="Fecha de presentación"
                             disabled></input-component>
                     </div>
 
-                    <div class="full-width-row">
-                        <input-component id="nombreParticipanteInput" label="Nombre del participante"
+                    <div class="input-with-icon">
+                        <span class="icon-calendar"></span>
+                        <input-component id="fechaActualizacionInput" label="Última actualización"
                             disabled></input-component>
                     </div>
 
-                    <div class="flex-row">
-                        <input-component id="nroExpedienteInput" label="Nro expediente:" disabled></input-component>
-                        <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>
-                    </div>
-
-                    <div class="full-width-row">
-                        <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea
-                            disabled></input-component>
-                        <span class="word-counter">100/100 palabras</span>
-                    </div>
-
-                    <div class="flex-row">
-                        <div class="input-with-icon">
-                            <span class="icon-calendar"></span>
-                            <input-component id="fechaPresentacionInput" label="Fecha de presentación"
-                                disabled></input-component>
-                        </div>
-                        <div class="input-with-icon">
-                            <span class="icon-calendar"></span>
-                            <input-component id="fechaActualizacionInput" label="Última actualización"
-                                disabled></input-component>
-                        </div>
-                    </div>
                 </div>
+
 
                 <div class="footer-actions">
                     <button class="btn-ver-documentos">Ver documentos</button>
@@ -211,19 +205,19 @@
     </div>
     <!-- MODAL HISTORIAL -->
     <div class="modal" id="historyModal">
-    <div class="modal-overlay"></div>
-    <div class="modal-content history-modal-custom">
-        <div class="modal-header">
-            <h2>Historial de estados</h2>
-            <button class="close-btn" id="closeHistoryModal">&times;</button>
-        </div>
-        
-        <div class="history-body">
-            <div class="timeline" id="timeline-container">
+        <div class="modal-overlay"></div>
+        <div class="modal-content history-modal-custom">
+            <div class="modal-header">
+                <h2>Historial de estados</h2>
+                <button class="close-btn" id="closeHistoryModal">&times;</button>
+            </div>
+
+            <div class="history-body">
+                <div class="timeline" id="timeline-container">
                 </div>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- MODAL NOTIFICACIÓN -->
     <div class="modal" id="notificationModal">
