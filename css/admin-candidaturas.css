@@ -320,70 +320,81 @@ th {
 #documentsModal .modal-content {
     max-width: 900px;
     width: 90%;
-    padding: 20px;
+    padding: 32px;
     background: var(--neutral-09);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     position: relative;
+    box-shadow: var(--shadow-02);
+    display: flex;
+    flex-direction: column;
 }
 
-.modal-header {
+/* Header */
+#documentsModal .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--neutral-05);
+    margin-bottom: 24px;
 }
 
-.close-btn {
+#documentsModal .modal-header h2 {
+    font-size: 24px;
+    color: var(--neutral-02);
+    font-weight: 600;
+}
+
+/* Pestañas Subrayadas */
+#documentsModal .tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid var(--neutral-05);
+    margin-bottom: 20px;
+}
+
+#documentsModal .tab-btn {
     background: none;
     border: none;
-    font-size: 24px;
-    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 3px solid transparent;
     color: var(--neutral-04);
-    transition: color 0.2s;
-}
-
-.close-btn:hover {
-    color: var(--neutral-02);
-}
-
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    background: var(--neutral-07);
-    padding: 8px;
-    overflow-x: auto;
-}
-
-.tab-btn {
-    padding: 8px 16px;
-    background: var(--neutral-09);
-    border: 1px solid var(--neutral-05);
+    font-weight: 600;
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
 }
 
-.tab-btn.active {
-    background: var(--information-02);
+#documentsModal .tab-btn.active {
+    color: var(--information-02);
+    border-bottom-color: var(--information-02);
+}
+
+/* Contenedor de contenido */
+#documentsModal .tab-content {
+    min-height: 400px;
+    background: var(--neutral-08);
+    /* Fondo gris claro interno */
+    border: 1px solid var(--neutral-05);
+}
+
+#documentsModal .tab-pane.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+.btn-ver-documentos {
+    background: var(--neutral-09);
+    color: var(--primary-03);
+    border: 1px solid var(--primary-03);
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ver-documentos:hover {
+    background-color: var(--primary-03);
     color: var(--neutral-09);
-    border-color: var(--information-02);
-}
-
-.tab-content {
-    min-height: 300px;
-}
-
-.tab-pane {
-    display: none;
-    padding: 15px;
-    background: var(--neutral-07);
-}
-
-.tab-pane.active {
-    display: block;
 }
 
 /* VÍDEO */
@@ -448,10 +459,21 @@ th {
 #detailModal .modal-content {
     max-width: 800px;
     width: 90%;
-    padding: 24px;
+    padding: 32px;
     background: var(--neutral-09);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-02);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Estado */
+.status-header-row {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .detail-content {
@@ -459,34 +481,69 @@ th {
     color: var(--neutral-02);
 }
 
-.detail-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 12px;
-    background: var(--neutral-07);
-    gap: 10px;
-}
-
-.detail-row span {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.detail-row strong {
-    font-weight: 600;
-    color: var(--neutral-04);
-}
-
+/* GRID PRINCIPAL COMO LA IMAGEN */
 .participant-info {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "nombre nombre"
+        "participante participante"
+        "expediente documento"
+        "sinopsis sinopsis"
+        "fechaPresentacion fechaActualizacion";
+    gap: 24px;
     background: var(--neutral-07);
-    padding: 16px;
-    margin-bottom: 20px;
+    padding: 24px;
+    border-radius: 4px;
 }
+
+/* Asignación de áreas */
+#nombreCortoInput {
+    grid-area: nombre;
+}
+
+#nombreParticipanteInput {
+    grid-area: participante;
+}
+
+#nroExpedienteInput {
+    grid-area: expediente;
+}
+
+#nroDocumentoInput {
+    grid-area: documento;
+}
+
+#sinopsisInput {
+    grid-area: sinopsis;
+}
+
+/* Fechas */
+.input-with-icon:nth-of-type(1) {
+    grid-area: fechaPresentacion;
+}
+
+.input-with-icon:nth-of-type(2) {
+    grid-area: fechaActualizacion;
+}
+
+/* Contador de palabras alineado como en la imagen */
+.word-counter {
+    grid-column: 1 / -1;
+    justify-self: end;
+    font-size: 12px;
+    color: var(--neutral-03);
+    margin-top: -16px;
+}
+
+/* Botón abajo a la derecha */
+.footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 24px;
+}
+
 
 .info-item {
     display: flex;
@@ -574,6 +631,8 @@ th {
     padding: 20px;
     background: var(--neutral-09);
     position: relative;
+    margin-bottom: 30px;
+    padding-right: 40px;
 }
 
 .history-id {
@@ -584,14 +643,15 @@ th {
 
 .timeline {
     position: relative;
-    padding-left: 24px;
+    padding-left: 18px;
+    padding-top: 18px;
 }
 
 .timeline::before {
     content: "";
     position: absolute;
-    left: 10px;
-    top: 0;
+    left: 36px;
+    top: 36px;
     bottom: 0;
     width: 2px;
     background: var(--neutral-05);
@@ -609,7 +669,7 @@ th {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: var(--neutral-04);
+    background: var(--neutral-03);
     border: 3px solid var(--neutral-09);
     z-index: 1;
 }
@@ -669,33 +729,38 @@ th {
     font-size: 12px;
 }
 
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--neutral-04);
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+    z-index: 10;
+}
+
+.close-btn:hover {
+    color: var(--neutral-02);
+}
+
 /* Botones en modales de confirmación y notificación */
-#confirmationModal .btn,
 #notificationModal .btn {
     padding: 6px 12px;
     border: none;
     cursor: pointer;
 }
 
-/* Botón "Cancelar" en confirmación: neutro */
-#confirmNo {
-    background: var(--neutral-07);
-    color: var(--neutral-02);
-    border: 1px solid var(--neutral-05);
-}
-
-#confirmNo:hover {
-    background: var(--neutral-06);
-}
-
 /* Botón "Aceptar" en confirmación y botón en notificación: rojo primario */
-#confirmYes,
 #notificationModal .btn {
     background-color: var(--primary-03, #d32f2f);
     color: white;
 }
 
-#confirmYes:hover,
 #notificationModal .btn:hover {
     background-color: var(--primary-02, #b71c1c);
 }
@@ -732,7 +797,10 @@ th {
     border: 1.5px solid transparent;
 }
 
-.icon-clock-bg svg { width: 22px; height: 22px; }
+.icon-clock-bg svg {
+    width: 22px;
+    height: 22px;
+}
 
 .connector-line {
     width: 1.5px;
@@ -741,14 +809,40 @@ th {
     margin: 4px 0;
 }
 
-.timeline-item:last-child .connector-line { display: none; }
+.timeline-item:last-child .connector-line {
+    display: none;
+}
 
 /* COLORES POR ESTADO (Usando tus variables) */
-.st-review .icon-clock-bg   { background: var(--warning-04); color: var(--warning-01); border-color: var(--warning-03); }
-.st-rejected .icon-clock-bg { background: var(--error-04); color: var(--error-01); border-color: var(--error-03); }
-.st-accepted .icon-clock-bg { background: var(--success-03); color: var(--success-01); border-color: var(--success-02); }
-.st-finalist .icon-clock-bg { background: var(--information-04); color: var(--information-01); border-color: var(--information-03); }
-.st-winner .icon-clock-bg   { background: var(--primary-05); color: var(--primary-02); border-color: var(--primary-04); }
+.st-review .icon-clock-bg {
+    background: var(--warning-04);
+    color: var(--warning-01);
+    border-color: var(--warning-03);
+}
+
+.st-rejected .icon-clock-bg {
+    background: var(--error-04);
+    color: var(--error-01);
+    border-color: var(--error-03);
+}
+
+.st-accepted .icon-clock-bg {
+    background: var(--success-03);
+    color: var(--success-01);
+    border-color: var(--success-02);
+}
+
+.st-finalist .icon-clock-bg {
+    background: var(--information-04);
+    color: var(--information-01);
+    border-color: var(--information-03);
+}
+
+.st-winner .icon-clock-bg {
+    background: var(--primary-05);
+    color: var(--primary-02);
+    border-color: var(--primary-04);
+}
 
 /* BADGES */
 .status-badge {
@@ -760,13 +854,35 @@ th {
     text-align: center;
 }
 
-.badge-warning { background: var(--warning-04); color: var(--warning-01); }
-.badge-error   { background: var(--error-04); color: var(--error-01); }
-.badge-success { background: var(--success-03); color: var(--success-01); }
-.badge-info    { background: var(--information-02); color: var(--neutral-09); }
-.badge-primary { background: var(--primary-03); color: var(--neutral-09); }
+.badge-warning {
+    background: var(--warning-04);
+    color: var(--warning-01);
+}
 
-.status-date { color: var(--neutral-04); font-size: 14px; }
+.badge-error {
+    background: var(--error-04);
+    color: var(--error-01);
+}
+
+.badge-success {
+    background: var(--success-03);
+    color: var(--success-01);
+}
+
+.badge-info {
+    background: var(--information-02);
+    color: var(--neutral-09);
+}
+
+.badge-primary {
+    background: var(--primary-03);
+    color: var(--neutral-09);
+}
+
+.status-date {
+    color: var(--neutral-04);
+    font-size: 14px;
+}
 
 /* CAJAS DE MENSAJE */
 .status-msg-box {
@@ -778,16 +894,16 @@ th {
     width: 95%;
 }
 
-.msg-error { 
-    background: var(--error-04); 
-    border: 1px solid var(--error-03); 
-    color: var(--error-01); 
+.msg-error {
+    background: var(--error-04);
+    border: 1px solid var(--error-03);
+    color: var(--error-01);
 }
 
-.msg-info { 
-    background: var(--information-04); 
-    border: 1px solid var(--information-03); 
-    color: var(--information-01); 
+.msg-info {
+    background: var(--information-04);
+    border: 1px solid var(--information-03);
+    color: var(--information-01);
 }
 
 .msg-icon-circle {
@@ -802,8 +918,17 @@ th {
     flex-shrink: 0;
 }
 
-.msg-text strong { color: inherit; font-size: 14px; }
-.msg-text p { margin-top: 5px; font-size: 14px; line-height: 1.4; color: var(--neutral-02); }
+.msg-text strong {
+    color: inherit;
+    font-size: 14px;
+}
+
+.msg-text p {
+    margin-top: 5px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--neutral-02);
+}
 
 /* Diseño responsive*/
 @media (max-width: 768px) {
