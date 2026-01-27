@@ -131,7 +131,6 @@ function mostrarDetallesCandidatura(candidatura){
     setTimeout(() => {
         video.src = candidatura.rutaVideo;
         video.load();
-        console.log("Intentando cargar ruta:", video.src);
     }, 50);
 }
 
