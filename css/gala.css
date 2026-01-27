@@ -124,6 +124,28 @@
     z-index:2;
 }
 
+.video-play-container{
+    width: 48px;
+    height: 48px;
+    background-color: var(--primary-03);
+    position: absolute;
+    z-index:2;
+    cursor: pointer;
+}
+
+.video-play{
+    width: 24px;
+    height: 24px;
+    mask-image: url("../img/icon/icon-play.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-09);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .pre-evento-video-text{
     font-size: 31px;
     font-weight: 600;
@@ -529,6 +551,7 @@
 
 .video-evento-container{
     padding-bottom:48px;
+    position: relative;
 }
 
 /* Zona de los videos del evento */
@@ -563,10 +586,29 @@
     cursor: pointer;
 }
 
-.video-evento-img {
-    width: 240px;
-    height: 345px;
-    object-fit: cover;
+.video-play-container-evento{
+    width: 48px;
+    height: 48px;
+    background-color: var(--primary-03);
+    position: absolute;
+    z-index:2;
+    cursor: pointer;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.video-play-evento{
+    width: 24px;
+    height: 24px;
+    mask-image: url("../img/icon/icon-play.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-09);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .video-evento-btn {
