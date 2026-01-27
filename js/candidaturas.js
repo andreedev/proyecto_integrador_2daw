@@ -143,3 +143,5 @@ async function cargarCandidaturas() {
 }
 
 cargarCandidaturas();
+
+// prueba
