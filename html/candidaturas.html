@@ -69,9 +69,9 @@
 
             </div>
 
-            <div class="status-card-rechazada" id="statusCardRechazada">
-                <div class="d-flex flex-row ">
-                    <span class="icono-exclamacion flex-shrink-0"></span>
+            <div class="status-card-rechazada border-solid border-error-02" id="statusCardRechazada">
+                <div class="d-flex flex-row gap-8px">
+                    <span class="icon-warning w-36px h-36px bg-error-01 flex-shrink-0"></span>
                     <div class="text-rechazada">
                         <span class="title-rechazada">Motivo del Rechazo:</span>
                         <span class="description-rechazada" id="descriptionRechazada">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
@@ -82,7 +82,7 @@
 
             <div class="status-card-rechazada-subsanar" id="statusCardRechazadaSubsanar">
                 <div class="d-flex flex-row gap-8px">
-                    <span class="icono-exclamacion flex-shrink-0"></span>
+                    <span class="icon-warning w-36px h-36px bg-error-01 flex-shrink-0"></span>
                     <div class="text-rechazada">
                         <span class="title-rechazada">Motivo del Rechazo:</span>
                         <span class="description-rechazada-subsanar" id="descriptionRechazada2">La ficha técnica no incluye la información completa del equipo de producción. Faltan los datos del director de fotografía y el editor de sonido.</span>
@@ -99,7 +99,7 @@
             </div>
 
             <div class="datos-candidatura">
-                <h1 class="title-datos"> Datos de mi candidatura</h1>
+                <p class="fs-24px fw-500"> Datos de mi candidatura</p>
                 <div class="video-candidatura">
                     <div class="icono-texto-candidadatura">
                         <div class="icono-video-candidatura">
@@ -110,6 +110,32 @@
                     </div>
                     <span class="btn-ver-video" id="btnVerVideo">Ver vídeo</span>
                 </div>
+
+                <file-component
+                        id="posterInput"
+                        label="Póster del cortometraje"
+                        primary-text="Arrastra y suelta el póster aquí o haz clic para seleccionar"
+                        secondary-text="JPG o TIF (Máx. 10MB)"
+                        accept=".jpg,.jpeg,.tif,.tiff"
+                        max-size="10485760"
+                        required
+                        error-type="Formato no válido. Usa JPG o TIF"
+                        error-size="La imagen es muy pesada. El máximo permitido son 10MB"
+                        error-required="El póster es obligatorio"
+                ></file-component>
+
+                <file-component
+                        id="fichaTecnicaInput"
+                        label="Ficha técnica"
+                        primary-text="Arrastra y suelta la ficha técnica aquí o haz clic para seleccionar"
+                        secondary-text="Solo PDF (Máx. 5MB)"
+                        accept=".pdf"
+                        max-size="5242880"
+                        required
+                        error-type="Formato no válido. Solo se permiten archivos PDF"
+                        error-size="El archivo es demasiado pesado. El máximo permitido son 5MB"
+                        error-required="La ficha técnica es obligatoria para procesar la inscripción"
+                ></file-component>
 
                 <input-component
                         id="sinopsisInput"
@@ -122,12 +148,10 @@
                         error-message="La sinopsis es demasiado larga. Máximo 100 palabras"
                 ></input-component>
 
-                <drop-zone-component></drop-zone-component>
 
-<!--                <span class="linea"></span>-->
 
                <div class="d-flex justify-content-end w-100">
-                   <button class="primary-button-01 w-auto" id="btnGuardarCambios" disabled>Guardar cambios</button>
+                   <div class="primary-button-01 disabled w-auto" id="btnGuardarCambios" >Guardar cambios</div>
                </div>
             </div>
         </div>
@@ -135,26 +159,24 @@
     </div>
     <home-footer></home-footer>
 
-    <div class="modal-mostrar-video hidden-force" id="modalMostrarVideo">
-        <div class="modal-mostrar-video-content">
-            <div class="play-video">
-                <span class="icon-play-video"></span>
+    <modal-component id="modalVerVideo" duration="500" >
+        <div class="d-flex gap-16px flex-column align-items-center p-32px">
+            <div class="d-flex justify-space-between align-items-center w-100">
+                <h2 class="modal-title">Video del cortometraje</h2>
+                <span class="close-modal cursor-pointer icon-close w-24px h-24px d-block bg-neutral-02" id="closeModalVerVideo"></span>
             </div>
-            <div class="text-icon">
-                <h1 class="modal-text">Video de la candidatura</h1>
-                <span class="icon-cerrar"></span>
-            </div>
-            <span class="linea-modal"></span>
-            <div class="video-container">
-                <video class="video-element" controls>
-                    <source id="videoSource" src="" type="video/mp4">
+            <div class="d-flex flex-column w-100 position-relative">
+                <div class="play-video" id="playVideoCorto">
+                    <span class="icon-play-video"></span>
+                </div>
+                <video id="videoCorto" class="w-100" controls preload="metadata" disablePictureInPicture controlsList="nodownload">
                 </video>
             </div>
         </div>
-    </div>
-
+    </modal-component>
 
     <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/modal-component.js"></script>
     <script src="../js/components/input-component.js"></script>
     <script src="../js/components/date-component.js"></script>
     <script src="../js/components/file-component.js"></script>

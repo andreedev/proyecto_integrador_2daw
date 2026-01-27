@@ -267,7 +267,6 @@
     align-items: flex-start;
     gap:10px;
     margin-bottom: 28px;
-    border: 1px solid var(--error-01);
     background-color: var(--primary-05);
     width:100%;
 }
@@ -697,7 +696,7 @@
     flex-shrink: 0;
 }
 
-.play-video{
+.play-video {
     position: absolute;
     width: 48px;
     height: 48px;
@@ -706,9 +705,10 @@
     align-items: center;
     cursor: pointer;
     background-color: var(--primary-03);
-    top:50%;
-    left:50%;
-    z-index:5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* El toque mágico */
+    z-index: 5;
 }
 
 .icon-play-video{

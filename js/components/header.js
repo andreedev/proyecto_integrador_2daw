@@ -18,18 +18,17 @@ class HomeHeader extends HTMLElement {
 
     render() {
         const sesionIniciada = sessionStorage.getItem('sesionIniciada') === 'true';
-        const baseClass = 'header-base-button-responsive-font-size';
 
         let botonesDesktop = '';
         if (sesionIniciada) {
             botonesDesktop = `
-                <a href="./candidaturas.html" class="${baseClass} w-auto">Candidaturas</a>
-                <a href="#" id="logout-btn" class="${baseClass} w-auto">Cerrar sesión</a>
+                <a href="./candidaturas.html" class="header-base-button-responsive-font-size primary-button-01 w-auto">Candidaturas</a>
+                <a href="#" id="logout-btn" class="header-base-button-responsive-font-size secondary-button-01 w-auto">Cerrar sesión</a>
             `;
         } else {
             botonesDesktop = `
-                <a href="./subir-corto.html" class="${baseClass} primary-button-01 w-auto">Registrarse</a>
-                <a href="./login.html" class="${baseClass} secondary-button-01 text-center w-auto">Iniciar sesión</a>
+                <a href="./subir-corto.html" class="header-base-button-responsive-font-size primary-button-01 w-auto">Registrarse</a>
+                <a href="./login.html" class="header-base-button-responsive-font-size secondary-button-01 text-center w-auto">Iniciar sesión</a>
             `;
         }
 
@@ -37,7 +36,7 @@ class HomeHeader extends HTMLElement {
         if (sesionIniciada) {
             botonesMobile = `
                 <a href="./candidaturas.html" class="py-12px primary-button-01 w-100">Candidaturas</a>
-                <a href="#" id="logout-btn"   class="py-12px secondary-button-01 text-center w-100">Cerrar sesión</a>
+                <a href="#" id="logout-btn-mobile"   class="py-12px secondary-button-01 text-center w-100">Cerrar sesión</a>
             `;
         } else {
             botonesMobile = `
@@ -111,12 +110,12 @@ class HomeHeader extends HTMLElement {
     }
 
     _setupListeners() {
-        const logoutBtns = this.querySelectorAll('[id^="logout-btn"]');
-        logoutBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
+        this.addEventListener('click', (e) => {
+            const btn = e.target.closest('#logout-btn, #logout-btn-mobile');
+            if (btn) {
                 e.preventDefault();
                 this.logout();
-            });
+            }
         });
 
         const openMobileMenuBtn = this.querySelector('#openMobileMenuBtn');
@@ -133,8 +132,8 @@ class HomeHeader extends HTMLElement {
         const formData = new FormData();
         formData.append('action', 'cerrarSesion');
         try {
-            await fetch(URL_API, { method: 'POST', body: formData });
             sessionStorage.setItem('sesionIniciada', 'false');
+            await fetch(URL_API, { method: 'POST', body: formData });
             window.location.reload();
         } catch (error) {
             console.error('Error:', error);

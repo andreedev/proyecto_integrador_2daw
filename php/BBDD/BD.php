@@ -163,19 +163,26 @@ function crearBaseDatosSiNoExiste()
                 -- =========================
                 -- INSERTS
                 
-                INSERT INTO archivo (ruta) VALUES
-                ('uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                ('uploads/public/file_example_MP4_480_1_5MG.mp4'),
-                ('uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                ('uploads/public/file_example_MP4_480_1_5MG.mp4'),
-                ('uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                ('uploads/public/file_example_MP4_480_1_5MG.mp4'),
-                ('uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                ('uploads/public/file_example_MP4_480_1_5MG.mp4'),
-                ('uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                ('uploads/public/file_example_MP4_480_1_5MG.mp4'),
-                ('uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                ('uploads/public/file_example_MP4_480_1_5MG.mp4');
+                INSERT INTO archivo (id_archivo, ruta) VALUES
+                -- VIDEOS (IDs 1-2)
+                (1, 'uploads/public/file_example_MP4_480_1_5MG.mp4'),
+                (2, 'uploads/public/_file_example_MP4_480_1_5MG.mp4'),
+                
+                -- IMAGENES/POSTERS (IDs 3-7)
+                (3, 'uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
+                (4, 'uploads/public/_ENTRENADORES_CABECERA_GENERAL_3.width-800.jpg'),
+                (5, 'uploads/public/_Gemini_Generated_Image_u3h353u3h353u3h3.png'),
+                (6, 'uploads/public/_salidas-profesionales.png'),
+                (7, 'uploads/public/_Pentawards_35_4aognhs.width-800.png'),
+                
+                -- DOCUMENTOS (IDs 8)
+                (8, 'uploads/public/_dummy.pdf'),
+                
+                -- 
+                (9, 'uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
+                (10, 'uploads/public/file_example_MP4_480_1_5MG.mp4'),
+                (11, 'uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
+                (12, 'uploads/public/_file_example_MP4_480_1_5MG.mp4');
                 
                 INSERT INTO categoria (nombre) VALUES
                 ('Mejor cortometraje UE (alumno)'),
@@ -190,26 +197,26 @@ function crearBaseDatosSiNoExiste()
                 ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
                 
                 INSERT INTO candidatura (id_participante, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer, tipo_candidatura, estado) VALUES
-                (1, 'Corto urbano sobre la vida moderna.', 1, 2, 3, NULL, 'alumno', 'Aceptada'),
-                (2, 'Documental sobre la fauna local.', 2, 3, 4, NULL, 'alumno', 'En revisión'),
-                (3, 'Animación infantil educativa.', 3, 4, 5, NULL, 'alumni', 'Rechazada'),
-                (4, 'Drama social ambientado en un barrio.', 4, 5, 6, NULL, 'alumno', 'Aceptada'),
-                (5, 'Corto experimental en blanco y negro.', 5, 6, 7, NULL, 'alumni', 'En revisión'),
-                (1, 'Comedia sobre la universidad.', 6, 7, 8, NULL, 'alumno', 'Rechazada'),
-                (2, 'Thriller psicológico de suspense.', 7, 8, 9, NULL, 'alumno', 'Aceptada'),
-                (3, 'Fantasía épica de bajo presupuesto.', 8, 9, 10, NULL, 'alumni', 'En revisión'),
-                (4, 'Crítica social al consumismo.', 9, 10, 11, NULL, 'alumno', 'Rechazada'),
-                (5, 'Documental sobre música urbana.', 10, 11, 12, NULL, 'alumni', 'Aceptada'),
-                (1, 'Corto histórico ambientado en 1900.', 11, 12, 1, NULL, 'alumno', 'En revisión'),
-                (2, 'Relato futurista de ciencia ficción.', 12, 1, 2, NULL, 'alumno', 'Aceptada'),
-                (3, 'Terror psicológico en espacio cerrado.', 1, 2, 3, NULL, 'alumni', 'Rechazada'),
-                (4, 'Historia de superación personal.', 2, 3, 4, NULL, 'alumno', 'En revisión'),
-                (5, 'Corto musical con artistas locales.', 3, 4, 5, NULL, 'alumni', 'Aceptada'),
-                (1, 'Romance juvenil contemporáneo.', 4, 5, 6, NULL, 'alumno', 'Rechazada'),
-                (2, 'Corto ecológico sobre reciclaje.', 5, 6, 7, NULL, 'alumno', 'En revisión'),
-                (3, 'Animación stop motion artesanal.', 6, 7, 8, NULL, 'alumni', 'Aceptada'),
-                (4, 'Drama familiar intergeneracional.', 7, 8, 9, NULL, 'alumno', 'Rechazada'),
-                (5, 'Corto artístico abstracto.', 8, 9, 10, NULL, 'alumni', 'Finalista');
+                (1, 'Corto urbano sobre la vida moderna.', 1, 8, 3, 2, 'alumno', 'Aceptada'),
+                (2, 'Documental sobre la fauna local.', 2, 8, 4, 10, 'alumno', 'En revisión'),
+                (3, 'Animación infantil educativa.', 10, 8, 5, NULL, 'alumni', 'Rechazada'),
+                (4, 'Drama social ambientado en un barrio.', 12, 8, 6, 1, 'alumno', 'Aceptada'),
+                (5, 'Corto experimental en blanco y negro.', 1, 8, 7, NULL, 'alumni', 'En revisión'),
+                (1, 'Comedia sobre la universidad.', 2, 8, 9, 12, 'alumno', 'Rechazada'),
+                (2, 'Thriller psicológico de suspense.', 10, 8, 11, 1, 'alumno', 'Aceptada'),
+                (3, 'Fantasía épica de bajo presupuesto.', 12, 8, 3, NULL, 'alumni', 'En revisión'),
+                (4, 'Crítica social al consumismo.', 1, 8, 4, 2, 'alumno', 'Rechazada'),
+                (5, 'Documental sobre música urbana.', 2, 8, 5, NULL, 'alumni', 'Aceptada'),
+                (1, 'Corto histórico ambientado en 1900.', 10, 8, 6, 12, 'alumno', 'En revisión'),
+                (2, 'Relato futurista de ciencia ficción.', 12, 8, 7, 1, 'alumno', 'Aceptada'),
+                (3, 'Terror psicológico en espacio cerrado.', 1, 8, 9, NULL, 'alumni', 'Rechazada'),
+                (4, 'Historia de superación personal.', 2, 8, 11, 10, 'alumno', 'En revisión'),
+                (5, 'Corto musical con artistas locales.', 10, 8, 3, NULL, 'alumni', 'Aceptada'),
+                (1, 'Romance juvenil contemporáneo.', 12, 8, 4, 1, 'alumno', 'Rechazada'),
+                (2, 'Corto ecológico sobre reciclaje.', 1, 8, 5, 2, 'alumno', 'En revisión'),
+                (3, 'Animación stop motion artesanal.', 2, 8, 6, NULL, 'alumni', 'Aceptada'),
+                (4, 'Drama familiar intergeneracional.', 10, 8, 7, 12, 'alumno', 'Rechazada'),
+                (5, 'Corto artístico abstracto.', 12, 8, 9, NULL, 'alumni', 'Finalista');
 
                 
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES

@@ -1,12 +1,34 @@
-const iconSinopsis = document.getElementById('iconSinopsis');
-const labelSinopsis = document.getElementById('label');
-const sinopsisErrorMessage = document.getElementById('sinopsisErrorMessage');
 const sinopsisInput = document.getElementById('sinopsisInput');
 const misCandidaturasContainer = document.getElementById('misCandidaturasContainer');
 const statusCardRevision = document.getElementById('statusCardRevision');
 const statusCardAceptada = document.getElementById('statusCardAceptada');
 const statusCardRechazada = document.getElementById('statusCardRechazada');
 const statusCardRechazadaSubsanar = document.getElementById('statusCardRechazadaSubsanar');
+const posterInput = document.getElementById('posterInput');
+const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
+const btnVerVideo = document.getElementById('btnVerVideo');
+const modalVerVideo = document.getElementById('modalVerVideo');
+const playVideoCorto = document.getElementById('playVideoCorto');
+
+btnVerVideo.addEventListener('click', () => {
+    modalVerVideo.open();
+});
+
+document.addEventListener('click', (e) => {
+    const playBtn = e.target.closest('#playVideoCorto');
+
+    if (playBtn) {
+        playBtn.classList.add('d-none');
+
+        const video = document.getElementById('videoCorto');
+        if (video) {
+            video.play().catch(error => {
+                console.error("Error al reproducir:", error);
+                playBtn.classList.remove('d-none');
+            });
+        }
+    }
+});
 
 function buildBadge(candidatura) {
     const span = document.createElement('span');
@@ -73,10 +95,15 @@ function renderizarCandidaturas(candidaturas) {
 
         misCandidaturasContainer.appendChild(candidaturaElement);
     });
-    // mostrarDetallesCandidatura(candidaturas[0]);
+    mostrarDetallesCandidatura(candidaturas[0]);
 }
 
 function mostrarDetallesCandidatura(candidatura){
+    const playBtn = document.getElementById('playVideoCorto');
+    if (playBtn) {
+        playBtn.classList.remove('d-none');
+    }
+    playVideoCorto.classList.remove('d-none');
     statusCardRevision.classList.add('d-none');
     statusCardAceptada.classList.add('d-none');
     statusCardRechazada.classList.add('d-none');
@@ -91,7 +118,21 @@ function mostrarDetallesCandidatura(candidatura){
         statusCardRechazada.classList.remove('d-none');
     }
 
-    sinopsisInput.setValue(candidatura.sinopsis, false);
+    posterInput.setAttachedMode(candidatura.rutaCartel, candidatura.idArchivoCartel)
+    fichaTecnicaInput.setAttachedMode(candidatura.rutaFichaTecnica, candidatura.idArchivoFichaTecnica)
+
+    sinopsisInput.setValue(candidatura.sinopsis, true);
+
+    // Cargar video
+    const video = document.getElementById('videoCorto');
+    video.pause();
+    video.src = "";
+    video.load();
+    setTimeout(() => {
+        video.src = candidatura.rutaVideo;
+        video.load();
+        console.log("Intentando cargar ruta:", video.src);
+    }, 50);
 }
 
 async function cargarCandidaturas() {

@@ -195,5 +195,3 @@ tipoCandidaturaSelect.setOptions([
     { value: 'alumno', label: 'Alumno'},
     { value :'alumni', label: 'Alumni'}
 ])
-
-switchStep(3);
