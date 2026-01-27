@@ -1322,11 +1322,6 @@ dialog::backdrop {
     padding-right: 24px;
 }
 
-.px-96{
-    padding-left: 96px;
-    padding-right: 96px;
-}
-
 .py-4px{
     padding-top: 4px;
     padding-bottom: 4px;

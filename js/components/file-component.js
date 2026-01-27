@@ -255,7 +255,7 @@ class FileComponent extends HTMLElement {
 
                     <div class="archivo-aceptado hidden-force">
                         <div class="d-flex align-items-center px-16px py-16px bg-success-04 gap-12px border-radius-4">
-                            <div class="bg-success-03 p-8px d-flex justify-center align-items-center border-radius-50">
+                            <div class="bg-success-03 p-8px d-flex justify-center align-items-center border-radius-50 d-inline-block">
                                 <span class="icon-small-check w-20px h-20px bg-neutral-02 d-block"></span>
                             </div>
                             <div class="d-flex flex-column flex-grow-1 min-w-0">

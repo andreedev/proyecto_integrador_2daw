@@ -111,7 +111,6 @@ if (isset($_POST['action'])) {
             eliminarNoticia();
             break;
         case 'listarEventos':
-            validarRol(['organizador', 'participante']);
             listarEventos();
             break;
         case 'obtenerEventoPorId':
@@ -1560,9 +1559,13 @@ function listarCandidaturasParticipante() {
             c.fecha_ultima_modificacion as fechaUltimaModificacion,
             c.sinopsis as sinopsis,
             a1.ruta as rutaVideo,
-            a2.ruta as rutaFicha,
+            a2.ruta as rutaFichaTecnica,
             a3.ruta as rutaCartel,
-            a4.ruta as rutaTrailer
+            a4.ruta as rutaTrailer,
+            a1.id_archivo as idArchivoVideo,
+            a2.id_archivo as idArchivoFicha,
+            a3.id_archivo as idArchivoCartel,
+            a4.id_archivo as idArchivoTrailer
         FROM candidatura c
         LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
         LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
@@ -1590,8 +1593,8 @@ function listarCandidaturasParticipante() {
         if ($row['rutaVideo']) {
             $row['rutaVideo'] = $baseUrl . $row['rutaVideo'];
         }
-        if ($row['rutaFicha']) {
-            $row['rutaFicha'] = $baseUrl . $row['rutaFicha'];
+        if ($row['rutaFichaTecnica']) {
+            $row['rutaFichaTecnica'] = $baseUrl . $row['rutaFichaTecnica'];
         }
         if ($row['rutaCartel']) {
             $row['rutaCartel'] = $baseUrl . $row['rutaCartel'];

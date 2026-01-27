@@ -15,10 +15,10 @@
 </head>
 <body>
     <home-header></home-header>
-    <div class="upload-short-film-container">
+    <div class="d-flex flex-column justify-content-center align-items-center py-36px px-16px mx-0 container-md">
         <p class="upload-short-film-title">Subir cortometraje</p>
         <span class="upload-short-film-secondary-text">Comparte tu obra con nosotros. Completa el formulario paso a paso.</span>
-        <div class="steps-container">
+        <div class="steps-container d-flex flex-row w-100">
             <div id="step1" class="step active-step">
                 <span class="step-number-container">
                     <span id="numberStep1" class="step-number-text">1</span>
@@ -115,12 +115,19 @@
                         <span class="divider-line"></span>
                     </div>
                     <div class="upload-short-film-input-space-between-row">
-                        <p class="upload-short-film-terms-text">Al continuar, confirmo que he leído y acepto las <a href="#" class="upload-short-film-link">bases legales</a> del concurso.</p>
-                        <button class="primary-button-01" id="step1ContinueBtn">Continuar</button>
+                        <p class="upload-short-film-terms-text">Al continuar, confirmo que he leído y acepto las <a href="bases-legales.html" class="upload-short-film-link">bases legales</a> del concurso.</p>
+                        <button class="primary-button-01 col-12 col-md-4" id="step1ContinueBtn">Continuar</button>
                     </div>
                 </div>
 
                 <div id="cardBodyStep2" class="upload-short-film-card-body-step step-2 d-none">
+                    <select-component
+                            id="tipoCandidaturaSelect"
+                            label="Tipo de candidatura"
+                            required
+                            required-message="Debes seleccionar un tipo">
+                    </select-component>
+
                     <div>
                         <file-component
                                 id="videoInput"
@@ -168,9 +175,9 @@
                         <span class="divider-line"></span>
                     </div>
 
-                    <div class="d-flex-two-columns-responsive">
-                        <button id="step2BackBtn" class="secondary-button-02">Volver</button>
-                        <button id="step2ContinueBtn" class="primary-button-01">Continuar</button>
+                    <div class="d-flex-two-columns-responsive justify-space-between">
+                        <button id="step2BackBtn" class="secondary-button-02 col-md-4">Volver</button>
+                        <button id="step2ContinueBtn" class="primary-button-01 col-md-4">Continuar</button>
                     </div>
                 </div>
 
@@ -188,28 +195,31 @@
                             error-size="El archivo es demasiado pesado. El máximo permitido son 5MB"
                             error-required="La ficha técnica es obligatoria para procesar la inscripción"
                     ></file-component>
-                    <div class="d-flex-two-columns-responsive">
-                        <button id="step3BackBtn" class="secondary-button-02">Volver</button>
-                        <button id="step3ContinueBtn" class="primary-button-01">Continuar</button>
+                    <div class="d-flex-two-columns-responsive justify-space-between">
+                        <button id="step3BackBtn" class="secondary-button-02 col-md-4">Volver</button>
+                        <button id="step3ContinueBtn" class="primary-button-01 col-md-4">Continuar</button>
                     </div>
                 </div>
 
             </div>
         </div>
-        <div class="d-none container-md box-shadow-02" id="cortoSubidoExitoCard">
-            <div class="bg-success-03 p-8px d-flex justify-center align-items-center border-radius-50 w">
-                <span class="icon-small-check w-20px h-20px bg-neutral-02 d-block"></span>
+        <div class="d-flex flex-column align-items-center container-lg box-shadow-02 p-24px gap-20px py-72px d-none" id="cortoSubidoExitoCard">
+            <div class="bg-success-03 d-flex justify-content-center align-items-center border-radius-50 p-12px">
+                <span class="icon-small-check w-36px h-36px bg-neutral-02 d-block"></span>
             </div>
-            <h4>¡Candidatura enviada con éxito!</h4>
-
+            <h4 class="text-center fs-24px fs-md-32px">¡Candidatura enviada con éxito!</h4>
+            <p class="text-center text-neutral-03">Tu cortometraje ha sido registrado correctamente. Recibirás un correo de confirmación en breve.</p>
+            <span class="text-primary-03">Redireccionando...</span>
         </div>
     </div>
     <home-footer></home-footer>
 
+    <script src="../js/components/modal-component.js"></script>
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/input-component.js"></script>
     <script src="../js/components/date-component.js"></script>
     <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/select-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/subir-corto.js"></script>
