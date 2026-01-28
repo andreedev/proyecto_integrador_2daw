@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Candidaturas</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/libraries/air-datepicker.min.css">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
     <link rel="stylesheet" href="../css/admin-candidaturas.css">
@@ -26,31 +27,34 @@
                     <span class="admin-module-description">Administra las candidaturas de los participantes</span>
                 </div>
             </div>
-            <div class="admin-content">
-                <!-- FILTERS -->
-                <div class="filters">
-                    <div class="filter-search">
-                        <input type="text" placeholder="Buscar por participante o sinopsis…">
-                    </div>
-                    <div class="filter-status">
-                        <select>
-                            <option disabled selected>Todos los estados</option>
-                            <option value="En revisión">En revisión</option>
-                            <option value="Aceptada">Aceptada</option>
-                            <option value="Rechazada">Rechazada</option>
-                            <option value="Finalista">Finalista</option>
-                        </select>
-                    </div>
-                    <div class="filter-date">
-                        <input type="date">
-                    </div>
-                    <button class="clear">Limpiar filtros</button>
-                </div>
 
-                <!-- TABLE -->
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
+            <div class="admin-content">
+                <div class="d-flex gap-24px flex-column">
+                    <div class="d-flex gap-32px align-items-center w-100 justify-space-between bg-neutral-08 p-20px">
+                        <input-component
+                                label="Buscar por participante o sinopsis"
+                                id="filtroTexto"
+                                width="auto"
+                                no-validation
+                                class="flex-grow-1">
+                        </input-component>
+
+                        <select-component
+                                id="filtroEstado"
+                                label="Filtrar por estado">
+                        </select-component>
+
+                        <date-component
+                                label="Fecha de presentación"
+                                id="filtroFecha"
+                        ></date-component>
+                        <button id="btnLimpiarFiltros" class="secondary-button-02">Limpiar filtros</button>
+                    </div>
+
+                    <!-- TABLE -->
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
                             <tr>
                                 <th>Participante</th>
                                 <th>Sinopsis</th>
@@ -59,22 +63,23 @@
                                 <th>Últ. actualización</th>
                                 <th>Acciones</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             <!-- Filas cargadas dinámicamente desde JS -->
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
-                    <div class="table-footer">
-                        <div class="pagination-info">
-                            Mostrando 0 de 0 candidaturas
-                        </div>
-                        <div class="pagination">
-                            <button class="pagination-btn"><span>Anterior</span></button>
-                            <button class="pagination-btn active">1</button>
-                            <button class="pagination-btn">2</button>
-                            <button class="pagination-btn">3</button>
-                            <button class="pagination-btn"><span>Siguiente</span></button>
+                        <div class="table-footer">
+                            <div class="pagination-info">
+                                Mostrando 0 de 0 candidaturas
+                            </div>
+                            <div class="pagination">
+                                <button class="pagination-btn"><span>Anterior</span></button>
+                                <button class="pagination-btn active">1</button>
+                                <button class="pagination-btn">2</button>
+                                <button class="pagination-btn">3</button>
+                                <button class="pagination-btn"><span>Siguiente</span></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -203,7 +208,8 @@
             </div>
         </div>
     </div>
-    <!-- MODAL HISTORIAL -->
+
+
     <div class="modal" id="historyModal">
         <div class="modal-overlay"></div>
         <div class="modal-content history-modal-custom">
@@ -219,17 +225,20 @@
         </div>
     </div>
 
-    <!-- MODAL NOTIFICACIÓN -->
-    <div class="modal" id="notificationModal">
-        <div class="modal-content">
-            <p id="notificationMessage"></p>
-            <div class="modal-actions">
-                <button class="btn" id="closeNotification">Aceptar</button>
-            </div>
-        </div>
-    </div>
 
+    <modal-component id="notificationModal" size="auto">
+        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
+            <p id="notificationMessage" class="max-width-300px"></p>
+            <div class="primary-button-02 close-modal w-100">Cerrar</div>
+        </div>
+    </modal-component>
+
+    <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/select-component.js"></script>
+    <script src="../js/components/modal-component.js"></script>
     <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
     <script src="../js/admin-candidaturas.js"></script>
     <script src="../js/menu-admin.js"></script>
 </body>

@@ -53,7 +53,6 @@ class DateComponent extends HTMLElement {
         const type = this.getAttribute('type') || 'date';
         const displayFormat = this.getAttribute('format') || (type === 'time' ? 'HH:mm' : 'dd/MM/yyyy');
 
-        // Resolve the container if the attribute is provided (e.g., "#myModal" or "body")
         const containerSelector = this.getAttribute('container');
         const containerElement = containerSelector ? document.querySelector(containerSelector) : undefined;
 

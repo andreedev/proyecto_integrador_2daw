@@ -281,7 +281,6 @@ p{
     font-size: 16px;
     font-weight: 400;
     cursor: pointer;
-    width: 100%;
     gap: 8px;
     transition: all 300ms ease;
 }
@@ -338,7 +337,6 @@ p{
     flex-wrap: wrap;
     align-items: center;
     gap: 16px;
-    background-color: var(--neutral-08);
     padding: 16px 16px;
     flex-direction: row;
 }
@@ -366,7 +364,6 @@ p{
 }
 
 .admin-content{
-    background-color: var(--neutral-08);
     padding: 16px;
     height: 100%;
 }

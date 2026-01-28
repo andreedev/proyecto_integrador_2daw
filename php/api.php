@@ -1398,52 +1398,86 @@ function eliminarEvento() {
 function mostrarCandidaturas() {
     global $conexion;
 
-    $query = "
-        SELECT 
-            c.id_candidatura,
-            c.estado,
-            c.tipo_candidatura,
-            c.fecha_presentacion,
-            c.fecha_ultima_modificacion,
-            c.sinopsis,
-            p.nombre AS participante,
-            p.dni,
-            a1.ruta AS video,
-            a2.ruta AS ficha,
-            a3.ruta AS cartel,
-            a4.ruta AS trailer
-        FROM candidatura c
-        INNER JOIN participante p 
-            ON c.id_participante = p.id_participante
-        LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
-        LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
-        LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
-        LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
-        ORDER BY c.id_candidatura DESC
-    ";
+    $limit  = 10;
+    $page   = (isset($_POST['page']) && is_numeric($_POST['page'])) ? (int)$_POST['page'] : 1;
+    $offset = ($page - 1) * $limit;
 
-    $stmt = $conexion->prepare($query);
+    // 2. Capture Inputs
+    $filtroTexto  = $_POST['filtroTexto'] ?? '';
+    $filtroEstado = $_POST['filtroEstado'] ?? '';
+    $filtroFecha  = $_POST['filtroFecha'] ?? '';
 
-    if (!$stmt) {
-        echo json_encode(["status" => "error", "message" => "Error al preparar la consulta: " . $conexion->error]);
-        return;
+    $whereSql = " WHERE 1=1 ";
+    $params = [];
+    $types = "";
+
+    if ($filtroTexto) {
+        $whereSql .= " AND (p.nombre LIKE ? OR c.sinopsis LIKE ?) ";
+        $term = "%$filtroTexto%";
+        $params[] = $term; $params[] = $term;
+        $types .= "ss";
     }
 
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $candidaturas = [];
-    while ($row = $result->fetch_assoc()) {
-        $candidaturas[] = $row;
+    if ($filtroEstado) {
+        $whereSql .= " AND c.estado = ? ";
+        $params[] = $filtroEstado;
+        $types .= "s";
     }
 
-    echo json_encode(["status" => "success", "data" => $candidaturas]);
+    if ($filtroFecha) {
+        $whereSql .= " AND DATE(c.fecha_presentacion) = ? ";
+        $params[] = $filtroFecha;
+        $types .= "s";
+    }
+
+    $countSql = "SELECT COUNT(*) as total FROM candidatura c 
+                 INNER JOIN participante p ON c.id_participante = p.id_participante 
+                 $whereSql";
+
+    $stmtCount = $conexion->prepare($countSql);
+    if ($types) {
+        $stmtCount->bind_param($types, ...$params);
+    }
+    $stmtCount->execute();
+    $totalRecords = $stmtCount->get_result()->fetch_assoc()['total'] ?? 0;
+
+    $dataSql = "SELECT c.*, p.nombre AS participante, p.dni, 
+                       a1.ruta AS video, a2.ruta AS ficha, a3.ruta AS cartel, a4.ruta AS trailer
+                FROM candidatura c
+                INNER JOIN participante p ON c.id_participante = p.id_participante
+                LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
+                LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
+                LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
+                LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
+                $whereSql
+                ORDER BY c.id_candidatura DESC
+                LIMIT ? OFFSET ?";
+
+    $stmtData = $conexion->prepare($dataSql);
+
+    $finalTypes = $types . "ii";
+    $finalParams = array_merge($params, [$limit, $offset]);
+
+    $stmtData->bind_param($finalTypes, ...$finalParams);
+    $stmtData->execute();
+    $result = $stmtData->get_result();
+
+    $candidaturas = $result->fetch_all(MYSQLI_ASSOC);
+
+    $totalPaginas = ceil($totalRecords / $limit);
+
+    echo json_encode([
+        "status"       => "success",
+        "totalRecords"        => (int)$totalRecords,
+        "totalPages"        => $totalPaginas,
+        "currentPage" => $page,
+        "data"         => $candidaturas
+    ]);
 }
 
 /**
  * Editar la candidatura
  */
-
 function editarCandidatura() {
     global $conexion;
 

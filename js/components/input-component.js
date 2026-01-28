@@ -19,7 +19,6 @@
  * - setCustomValidation(callback: function): Establece una función de validación personalizada
  * - validate(showUI: boolean): Valida el input y opcionalmente actualiza la UI
  * - setValue(value: string, validate: boolean): Establece el valor del input y opcionalmente valida
- * - reset(): Resetea el estado del input
  *
  * Eventos:
  * - solid-input-change: Disparado cuando el valor del input cambia
@@ -36,7 +35,7 @@ class InputComponent extends HTMLElement {
         return [
             'label', 'type', 'width', 'disabled', 'value',
             'error-message', 'required', 'min-length', 'max-length', 'required-message',
-            'validate-on-load', 'textarea', 'max-words', 'invalid-message'
+            'validate-on-load', 'textarea', 'max-words', 'invalid-message', 'no-validation'
         ];
     }
 
@@ -97,14 +96,9 @@ class InputComponent extends HTMLElement {
     _clearUIState() {
         const container = this.querySelector('.solid-input-container');
         const errorMsgSpan = this.querySelector('.solid-input-error-text');
-        const successIcon = this.querySelector('.icon-success-wrapper');
-        const errorIcon = this.querySelector('.icon-error-wrapper');
-
         if (container) {
-            container.classList.remove('state-error', 'state-success');
+            container.classList.remove('state-error', 'state-success', 'is-focused');
             if (errorMsgSpan) errorMsgSpan.classList.replace('d-block', 'd-none');
-            if (successIcon) successIcon.classList.add('d-none');
-            if (errorIcon) errorIcon.classList.add('d-none');
         }
     }
 
@@ -155,7 +149,7 @@ class InputComponent extends HTMLElement {
             errorIcon.classList.remove('d-none');
             errorMsgSpan.textContent = message;
             errorMsgSpan.classList.replace('d-none', 'd-block');
-        } else if (this.value.length > 0) {
+        } else if (this.value.length > 0 && !this.hasAttribute('no-validation')) {
             container.classList.add('state-success');
             successIcon.classList.remove('d-none');
         }
@@ -310,15 +304,13 @@ class InputComponent extends HTMLElement {
 
     clear() {
         this._touched = false;
+        const defaultOption = this._options.find(opt => opt.default === true);
+        const defaultValue = defaultOption ? defaultOption.value : '';
 
-        this.setValue('', false);
-
-        const container = this.querySelector('.solid-input-container');
-        if (container) {
-            container.classList.remove('has-value', 'is-focused', 'state-error', 'state-success');
-        }
+        this.value = defaultValue;
 
         this._clearUIState();
+        this._handleFloatingLabel(defaultValue);
     }
 }
 

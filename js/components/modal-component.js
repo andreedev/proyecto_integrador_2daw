@@ -13,6 +13,11 @@
  * - full-screen: Si está presente, el modal ocupará toda la pantalla.
  * - duration: Duración de la animación en milisegundos (por defecto 300).
  * - auto-open: Si está presente, el modal se abrirá automáticamente al cargar.
+ * - static: Si está presente, el modal no se cerrará al hacer clic fuera de él o al presionar Esc.
+ * - size: Define el tamaño del modal. Valores posibles:
+ *  "full" (ocupa todo el espacio disponible)
+ *  "auto" (ajusta su tamaño al contenido)
+ *  (ningún valor, tamaño predeterminado 400px)
  *
  * Eventos:
  * - modal-opened: Se dispara cuando el modal se abre.
@@ -27,14 +32,15 @@ class ModalComponent extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['z-index', 'full-screen', 'duration', 'auto-open'];
+        return ['z-index', 'full-screen', 'duration', 'auto-open', 'size'];
     }
 
     async connectedCallback() {
-        await window.injectExternalStyles('../css/modal-component.css', 'solid-modal-styles');
-
         this.render();
         this._setupEventListeners();
+
+        await window.injectExternalStyles('../css/modal-component.css', 'solid-modal-styles');
+
         this.style.visibility = 'visible';
 
         if (this.hasAttribute('auto-open')) {
@@ -46,22 +52,28 @@ class ModalComponent extends HTMLElement {
 
     render() {
         const zIndex = this.getAttribute('z-index') || '1000';
-        const isFullScreen = this.hasAttribute('full-screen') ? 'is-full-screen' : '';
         const duration = this.getAttribute('duration') || '300';
+
+        const isFullScreen = this.hasAttribute('full-screen') ? 'is-full-screen' : '';
+
+        const sizeAttr = this.getAttribute('size');
+        let sizeClass = '';
+        if (sizeAttr === 'full') sizeClass = 'is-size-full';
+        if (sizeAttr === 'auto') sizeClass = 'is-size-auto';
 
         const originalContent = this.innerHTML;
         this.innerHTML = '';
 
         this.innerHTML = `
-            <div class="solid-modal-overlay" 
-                 style="z-index: ${zIndex}; --modal-duration: ${duration}ms;">
-                <div class="solid-modal-container ${isFullScreen}">
-                    <div class="solid-modal-content">
-                        ${originalContent}
-                    </div>
+        <div class="solid-modal-overlay" 
+             style="z-index: ${zIndex}; --modal-duration: ${duration}ms;">
+            <div class="solid-modal-container ${isFullScreen} ${sizeClass}">
+                <div class="solid-modal-content">
+                    ${originalContent}
                 </div>
             </div>
-        `;
+        </div>
+    `;
     }
 
     _setupEventListeners() {
@@ -93,8 +105,14 @@ class ModalComponent extends HTMLElement {
 
     open() {
         if (this._isOpen) return;
-        this._isOpen = true;
+
         const overlay = this.querySelector('.solid-modal-overlay');
+        if (!overlay) {
+            console.warn("Modal: Attempted to open before render was complete");
+            return;
+        }
+
+        this._isOpen = true;
         overlay.classList.add('is-active');
         document.body.style.overflow = 'hidden';
 

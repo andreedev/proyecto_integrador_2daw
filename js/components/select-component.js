@@ -1,13 +1,9 @@
 /**
  * Select Component
- * Dropdown reutilizable que sigue la estética del InputComponent.
- * * Ejemplo de uso:
- * <select-component
- * id="miSelect"
- * label="Categoría"
- * required
- * required-message="Debes seleccionar una opción">
- * </select-component>
+ * Dropdown reutilizable que sigue la estética del InputComponent
+ *
+ * Ejemplo de uso:
+ * <select-component label="Selecciona una opción" width="250px" required required-message="Este campo es obligatorio"></select-component>
  */
 class SelectComponent extends HTMLElement {
     constructor() {
@@ -28,12 +24,15 @@ class SelectComponent extends HTMLElement {
         this.style.visibility = 'visible';
     }
 
-    /**
-     * Establece las opciones del dropdown vía JS
-     * @param {Array} options - [{ value: '1', label: 'Opción A' }, ...]
-     */
     setOptions(options) {
         this._options = options;
+
+        const defaultOption = options.find(opt => opt.default === true);
+
+        if (defaultOption) {
+            this.setAttribute('value', defaultOption.value);
+        }
+
         this.render();
         this._setupEventListeners();
     }
@@ -44,10 +43,13 @@ class SelectComponent extends HTMLElement {
     }
 
     set value(val) {
-        const field = this.querySelector('.solid-select-field');
-        if (field) {
-            field.value = val;
+        const select = this.querySelector('.solid-select-field');
+        if (select) {
+            select.value = val;
             this._handleFloatingLabel(val);
+        }
+        if (this.getAttribute('value') !== val) {
+            this.setAttribute('value', val);
         }
     }
 
@@ -86,8 +88,13 @@ class SelectComponent extends HTMLElement {
 
     _handleFloatingLabel(value) {
         const container = this.querySelector('.solid-input-container');
-        if (!container) return;
-        (value && value !== "") ? container.classList.add('has-value') : container.classList.remove('has-value');
+        const select = this.querySelector('select');
+        if (!container || !select) return;
+        if ((value !== "" && value !== null && value !== undefined) || select.selectedIndex !== -1) {
+            container.classList.add('has-value');
+        } else {
+            container.classList.remove('has-value');
+        }
     }
 
     _setupEventListeners() {
@@ -118,29 +125,52 @@ class SelectComponent extends HTMLElement {
         const disabled = this.hasAttribute('disabled') ? 'disabled' : '';
         const isRequired = this.hasAttribute('required') ? 'required' : '';
 
-        const optionsHtml = this._options.map(opt =>
-            `<option value="${opt.value}">${opt.label}</option>`
-        ).join('');
+        const currentValue = this.getAttribute('value') || '';
+
+        const optionsHtml = this._options.map(opt => {
+            const isSelected = String(opt.value) === String(currentValue) ? 'selected' : '';
+            return `<option value="${opt.value}" ${isSelected}>${opt.label}</option>`;
+        }).join('');
 
         this.innerHTML = `
             <div class="solid-input-container" style="width: ${width};">
                 <label class="solid-input-label text-neutral-04">
-                    ${labelText} ${this.hasAttribute('required') ? '*' : ''}
+                    ${labelText} ${isRequired ? '*' : ''}
                 </label>
                 
                 <select class="solid-input-field solid-select-field" ${isRequired} ${disabled} 
-                        style="outline: none !important; box-shadow: none !important; border: none !important; border-bottom: 1px solid var(--neutral-04) !important; padding-right: 40px; background: transparent;">
-                    <option value="" disabled selected hidden></option>
+                        style="outline: none !important; box-shadow: none !important; border: none !important; border-bottom: 1px solid var(--neutral-04) !important; padding-right: 40px; background: transparent; cursor: pointer;">
                     ${optionsHtml}
                 </select>
-
-                <div class="solid-input-icon-container" style="pointer-events: none; right: 0;">
+    
+                <div class="solid-input-icon-container" style="pointer-events: none; right: 0; top: 50%; transform: translateY(-50%);">
                     <span class="icon-down-arrow w-24px h-24px bg-neutral-03 d-block"></span>
                 </div>
                 
-                <span class="solid-input-error-text d-none" style="color: var(--neutral-01); margin-top: 4px; font-size: 12px;"></span>
+                <span class="solid-input-error-text d-none" style="color: var(--error-02); margin-top: 4px; font-size: 12px;"></span>
             </div>
         `;
+
+        this._handleFloatingLabel(currentValue);
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'value' && oldValue !== newValue) {
+            const select = this.querySelector('.solid-select-field');
+            if (select) {
+                select.value = newValue;
+                this._handleFloatingLabel(newValue);
+            }
+        }
+    }
+
+    reset() {
+        this._touched = false;
+        const defaultOption = this._options.find(opt => opt.default === true);
+        const defaultValue = defaultOption ? defaultOption.value : '';
+
+        this.value = defaultValue;
+        this._clearUIState();
     }
 }
 
