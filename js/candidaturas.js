@@ -9,7 +9,12 @@ const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
 const btnVerVideo = document.getElementById('btnVerVideo');
 const modalVerVideo = document.getElementById('modalVerVideo');
 const playVideoCorto = document.getElementById('playVideoCorto');
-const paginacion = document.getElementById('paginacion');
+const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
+const btnGuardarCambios = document.getElementById('btnGuardarCambios');
+
+let pageSize =3;
+
+let candidaturaSeleccionada = null;
 
 btnVerVideo.addEventListener('click', () => {
     modalVerVideo.open();
@@ -53,7 +58,7 @@ function buildBadge(candidatura) {
 
 function renderizarCandidaturas(candidaturas) {
     misCandidaturasContainer.replaceChildren();
-    candidaturas.forEach(candidatura => {
+    candidaturas.forEach((candidatura, index) => {
         const candidaturaElement = document.createElement('div');
         candidaturaElement.classList.add('candidatura-mini-card-component', 'cursor-pointer', 'gap-16px', 'p-24px', 'd-flex', 'flex-column', 'position-relative');
         candidaturaElement.appendChild(buildBadge(candidatura));
@@ -87,15 +92,27 @@ function renderizarCandidaturas(candidaturas) {
         candidaturaElement.appendChild(ultimaActualizacion);
 
         candidaturaElement.addEventListener('click', () => {
+            const allCards = misCandidaturasContainer.querySelectorAll('.candidatura-mini-card-component');
+            allCards.forEach(card => card.classList.remove('selected'));
+
+            candidaturaElement.classList.add('selected');
+
             mostrarDetallesCandidatura(candidatura);
         });
 
+        if (index === 0) {
+            candidaturaElement.classList.add('selected');
+        }
+
         misCandidaturasContainer.appendChild(candidaturaElement);
     });
-    mostrarDetallesCandidatura(candidaturas[0]);
+    if (candidaturas.length > 0) {
+        mostrarDetallesCandidatura(candidaturas[0]);
+    }
 }
 
 function mostrarDetallesCandidatura(candidatura){
+    candidaturaSeleccionada = candidatura;
     const playBtn = document.getElementById('playVideoCorto');
     if (playBtn) {
         playBtn.classList.remove('d-none');
@@ -133,11 +150,25 @@ function mostrarDetallesCandidatura(candidatura){
     }, 50);
 }
 
+paginacionCandidaturas.addEventListener('page-change', async (e) => {
+    await cargarCandidaturas();
+});
+
 async function cargarCandidaturas() {
-    const response = await listarCandidaturasParticipante();
+    const page = paginacionCandidaturas.currentPage;
+    const response = await listarCandidaturasParticipante(page, pageSize);
     if (response.status === 'success') {
-        renderizarCandidaturas(response.data);
+        const list = response.data.list;
+        const totalPages = response.data.totalPages;
+        const currentPage = response.data.currentPage;
+        renderizarCandidaturas(list);
+        paginacionCandidaturas.setAttribute('current-page', currentPage);
+        paginacionCandidaturas.setAttribute('total-pages', totalPages);
     }
 }
+
+btnGuardarCambios.addEventListener('click', async () => {
+
+});
 
 cargarCandidaturas();

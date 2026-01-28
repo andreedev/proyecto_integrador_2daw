@@ -344,9 +344,11 @@ async function guardarCandidatura(nombre, correo, password, dni, nroExpediente, 
     return await fetchAPI(data);
 }
 
-async function listarCandidaturasParticipante(){
+async function listarCandidaturasParticipante(page, pageSize){
     const data = new FormData();
     data.append('action', 'listarCandidaturasParticipante');
+    data.append('page', page);
+    data.append('pageSize', pageSize);
 
     return await fetchAPI(data);
 }

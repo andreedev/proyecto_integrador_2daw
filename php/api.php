@@ -1618,6 +1618,16 @@ function listarCandidaturasParticipante() {
     global $conexion;
 
     $idParticipante = (int)$_SESSION['id'];
+    $pagina = (isset($_POST['page']) && is_numeric($_POST['page'])) ? (int)$_POST['page'] : 1;
+    $limit  = (isset($_POST['pageSize']) && is_numeric($_POST['pageSize'])) ? (int)$_POST['pageSize'] : 3;
+
+    $offset = ($pagina - 1) * $limit;
+
+    $countSql = "SELECT COUNT(*) as total FROM candidatura WHERE id_participante = ?";
+    $stmtCount = $conexion->prepare($countSql);
+    $stmtCount->bind_param("i", $idParticipante);
+    $stmtCount->execute();
+    $totalRecords = $stmtCount->get_result()->fetch_assoc()['total'] ?? 0;
 
     $query = "
         SELECT 
@@ -1642,10 +1652,12 @@ function listarCandidaturasParticipante() {
         LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
         WHERE c.id_participante = ?
         ORDER BY c.id_candidatura DESC
+        LIMIT ? OFFSET ?
     ";
 
     $stmt = $conexion->prepare($query);
-    $stmt->bind_param("i", $idParticipante);
+
+    $stmt->bind_param("iii", $idParticipante, $limit, $offset);
 
     if (!$stmt) {
         echo json_encode(["status" => "error", "message" => "Error al preparar la consulta: " . $conexion->error]);
@@ -1656,8 +1668,8 @@ function listarCandidaturasParticipante() {
     $result = $stmt->get_result();
 
     $baseUrl = obtenerBaseUrl();
-
     $candidaturas = [];
+
     while ($row = $result->fetch_assoc()) {
         if ($row['rutaVideo']) {
             $row['rutaVideo'] = $baseUrl . $row['rutaVideo'];
@@ -1674,10 +1686,20 @@ function listarCandidaturasParticipante() {
         $candidaturas[] = $row;
     }
 
+    $totalPages = ceil($totalRecords / $limit);
+
+    $pageContext = [
+        "totalRecords"   => (int)$totalRecords,
+        "totalPages"     => (int)$totalPages,
+        "currentPage"    => $pagina,
+        "pageSize"       => $limit,
+        "list"           => $candidaturas
+    ];
+
     echo json_encode([
-        "status" => "success",
-        "data" => $candidaturas,
-        "idParticipante" => $idParticipante
+        "status"  => "success",
+        "data"    => $pageContext,
+        "message" => "ok"
     ]);
 }
 
