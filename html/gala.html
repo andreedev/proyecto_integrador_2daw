@@ -18,7 +18,7 @@
 
     <div class="container-fluid">
 
-        <div class="pre-evento hidden-force">
+        <div class="pre-evento">
             <div class="position-relative overflow-hidden">
                 <div class="pre-evento-header container d-grid grid-template-columns-1 grid-md-template-columns-2 gap-32px align-items-center py-48px">
                     <span class="bloque1"></span>
@@ -42,7 +42,9 @@
                         <span class="bloque4"></span>
                         <span class="pre-evento-video-text">Transmisión en directo</span>
                         <div class="video-container d-flex justify-content-center">
-                            <span class="video-play"></span>
+                            <div class="video-play-container">
+                                <span class="video-play"></span>
+                            </div>
                             <video class="video-gala" controls>
                                 <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
                             </video>
@@ -72,7 +74,7 @@
 
         </div>
 
-        <div class="post-evento">
+        <div class="post-evento ">
             <div class="position-relative overflow-hidden">
                 <div class="post-evento-header">
                     <div class="post-evento-header-text m-40px">
@@ -146,34 +148,9 @@
                             <div class="video-evento-track">
                                 <div class="video-evento-slide">
                                     <div class="video-evento">
-                                        <video class="video-gala" controls>
-                                            <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
-                                        </video>
-                                    </div>
-                                </div>
-                                <div class="video-evento-slide">
-                                    <div class="video-evento">
-                                        <video class="video-gala" controls>
-                                            <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
-                                        </video>
-                                    </div>
-                                </div>
-                                <div class="video-evento-slide">
-                                    <div class="video-evento">
-                                        <video class="video-gala" controls>
-                                            <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
-                                        </video>
-                                    </div>
-                                </div>
-                                <div class="video-evento-slide">
-                                    <div class="video-evento">
-                                        <video class="video-gala" controls>
-                                            <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
-                                        </video>
-                                    </div>
-                                </div>
-                                <div class="video-evento-slide">
-                                    <div class="video-evento">
+                                        <div class="video-play-container-evento">
+                                            <span class="video-play-evento"></span>
+                                        </div>
                                         <video class="video-gala" controls>
                                             <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
                                         </video>
@@ -187,6 +164,29 @@
 
                     <div class="video-evento-indicators" id="videoEventoIndicators"></div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-sinopsis-trailer hidden-force">
+        <div class="modal-content-sinopsis-trailer">
+            <div class="header-sinopsis-trailer">
+                <h1 class="header-text">Sinopsis y Tráiler</h1>
+                <span class="close-modal-sinopsis-trailer"></span>
+            </div>
+            <span class="linea"></span>
+            <div class="modal-body-sinopsis-trailer">
+                <div class="sinopsis-text-container">
+                    <p class="sinopsis-text" id="sinopsisText">Una joven lucha por encontrar su identidad en un mundo que no siempre la acepta. A través de su viaje, descubre el poder de la autoaceptación y la importancia de ser fiel a uno mismo.</p>
+                </div>
+                <div class="trailer-container">
+                    <div class="video-play-modal">
+                        <span class="video-play-trailer"></span>
+                    </div>
+                    <video class="video-trailer" controls>
+                        <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
         </div>
