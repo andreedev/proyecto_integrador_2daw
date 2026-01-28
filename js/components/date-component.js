@@ -38,7 +38,7 @@ class DateComponent extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['label', 'width', 'value', 'type', 'format', 'container'];
+        return ['label', 'width', 'value', 'type', 'format', 'container', 'disabled'];
     }
 
     async connectedCallback() {
@@ -53,6 +53,9 @@ class DateComponent extends HTMLElement {
         const type = this.getAttribute('type') || 'date';
         const displayFormat = this.getAttribute('format') || (type === 'time' ? 'HH:mm' : 'dd/MM/yyyy');
 
+        // 2. Verificar si está deshabilitado
+        const isDisabled = this.hasAttribute('disabled');
+
         const containerSelector = this.getAttribute('container');
         const containerElement = containerSelector ? document.querySelector(containerSelector) : undefined;
 
@@ -66,6 +69,11 @@ class DateComponent extends HTMLElement {
             minutesStep: 15,
             locale: this._getSpanishLocale(),
             buttons: this._getButtons(type),
+            onShow: (isFinished) => {
+                if (isDisabled && isFinished) {
+                    this._datepicker.hide();
+                }
+            },
             onSelect: ({date}) => {
                 this._handleFloatingLabel(input.value);
                 if (this._onSelectCallback) this._onSelectCallback(date);
@@ -151,17 +159,29 @@ class DateComponent extends HTMLElement {
         const type = this.getAttribute('type') || 'date';
         const iconClass = type === 'time' ? 'icon-clock' : 'icon-calendar';
 
+        // 3. Lógica para el estado deshabilitado
+        const isDisabled = this.hasAttribute('disabled');
+        const disabledAttr = isDisabled ? 'disabled' : '';
+        const disabledClass = isDisabled ? 'is-disabled' : '';
+
         this.innerHTML = `
-            <div class="solid-date-container" style="width: ${width};">
+            <div class="solid-date-container ${disabledClass}" style="width: ${width};">
                 <label class="solid-date-label text-neutral-04">${label}</label>
                 <div class="solid-date-input-wrapper">
                     <div class="solid-date-icon-left">
                         <span class="${iconClass} w-20px h-20px bg-neutral-03 d-block"></span>
                     </div>
-                    <input type="text" class="solid-date-field" readonly>
+                    <input type="text" class="solid-date-field" readonly ${disabledAttr}>
                 </div>
             </div>
         `;
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'disabled' && oldValue !== newValue) {
+            this.render();
+            this._initPicker();
+        }
     }
 
     _getButtons(type) {

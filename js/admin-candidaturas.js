@@ -22,6 +22,16 @@ const motivoCambioEstado = document.getElementById('motivoCambioEstado');
 const btnConfimarCambioEstado = document.getElementById('btnConfimarCambioEstado');
 const textoAyudaCambioEstado = document.getElementById('textoAyudaCambioEstado');
 
+const estadoCandidaturaBadge = document.getElementById('estadoCandidaturaBadge');
+const nombreCortoInput = document.getElementById('nombreCortoInput');
+const nombreParticipante2 = document.getElementById('nombreParticipante2');
+const nroExpedienteInput2 = document.getElementById('nroExpedienteInput2');
+const nroDocumentoInput = document.getElementById('nroDocumentoInput');
+const sinopsisInput = document.getElementById('sinopsisInput');
+const fechaPresentacionInput = document.getElementById('fechaPresentacionInput');
+const fechaActualizacionInput = document.getElementById('fechaActualizacionInput');
+const btnVerDocumentos = document.getElementById('btnVerDocumentos');
+
 let candidaturaSeleccionada = null;
 
 filtroEstado.setOptions([
@@ -66,6 +76,10 @@ nuevoEstadoCandidatura.addEventListener('change', (e) => {
     actualizarEstadoMotivoRechazoInput(estadoSeleccionado);
 });
 
+btnVerDocumentos.addEventListener('click', () => {
+    modalDetalleCandidatura.close();
+    modalDocumentos.open();
+});
 
 const statusLabels = {
     review: 'En revisión',
@@ -168,7 +182,11 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'actions';
 
-        const btnDetail = createBtn('Detalle', 'secondary-button-02', () => abrirDetalle(c));
+        const btnDetail = createBtn('Detalle', 'secondary-button-02', () =>{
+            candidaturaSeleccionada = c;
+            renderizarDetalleCandidatura(c);
+            modalDetalleCandidatura.open();
+        });
         const btnDocs = createBtn('Documentos', 'secondary-button-02', () => {
             candidaturaSeleccionada = c;
             renderizarDocumentos(c);
@@ -300,43 +318,16 @@ btnConfimarCambioEstado.addEventListener('click', async () => {
     await cargarCandidaturas();
 });
 
-function abrirDetalle(row) {
-    if (!row) return;
-    activeDetailRow = row;
-
-    const id = row.dataset.id;
-    const c = candidaturas.find(item => item.id_candidatura == id);
-
-    if (!c) return;
-
-    const tituloCandidatura = document.getElementById('detail-title');
-    if (tituloCandidatura) tituloCandidatura.textContent = `Detalle de Candidatura`;
-
-    document.getElementById('nombreCortoInput').setValue(c.nombre_cortometraje || 'Sin título');
-    document.getElementById('nombreParticipanteInput').setValue(c.participante || '-');
-    document.getElementById('nroExpedienteInput').setValue(c.nro_expediente || 'EXP-2025-001');
-    document.getElementById('nroDocumentoInput').setValue(c.dni || '-');
-    document.getElementById('sinopsisInput').setValue(c.sinopsis || '-');
-    document.getElementById('fechaPresentacionInput').setValue(formatDate(c.fecha_presentacion));
-    document.getElementById('fechaActualizacionInput').setValue(formatDate(c.fecha_ultima_modificacion));
-
-    const badge = document.getElementById('detail-status-badge');
-    if (badge) {
-        const estadoClave = getEstadoKey(c.estado);
-        badge.textContent = statusLabels[estadoClave] || c.estado;
-        badge.className = `badge ${getBadgeClass(c.estado)}`;
-    }
-
-    const rejectReasonDiv = document.getElementById('detail-reject-reason');
-    const rejectReasonText = document.getElementById('reject-reason-text');
-    if (c.estado === 'Rechazada' && c.reject_reason) {
-        if (rejectReasonText) rejectReasonText.textContent = c.reject_reason;
-        if (rejectReasonDiv) rejectReasonDiv.style.display = 'block';
-    } else {
-        if (rejectReasonDiv) rejectReasonDiv.style.display = 'none';
-    }
-
-    detailModal.style.display = 'flex';
+function renderizarDetalleCandidatura(candidatura) {
+    estadoCandidaturaBadge.textContent = candidatura.estado;
+    estadoCandidaturaBadge.className = `badge ${getBadgeClass(candidatura.estado)}`;
+    nombreCortoInput.value= candidatura.nombre_cortometraje || '-';
+    nombreParticipante2.value = candidatura.participante || '-';
+    nroExpedienteInput2.value = candidatura.nroExpediente || '-';
+    nroDocumentoInput.value = candidatura.dni || '-';
+    sinopsisInput.value = candidatura.sinopsis || '-';
+    fechaPresentacionInput.setDate(convertISOStringToDate(candidatura.fecha_presentacion));
+    fechaActualizacionInput.setDate(convertISOStringToDate(candidatura.fecha_ultima_modificacion));
 }
 
 

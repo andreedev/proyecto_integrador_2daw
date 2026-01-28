@@ -350,3 +350,10 @@ async function listarCandidaturasParticipante(){
 
     return await fetchAPI(data);
 }
+
+async function obtenerDatosGala(){
+    const data = new FormData();
+    data.append('action', 'obtenerDatosGala');
+
+    return await fetchAPI(data);
+}

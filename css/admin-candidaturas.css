@@ -360,8 +360,6 @@ th {
         "sinopsis sinopsis"
         "fechaPresentacion fechaActualizacion";
     gap: 24px;
-    background: var(--neutral-07);
-    padding: 24px;
     border-radius: 4px;
 }
 

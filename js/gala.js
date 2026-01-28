@@ -153,3 +153,27 @@ slidesVE.forEach(slide => {
         indexVE < maxIndexVE ? moverVE(indexVE + 1) : moverVE(0);
     });
 });
+
+cargarDatosGala();
+
+async function cargarDatosGala() {
+    const response = await obtenerDatosGala();
+    renderizarDatosGala(response.data);
+}
+
+function renderizarDatosGala(data) {
+    const contenidoPreEvento = document.getElementById('contenidoPreEvento');
+    const contenidoPostEvento = document.getElementById('contenidoPostEvento');
+
+    if (data.modo === 'pre-evento') {
+        const preEventoTitulo = document.getElementById('preEventoTitulo');
+        const preEventoDescripcion = document.getElementById('preEventoDescripcion');
+
+        preEventoTitulo.textContent = data.titulo;
+        preEventoDescripcion.textContent = data.descripcion;
+
+    }
+    if (data.modo === 'post-evento') {
+
+    }
+}

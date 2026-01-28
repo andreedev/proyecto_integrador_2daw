@@ -150,6 +150,9 @@ if (isset($_POST['action'])) {
             validarRol(['participante']);
             listarCandidaturasParticipante();
             break;
+        case 'obtenerDatosGala':
+            obtenerDatosGala();
+            break;
         default:
             break;
     }
@@ -1676,6 +1679,188 @@ function listarCandidaturasParticipante() {
         "data" => $candidaturas,
         "idParticipante" => $idParticipante
     ]);
+}
+
+/**
+ * Obtener datos de la gala
+ */
+/**
+ */
+function obtenerDatosGala() {
+    global $conexion;
+
+    $queryModo = "SELECT valor FROM configuracion WHERE nombre = 'modo' LIMIT 1";
+    $stmtModo = $conexion->prepare($queryModo);
+    $stmtModo->execute();
+    $resModo = $stmtModo->get_result();
+    $modo = $resModo->fetch_assoc()['valor'];
+
+    $datos=[];
+    $datos['modo'] = $modo;
+
+    $baseUrl = obtenerBaseUrl();
+
+    if ($modo == 'pre-evento'){
+        $queryTitulo =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoTitulo' LIMIT 1";
+        $stmtPreEvento = $conexion->prepare($queryTitulo);
+        $stmtPreEvento->execute();
+        $resPreEvento = $stmtPreEvento->get_result();
+        $datos['titulo'] = $resPreEvento->fetch_assoc()['valor'];
+
+        $queryFecha =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoFecha' LIMIT 1";
+        $stmtPreEvento = $conexion->prepare($queryFecha);
+        $stmtPreEvento->execute();
+        $resPreEvento = $stmtPreEvento->get_result();
+        $datos['fecha'] = $resPreEvento->fetch_assoc()['valor'];
+
+        $queryHora =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoHora' LIMIT 1";
+        $stmtPreEvento = $conexion->prepare($queryHora);
+        $stmtPreEvento->execute();
+        $resPreEvento = $stmtPreEvento->get_result();
+        $datos['hora'] = $resPreEvento->fetch_assoc()['valor'];
+
+        $queryUbicacion =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoUbicacion' LIMIT 1";
+        $stmtPreEvento = $conexion->prepare($queryUbicacion);
+        $stmtPreEvento->execute();
+        $resPreEvento = $stmtPreEvento->get_result();
+        $datos['ubicacion'] = $resPreEvento->fetch_assoc()['valor'];
+
+        $queryDescripcion =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoDescripcion' LIMIT 1";
+        $stmtPreEvento = $conexion->prepare($queryDescripcion);
+        $stmtPreEvento->execute();
+        $resPreEvento = $stmtPreEvento->get_result();
+        $datos['descripcion'] = $resPreEvento->fetch_assoc()['valor'];
+
+        $queryStreamingActivo =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoStreamingActivo' LIMIT 1";
+        $stmtPreEvento = $conexion->prepare($queryStreamingActivo);
+        $stmtPreEvento->execute();
+        $resPreEvento = $stmtPreEvento->get_result();
+        $datos['streamingActivo'] = $resPreEvento->fetch_assoc()['valor'] == 'true' ? true : false;
+
+        $queryStreamingUrl =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoStreamingUrl' LIMIT 1";
+        $stmtPreEvento = $conexion->prepare($queryStreamingUrl);
+        $stmtPreEvento->execute();
+        $resPreEvento = $stmtPreEvento->get_result();
+        $datos['streamingUrl'] = $resPreEvento->fetch_assoc()['valor'];
+
+        $queryEventosDiaGala = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
+                e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
+                e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento, a.id_archivo as idArchivoImagenEvento
+              FROM evento e
+              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo 
+              WHERE e.fecha = ?
+              ORDER BY e.hora_inicio ASC";
+        $stmtEventos = $conexion->prepare($queryEventosDiaGala);
+        $stmtEventos->bind_param("s", $datos['fecha']);
+        $stmtEventos->execute();
+        $resultEventos = $stmtEventos->get_result();
+
+        $eventosDiaGala = [];
+        while ($row = $resultEventos->fetch_assoc()) {
+            if ($row['rutaImagenEvento']) {
+                $row['rutaImagenEvento'] = $baseUrl . $row['rutaImagenEvento'];
+            }
+            $eventosDiaGala[] = $row;
+        }
+    } else if ($modo == 'post-evento'){
+
+        $edicionActual = obtenerEdicionActual();
+        $galeriaEdicionActual = obtenerGaleriaEdicionActual();
+        $candidaturasGanadoras = obtenerCandidaturasGanadoras();
+
+        $datos['titulo'] = "El cine cobró vida: Así fue la Gala " . $edicionActual['anioEdicion'];
+        $datos['descripcion'] = $edicionActual['resumenEvento'];
+        $datos['galeria'] = $galeriaEdicionActual;
+        $datos['candidaturasGanadoras'] = $candidaturasGanadoras;
+
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $datos
+    ]);
+}
+
+function obtenerEdicionActual() {
+    global $conexion;
+
+    $queryEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, nro_participantes as nroParticipantes
+                     FROM edicion
+                     WHERE tipo = 'actual'
+                     LIMIT 1";
+    $stmtEdicion = $conexion->prepare($queryEdicion);
+    $stmtEdicion->execute();
+    $resultEdicion = $stmtEdicion->get_result();
+    return $resultEdicion->fetch_assoc();
+}
+
+function obtenerGaleriaEdicionActual(){
+    global $conexion;
+
+    $edicionActual = obtenerEdicionActual();
+    $idEdicionActual = (int)$edicionActual['idEdicion'];
+
+    $queryGaleria = "SELECT g.id_galeria as idGaleria, g.titulo as tituloGaleria, a.ruta as rutaImagenGaleria, a.id_archivo as idArchivoImagenGaleria
+                     FROM galeria g
+                     LEFT JOIN archivo a ON g.id_archivo_imagen = a.id_archivo
+                     WHERE g.id_edicion = ?
+                     ORDER BY g.id_galeria DESC";
+
+    $stmtGaleria = $conexion->prepare($queryGaleria);
+    $stmtGaleria->bind_param("i", $idEdicionActual);
+    $stmtGaleria->execute();
+    $resultGaleria = $stmtGaleria->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+    $galeria = [];
+    while ($row = $resultGaleria->fetch_assoc()) {
+        if ($row['rutaImagenGaleria']) {
+            $row['rutaImagenGaleria'] = $baseUrl . $row['rutaImagenGaleria'];
+        }
+        $galeria[] = $row;
+    }
+
+    return $galeria;
+}
+
+function obtenerCandidaturasGanadoras() {
+    global $conexion;
+
+    $query = "SELECT pc.id_premio_candidatura as idPremioCandidatura, pc.id_candidatura as idCandidatura, pc.nombre_premio as nombrePremio,
+                     c.sinopsis as sinopsisCandidatura, p.nombre as nombreParticipante, p.dni as dniParticipante,
+                     a1.ruta as rutaVideo, a2.ruta as rutaFicha, a3.ruta as rutaCartel, a4.ruta as rutaTrailer
+              FROM premio_candidatura pc
+              INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
+              INNER JOIN participante p ON c.id_participante = p.id_participante
+              LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
+              LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
+              LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
+              LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
+              ORDER BY pc.id_premio_candidatura DESC";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+    $candidaturasGanadoras = [];
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaVideo']) {
+            $row['rutaVideo'] = $baseUrl . $row['rutaVideo'];
+        }
+        if ($row['rutaFicha']) {
+            $row['rutaFicha'] = $baseUrl . $row['rutaFicha'];
+        }
+        if ($row['rutaCartel']) {
+            $row['rutaCartel'] = $baseUrl . $row['rutaCartel'];
+        }
+        if ($row['rutaTrailer']) {
+            $row['rutaTrailer'] = $baseUrl . $row['rutaTrailer'];
+        }
+        $candidaturasGanadoras[] = $row;
+    }
+
+    echo json_encode(["status" => "success", "data" => $candidaturasGanadoras]);
 }
 
 cerrarConexion();

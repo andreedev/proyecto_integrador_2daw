@@ -39,9 +39,21 @@ modal-component:has(.is-active) {
     background: #ffffff;
     width: 90%;
     max-width: 600px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     transform: scale(0.9);
     transition: transform var(--modal-duration, 300ms) cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.solid-modal-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neutral-04) transparent;
 }
 
 .solid-modal-overlay.is-active .solid-modal-container {
@@ -76,4 +88,12 @@ modal-component:has(.is-active) {
 
 .modal-static-bounce {
     animation: modal-static-bounce 0.3s ease-in-out;
+}
+
+.solid-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+.solid-modal-content::-webkit-scrollbar-thumb {
+    background: var(--neutral-04);
+    border-radius: 10px;
 }

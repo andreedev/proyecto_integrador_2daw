@@ -163,61 +163,52 @@
         </div>
     </modal-component>
 
-    <modal-component id="modalDetalleCandidatura" size="auto">
-<!--        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">-->
-<!--            <div class="modal-header">-->
-<!--                <h2>Detalle de Candidatura</h2>-->
-<!--                <button class="close-btn close-modal">&times;</button>-->
-<!--            </div>-->
+    <modal-component id="modalDetalleCandidatura">
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
+            <span class="fs-20px fw-600">Documentos de la candidatura</span>
+            <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+        </div>
 
-<!--            <div class="detail-content">-->
-<!--                <div class="status-header-row">-->
-<!--                    <span class="label-inline">Estado:</span>-->
-<!--                    <span id="detail-status-badge" class="badge-status-yellow">En revisión</span>-->
-<!--                </div>-->
+        <div class="d-flex flex-column p-24px gap-24px bg-neutral-08">
 
-<!--                <div class="participant-info">-->
+            <div class="status-header-row">
+                <span class="label-inline">Estado:</span>
+                <span id="estadoCandidaturaBadge" class="badge-status-yellow">En revisión</span>
+            </div>
 
-<!--                    <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>-->
+            <div class="w-100 d-flex flex-column gap-16px">
 
-<!--                    <input-component id="nombreParticipanteInput" label="Nombre del participante"-->
-<!--                                     disabled></input-component>-->
+                <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>
 
-<!--                    <input-component id="nroExpedienteInput" label="Nro expediente:" disabled></input-component>-->
+                <input-component id="nombreParticipante2" label="Nombre del participante"
+                                 disabled></input-component>
 
-<!--                    <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>-->
+                <div class="d-flex flex-row gap-24px">
+                    <input-component id="nroExpedienteInput2" label="Nro expediente:" disabled></input-component>
 
-<!--                    <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea disabled></input-component>-->
+                    <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>
+                </div>
 
-<!--                    <span class="word-counter">100/100 palabras</span>-->
+                <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea disabled></input-component>
 
-<!--                    <div class="input-with-icon">-->
-<!--                        <span class="icon-calendar"></span>-->
-<!--                        <input-component id="fechaPresentacionInput" label="Fecha de presentación"-->
-<!--                                         disabled></input-component>-->
-<!--                    </div>-->
+                <span class="fs-12px ">100/100 palabras</span>
 
-<!--                    <div class="input-with-icon">-->
-<!--                        <span class="icon-calendar"></span>-->
-<!--                        <input-component id="fechaActualizacionInput" label="Última actualización"-->
-<!--                                         disabled></input-component>-->
-<!--                    </div>-->
+                <date-component id="fechaPresentacionInput" label="Fecha de presentación"
+                                 disabled></date-component>
 
-<!--                </div>-->
+                <date-component id="fechaActualizacionInput" label="Última actualización"
+                                 disabled></date-component>
+
+            </div>
+
+            <div class="footer-actions">
+                <button class="primary-button-01" id="btnVerDocumentos">Ver documentos</button>
+            </div>
 
 
-<!--                <div class="footer-actions">-->
-<!--                    <button class="btn-ver-documentos">Ver documentos</button>-->
-<!--                </div>-->
-
-<!--                <div class="reject-reason" id="detail-reject-reason" style="display: none;">-->
-<!--                    <strong>Motivo del rechazo:</strong>-->
-<!--                    <p id="reject-reason-text"></p>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
     </modal-component>
-
+1
 
     <modal-component id="modalHistorialEstado" >
         <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">

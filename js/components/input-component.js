@@ -320,6 +320,8 @@ class InputComponent extends HTMLElement {
         const type = this.getAttribute('type') || 'text';
         const width = this.getAttribute('width') || '100%';
         const currentValue = (this.getAttribute('value') || '').replace(/"/g, '&quot;');
+
+        // Esta variable contiene el string "disabled" o vacío
         const disabled = this.hasAttribute('disabled') ? 'disabled' : '';
 
         const isRequired = this.hasAttribute('required') ? 'required' : '';
@@ -327,26 +329,19 @@ class InputComponent extends HTMLElement {
         const maxLengthAttr = this.getAttribute('max-length') ? `maxlength="${this.getAttribute('max-length')}"` : '';
 
         const inputTag = isTextarea ?
-            `<textarea class="solid-input-field is-textarea" ${isRequired} ${minLengthAttr} ${maxLengthAttr}>${currentValue}</textarea>` :
+            `<textarea class="solid-input-field is-textarea" ${isRequired} ${minLengthAttr} ${maxLengthAttr} ${disabled}>${currentValue}</textarea>` :
             `<input class="solid-input-field" type="${type}" value="${currentValue}" ${isRequired} ${minLengthAttr} ${maxLengthAttr} ${disabled}/>`;
 
         this.innerHTML = `
-            <div class="solid-input-container ${isTextarea ? 'variant-textarea' : ''}" style="width: ${width};">
-                <label class="solid-input-label text-neutral-04">
-                    ${labelText} ${this.hasAttribute('required') ? '*' : ''}
-                </label>
-                
-                ${inputTag}
-
-                <div class="solid-input-icon-container icon-success-wrapper d-none">
-                    <span class="icon-check w-24px h-24px bg-success-02 d-block"></span>
-                </div>
-                <div class="solid-input-icon-container icon-error-wrapper d-none">
-                    <span class="icon-close w-24px h-24px bg-error-02 d-block"></span>
-                </div>
-                <span class="solid-input-error-text text-error-02 d-none"></span>
+        <div class="solid-input-container ${isTextarea ? 'variant-textarea' : ''} ${this.hasAttribute('disabled') ? 'is-disabled' : ''}" style="width: ${width};">
+            <label class="solid-input-label text-neutral-04">
+                ${labelText} ${this.hasAttribute('required') ? '*' : ''}
+            </label>
+            
+            ${inputTag}
+            
             </div>
-        `;
+    `;
 
         this._handleFloatingLabel(currentValue);
     }

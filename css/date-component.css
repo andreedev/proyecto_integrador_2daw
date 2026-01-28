@@ -42,3 +42,12 @@
 .solid-date-container:focus-within .solid-date-label {
     color: var(--neutral-01);
 }
+
+.solid-date-container.is-disabled {
+    opacity: 0.9;
+    cursor: default;
+}
+
+.solid-date-field:disabled {
+    color: var(--neutral-02);
+}
