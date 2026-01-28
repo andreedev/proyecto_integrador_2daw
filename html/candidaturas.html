@@ -17,8 +17,9 @@
 </head>
 <body>
     <home-header></home-header>
-    <div class="d-flex flex-row gap-24px p-32px container container-xl">
-        <div class="left-side">
+    <div class="d-flex flex-column flex-md-row gap-24px p-32px container-md-to-xl">
+
+        <div id="left" class="flex-shrink-0 d-flex flex-column box-shadow-01">
             <div class="d-flex flex-column">
                 <div class="d-flex justify-content-center border-bottom-solid border-neutral-05 p-16px">
                     <a class="secondary-button-02 w-100 text-center" id="btnMiPerfil">
@@ -31,37 +32,19 @@
                     </a>
                 </div>
 
-
                 <h2 class="fs-24px fw-600 line-height-120 p-24px border-bottom-solid border-neutral-05">Mis Candidaturas</h2>
                 <div id="misCandidaturasContainer">
-                    <div class="candidatura-mini-card-component">
-                        <span class="estado-candidatura" id="textEstadoCandidatura">En revisión</span>
-                        <span class="title-cortometraje" id="titleCortometraje">Cortometraje de ejemplo</span>
-                        <div class="hora-presentada">
-                            <span class="icon-hora w-20px h-20px"></span>
-                            <span class="fecha-presentada" id="fechaPresentada">Presentado: 15/01/2025</span>
-                        </div>
-                        <div class="ultima-actualizacion">
-                            <span class="icon-hora w-20px h-20px"></span>
-                            <span class="fecha-actualizacion" id="fechaActualizacion">Última actualización: 20/01/2025</span>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <div class="page-button-container" id="pageButtonCointainer">
-                <div class="button1" id="button1">
-                    <span class="numero" id="numero1">1</span>
-                </div>
-                <div class="button2" id="button2">
-                    <span class="numero" id="numero2">2</span>
-                </div>
-                <span class="flecha" id="flechaDerecha">>></span>
+            <div class="d-flex flex-column p-16px justify-content-center align-items-center">
+                <pagination-component
+                        id="paginacionCandidaturas">
+                </pagination-component>
             </div>
-
         </div>
 
 
-        <div class="right-side d-flex gap-12px">
+        <div id="right" class="flex-grow-1 min-w-0 d-flex flex-column gap-12px">
             <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-bg-warning-04-01 border-solid bg-warning-04 text-warning-01" id="statusCardRevision">
                 <span class="icono-film flex-shrink-0"></span>
                 <div class="text-revision">
@@ -188,6 +171,7 @@
     </modal-component>
 
     <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
     <script src="../js/components/modal-component.js"></script>
     <script src="../js/components/input-component.js"></script>
     <script src="../js/components/date-component.js"></script>

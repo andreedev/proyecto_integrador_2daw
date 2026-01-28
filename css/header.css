@@ -57,9 +57,10 @@
 
 .header-buttons-desktop-container {
     display: none;
-    justify-content: space-evenly;
+    justify-content: flex-end;
     align-items: center;
-    flex: 1 0 0;
+    gap: 8px;
+    flex: 1;
 }
 
 @media (min-width: 992px) {
@@ -96,6 +97,12 @@
 
 .header-base-button-responsive-font-size{
     font-size: 12px;
+}
+
+@media (min-width: 992px) {
+    .header-base-button-responsive-font-size{
+        font-size: 10px;
+    }
 }
 
 @media (min-width: 1100px) {

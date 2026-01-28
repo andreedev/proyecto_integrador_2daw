@@ -9,6 +9,7 @@ const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
 const btnVerVideo = document.getElementById('btnVerVideo');
 const modalVerVideo = document.getElementById('modalVerVideo');
 const playVideoCorto = document.getElementById('playVideoCorto');
+const paginacion = document.getElementById('paginacion');
 
 btnVerVideo.addEventListener('click', () => {
     modalVerVideo.open();
@@ -54,33 +55,29 @@ function renderizarCandidaturas(candidaturas) {
     misCandidaturasContainer.replaceChildren();
     candidaturas.forEach(candidatura => {
         const candidaturaElement = document.createElement('div');
-        candidaturaElement.classList.add('candidatura-mini-card-component', 'cursor-pointer');
-
-
+        candidaturaElement.classList.add('candidatura-mini-card-component', 'cursor-pointer', 'gap-16px', 'p-24px', 'd-flex', 'flex-column', 'position-relative');
         candidaturaElement.appendChild(buildBadge(candidatura));
 
         const titleCortometraje = document.createElement('span');
-        titleCortometraje.classList.add('title-cortometraje');
-        titleCortometraje.id = 'titleCortometraje';
+        titleCortometraje.classList.add('fw-600');
         titleCortometraje.textContent = candidatura.sinopsis;
         candidaturaElement.appendChild(titleCortometraje);
 
         const horaPresentada = document.createElement('div');
-        horaPresentada.classList.add('hora-presentada');
+        horaPresentada.classList.add('d-flex', 'align-items-center', 'gap-8px');
         const iconHora1 = document.createElement('span');
-        iconHora1.classList.add('icon-hora');
+        iconHora1.classList.add('icon-sand-clock', 'w-20px', 'h-20px', 'bg-neutral-01');
         horaPresentada.appendChild(iconHora1);
         const fechaPresentada = document.createElement('span');
-        fechaPresentada.classList.add('fecha-presentada');
         fechaPresentada.id = 'fechaPresentada';
         fechaPresentada.textContent = `Presentado: ${formatDateToSpanish(candidatura.fechaPresentacion)}`;
         horaPresentada.appendChild(fechaPresentada);
         candidaturaElement.appendChild(horaPresentada);
 
         const ultimaActualizacion = document.createElement('div');
-        ultimaActualizacion.classList.add('ultima-actualizacion');
+        ultimaActualizacion.classList.add('d-flex', 'align-items-center', 'gap-8px');
         const iconHora2 = document.createElement('span');
-        iconHora2.classList.add('icon-hora');
+        iconHora2.classList.add('icon-sand-clock', 'w-20px', 'h-20px', 'bg-neutral-01');
         ultimaActualizacion.appendChild(iconHora2);
         const fechaActualizacion = document.createElement('span');
         fechaActualizacion.classList.add('fecha-actualizacion');
@@ -126,7 +123,9 @@ function mostrarDetallesCandidatura(candidatura){
     // Cargar video
     const video = document.getElementById('videoCorto');
     video.pause();
-    video.src = "";
+    if (video.src !== candidatura.rutaVideo) {
+        video.src = candidatura.rutaVideo;
+    }
     video.load();
     setTimeout(() => {
         video.src = candidatura.rutaVideo;

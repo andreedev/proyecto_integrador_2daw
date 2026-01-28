@@ -1,13 +1,18 @@
 modal-component {
     display: block;
     position: fixed;
-    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
     visibility: hidden;
 }
 
 modal-component:has(.is-active) {
-    z-index: 1000;
     visibility: visible;
+    pointer-events: auto;
 }
 
 .solid-modal-overlay {

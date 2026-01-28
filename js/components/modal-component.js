@@ -130,11 +130,13 @@ class ModalComponent extends HTMLElement {
 
         overlay.classList.remove('is-active');
         document.body.style.overflow = '';
-        document.removeEventListener('keydown', this._handleEsc);
 
         const duration = parseInt(this.getAttribute('duration')) || 300;
         setTimeout(() => {
             this._isOpen = false;
+            const videos = this.querySelectorAll('video');
+            videos.forEach(v => v.pause());
+
             this.dispatchEvent(new CustomEvent('modal-closed'));
         }, duration);
     }

@@ -22,13 +22,13 @@ class HomeHeader extends HTMLElement {
         let botonesDesktop = '';
         if (sesionIniciada) {
             botonesDesktop = `
-                <a href="./candidaturas.html" class="header-base-button-responsive-font-size primary-button-01 w-auto">Candidaturas</a>
-                <a href="#" id="logout-btn" class="header-base-button-responsive-font-size secondary-button-01 w-auto">Cerrar sesión</a>
+                <a href="./candidaturas.html" class="header-base-button-responsive-font-size primary-button-01 w-auto h-auto  flex-shrink-0">Candidaturas</a>
+                <a href="#" id="logout-btn" class="header-base-button-responsive-font-size secondary-button-01 w-auto h-auto  flex-shrink-0">Cerrar sesión</a>
             `;
         } else {
             botonesDesktop = `
-                <a href="./subir-corto.html" class="header-base-button-responsive-font-size primary-button-01 w-auto">Registrarse</a>
-                <a href="./login.html" class="header-base-button-responsive-font-size secondary-button-01 text-center w-auto">Iniciar sesión</a>
+                <a href="./subir-corto.html" class="header-base-button-responsive-font-size primary-button-01 w-auto h-auto  flex-shrink-0">Registrarse</a>
+                <a href="./login.html" class="header-base-button-responsive-font-size secondary-button-01 text-center w-auto h-auto  flex-shrink-0">Iniciar sesión</a>
             `;
         }
 
@@ -54,11 +54,11 @@ class HomeHeader extends HTMLElement {
                     <span class="icon-bars w-32px h-32px bg-neutral-01"></span>
                 </div>
                 <div class="header-buttons-desktop-container">
-                    <a href="./noticias.html" class="header-base-button header-button">Noticias</a>
-                    <a href="./eventos.html" class="header-base-button header-button">Eventos</a>
-                    <a href="./preguntas-frecuentes.html" class="header-base-button header-button">Preguntas frecuentes</a>
-                    <a href="./gala.html" class="header-base-button header-button">Gala</a>
-                    <a href="./bases-legales.html" class="header-base-button header-button">Bases legales</a>
+                    <a href="./noticias.html" class="header-base-button">Noticias</a>
+                    <a href="./eventos.html" class="header-base-button">Eventos</a>
+                    <a href="./preguntas-frecuentes.html" class="header-base-button">Preguntas frecuentes</a>
+                    <a href="./gala.html" class="header-base-button">Gala</a>
+                    <a href="./bases-legales.html" class="header-base-button">Bases legales</a>
                     ${botonesDesktop}
                 </div>
             </div>
