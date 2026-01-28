@@ -1765,13 +1765,13 @@ function obtenerDatosGala() {
     } else if ($modo == 'post-evento'){
 
         $edicionActual = obtenerEdicionActual();
-        $galeriaEdicionActual = obtenerGaleriaEdicionActual();
-        $candidaturasGanadoras = obtenerCandidaturasGanadoras();
+//        $galeriaEdicionActual = obtenerGaleriaEdicionActual();
+//        $candidaturasGanadoras = obtenerCandidaturasGanadoras();
 
         $datos['titulo'] = "El cine cobró vida: Así fue la Gala " . $edicionActual['anioEdicion'];
         $datos['descripcion'] = $edicionActual['resumenEvento'];
-        $datos['galeria'] = $galeriaEdicionActual;
-        $datos['candidaturasGanadoras'] = $candidaturasGanadoras;
+//        $datos['galeria'] = $galeriaEdicionActual;
+//        $datos['candidaturasGanadoras'] = $candidaturasGanadoras;
 
     }
 
@@ -1801,7 +1801,7 @@ function obtenerGaleriaEdicionActual(){
     $idEdicionActual = (int)$edicionActual['idEdicion'];
 
     $queryGaleria = "SELECT g.id_galeria as idGaleria, g.titulo as tituloGaleria, a.ruta as rutaImagenGaleria, a.id_archivo as idArchivoImagenGaleria
-                     FROM galeria g
+                     FROM archivo a
                      LEFT JOIN archivo a ON g.id_archivo_imagen = a.id_archivo
                      WHERE g.id_edicion = ?
                      ORDER BY g.id_galeria DESC";
@@ -1826,17 +1826,18 @@ function obtenerGaleriaEdicionActual(){
 function obtenerCandidaturasGanadoras() {
     global $conexion;
 
-    $query = "SELECT pc.id_premio_candidatura as idPremioCandidatura, pc.id_candidatura as idCandidatura, pc.nombre_premio as nombrePremio,
+    $query = "SELECT pc.id_premio as idPremioCandidatura, pc.id_candidatura as idCandidatura, pc.nombre_premio as nombrePremio,
                      c.sinopsis as sinopsisCandidatura, p.nombre as nombreParticipante, p.dni as dniParticipante,
                      a1.ruta as rutaVideo, a2.ruta as rutaFicha, a3.ruta as rutaCartel, a4.ruta as rutaTrailer
               FROM premio_candidatura pc
+              LEFT JOIN 
               INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
               INNER JOIN participante p ON c.id_participante = p.id_participante
               LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
               LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
               LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
               LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
-              ORDER BY pc.id_premio_candidatura DESC";
+              ORDER BY pc.id_premio DESC";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();

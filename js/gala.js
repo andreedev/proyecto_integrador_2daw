@@ -165,7 +165,11 @@ function renderizarDatosGala(data) {
     const contenidoPreEvento = document.getElementById('contenidoPreEvento');
     const contenidoPostEvento = document.getElementById('contenidoPostEvento');
 
+    contenidoPreEvento.classList.add('d-none');
+    contenidoPostEvento.classList.add('d-none');
+
     if (data.modo === 'pre-evento') {
+        contenidoPreEvento.classList.remove('d-none');
         const preEventoTitulo = document.getElementById('preEventoTitulo');
         const preEventoDescripcion = document.getElementById('preEventoDescripcion');
 
@@ -174,6 +178,7 @@ function renderizarDatosGala(data) {
 
     }
     if (data.modo === 'post-evento') {
+        contenidoPostEvento.classList.remove('d-none');
 
     }
 }

@@ -340,7 +340,14 @@ class InputComponent extends HTMLElement {
             
             ${inputTag}
             
-            </div>
+            <div class="solid-input-icon-container icon-success-wrapper d-none">
+                    <span class="icon-check w-24px h-24px bg-success-02 d-block"></span>
+                </div>
+                <div class="solid-input-icon-container icon-error-wrapper d-none">
+                    <span class="icon-close w-24px h-24px bg-error-02 d-block"></span>
+                </div>
+                <span class="solid-input-error-text text-error-02 d-none"></span>
+        </div>
     `;
 
         this._handleFloatingLabel(currentValue);
