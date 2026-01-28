@@ -1886,4 +1886,9 @@ function obtenerCandidaturasGanadoras() {
     echo json_encode(["status" => "success", "data" => $candidaturasGanadoras]);
 }
 
+
+function actualizarCandidatura(){
+
+}
+
 cerrarConexion();

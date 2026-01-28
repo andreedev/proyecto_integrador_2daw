@@ -45,6 +45,7 @@
 
 
         <div id="right" class="flex-grow-1 min-w-0 d-flex flex-column gap-12px">
+
             <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-bg-warning-04-01 border-solid bg-warning-04 text-warning-01" id="statusCardRevision">
                 <span class="icono-film flex-shrink-0"></span>
                 <div class="text-revision">
@@ -143,7 +144,18 @@
                         error-message="La sinopsis es demasiado larga. Máximo 100 palabras"
                 ></input-component>
 
-
+                <file-component
+                        id="videoTrailerInput"
+                        label="Vídeo traíler del cortometraje"
+                        primary-text="Arrastra y suelta tu vídeo aquí o haz clic para seleccionar"
+                        secondary-text="MOV o MP4 (Máx. 2GB)"
+                        accept=".mov,.mp4"
+                        max-size="2147483648"
+                        required
+                        error-type="Formato no válido. Solo se permiten archivos .mov y .mp4"
+                        error-size="El vídeo es demasiado pesado. El máximo permitido son 2GB"
+                        error-required="Debes subir un vídeo traíler para continuar en el concurso"
+                ></file-component>
 
                <div class="d-flex justify-content-end w-100">
                    <div class="primary-button-01 w-auto" id="btnGuardarCambios">Guardar cambios</div>
