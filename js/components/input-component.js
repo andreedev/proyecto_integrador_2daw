@@ -131,9 +131,18 @@ class InputComponent extends HTMLElement {
     _clearUIState() {
         const container = this.querySelector('.solid-input-container');
         const errorMsgSpan = this.querySelector('.solid-input-error-text');
+        const successIcon = this.querySelector('.icon-success-wrapper');
+        const errorIcon = this.querySelector('.icon-error-wrapper');
+
         if (container) {
-            container.classList.remove('state-error', 'state-success', 'is-focused');
-            if (errorMsgSpan) errorMsgSpan.classList.replace('d-block', 'd-none');
+            container.classList.remove('state-error', 'state-success');
+
+            if (successIcon) successIcon.classList.add('d-none-force');
+            if (errorIcon) errorIcon.classList.add('d-none-force');
+
+            if (errorMsgSpan) {
+                errorMsgSpan.classList.replace('d-block', 'd-none-force');
+            }
         }
     }
 
@@ -181,12 +190,12 @@ class InputComponent extends HTMLElement {
 
         if (!valid) {
             container.classList.add('state-error');
-            errorIcon.classList.remove('d-none');
+            errorIcon.classList.remove('d-none-force');
             errorMsgSpan.textContent = message;
-            errorMsgSpan.classList.replace('d-none', 'd-block');
+            errorMsgSpan.classList.replace('d-none-force', 'd-block');
         } else if (this.value.length > 0 && !this.hasAttribute('no-validation')) {
             container.classList.add('state-success');
-            successIcon.classList.remove('d-none');
+            successIcon.classList.remove('d-none-force');
         }
     }
 
@@ -340,13 +349,13 @@ class InputComponent extends HTMLElement {
             
             ${inputTag}
             
-            <div class="solid-input-icon-container icon-success-wrapper d-none">
+            <div class="solid-input-icon-container icon-success-wrapper d-none-force">
                     <span class="icon-check w-24px h-24px bg-success-02 d-block"></span>
                 </div>
-                <div class="solid-input-icon-container icon-error-wrapper d-none">
+                <div class="solid-input-icon-container icon-error-wrapper d-none-force">
                     <span class="icon-close w-24px h-24px bg-error-02 d-block"></span>
                 </div>
-                <span class="solid-input-error-text text-error-02 d-none"></span>
+                <span class="solid-input-error-text text-error-02 d-none-force"></span>
         </div>
     `;
 

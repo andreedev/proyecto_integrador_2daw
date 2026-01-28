@@ -1,14 +1,6 @@
 /** Clases utilitarias para estilos comunes **/
 /** Siempre debe ir al final de cualquier otro archivo CSS **/
 
-.d-none{
-    display: none;
-}
-
-.d-none-force{
-    display: none !important;
-}
-
 .d-flex{
     display: flex;
 }
@@ -87,6 +79,14 @@
     .d-xl-none{
         display: none;
     }
+}
+
+.d-none{
+    display: none;
+}
+
+.d-none-force{
+    display: none !important;
 }
 
 .position-relative{
@@ -381,11 +381,15 @@
     justify-content: flex-end;
 }
 
+.justify-content-start{
+    justify-content: flex-start;
+}
+
 .align-items-center{
     align-items: center;
 }
 
-.align-start{
+.align-items-start{
     align-items: flex-start;
 }
 
@@ -771,6 +775,10 @@
     color: var(--information-02);
 }
 
+.line-height-120{
+    line-height: 120%;
+}
+
 .fs-10px{
     font-size: 10px;
 }
@@ -793,6 +801,74 @@
 
 .fs-20px{
     font-size: 20px;
+}
+
+.fs-24px{
+    font-size: 24px;
+}
+
+.fs-28px{
+    font-size: 28px;
+}
+
+.fs-32px{
+    font-size: 32px;
+}
+
+@media (min-width: 480px) {
+    .fs-xs-32px{
+        font-size: 32px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-32px{
+        font-size: 32px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-32px{
+        font-size: 32px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-32px{
+        font-size: 32px;
+    }
+}
+
+.fs-36px{
+    font-size: 36px;
+}
+
+.fs-40px{
+    font-size: 40px;
+}
+
+.fs-48px{
+    font-size: 48px;
+}
+
+.fs-56px{
+    font-size: 56px;
+}
+
+.fs-64px{
+    font-size: 64px;
+}
+
+.fs-72px{
+    font-size: 72px;
+}
+
+.fs-80px{
+    font-size: 80px;
+}
+
+.fs-96px{
+    font-size: 96px;
 }
 
 .fw-300{
@@ -983,6 +1059,14 @@
     cursor: pointer;
 }
 
+.icon-video{
+    mask-image: url('../img/icon/icon-video.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
 .icon-film{
     mask-image: url('../img/icon/icon-film.svg');
     mask-repeat: no-repeat;
@@ -1054,6 +1138,14 @@
 
 .icon-settings{
     mask-image: url('../img/icon/icon-settings.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-right-chevron{
+    mask-image: url('../img/icon/icon-rightchevron.svg');
     mask-repeat: no-repeat;
     mask-size: contain;
     mask-position: center;
@@ -1236,8 +1328,16 @@
     transition: all 300ms ease;
 }
 
-.icon-movie-festival{
-    mask-image: url('../img/icon/icon-moviefestival.svg');
+.icon-right-arrow{
+    mask-image: url('../img/icon/icon-rightarrow.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-right-chevron{
+    mask-image: url('../img/icon/icon-rightchevron.svg');
     mask-repeat: no-repeat;
     mask-size: contain;
     mask-position: center;
@@ -1251,6 +1351,15 @@ dialog:focus {
 dialog {
     border: none;
     padding: 0;
+}
+
+dialog[open] {
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 dialog::backdrop {
@@ -1346,6 +1455,91 @@ dialog::backdrop {
     padding-right: 24px;
 }
 
+.px-28px{
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+.px-32px{
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.px-40px{
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.px-48px{
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
+.px-56px{
+    padding-left: 56px;
+    padding-right: 56px;
+}
+
+.px-64px{
+    padding-left: 64px;
+    padding-right: 64px;
+}
+
+.px-72px{
+    padding-left: 72px;
+    padding-right: 72px;
+}
+
+.px-80px{
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.px-96px{
+    padding-left: 96px;
+    padding-right: 96px;
+}
+
+.px-112px{
+    padding-left: 112px;
+    padding-right: 112px;
+}
+
+.px-120px{
+    padding-left: 120px;
+    padding-right: 120px;
+}
+
+.px-128px{
+    padding-left: 128px;
+    padding-right: 128px;
+}
+
+.px-144px{
+    padding-left: 144px;
+    padding-right: 144px;
+}
+
+.px-160px{
+    padding-left: 160px;
+    padding-right: 160px;
+}
+
+.px-176px{
+    padding-left: 176px;
+    padding-right: 176px;
+}
+
+.px-180px{
+    padding-left: 180px;
+    padding-right: 180px;
+}
+
+.px-192px{
+    padding-left: 192px;
+    padding-right: 192px;
+}
+
 .py-4px{
     padding-top: 4px;
     padding-bottom: 4px;
@@ -1381,6 +1575,11 @@ dialog::backdrop {
     padding-bottom: 32px;
 }
 
+.py-36px{
+    padding-top: 36px;
+    padding-bottom: 36px;
+}
+
 .py-40px{
     padding-top: 40px;
     padding-bottom: 40px;
@@ -1389,6 +1588,70 @@ dialog::backdrop {
 .py-48px{
     padding-top: 48px;
     padding-bottom: 48px;
+}
+
+.py-56px{
+    padding-top: 56px;
+    padding-bottom: 56px;
+}
+
+.py-64px{
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+.py-72px{
+    padding-top: 72px;
+    padding-bottom: 72px;
+}
+
+.py-80px{
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.py-96px{
+    padding-top: 96px;
+    padding-bottom: 96px;
+}
+
+.py-112px{
+    padding-top: 112px;
+    padding-bottom: 112px;
+}
+
+.py-120px{
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+.py-128px{
+    padding-top: 128px;
+    padding-bottom: 128px;
+}
+
+.py-144px{
+    padding-top: 144px;
+    padding-bottom: 144px;
+}
+
+.py-160px{
+    padding-top: 160px;
+    padding-bottom: 160px;
+}
+
+.py-176px{
+    padding-top: 176px;
+    padding-bottom: 176px;
+}
+
+.py-192px{
+    padding-top: 192px;
+    padding-bottom: 192px;
+}
+
+.m-auto{
+    margin: auto;
 }
 
 .m-0{
@@ -1425,6 +1688,11 @@ dialog::backdrop {
 
 .m-40px{
     margin: 40px;
+}
+
+.mx-auto{
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .mx-4px{

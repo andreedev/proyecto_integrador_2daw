@@ -33,13 +33,6 @@
 
 }
 
-.title{
-    font-size: 25px;
-    font-weight: 600;
-    line-height:120%;
-    margin:24px;
-}
-
 .candidatura-mini-card-component{
     display:flex;
     flex-direction: column;
@@ -473,21 +466,6 @@
     justify-content: flex-start;
     align-items: center;
     gap:24px;
-}
-
-.icon-video{
-    width:32px;
-    height:32px;
-    background-color: var(--neutral-01);
-    mask-image: url("../img/icon/icon-video.svg");
-    mask-size: cover;
-}
-
-@media (max-width: 768px) {
-    .icon-video{
-        width:32px;
-        height:24px;
-    }
 }
 
 .btn-ver-video{

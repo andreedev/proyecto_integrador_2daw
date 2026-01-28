@@ -39,7 +39,6 @@ modal-component:has(.is-active) {
     background: #ffffff;
     width: 90%;
     max-width: 600px;
-    max-height: 90vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
