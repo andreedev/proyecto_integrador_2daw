@@ -1,30 +1,20 @@
 const notificationModal = document.getElementById('notificationModal');
 const notificationMessage = document.getElementById('notificationMessage');
 
-const closeDetailBtn = document.getElementById('closeDetailModal');
-const detailModal = document.getElementById('detailModal');
-const documentsModal = document.getElementById('documentsModal');
-const historyModal = document.getElementById('historyModal');
-const changeModal = document.getElementById('changeModal');
-
-const reasonWrapper = document.getElementById('rejectReasonWrapper');
-const closeChangeBtn = document.getElementById('closeModal');
-const saveChangeBtn = document.getElementById('saveModal');
-const modalStatus = document.getElementById('modalStatus');
-const participantSpan = document.getElementById('modal-participant');
-const currentStatusSpan = document.getElementById('modal-current-status');
-
-const clearBtn = document.getElementById('btnLimpiarFiltros');
+const btnLimpiarFiltros = document.getElementById('btnLimpiarFiltros');
+const btnAplicarFiltros = document.getElementById('btnAplicarFiltros');
 const filtroTexto = document.getElementById('filtroTexto');
 const filtroEstado = document.getElementById('filtroEstado');
 const filtroFecha = document.getElementById('filtroFecha');
+const totalCandidaturasSpan = document.getElementById('totalCandidaturas');
+const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
+const totalPorPagina = document.getElementById('totalPorPagina');
+const modalCambiarEstado = document.getElementById('modalCambiarEstado');
+const modaDocumentos = document.getElementById('modalDocumentos');
+const modalDetalleCandidatura = document.getElementById('modalDetalleCandidatura');
+const modalHistorialEstado = document.getElementById('modalHistorialEstado');
+const guardarEstadoCandidatura = document.getElementById('guardarEstadoCandidatura');
 
-let activeChangeRow = null;
-let activeDetailRow = null;
-let candidaturas = [];
-let candidaturaSeleccionada = null;
-
-let paginaActual = 1;
 
 filtroEstado.setOptions([
     {value: '', label: 'Todos los estados', default: true},
@@ -42,6 +32,28 @@ filtroEstado.addEventListener('change', () => {
     cargarCandidaturas();
 });
 
+btnLimpiarFiltros.addEventListener('click', async () => {
+    filtroEstado.value = '';
+    filtroTexto.value = '';
+    filtroFecha.clear();
+    await cargarCandidaturas();
+});
+
+btnAplicarFiltros.addEventListener('click', async () => {
+    await cargarCandidaturas();
+});
+
+filtroTexto.addEventListener('solid-input-enter', async (e) => {
+    if (e.detail.valid) {
+        await cargarCandidaturas();
+    }
+});
+
+paginacionCandidaturas.addEventListener('page-change', async (e) => {
+    await cargarCandidaturas();
+});
+
+
 const statusLabels = {
     review: 'En revisión',
     accepted: 'Aceptada',
@@ -55,7 +67,6 @@ function showNotification(message) {
     notificationModal.open();
 }
 
-// FUNCIONES AUXILIARES
 function getBadgeClass(status) {
     if (!status) return 'review';
     if (status.includes('En revisión')) return 'review';
@@ -80,25 +91,21 @@ function getEstadoKey(status) {
     }
 }
 
-function formatDate(fecha) {
-    if (!fecha) return '-';
-    return new Date(fecha).toLocaleString('es-ES');
-}
-
 async function cargarCandidaturas() {
     try {
         const texto = filtroTexto.value.trim();
         const estado = filtroEstado.value;
         const fecha = filtroFecha.getISOValue();
-        const response = await mostrarCandidaturas(texto, estado, fecha);
+        const pagina = paginacionCandidaturas.currentPage;
+        const response = await mostrarCandidaturas(texto, estado, fecha, pagina);
         if (!response || response.status !== 'success') {
             showNotification('Error al cargar candidaturas');
             return;
         }
-        candidaturas = response.data;
-        paginaActual = response.currentPage;
-        totalPaginas = response.totalPages;
-        totalRecords = response.totalRecords;
+        const candidaturas = response.data;
+        const paginaActual = response.currentPage;
+        const totalPaginas = response.totalPages;
+        const totalRecords = response.totalRecords;
 
         renderizarCandidaturas(candidaturas, paginaActual, totalPaginas, totalRecords);
     } catch (e) {
@@ -106,133 +113,131 @@ async function cargarCandidaturas() {
         showNotification('Error de comunicación con el servidor');
     }
 }
-
+/**
+ * Unifica renderizado, asignación de eventos y actualización de UI
+ */
 function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidaturas) {
     const tbody = document.querySelector('table tbody');
     if (!tbody) return;
+
     tbody.replaceChildren();
 
     lista.forEach(c => {
         const tr = document.createElement('tr');
-        tr.dataset.id = c.id_candidatura;
-        tr.dataset.estado = getEstadoKey(c.estado);
-        tr.dataset.rejectReason = c.reject_reason || '';
-        tr.dataset.historial = JSON.stringify(c.historial || []);
-        tr.dataset.video = c.video || '';
-        tr.dataset.poster = c.poster || '';
-        tr.dataset.technical = c.technical || '';
 
-        const estadoTexto = statusLabels[getEstadoKey(c.estado)] || c.estado;
+        const estadoKey = getEstadoKey(c.estado);
+        const estadoTexto = statusLabels[estadoKey] || c.estado;
+        const fPresentacion = formatDateTimeToSpanish(c.fecha_presentacion);
+        const fModificacion = formatDateTimeToSpanish(c.fecha_ultima_modificacion);
 
-        tr.innerHTML = `
-            <td>
-                <div class="participant">${c.participante}</div>
-                <div class="email">${c.dni}</div>
-            </td>
-            <td class="synopsis">${c.sinopsis || '-'}</td>
-            <td>
-                <span class="badge ${getBadgeClass(c.estado)}">${estadoTexto}</span>
-            </td>
-            <td>${formatDate(c.fecha_presentacion)}</td>
-            <td>${formatDate(c.fecha_ultima_modificacion)}</td>
-            <td>
-                <div class="actions">
-                    <button class="btn btn-detail">Detalle</button>
-                    <button class="btn btn-docs">Documentos</button>
-                    <button class="btn btn-history">Historial</button>
-                    <button class="btn change">Cambiar</button>
-                </div>
-            </td>
+        const tdParticipante = document.createElement('td');
+        tdParticipante.innerHTML = `
+            <div class="participant">${c.participante}</div>
+            <div class="email">${c.dni}</div>
         `;
-        tr.querySelector('.change').addEventListener('click', () => {
-            candidaturaSeleccionada = c;
-            modalStatus.replaceChildren();
-            let estadosDisponibles = [];
-            if (c.estado === 'En revisión') {
-                estadosDisponibles = ['Aceptada', 'Rechazada'];
-            } else if (c.estado === 'Aceptada') {
-                estadosDisponibles = ['Finalista'];
-            } else if (c.estado === 'Rechazada') {
-                estadosDisponibles = ['En revisión'];
-            }
-            estadosDisponibles.forEach(estado => {
-                const option = document.createElement('option');
-                option.value = estado;
-                option.textContent = estado;
-                modalStatus.appendChild(option);
-            });
+
+        const tdSinopsis = document.createElement('td');
+        tdSinopsis.className = 'synopsis';
+        tdSinopsis.textContent = c.sinopsis || '-';
+
+        const tdEstado = document.createElement('td');
+        const badge = document.createElement('span');
+        badge.className = `badge ${getBadgeClass(c.estado)}`;
+        badge.textContent = estadoTexto;
+        tdEstado.appendChild(badge);
+
+        const tdFechaPres = document.createElement('td');
+        tdFechaPres.textContent = fPresentacion;
+        const tdFechaMod = document.createElement('td');
+        tdFechaMod.textContent = fModificacion;
+
+        const tdAcciones = document.createElement('td');
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'actions';
+
+        const btnDetail = createBtn('Detalle', 'secondary-button-02', () => abrirDetalle(c));
+        const btnDocs = createBtn('Documentos', 'secondary-button-02', () => {
+            activeDetailRow = tr;
+            modalDocumentsModal.open();
         });
+        const btnHistory = createBtn('Historial', 'secondary-button-02', () => {
+            cargarHistorial(c);
+            modalHistorialEstado.open();
+        });
+        const btnChange = createBtn('Cambiar', 'primary-button-02', () => {
+            candidaturaSeleccionada = c;
+            modalCambiarEstado.open();
+        });
+
+        actionsDiv.append(btnDetail, btnDocs, btnHistory, btnChange);
+        tdAcciones.appendChild(actionsDiv);
+
+        // Ensamblar fila
+        tr.append(tdParticipante, tdSinopsis, tdEstado, tdFechaPres, tdFechaMod, tdAcciones);
         tbody.appendChild(tr);
     });
 
-    asignarEventos();
-
+    // Actualización de contadores y paginación
+    totalCandidaturasSpan.textContent = totalCandidaturas;
+    totalPorPagina.textContent = lista.length;
+    paginacionCandidaturas.setAttribute('current-page', paginaActual);
+    paginacionCandidaturas.setAttribute('total-pages', totalPaginas);
 }
 
-// ASIGNAR EVENTOS
-function asignarEventos() {
-    document.querySelectorAll('.btn.change').forEach(btn => {
-        btn.onclick = () => {
-            const row = btn.closest('tr');
-            if (!row) return;
-            activeChangeRow = row;
-            participantSpan.textContent = row.querySelector('.participant')?.textContent || '-';
-            currentStatusSpan.textContent = statusLabels[row.dataset.estado] || row.dataset.estado;
-            modalStatus.value = row.dataset.estado || 'review';
-            document.getElementById('rejectReason').value = row.dataset.rejectReason || '';
-            reasonWrapper.style.display = row.dataset.estado === 'rejected' ? 'block' : 'none';
-            changeModal.style.display = 'flex';
-        };
-    });
-
-    document.querySelectorAll('.btn-detail').forEach(btn => {
-        btn.onclick = () => abrirDetalle(btn.closest('tr'));
-    });
-
-    document.querySelectorAll('.btn-docs').forEach(btn => {
-        btn.onclick = () => {
-            const row = btn.closest('tr');
-            if (!row) return;
-            activeDetailRow = row;
-            cargarDocumentos(row);
-            documentsModal.style.display = 'flex';
-        };
-    });
-
-    document.querySelectorAll('.btn-history').forEach(btn => {
-        btn.onclick = () => {
-            const row = btn.closest('tr');
-            if (!row) return;
-            activeDetailRow = row;
-            cargarHistorial(row);
-            historyModal.style.display = 'flex';
-        };
-    });
-
-    document.querySelectorAll('#documentsModal .tab-btn').forEach(tabBtn => {
-        tabBtn.onclick = () => {
-            const target = tabBtn.dataset.tab;
-            document.querySelectorAll('#documentsModal .tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('#documentsModal .tab-pane').forEach(p => p.classList.remove('active'));
-            tabBtn.classList.add('active');
-            document.getElementById(target + '-pane').classList.add('active');
-        };
-    });
+/**
+ * Helper para crear botones
+ */
+function createBtn(text, className, onClick) {
+    const btn = document.createElement('button');
+    btn.className = `${className} button-small`;
+    btn.textContent = text;
+    btn.onclick = onClick;
+    return btn;
 }
 
-// CARGAR DOCUMENTOS
-function cargarDocumentos(row) {
+/**
+ * Unifica la lógica de preparación del modal de documentos
+ */
+function showDocumentsModal(c) {
     const videoContainer = documentsModal.querySelector('#video-pane .video-container');
     const posterContainer = documentsModal.querySelector('#poster-pane .poster-container');
     const technicalContainer = documentsModal.querySelector('#technical-pane .technical-info');
 
-    videoContainer.innerHTML = `<img src="${row.dataset.video || '../img/Video_Cortometraje.png'}" alt="Video" class="video-placeholder">`;
-    posterContainer.innerHTML = `<img src="${row.dataset.poster || '../img/Foto_corto.png'}" alt="Cartel" class="poster-placeholder">`;
-    technicalContainer.innerHTML = `<img src="${row.dataset.technical || '../img/Ficha_Tecnica.png'}" alt="Ficha técnica">`;
+    // Usamos el objeto c directamente en lugar de dataset
+    videoContainer.innerHTML = `<img src="${c.video || '../img/Video_Cortometraje.png'}" alt="Video" class="video-placeholder">`;
+    posterContainer.innerHTML = `<img src="${c.poster || '../img/Foto_corto.png'}" alt="Cartel" class="poster-placeholder">`;
+    technicalContainer.innerHTML = `<img src="${c.technical || '../img/Ficha_Tecnica.png'}" alt="Ficha técnica">`;
+
+    documentsModal.style.display = 'flex';
 }
 
-// GUARDAR CAMBIO DE ESTADO
-saveChangeBtn.addEventListener('click', async () => {
+/**
+ * Unifica la lógica de preparación del modal de cambio de estado
+ */
+function prepararModalCambio(c) {
+    participantSpan.textContent = c.participante;
+    currentStatusSpan.textContent = statusLabels[getEstadoKey(c.estado)] || c.estado;
+
+    // Limpiar y llenar select del modal
+    modalStatus.replaceChildren();
+    let opciones = [];
+    if (c.estado === 'En revisión') opciones = ['Aceptada', 'Rechazada'];
+    else if (c.estado === 'Aceptada') opciones = ['Finalista'];
+    else if (c.estado === 'Rechazada') opciones = ['En revisión'];
+
+    opciones.forEach(est => {
+        const opt = document.createElement('option');
+        opt.value = est;
+        opt.textContent = est;
+        modalStatus.appendChild(opt);
+    });
+
+    document.getElementById('rejectReason').value = c.reject_reason || '';
+    reasonWrapper.style.display = 'none';
+}
+
+
+guardarEstadoCandidatura.addEventListener('click', async () => {
     if (!activeChangeRow) return;
 
     const newEstado = modalStatus.value;
@@ -257,7 +262,6 @@ saveChangeBtn.addEventListener('click', async () => {
         console.log('Editar candidatura response:', response);
         if (response.status === 'success') {
             cargarCandidaturas();
-            changeModal.style.display = 'none';
             showNotification('Estado actualizado correctamente');
         } else {
             showNotification(response.message || 'Error al actualizar');
@@ -375,22 +379,4 @@ function cargarHistorial(row) {
     });
 }
 
-modalStatus.addEventListener('change', () => {
-    reasonWrapper.style.display = modalStatus.value === 'Rechazada' ? 'block' : 'none';
-});
 
-closeChangeBtn.onclick = () => changeModal.style.display = 'none';
-closeDetailBtn.onclick = () => detailModal.style.display = 'none';
-document.getElementById('closeHistoryModal').onclick = () => historyModal.style.display = 'none';
-document.getElementById('closeDocumentsModal').onclick = () => documentsModal.style.display = 'none';
-
-
-clearBtn.addEventListener('click', async () => {
-    filtroEstado.value = '';
-    filtroTexto.value = '';
-    filtroFecha.clear();
-    await cargarCandidaturas();
-});
-
-
-cargarCandidaturas();

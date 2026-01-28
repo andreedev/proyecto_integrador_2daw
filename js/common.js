@@ -169,10 +169,10 @@ function setupDynamicDropZone(container, allowedExtensions, maxSizeBytes, valida
 function formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    const value = parseFloat((bytes / Math.pow(k, i)).toFixed(decimals));
+    return `${value} ${sizes[i]}`;
 }
 
 /**
@@ -232,21 +232,23 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 /**
  * Funcion para realizar peticiones a la API
  */
-async function fetchAPI( data = null) {
-    const options = {
-        method: 'POST',
-    };
+async function fetchAPI(data = null) {
+    const options = { method: 'POST' };
+    if (data) options.body = data;
 
-    if (data) {
-        options.body = data;
+    try {
+        const response = await fetch(URL_API, options);
+
+        if (!response.ok) {
+            const errorBody = await response.json().catch(() => ({}));
+            throw new Error(errorBody.message || `Error servidor: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error en fetchAPI:', error);
+        throw error;
     }
-
-    return await fetch(URL_API, options)
-        .then(response => response.json())
-        .catch(error => {
-            console.error('Error:', error);
-            throw error;
-        });
 }
 
 
@@ -329,4 +331,38 @@ function formatDateToSpanish(dateSource) {
     const year = date.getFullYear();
 
     return `${day}/${month}/${year}`;
+}
+
+
+/**
+ * Formatea una fecha y hora (string o Date) a formato DD/MM/YYYY HH:MM
+ * @param dateSource
+ * @returns {string}: Fecha y hora formateada o string vacío si es inválida
+ *
+ * Ejemplo: "26/01/2026 15:30"
+ */
+function formatDateTimeToSpanish(dateSource) {
+    const normalized = normalizeDateInput(dateSource);
+    const date = new Date(normalized);
+
+    if (!normalized || isNaN(date.getTime())) return '';
+
+    return new Intl.DateTimeFormat('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    }).format(date).replace(',', '');
+}
+
+/**
+ * Normaliza strings de fecha para compatibilidad (Sustituye espacio por T)
+ */
+function normalizeDateInput(dateSource) {
+    if (!dateSource) return null;
+    if (dateSource instanceof Date) return dateSource;
+    // Convierte "YYYY-MM-DD HH:mm:ss" a "YYYY-MM-DDTHH:mm:ss"
+    return dateSource.replace(' ', 'T');
 }

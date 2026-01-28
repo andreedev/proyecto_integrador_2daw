@@ -1399,10 +1399,9 @@ function mostrarCandidaturas() {
     global $conexion;
 
     $limit  = 10;
-    $page   = (isset($_POST['page']) && is_numeric($_POST['page'])) ? (int)$_POST['page'] : 1;
-    $offset = ($page - 1) * $limit;
+    $pagina = (isset($_POST['pagina']) && is_numeric($_POST['pagina'])) ? (int)$_POST['pagina'] : 1;
+    $offset = ($pagina - 1) * $limit;
 
-    // 2. Capture Inputs
     $filtroTexto  = $_POST['filtroTexto'] ?? '';
     $filtroEstado = $_POST['filtroEstado'] ?? '';
     $filtroFecha  = $_POST['filtroFecha'] ?? '';
@@ -1470,7 +1469,7 @@ function mostrarCandidaturas() {
         "status"       => "success",
         "totalRecords"        => (int)$totalRecords,
         "totalPages"        => $totalPaginas,
-        "currentPage" => $page,
+        "currentPage" => $pagina,
         "data"         => $candidaturas
     ]);
 }

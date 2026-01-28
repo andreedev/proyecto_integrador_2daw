@@ -1,0 +1,48 @@
+:host {
+    display: block;
+    width: fit-content;
+}
+
+.solid-pagination-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+
+.solid-pagination-item {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--neutral-03);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.solid-pagination-item:hover:not(.is-active):not(.is-disabled):not(.is-ellipsis) {
+    background-color: var(--neutral-01);
+    color: var(--neutral-09);
+}
+
+.solid-pagination-item.is-active {
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
+    cursor: default;
+}
+
+.solid-pagination-item.is-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.solid-pagination-item.is-ellipsis {
+    cursor: default;
+}
+
+.solid-pagination-item.flecha {
+    font-size: 12px;
+    font-weight: bold;
+}

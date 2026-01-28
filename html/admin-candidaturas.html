@@ -30,7 +30,7 @@
 
             <div class="admin-content">
                 <div class="d-flex gap-24px flex-column">
-                    <div class="d-flex gap-32px align-items-center w-100 justify-space-between bg-neutral-08 p-20px">
+                    <div class="d-flex flex-wrap gap-32px align-items-center w-100 justify-space-between bg-neutral-08 p-20px">
                         <input-component
                                 label="Buscar por participante o sinopsis"
                                 id="filtroTexto"
@@ -48,10 +48,10 @@
                                 label="Fecha de presentación"
                                 id="filtroFecha"
                         ></date-component>
-                        <button id="btnLimpiarFiltros" class="secondary-button-02">Limpiar filtros</button>
+                        <button id="btnAplicarFiltros" class="primary-button-02">Aplicar filtros</button>
+                        <button id="btnLimpiarFiltros" class="secondary-button-03">Limpiar filtros</button>
                     </div>
 
-                    <!-- TABLE -->
                     <div class="table-wrapper">
                         <table>
                             <thead>
@@ -64,22 +64,17 @@
                                 <th>Acciones</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <!-- Filas cargadas dinámicamente desde JS -->
-                            </tbody>
+                            <tbody></tbody>
                         </table>
 
-                        <div class="table-footer">
-                            <div class="pagination-info">
-                                Mostrando 0 de 0 candidaturas
-                            </div>
-                            <div class="pagination">
-                                <button class="pagination-btn"><span>Anterior</span></button>
-                                <button class="pagination-btn active">1</button>
-                                <button class="pagination-btn">2</button>
-                                <button class="pagination-btn">3</button>
-                                <button class="pagination-btn"><span>Siguiente</span></button>
-                            </div>
+                        <div class="d-flex justify-content-center align-items-center p-16px">
+                            <pagination-component
+                                    id="paginacionCandidaturas">
+                            </pagination-component>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center p-16px text-neutral-03">
+                            Mostrando &nbsp;<span id="totalPorPagina">999</span>&nbsp; de&nbsp;<span id="totalCandidaturas">999</span>&nbsp;candidaturas
                         </div>
                     </div>
                 </div>
@@ -87,12 +82,9 @@
         </div>
     </div>
 
-    <!-- MODALES -->
 
-    <!-- MODAL CAMBIAR ESTADO -->
-    <div class="modal" id="changeModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
+    <modal-component id="modalCambiarEstado" size="auto">
+        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
             <h2>Cambiar estado de candidatura</h2>
             <div class="modal-context">
                 <p><strong>Participante:</strong> <span id="modal-participant"></span></p>
@@ -110,22 +102,21 @@
             <label id="rejectReasonWrapper" style="display: none;">
                 Motivo del rechazo *
                 <textarea id="rejectReason" rows="3"
-                    placeholder="Indique el motivo del rechazo (visible para el participante)"></textarea>
+                          placeholder="Indique el motivo del rechazo (visible para el participante)"></textarea>
             </label>
             <div class="modal-actions">
-                <button class="btn" id="closeModal">Cancelar</button>
-                <button class="btn change" id="saveModal">Guardar</button>
+                <button class="btn" id="close-modal">Cancelar</button>
+                <button class="btn change" id="guardarEstadoCandidatura">Guardar</button>
             </div>
         </div>
-    </div>
+    </modal-component>
 
-    <!-- MODAL DOCUMENTOS -->
-    <div class="modal" id="documentsModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
+
+    <modal-component id="modalDocumentos" size="auto">
+        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
             <div class="modal-header">
                 <h2>Documentos de la candidatura</h2>
-                <button class="close-btn" id="closeDocumentsModal">&times;</button>
+                <button class="close-btn close-modal">&times;</button>
             </div>
             <div class="tabs">
                 <button class="tab-btn active" data-tab="video">Vídeo</button>
@@ -150,15 +141,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </modal-component>
 
-    <!-- MODAL DETALLE -->
-    <div class="modal" id="detailModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content detail-modal-custom">
+    <modal-component id="modalDetalleCandidatura" size="auto">
+        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
             <div class="modal-header">
                 <h2>Detalle de Candidatura</h2>
-                <button class="close-btn" id="closeDetailModal">&times;</button>
+                <button class="close-btn close-modal">&times;</button>
             </div>
 
             <div class="detail-content">
@@ -172,7 +161,7 @@
                     <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>
 
                     <input-component id="nombreParticipanteInput" label="Nombre del participante"
-                        disabled></input-component>
+                                     disabled></input-component>
 
                     <input-component id="nroExpedienteInput" label="Nro expediente:" disabled></input-component>
 
@@ -185,13 +174,13 @@
                     <div class="input-with-icon">
                         <span class="icon-calendar"></span>
                         <input-component id="fechaPresentacionInput" label="Fecha de presentación"
-                            disabled></input-component>
+                                         disabled></input-component>
                     </div>
 
                     <div class="input-with-icon">
                         <span class="icon-calendar"></span>
                         <input-component id="fechaActualizacionInput" label="Última actualización"
-                            disabled></input-component>
+                                         disabled></input-component>
                     </div>
 
                 </div>
@@ -207,15 +196,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </modal-component>
 
 
-    <div class="modal" id="historyModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content history-modal-custom">
+    <modal-component id="modalHistorialEstado" size="auto">
+        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
             <div class="modal-header">
                 <h2>Historial de estados</h2>
-                <button class="close-btn" id="closeHistoryModal">&times;</button>
+                <button class="close-btn close-modal">&times;</button>
             </div>
 
             <div class="history-body">
@@ -223,8 +211,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </modal-component>
 
     <modal-component id="notificationModal" size="auto">
         <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
@@ -234,6 +221,7 @@
     </modal-component>
 
     <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
     <script src="../js/components/select-component.js"></script>
     <script src="../js/components/modal-component.js"></script>
     <script src="../js/components/input-component.js"></script>

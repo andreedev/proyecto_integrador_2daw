@@ -330,33 +330,15 @@ setTodayDate(horaFinEventoAgregarDatePicker);
  */
 function renderizarEventos(eventos) {
     eventsContainer.replaceChildren();
+    if (eventos.length === 0) return;
 
-    // calcular espacios vacios entre eventos
-    let espaciosVacios = [];
-    for (let i = 0; i < eventos.length - 1; i++) {
-        for (let j = i + 1; j < eventos.length; j++) {
-            const eventoActual = eventos[i];
-            const siguienteEvento = eventos[j];
+    const eventosOrdenados = [...eventos].sort((a, b) =>
+        a.horaInicioEvento.localeCompare(b.horaInicioEvento)
+    );
 
-            const endTimeActual = new Date(`1970-01-01T${eventoActual.horaFinEvento}Z`);
-            const startTimeSiguiente = new Date(`1970-01-01T${siguienteEvento.horaInicioEvento}Z`);
+    let maxEndTimeSoFar = new Date(`1970-01-01T${eventosOrdenados[0].horaFinEvento}Z`);
 
-            const diffInHours = (startTimeSiguiente - endTimeActual) / (1000 * 60 * 60);
-
-            if (diffInHours > 0) {
-                eventos[i].tieneEspacioDespues = true;
-                eventos[i].duracionEspacioDespues = diffInHours;
-                espaciosVacios.push({
-                    desdeIdEvento: eventoActual.idEvento,
-                    hastaIdEvento: siguienteEvento.idEvento,
-                    duracionMinutos: diffInHours * 60,
-                    duracionHoras: diffInHours
-                });
-            }
-        }
-    }
-
-    eventos.forEach(evento => {
+    eventosOrdenados.forEach((evento, index) => {
         const eventContainer = document.createElement('div');
         eventContainer.classList.add('event-row');
 
@@ -454,9 +436,19 @@ function renderizarEventos(eventos) {
 
         eventsContainer.appendChild(eventContainer);
 
-        if (evento.tieneEspacioDespues) {
-            const espacioVacio = espaciosVacios.find(e => e.desdeIdEvento === evento.idEvento);
-            if (espacioVacio) {
+        const siguienteEvento = eventosOrdenados[index + 1];
+
+        if (siguienteEvento) {
+            const currentEventEnd = new Date(`1970-01-01T${evento.horaFinEvento}Z`);
+            const nextEventStart = new Date(`1970-01-01T${siguienteEvento.horaInicioEvento}Z`);
+
+            if (currentEventEnd > maxEndTimeSoFar) {
+                maxEndTimeSoFar = currentEventEnd;
+            }
+
+            const diffInMinutes = (nextEventStart - maxEndTimeSoFar) / (1000 * 60);
+
+            if (diffInMinutes > 0) {
                 const eventFreeTime = document.createElement('div');
                 eventFreeTime.classList.add('event-free-time');
 
@@ -465,21 +457,20 @@ function renderizarEventos(eventos) {
 
                 const freeTimeText = document.createElement('span');
                 freeTimeText.classList.add('free-time-text');
-                const duracionHoras = Math.floor(espacioVacio.duracionHoras);
-                const duracionMinutos = Math.round((espacioVacio.duracionHoras - duracionHoras) * 60);
-                let duracionTexto = '';
-                if (duracionHoras > 0) {
-                    duracionTexto += `${duracionHoras}h `;
-                }
-                if (duracionMinutos > 0) {
-                    duracionTexto += `${duracionMinutos}min `;
-                }
+
+                // Usamos tu función humanizeDuration o cálculo manual
+                const hours = Math.floor(diffInMinutes / 60);
+                const mins = Math.round(diffInMinutes % 60);
+                let duracionTexto = hours > 0 ? `${hours}h ` : '';
+                duracionTexto += mins > 0 ? `${mins}min` : '';
+
                 freeTimeText.textContent = `${duracionTexto.trim()} libre`;
 
                 eventFreeTime.appendChild(iconTime);
                 eventFreeTime.appendChild(freeTimeText);
-
                 eventsContainer.appendChild(eventFreeTime);
+
+                maxEndTimeSoFar = nextEventStart;
             }
         }
 

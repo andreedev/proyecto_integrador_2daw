@@ -198,6 +198,20 @@ class InputComponent extends HTMLElement {
                 bubbles: true
             }));
         });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const validation = this.validate(true);
+
+                this.dispatchEvent(new CustomEvent('solid-input-enter', {
+                    detail: {
+                        value: this.value,
+                        valid: validation.valid
+                    },
+                    bubbles: true
+                }));
+            }
+        });
     }
 
     validate(showUI = true) {

@@ -380,28 +380,28 @@ function crearBaseDatosSiNoExiste()
                 (4, 2);
                 
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador, id_archivo_imagen) VALUES
-                ('Anuncio del festival', 'Lanzamiento oficial del festival de cortometrajes.', '2024-05-01', 1, 1),
+                ('Anuncio del festival', 'Lanzamiento oficial del festival de cortometrajes.', '2024-05-01', 1, 4),
                 ('Jurado confirmado', 'Presentación del jurado para esta edición.', '2024-05-10', 1, 3),
                 ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 5),
-                ('Ganadores 2024', 'Lista de ganadores del festival de cortometrajes 2024.', '2024-12-20', 1, 7),
-                ('Convocatoria 2025', 'Apertura de inscripciones para la edición 2025.', '2024-12-31', 1, 9),
-                ('Evento especial', 'Anuncio de un evento especial durante el festival.', '2024-06-20', 1, 11),
-                ('Colaboración con escuelas', 'Nuevas colaboraciones con escuelas de cine.', '2024-07-05', 1, 1),
-                ('Talleres para participantes', 'Talleres gratuitos para los inscritos en el festival.', '2024-08-15', 1, 3);
+                ('Ganadores 2024', 'Lista de ganadores del festival de cortometrajes 2024.', '2024-12-20', 1, 4),
+                ('Convocatoria 2025', 'Apertura de inscripciones para la edición 2025.', '2024-12-31', 1, 4),
+                ('Evento especial', 'Anuncio de un evento especial durante el festival.', '2024-06-20', 1, 5),
+                ('Colaboración con escuelas', 'Nuevas colaboraciones con escuelas de cine.', '2024-07-05', 1, 5),
+                ('Talleres para participantes', 'Talleres gratuitos para los inscritos en el festival.', '2024-08-15', 1, 6);
                 
                 INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_organizador, id_archivo_imagen) VALUES
-                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', CURDATE(), '19:00', '21:00', 1, 1),
-                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', CURDATE(), '10:00', '13:00', 1, 1),
-                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', CURDATE(), '20:00', '22:00', 1, 1),
-                ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 1),
-                ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 1),
-                ('Proyección de cortos ganadores', 'Proyección de los cortometrajes ganadores de ediciones anteriores.', 'Cine Secundario', CURDATE(), '15:00', '17:00', 1, 1),
-                ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 1),
-                ('Fiesta de clausura', 'Fiesta para celebrar el cierre del festival.', 'Club Nocturno', CURDATE(), '23:00', '02:00', 1, 1),
-                ('Proyección temática', 'Proyección de cortometrajes con temática específica.', 'Cine Temático', CURDATE(), '14:00', '16:00', 1, 1);
+                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', CURDATE(), '19:00', '21:00', 1, 3),
+                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', CURDATE(), '10:00', '13:00', 1, 4),
+                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', CURDATE(), '20:00', '22:00', 1, 5),
+                ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 6),
+                ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 7),
+                ('Proyección de cortos ganadores', 'Proyección de los cortometrajes ganadores de ediciones anteriores.', 'Cine Secundario', CURDATE(), '15:00', '17:00', 1, 4),
+                ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 5),
+                ('Fiesta de clausura', 'Fiesta para celebrar el cierre del festival.', 'Club Nocturno', CURDATE(), '23:00', '02:00', 1, 6),
+                ('Proyección temática', 'Proyección de cortometrajes con temática específica.', 'Cine Temático', CURDATE(), '14:00', '16:00', 1, 4);
                 
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
-                ('Canon', 1);
+                ('Canon', 4);
             ";
 
         if ($conexion->multi_query($sql_tables)) {

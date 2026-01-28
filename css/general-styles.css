@@ -100,6 +100,7 @@ ul, li{
 
 button{
     border-radius: 0;
+    border: none;
 }
 
 input{
@@ -187,7 +188,6 @@ p{
     align-items: center;
     justify-content: center;
     height: min-content;
-    width: 100%;
     gap: 8px;
     border: 1px solid var(--primary-03);
     transition: all 200ms ease;
@@ -224,7 +224,6 @@ p{
     align-items: center;
     justify-content: center;
     height: min-content;
-    width: 100%;
     gap: 8px;
     transition: all 300ms ease;
 }
@@ -298,7 +297,6 @@ p{
     font-size: 16px;
     font-weight: 400;
     cursor: pointer;
-    width: 100%;
     gap: 8px;
     transition: all 300ms ease;
 }
@@ -306,6 +304,11 @@ p{
 .secondary-button-03:hover, .secondary-button-03.active{
     background-color: var(--neutral-01);
     color: var(--neutral-09);
+}
+
+.button-small{
+    padding: 4px 12px;
+    font-size: 14px;
 }
 
 .ghost{

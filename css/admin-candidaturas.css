@@ -88,7 +88,6 @@ td {
 th {
     font-size: 13px;
     font-weight: 600;
-    color: var(--neutral-04);
 }
 
 .participant {
@@ -195,22 +194,6 @@ th {
     border-color: var(--primary-02);
 }
 
-/* FOOTER */
-.table-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    font-size: 13px;
-    color: var(--neutral-03);
-    background: var(--neutral-07);
-    border-top: 1px solid var(--neutral-05);
-}
-
-.pagination-info {
-    font-size: 13px;
-    color: var(--neutral-03);
-}
 
 .pagination {
     display: flex;
