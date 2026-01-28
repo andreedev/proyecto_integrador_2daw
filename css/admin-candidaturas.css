@@ -15,51 +15,6 @@ h1 {
     font-size: 14px;
 }
 
-/* FILTERS */
-.filters {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    background: var(--neutral-09);
-    padding: 12px;
-    border: 1px solid var(--neutral-05);
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.filters .filter-search,
-.filters .filter-status,
-.filters .filter-date {
-    flex: 1;
-    min-width: 260px;
-}
-
-.filters input,
-.filters select,
-.filters button {
-    padding: 8px 10px;
-    border: 1px solid var(--neutral-05);
-    font-size: 14px;
-    background: var(--neutral-09);
-    min-width: 0;
-}
-
-.filters input {
-    min-width: 260px;
-    flex: 1;
-}
-
-.filters .clear {
-    margin-left: auto;
-    color: var(--neutral-03);
-    border-color: var(--neutral-05);
-    background: var(--neutral-07);
-}
-
-.filters .clear:hover {
-    background: var(--neutral-06);
-    color: var(--neutral-02);
-}
 
 /* TABLE */
 .table-wrapper {
@@ -293,86 +248,21 @@ th {
     margin-top: 16px;
 }
 
-/* ===== MODAL DOCUMENTOS ===== */
 
-#documentsModal .modal-content {
-    max-width: 900px;
-    width: 90%;
-    padding: 32px;
-    background: var(--neutral-09);
-    position: relative;
-    box-shadow: var(--shadow-02);
-    display: flex;
-    flex-direction: column;
+.tab-item.active span {
+    color: var(--neutral-01) !important;
+    font-weight: 600;
 }
 
-/* Header */
-#documentsModal .modal-header {
+.tab-item.active .tab-indicator {
+    display: block !important;
+}
+
+.ratio-16-9 {
+    aspect-ratio: 16 / 9;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-}
-
-#documentsModal .modal-header h2 {
-    font-size: 24px;
-    color: var(--neutral-02);
-    font-weight: 600;
-}
-
-/* Pestañas Subrayadas */
-#documentsModal .tabs {
-    display: flex;
-    gap: 24px;
-    border-bottom: 1px solid var(--neutral-05);
-    margin-bottom: 20px;
-}
-
-#documentsModal .tab-btn {
-    background: none;
-    border: none;
-    padding: 10px 0;
-    border-bottom: 3px solid transparent;
-    color: var(--neutral-04);
-    font-weight: 600;
-    cursor: pointer;
-}
-
-#documentsModal .tab-btn.active {
-    color: var(--information-02);
-    border-bottom-color: var(--information-02);
-}
-
-/* Contenedor de contenido */
-#documentsModal .tab-content {
-    min-height: 400px;
-    background: var(--neutral-08);
-    /* Fondo gris claro interno */
-    border: 1px solid var(--neutral-05);
-}
-
-#documentsModal .tab-pane.active {
-    display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-
-.btn-ver-documentos {
-    background: var(--neutral-09);
-    color: var(--primary-03);
-    border: 1px solid var(--primary-03);
-    padding: 12px 28px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-ver-documentos:hover {
-    background-color: var(--primary-03);
-    color: var(--neutral-09);
 }
 
 /* VÍDEO */
@@ -418,6 +308,7 @@ th {
 
 /* CARTEL */
 .poster-container {
+    width: 100%;
     text-align: center;
 }
 
@@ -620,8 +511,6 @@ th {
 
 .timeline {
     position: relative;
-    padding-left: 18px;
-    padding-top: 18px;
 }
 
 .timeline::before {
@@ -1076,4 +965,25 @@ th {
         max-width: none;
         padding: 16px;
     }
+}
+
+
+
+#timeline-container {
+    position: relative;
+}
+
+#timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--neutral-05);
+    z-index: 0;
+}
+
+.timeline-item:last-child .connector-line {
+    display: none;
 }

@@ -142,6 +142,10 @@ if (isset($_POST['action'])) {
         case 'guardarCandidatura':
             guardarCandidatura();
             break;
+        case 'obtenerHistorialCandidatura':
+            validarRol(['organizador', 'participante']);
+            obtenerHistorialCandidatura();
+            break;
         case 'listarCandidaturasParticipante':
             validarRol(['participante']);
             listarCandidaturasParticipante();
@@ -1440,7 +1444,7 @@ function mostrarCandidaturas() {
     $stmtCount->execute();
     $totalRecords = $stmtCount->get_result()->fetch_assoc()['total'] ?? 0;
 
-    $dataSql = "SELECT c.*, p.nombre AS participante, p.dni, 
+    $dataSql = "SELECT c.*, p.nombre AS participante, p.dni, p.nro_expediente as nroExpediente, 
                        a1.ruta AS video, a2.ruta AS ficha, a3.ruta AS cartel, a4.ruta AS trailer
                 FROM candidatura c
                 INNER JOIN participante p ON c.id_participante = p.id_participante
@@ -1461,7 +1465,25 @@ function mostrarCandidaturas() {
     $stmtData->execute();
     $result = $stmtData->get_result();
 
-    $candidaturas = $result->fetch_all(MYSQLI_ASSOC);
+    $baseUrl = obtenerBaseUrl();
+    $candidaturas = [];
+
+    while ($row = $result->fetch_assoc()) {
+        // Concatenamos la URL base a las rutas si existen
+        if ($row['video']) {
+            $row['rutaVideo'] = $baseUrl . $row['video'];
+        }
+        if ($row['ficha']) {
+            $row['rutaFicha'] = $baseUrl . $row['ficha'];
+        }
+        if ($row['cartel']) {
+            $row['rutaCartel'] = $baseUrl . $row['cartel'];
+        }
+        if ($row['trailer']) {
+            $row['rutaTrailer'] = $baseUrl . $row['trailer'];
+        }
+        $candidaturas[] = $row;
+    }
 
     $totalPaginas = ceil($totalRecords / $limit);
 
@@ -1481,39 +1503,50 @@ function editarCandidatura() {
     global $conexion;
 
     $idCandidatura = (int)($_POST['idCandidatura'] ?? 0);
-    $estado = $_POST['estado'] ?? '';
-    $motivoRechazo = $_POST['reject_reason'];
+    $nuevoEstadoCandidatura = $_POST['nuevoEstadoCandidatura'] ?? '';
+    $motivoCambioEstado = $_POST['motivoCambioEstado'];
 
-    $stmt = $conexion->prepare("
-        UPDATE candidatura
-        SET 
-            estado = ?
-        WHERE id_candidatura = ?
-    ");
-
-    if (!$stmt) {
-        echo json_encode(["status" => "error", "message" => "Error preparando el UPDATE: " . $conexion->error]);
-        return;
-    }
-
-    $stmt->bind_param("si", $estado, $idCandidatura);
+    $stmt = $conexion->prepare("UPDATE candidatura SET estado = ? WHERE id_candidatura = ?");
+    $stmt->bind_param("si", $nuevoEstadoCandidatura, $idCandidatura);
 
     if ($stmt->execute()) {
         $sqlInsertHistorial = $conexion->prepare("INSERT INTO historial_candidatura (id_candidatura, estado, motivo)
 VALUES (?, ?, ?)");
 
-        $sqlInsertHistorial->bind_param("iss", $idCandidatura, $estado, $motivoRechazo);
-
+        $sqlInsertHistorial->bind_param("iss", $idCandidatura, $nuevoEstadoCandidatura, $motivoCambioEstado);
         $sqlInsertHistorial->execute();
 
         echo json_encode(["status" => "success", "message" => "Estado actualizado correctamente"]);
     } else {
-        echo json_encode(["status" => "error", "message" => "Error al editar el estado de la candidatura: " . $stmt->error]);
+        echo json_encode(["status" => "error", "message" => "Error al cambiar el estado de la candidatura: " . $stmt->error]);
     }
-
-    $stmt->close();
 }
 
+/**
+ * Obtener historial de una candidatura
+ */
+function obtenerHistorialCandidatura() {
+    global $conexion;
+
+    $idCandidatura = (int)($_POST['idCandidatura'] ?? 0);
+
+    $query = "SELECT id_historial as idHistorial, id_candidatura as idCandidatura, estado, motivo, estado_correo_enviado as estadoCorreoEnviado, fecha_hora as fechaHora
+              FROM historial_candidatura
+              WHERE id_candidatura = ?
+              ORDER BY fecha_hora DESC";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idCandidatura);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $historial = [];
+    while ($row = $result->fetch_assoc()) {
+        $historial[] = $row;
+    }
+
+    echo json_encode(["status" => "success", "data" => $historial]);
+}
 
 /**
  * Obtener bases legales

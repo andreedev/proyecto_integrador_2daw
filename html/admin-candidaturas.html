@@ -7,9 +7,9 @@
     <title>Gestión de Candidaturas</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/libraries/air-datepicker.min.css">
+    <link rel="stylesheet" href="../css/admin-candidaturas.css">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
-    <link rel="stylesheet" href="../css/admin-candidaturas.css">
     <link rel="stylesheet" href="../css/utils.css">
 
     <script src="../js/common.js"></script>
@@ -83,132 +83,149 @@
     </div>
 
 
-    <modal-component id="modalCambiarEstado" size="auto">
-        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
-            <h2>Cambiar estado de candidatura</h2>
-            <div class="modal-context">
-                <p><strong>Participante:</strong> <span id="modal-participant"></span></p>
-                <p><strong>Estado actual:</strong> <span id="modal-current-status"></span></p>
+    <modal-component id="modalCambiarEstado" static>
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
+            <div class="d-flex flex-column gap-4px">
+                <span class="fs-20px fw-600">Cambiar estado de candidatura</span>
             </div>
-            <label>
-                Nuevo estado
-                <select id="modalStatus">
-                    <option value="En revisión">En revisión</option>
-                    <option value="Aceptada">Aceptada</option>
-                    <option value="Rechazada">Rechazada</option>
-                    <option value="Finalista">Finalista</option>
-                </select>
-            </label>
-            <label id="rejectReasonWrapper" style="display: none;">
-                Motivo del rechazo *
-                <textarea id="rejectReason" rows="3"
-                          placeholder="Indique el motivo del rechazo (visible para el participante)"></textarea>
-            </label>
-            <div class="modal-actions">
-                <button class="btn" id="close-modal">Cancelar</button>
-                <button class="btn change" id="guardarEstadoCandidatura">Guardar</button>
+            <div class="d-flex align-items-center gap-8px">
+                <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+            </div>
+        </div>
+        <div class="d-flex flex-column p-24px gap-16px ">
+            <input-component id="nombreParticipanteInput" label="Nombre del participante" disabled width="100%" ></input-component>
+            <input-component id="nroExpedienteInput" label="Nro de expediente" disabled ></input-component>
+            <input-component id="estadoActualInput" label="Estado actual" disabled ></input-component>
+
+            <select-component
+                    id="nuevoEstadoCandidatura"
+                    label="Nuevo estado *"
+                    width="100%"
+            >
+            </select-component>
+
+            <input-component
+                    id="motivoCambioEstado"
+                    label="Motivo del cambio de estado"
+                    textarea
+                    required-message=""
+            ></input-component>
+
+            <span class="fs-12px text-neutral-03" id="textoAyudaCambioEstado"></span>
+
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
+                <div class="primary-button-02 text-center" id="btnConfimarCambioEstado">Confirmar</div>
             </div>
         </div>
     </modal-component>
 
 
-    <modal-component id="modalDocumentos" size="auto">
-        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
-            <div class="modal-header">
-                <h2>Documentos de la candidatura</h2>
-                <button class="close-btn close-modal">&times;</button>
-            </div>
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="video">Vídeo</button>
-                <button class="tab-btn" data-tab="poster">Cartel</button>
-                <button class="tab-btn" data-tab="technical">Ficha técnica</button>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane active" id="video-pane">
-                    <div class="video-container">
-                        <img src="../img/Video_Cortometraje.png" alt="Video" class="video-placeholder">
-                    </div>
+    <modal-component id="modalDocumentos" static>
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
+            <span class="fs-20px fw-600">Documentos de la candidatura</span>
+            <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+        </div>
+
+        <div class="d-flex flex-column p-24px gap-24px align-items-center">
+            <div class="d-flex justify-center gap-48px border-bottom border-solid border-neutral-05 w-100">
+                <div class="tab-item cursor-pointer p-12px active" data-tab="video">
+                    <span class="fs-14px text-neutral-03">Video</span>
+                    <div class="tab-indicator bg-error-02 mx-auto mt-4px w-4px h-4px rounded-full"></div>
                 </div>
-                <div class="tab-pane" id="poster-pane">
-                    <div class="poster-container">
-                        <img src="../img/Foto_corto.png" alt="Cartel" class="poster-placeholder">
-                    </div>
+                <div class="tab-item cursor-pointer p-12px" data-tab="cartel">
+                    <span class="fs-14px text-neutral-03">Cartel</span>
+                    <div class="tab-indicator bg-error-02 mx-auto mt-4px w-4px h-4px rounded-full d-none"></div>
                 </div>
-                <div class="tab-pane" id="technical-pane">
-                    <div class="technical-info">
-                        <img src="../img/Ficha_Tecnica.png" alt="Ficha técnica">
-                    </div>
+                <div class="tab-item cursor-pointer p-12px" data-tab="ficha">
+                    <span class="fs-14px text-neutral-03">Ficha técnica</span>
+                    <div class="tab-indicator bg-error-02 mx-auto mt-4px w-4px h-4px rounded-full d-none"></div>
                 </div>
             </div>
+
+            <div class="tab-content w-100 d-flex justify-space-between">
+                <div id="pane-video" class="tab-pane w-100 d-block">
+                    <div id="videoCorto" class="w-100 bg-neutral-06 overflow-hidden aspect-ratio-16-9">
+                    </div>
+                </div>
+                <div id="pane-cartel" class="tab-pane w-100 d-none">
+                    <div class="poster-container d-flex justify-center">
+                        <img id="cartel" src="" alt="Cartel" class="w-100 shadow-sm">
+                    </div>
+                </div>
+                <div id="pane-ficha" class="tab-pane w-100 d-none">
+                    <div id="fichaTecnica" class="w-100% bg-white p-16px border border-solid border-neutral-05">
+                    </div>
+                </div>
+            </div>
+
+            <div class="primary-button-02 w-auto px-48px text-center close-modal">Cerrar</div>
         </div>
     </modal-component>
 
     <modal-component id="modalDetalleCandidatura" size="auto">
-        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
-            <div class="modal-header">
-                <h2>Detalle de Candidatura</h2>
-                <button class="close-btn close-modal">&times;</button>
-            </div>
+<!--        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">-->
+<!--            <div class="modal-header">-->
+<!--                <h2>Detalle de Candidatura</h2>-->
+<!--                <button class="close-btn close-modal">&times;</button>-->
+<!--            </div>-->
 
-            <div class="detail-content">
-                <div class="status-header-row">
-                    <span class="label-inline">Estado:</span>
-                    <span id="detail-status-badge" class="badge-status-yellow">En revisión</span>
-                </div>
+<!--            <div class="detail-content">-->
+<!--                <div class="status-header-row">-->
+<!--                    <span class="label-inline">Estado:</span>-->
+<!--                    <span id="detail-status-badge" class="badge-status-yellow">En revisión</span>-->
+<!--                </div>-->
 
-                <div class="participant-info">
+<!--                <div class="participant-info">-->
 
-                    <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>
+<!--                    <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>-->
 
-                    <input-component id="nombreParticipanteInput" label="Nombre del participante"
-                                     disabled></input-component>
+<!--                    <input-component id="nombreParticipanteInput" label="Nombre del participante"-->
+<!--                                     disabled></input-component>-->
 
-                    <input-component id="nroExpedienteInput" label="Nro expediente:" disabled></input-component>
+<!--                    <input-component id="nroExpedienteInput" label="Nro expediente:" disabled></input-component>-->
 
-                    <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>
+<!--                    <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>-->
 
-                    <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea disabled></input-component>
+<!--                    <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea disabled></input-component>-->
 
-                    <span class="word-counter">100/100 palabras</span>
+<!--                    <span class="word-counter">100/100 palabras</span>-->
 
-                    <div class="input-with-icon">
-                        <span class="icon-calendar"></span>
-                        <input-component id="fechaPresentacionInput" label="Fecha de presentación"
-                                         disabled></input-component>
-                    </div>
+<!--                    <div class="input-with-icon">-->
+<!--                        <span class="icon-calendar"></span>-->
+<!--                        <input-component id="fechaPresentacionInput" label="Fecha de presentación"-->
+<!--                                         disabled></input-component>-->
+<!--                    </div>-->
 
-                    <div class="input-with-icon">
-                        <span class="icon-calendar"></span>
-                        <input-component id="fechaActualizacionInput" label="Última actualización"
-                                         disabled></input-component>
-                    </div>
+<!--                    <div class="input-with-icon">-->
+<!--                        <span class="icon-calendar"></span>-->
+<!--                        <input-component id="fechaActualizacionInput" label="Última actualización"-->
+<!--                                         disabled></input-component>-->
+<!--                    </div>-->
 
-                </div>
+<!--                </div>-->
 
 
-                <div class="footer-actions">
-                    <button class="btn-ver-documentos">Ver documentos</button>
-                </div>
+<!--                <div class="footer-actions">-->
+<!--                    <button class="btn-ver-documentos">Ver documentos</button>-->
+<!--                </div>-->
 
-                <div class="reject-reason" id="detail-reject-reason" style="display: none;">
-                    <strong>Motivo del rechazo:</strong>
-                    <p id="reject-reason-text"></p>
-                </div>
-            </div>
+<!--                <div class="reject-reason" id="detail-reject-reason" style="display: none;">-->
+<!--                    <strong>Motivo del rechazo:</strong>-->
+<!--                    <p id="reject-reason-text"></p>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </modal-component>
 
 
-    <modal-component id="modalHistorialEstado" size="auto">
-        <div class="d-flex flex-column w-auto p-24px gap-16px align-items-center">
-            <div class="modal-header">
-                <h2>Historial de estados</h2>
-                <button class="close-btn close-modal">&times;</button>
-            </div>
-
-            <div class="history-body">
-                <div class="timeline" id="timeline-container">
-                </div>
+    <modal-component id="modalHistorialEstado" >
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
+            <span class="fs-20px fw-600">Historial de estados</span>
+            <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+        </div>
+        <div class="d-flex flex-column p-24px gap-24px align-items-center w-100">
+            <div class="w-100" id="timeline-container">
             </div>
         </div>
     </modal-component>

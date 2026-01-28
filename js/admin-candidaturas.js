@@ -10,11 +10,19 @@ const totalCandidaturasSpan = document.getElementById('totalCandidaturas');
 const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
 const totalPorPagina = document.getElementById('totalPorPagina');
 const modalCambiarEstado = document.getElementById('modalCambiarEstado');
-const modaDocumentos = document.getElementById('modalDocumentos');
+const modalDocumentos = document.getElementById('modalDocumentos');
 const modalDetalleCandidatura = document.getElementById('modalDetalleCandidatura');
 const modalHistorialEstado = document.getElementById('modalHistorialEstado');
-const guardarEstadoCandidatura = document.getElementById('guardarEstadoCandidatura');
 
+const nombreParticipanteInput = document.getElementById('nombreParticipanteInput');
+const nroExpedienteInput = document.getElementById('nroExpedienteInput');
+const estadoActualInput = document.getElementById('estadoActualInput');
+const nuevoEstadoCandidatura = document.getElementById('nuevoEstadoCandidatura');
+const motivoCambioEstado = document.getElementById('motivoCambioEstado');
+const btnConfimarCambioEstado = document.getElementById('btnConfimarCambioEstado');
+const textoAyudaCambioEstado = document.getElementById('textoAyudaCambioEstado');
+
+let candidaturaSeleccionada = null;
 
 filtroEstado.setOptions([
     {value: '', label: 'Todos los estados', default: true},
@@ -51,6 +59,11 @@ filtroTexto.addEventListener('solid-input-enter', async (e) => {
 
 paginacionCandidaturas.addEventListener('page-change', async (e) => {
     await cargarCandidaturas();
+});
+
+nuevoEstadoCandidatura.addEventListener('change', (e) => {
+    const estadoSeleccionado = e.target.value;
+    actualizarEstadoMotivoRechazoInput(estadoSeleccionado);
 });
 
 
@@ -157,22 +170,47 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
 
         const btnDetail = createBtn('Detalle', 'secondary-button-02', () => abrirDetalle(c));
         const btnDocs = createBtn('Documentos', 'secondary-button-02', () => {
-            activeDetailRow = tr;
-            modalDocumentsModal.open();
+            candidaturaSeleccionada = c;
+            renderizarDocumentos(c);
+            modalDocumentos.open();
         });
-        const btnHistory = createBtn('Historial', 'secondary-button-02', () => {
-            cargarHistorial(c);
-            modalHistorialEstado.open();
+        const btnHistory = createBtn('Historial', 'secondary-button-02', async () => {
+            if (renderizarHistorial(await cargarHistorialCandidatura(c.id_candidatura))){
+                modalHistorialEstado.open();
+            }
         });
         const btnChange = createBtn('Cambiar', 'primary-button-02', () => {
             candidaturaSeleccionada = c;
             modalCambiarEstado.open();
+            nombreParticipanteInput.setValue(c.participante);
+            nroExpedienteInput.setValue(c.nroExpediente);
+            estadoActualInput.setValue(estadoTexto);
+            if (c.estado === 'En revisión') {
+                nuevoEstadoCandidatura.setOptions([
+                    {value: 'Aceptada', label: 'Aceptada'},
+                    {value: 'Rechazada', label: 'Rechazada'}
+                ]);
+                actualizarEstadoMotivoRechazoInput('Aceptada');
+            } else if (c.estado === 'Aceptada') {
+                nuevoEstadoCandidatura.setOptions([
+                    {value: 'Finalista', label: 'Finalista'}
+                ]);
+                actualizarEstadoMotivoRechazoInput('Finalista');
+            } else if (c.estado === 'Rechazada') {
+                nuevoEstadoCandidatura.setOptions([
+                    {value: 'En revisión', label: 'En revisión'}
+                ]);
+                actualizarEstadoMotivoRechazoInput('En revisión');
+            }
+            candidaturaSeleccionada = c;
         });
 
-        actionsDiv.append(btnDetail, btnDocs, btnHistory, btnChange);
+        actionsDiv.append(btnDetail, btnDocs, btnHistory);
+        if (c.estado == 'Aceptada' || c.estado == 'En revisión') {
+            actionsDiv.appendChild(btnChange);
+        }
         tdAcciones.appendChild(actionsDiv);
 
-        // Ensamblar fila
         tr.append(tdParticipante, tdSinopsis, tdEstado, tdFechaPres, tdFechaMod, tdAcciones);
         tbody.appendChild(tr);
     });
@@ -182,6 +220,17 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
     totalPorPagina.textContent = lista.length;
     paginacionCandidaturas.setAttribute('current-page', paginaActual);
     paginacionCandidaturas.setAttribute('total-pages', totalPaginas);
+}
+
+
+function actualizarEstadoMotivoRechazoInput(estado){
+    if (estado === 'Rechazada') {
+        textoAyudaCambioEstado.textContent = 'Indique el motivo del rechazo (visible para el participante)';
+        motivoCambioEstado.required = true;
+    } else {
+        textoAyudaCambioEstado.textContent = 'Registre el motivo de este cambio para el historial interno';
+        motivoCambioEstado.required = false;
+    }
 }
 
 /**
@@ -195,84 +244,62 @@ function createBtn(text, className, onClick) {
     return btn;
 }
 
-/**
- * Unifica la lógica de preparación del modal de documentos
- */
-function showDocumentsModal(c) {
-    const videoContainer = documentsModal.querySelector('#video-pane .video-container');
-    const posterContainer = documentsModal.querySelector('#poster-pane .poster-container');
-    const technicalContainer = documentsModal.querySelector('#technical-pane .technical-info');
+function renderizarDocumentos(c) {
+    const videoCont = document.getElementById('videoCorto');
+    const cartelImg = document.getElementById('cartel');
+    const fichaCont = document.getElementById('fichaTecnica');
 
-    // Usamos el objeto c directamente en lugar de dataset
-    videoContainer.innerHTML = `<img src="${c.video || '../img/Video_Cortometraje.png'}" alt="Video" class="video-placeholder">`;
-    posterContainer.innerHTML = `<img src="${c.poster || '../img/Foto_corto.png'}" alt="Cartel" class="poster-placeholder">`;
-    technicalContainer.innerHTML = `<img src="${c.technical || '../img/Ficha_Tecnica.png'}" alt="Ficha técnica">`;
+    const tabVideo = document.querySelector('[data-tab="video"]');
+    if (tabVideo) tabVideo.click();
 
-    documentsModal.style.display = 'flex';
+    videoCont.innerHTML = `
+            <video 
+                id="playerCandidatura"
+                width="100%" 
+                height="100%" 
+                controls 
+                preload="metadata" 
+                class="rounded-8px"
+                style="background: #000; object-fit: contain;"
+                poster="${c.rutaCartel || ''}"
+            >
+                <source src="${c.rutaVideo}" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>`;
+
+    cartelImg.src = c.rutaCartel || '../img/Foto_corto.png';
+
+    fichaCont.innerHTML = `
+            <div class="d-flex flex-column gap-12px w-100">
+                <div class="d-flex justify-space-between align-center">
+                    <span class="fs-14px fw-600 text-neutral-02">Documento PDF</span>
+                    <a href="${c.rutaFicha}" target="_blank" class="text-primary-03 fs-12px fw-600 d-flex align-center gap-4px">
+                        Ver en otra pestaña
+                    </a>
+                </div>
+                <embed 
+                    src="${c.rutaFicha}" 
+                    type="application/pdf" 
+                    width="100%" 
+                    height="260px" 
+                    class="rounded-8px border-solid border-neutral-05"
+                />
+            </div>`;
 }
 
-/**
- * Unifica la lógica de preparación del modal de cambio de estado
- */
-function prepararModalCambio(c) {
-    participantSpan.textContent = c.participante;
-    currentStatusSpan.textContent = statusLabels[getEstadoKey(c.estado)] || c.estado;
+btnConfimarCambioEstado.addEventListener('click', async () => {
+    if (!motivoCambioEstado.validate(true).valid) return;
 
-    // Limpiar y llenar select del modal
-    modalStatus.replaceChildren();
-    let opciones = [];
-    if (c.estado === 'En revisión') opciones = ['Aceptada', 'Rechazada'];
-    else if (c.estado === 'Aceptada') opciones = ['Finalista'];
-    else if (c.estado === 'Rechazada') opciones = ['En revisión'];
-
-    opciones.forEach(est => {
-        const opt = document.createElement('option');
-        opt.value = est;
-        opt.textContent = est;
-        modalStatus.appendChild(opt);
-    });
-
-    document.getElementById('rejectReason').value = c.reject_reason || '';
-    reasonWrapper.style.display = 'none';
-}
-
-
-guardarEstadoCandidatura.addEventListener('click', async () => {
-    if (!activeChangeRow) return;
-
-    const newEstado = modalStatus.value;
-    console.log(newEstado);
-    const reason = document.querySelector('#rejectReason').value.trim();
-
-    if (newEstado === 'rejected' && !reason) {
-        showNotification('Debe indicar un motivo para el rechazo');
+    const response = await editarCandidatura(candidaturaSeleccionada.id_candidatura,  nuevoEstadoCandidatura.value, motivoCambioEstado.value.trim());
+    if (!response || response.status !== 'success') {
+        showNotification('Error al cambiar el estado de la candidatura');
         return;
     }
-    console.log(candidaturaSeleccionada.id_candidatura);
-
-
-    const formData = new FormData();
-    formData.append('action', 'editarCandidatura');
-    formData.append('idCandidatura', candidaturaSeleccionada.id_candidatura);
-    formData.append('estado', newEstado);
-    formData.append('reject_reason', reason);
-
-    try {
-        const response = await editarCandidatura(formData);
-        console.log('Editar candidatura response:', response);
-        if (response.status === 'success') {
-            cargarCandidaturas();
-            showNotification('Estado actualizado correctamente');
-        } else {
-            showNotification(response.message || 'Error al actualizar');
-        }
-    } catch (e) {
-        console.error(e);
-        showNotification('Error al actualizar el estado');
-    }
+    showNotification('Estado de la candidatura actualizado correctamente');
+    modalCambiarEstado.close();
+    await cargarCandidaturas();
 });
 
-// ABRIR DETALLE
 function abrirDetalle(row) {
     if (!row) return;
     activeDetailRow = row;
@@ -312,71 +339,93 @@ function abrirDetalle(row) {
     detailModal.style.display = 'flex';
 }
 
-// CARGAR HISTORIAL
-function cargarHistorial(row) {
+
+async function cargarHistorialCandidatura(idCandidatura) {
+    const response = await obtenerHistorialCandidatura(idCandidatura);
+    if (!response || response.status !== 'success') {
+        showNotification('Error al cargar el historial de la candidatura');
+        return;
+    }
+    if (!response.data || response.data.length === 0) {
+        showNotification('No hay historial disponible para esta candidatura');
+        return;
+    }
+    return response.data;
+}
+
+function renderizarHistorial(historial) {
+    if (!historial || historial.length === 0) return false;
     const container = document.getElementById('timeline-container');
     container.innerHTML = '';
 
-    const historial = row.dataset.historial ? JSON.parse(row.dataset.historial) : [];
-
-    // Mapeo de estados usando tus clases de colores
     const statusConfig = {
-        'review': {class: 'st-review', label: 'En revisión', badge: 'badge-warning'},
-        'rejected': {class: 'st-rejected', label: 'Rechazada', badge: 'badge-error'},
-        'accepted': {class: 'st-accepted', label: 'Aceptada', badge: 'badge-success'},
-        'finalist': {class: 'st-finalist', label: 'Nominado', badge: 'badge-info'},
-        'winner': {class: 'st-winner', label: 'Ganador', badge: 'badge-primary'}
+        'En revisión': { color: 'warning', icon: 'icon-warning' },
+        'Rechazada':   { color: 'error', icon: 'icon-clock' },
+        'Aceptada':    { color: 'success', icon: 'icon-check' },
+        'Finalista':   { color: 'information', icon: 'icon-clock' },
+        'Nominado':    { color: 'information', icon: 'icon-clock' },
+        'Ganador':     { color: 'primary-03', icon: 'icon-trophy' }
     };
 
-    historial.forEach((item) => {
-        const config = statusConfig[item.estado] || statusConfig['review'];
+    historial.forEach((item, index) => {
+        const config = statusConfig[item.estado] || statusConfig['En revisión'];
+        const isRechazada = item.estado === 'Rechazada';
+
         const itemDiv = document.createElement('div');
-        itemDiv.className = `timeline-item ${config.class}`;
+        itemDiv.className = `timeline-item d-flex gap-24px mb-32px position-relative z-index-1`;
 
         let messageHtml = '';
-        // Caja de Error (Rechazo)
-        if (item.estado === 'rejected' && row.dataset.rejectReason) {
+        if (item.motivo && item.motivo.trim() !== "") {
+            const bgBox = isRechazada ? 'bg-error-04' : 'bg-information-04';
+            const borderBox = isRechazada ? 'border-solid border-error-03' : 'border-information-02';
+            const textColor = isRechazada ? 'text-error-01' : 'text-information-01';
+
             messageHtml = `
-            <div class="status-msg-box msg-error">
-                <span class="msg-icon-circle">!</span>
-                <div class="msg-text">
-                    <strong>Motivo del Rechazo:</strong>
-                    <p>${row.dataset.rejectReason}</p>
+            <div class="d-flex gap-16px p-16px mt-12px rounded-8px border-solid border-1px ${bgBox} ${borderBox}">
+                <div class="w-32px h-32px border-radius-50 d-flex align-items-center justify-content-center border-solid border-2px ${borderBox} ${textColor} fw-bold fs-18px">
+                    ${isRechazada ? '!' : 'i'}
                 </div>
-            </div>`;
-        }
-        // Caja de Información (Subsanación - si existe en tus datos)
-        else if (item.subsanacion) {
-            messageHtml = `
-            <div class="status-msg-box msg-info">
-                <span class="msg-icon-circle">!</span>
-                <div class="msg-text">
-                    <strong>Subsanación enviada:</strong>
-                    <p>${item.subsanacion}</p>
+                <div class="d-flex flex-column gap-4px w-100">
+                    <span class="fs-14px fw-700 ${textColor}">${isRechazada ? 'Motivo del Rechazo:' : 'Subsanación enviada:'}</span>
+                    <p class="fs-14px m-0 ${textColor}">${item.motivo}</p>
                 </div>
             </div>`;
         }
 
         itemDiv.innerHTML = `
-        <div class="timeline-visual">
-            <div class="icon-clock-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
+            <div class="d-flex flex-column align-items-center position-relative">
+                <div class="w-40px h-40px border-radius-50 d-flex align-items-center justify-content-center bg-neutral-09 border-solid border-${config.color}-02 text-${config.color}-01 shadow-01">
+                    <span class="icon-clock w-20px h-20px bg-${config.color}-01"></span>
+                </div>
             </div>
-            <div class="connector-line"></div>
-        </div>
-        <div class="timeline-details">
-            <div class="status-row">
-                <span class="status-badge ${config.badge}">${config.label}</span>
-                <span class="status-date">${formatDate(item.fecha)}</span>
+
+            <div class="d-flex flex-column flex-1 w-100">
+                <div class="d-flex align-items-center gap-16px">
+                    <span class="px-12px py-4px rounded-4px fs-12px fw-600 bg-${config.color}-04 text-${config.color}-01 border-solid  border-${config.color}-02">
+                        ${item.estado.toUpperCase()}
+                    </span>
+                    <span class="fs-14px text-neutral-04">
+                        ${formatDateTimeToSpanish(item.fechaHora)}
+                    </span>
+                </div>
+                ${messageHtml}
             </div>
-            ${messageHtml}
-        </div>
-    `;
+        `;
         container.appendChild(itemDiv);
     });
+    return true;
 }
 
 
+document.querySelectorAll('.tab-item').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => {
+            p.classList.replace('d-block', 'd-none');
+        });
+
+        tab.classList.add('active');
+        const targetPane = document.getElementById(`pane-${tab.dataset.tab}`);
+        targetPane.classList.replace('d-none', 'd-block');
+    });
+});

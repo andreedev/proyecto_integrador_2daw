@@ -290,10 +290,20 @@ async function mostrarCandidaturas(filtroTexto, filtroEstado, filtroFecha, pagin
     return await fetchAPI(data);
 }
 
+async function editarCandidatura(idCandidatura, nuevoEstadoCandidatura, $motivoCambioEstado) {
+    const data = new FormData();
+    data.append('action', 'editarCandidatura');
+    data.append('idCandidatura', idCandidatura);
+    data.append('nuevoEstadoCandidatura', nuevoEstadoCandidatura);
+    data.append('motivoCambioEstado', $motivoCambioEstado);
+    return await fetchAPI(data);
+}
 
-//Función para editar una candidatura
-async function editarCandidatura(formData) {
-    return await fetchAPI(formData);
+async function obtenerHistorialCandidatura(idCandidatura) {
+    const data = new FormData();
+    data.append('action', 'obtenerHistorialCandidatura');
+    data.append('idCandidatura', idCandidatura);
+    return await fetchAPI(data);
 }
 
 /**

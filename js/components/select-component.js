@@ -19,6 +19,9 @@ class SelectComponent extends HTMLElement {
 
     async connectedCallback() {
         await window.injectExternalStyles('../css/input-component.css', 'solid-input-styles');
+        const width = this.getAttribute('width') || '100%';
+        this.style.display = 'block';
+        this.style.width = width;
         this.render();
         this._setupEventListeners();
         this.style.visibility = 'visible';
@@ -124,7 +127,6 @@ class SelectComponent extends HTMLElement {
         const width = this.getAttribute('width') || '100%';
         const disabled = this.hasAttribute('disabled') ? 'disabled' : '';
         const isRequired = this.hasAttribute('required') ? 'required' : '';
-
         const currentValue = this.getAttribute('value') || '';
 
         const optionsHtml = this._options.map(opt => {
@@ -133,23 +135,22 @@ class SelectComponent extends HTMLElement {
         }).join('');
 
         this.innerHTML = `
-            <div class="solid-input-container" style="width: ${width};">
-                <label class="solid-input-label text-neutral-04">
-                    ${labelText} ${isRequired ? '*' : ''}
-                </label>
-                
-                <select class="solid-input-field solid-select-field" ${isRequired} ${disabled} 
-                        style="outline: none !important; box-shadow: none !important; border: none !important; border-bottom: 1px solid var(--neutral-04) !important; padding-right: 40px; background: transparent; cursor: pointer;">
-                    ${optionsHtml}
-                </select>
-    
-                <div class="solid-input-icon-container" style="pointer-events: none; right: 0; top: 50%; transform: translateY(-50%);">
-                    <span class="icon-down-arrow w-24px h-24px bg-neutral-03 d-block"></span>
-                </div>
-                
-                <span class="solid-input-error-text d-none" style="color: var(--error-02); margin-top: 4px; font-size: 12px;"></span>
+        <div class="solid-input-container" style="width: ${width};">
+            <label class="solid-input-label text-neutral-04">
+                ${labelText} ${isRequired ? '*' : ''}
+            </label>
+            
+            <select class="solid-input-field solid-select-field" ${isRequired} ${disabled}>
+                ${optionsHtml}
+            </select>
+
+            <div class="solid-input-icon-container">
+                <span class="icon-down-arrow w-24px h-24px bg-neutral-03 d-block"></span>
             </div>
-        `;
+            
+            <span class="solid-input-error-text d-none"></span>
+        </div>
+    `;
 
         this._handleFloatingLabel(currentValue);
     }

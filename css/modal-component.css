@@ -1,3 +1,15 @@
+modal-component {
+    display: block;
+    position: fixed;
+    z-index: -1;
+    visibility: hidden;
+}
+
+modal-component:has(.is-active) {
+    z-index: 1000;
+    visibility: visible;
+}
+
 .solid-modal-overlay {
     position: fixed;
     top: 0;
@@ -10,64 +22,56 @@
     align-items: center;
     opacity: 0;
     visibility: hidden;
+    backdrop-filter: blur(1px);
+    z-index: inherit;
     transition: opacity var(--modal-duration, 300ms) ease,
     visibility var(--modal-duration, 300ms) ease;
-    backdrop-filter: blur(1px);
+    pointer-events: none;
+}
+
+.solid-modal-overlay.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .solid-modal-container {
     background: #ffffff;
     width: 90%;
     max-width: 600px;
+    overflow: hidden;
     transform: scale(0.9);
     transition: transform var(--modal-duration, 300ms) cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.solid-modal-container.is-size-auto {
-    width: auto;
-    min-width: min-content;
-    max-width: 90%;
-    display: inline-block;
-}
-
-.solid-modal-container.is-size-full {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 20px;
-}
-
-.solid-modal-container.is-full-screen {
-    width: 100vw !important;
-    height: 100vh !important;
-    max-width: none !important;
-    max-height: none !important;
-    margin: 0 !important;
-    border-radius: 0 !important;
-    transform: scale(1) !important;
-}
-
-.is-full-screen .solid-modal-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.solid-modal-overlay {
-    z-index: var(--modal-z-index, 1000);
 }
 
 .solid-modal-overlay.is-active .solid-modal-container {
     transform: scale(1);
 }
 
-.solid-modal-overlay.is-active {
-    opacity: 1;
-    visibility: visible;
+/* 4. Variantes de tamaño */
+.solid-modal-container.is-size-auto {
+    width: auto;
+    min-width: min-content;
+    max-width: 90vw;
+}
+
+.solid-modal-container.is-size-full {
+    width: calc(100% - 40px);
+    max-width: 100%;
+}
+
+.solid-modal-container.is-full-screen {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    transform: none !important;
 }
 
 @keyframes modal-static-bounce {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
+    50% { transform: scale(1.02); }
 }
 
 .modal-static-bounce {

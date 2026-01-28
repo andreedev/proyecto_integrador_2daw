@@ -1931,3 +1931,11 @@ dialog::backdrop {
 .overflow-hidden{
     overflow: hidden;
 }
+
+.aspect-ratio-16-9{
+    aspect-ratio: 16 / 9;
+}
+
+.z-index-1{
+    z-index: 1;
+}

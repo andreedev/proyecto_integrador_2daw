@@ -53,27 +53,31 @@ class ModalComponent extends HTMLElement {
     render() {
         const zIndex = this.getAttribute('z-index') || '1000';
         const duration = this.getAttribute('duration') || '300';
-
         const isFullScreen = this.hasAttribute('full-screen') ? 'is-full-screen' : '';
-
         const sizeAttr = this.getAttribute('size');
+
         let sizeClass = '';
         if (sizeAttr === 'full') sizeClass = 'is-size-full';
         if (sizeAttr === 'auto') sizeClass = 'is-size-auto';
 
-        const originalContent = this.innerHTML;
-        this.innerHTML = '';
+        const overlay = document.createElement('div');
+        overlay.className = 'solid-modal-overlay';
+        overlay.style.zIndex = zIndex;
+        overlay.style.setProperty('--modal-duration', `${duration}ms`);
 
-        this.innerHTML = `
-        <div class="solid-modal-overlay" 
-             style="z-index: ${zIndex}; --modal-duration: ${duration}ms;">
-            <div class="solid-modal-container ${isFullScreen} ${sizeClass}">
-                <div class="solid-modal-content">
-                    ${originalContent}
-                </div>
-            </div>
-        </div>
-    `;
+        const container = document.createElement('div');
+        container.className = `solid-modal-container ${isFullScreen} ${sizeClass}`;
+
+        const content = document.createElement('div');
+        content.className = 'solid-modal-content';
+
+        while (this.firstChild) {
+            content.appendChild(this.firstChild);
+        }
+
+        container.appendChild(content);
+        overlay.appendChild(container);
+        this.appendChild(overlay);
     }
 
     _setupEventListeners() {
@@ -123,16 +127,16 @@ class ModalComponent extends HTMLElement {
     close() {
         if (!this._isOpen) return;
         const overlay = this.querySelector('.solid-modal-overlay');
-        overlay.classList.remove('is-active');
 
-        overlay.addEventListener('transitionend', () => {
-            if (!overlay.classList.contains('is-active')) {
-                this._isOpen = false;
-                document.body.style.overflow = '';
-                document.removeEventListener('keydown', this._handleEsc);
-                this.dispatchEvent(new CustomEvent('modal-closed'));
-            }
-        }, { once: true });
+        overlay.classList.remove('is-active');
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', this._handleEsc);
+
+        const duration = parseInt(this.getAttribute('duration')) || 300;
+        setTimeout(() => {
+            this._isOpen = false;
+            this.dispatchEvent(new CustomEvent('modal-closed'));
+        }, duration);
     }
 
     toggle() {

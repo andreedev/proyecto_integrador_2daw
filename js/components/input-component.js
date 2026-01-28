@@ -5,15 +5,33 @@
  *
  * Ejemplo de uso:
  * <input-component
- *     label="Nombre"
- *     type="text"
+ *     label="Correo Electrónico"
+ *     type="email"
  *     width="300px"
  *     required
- *     min-length="3"
- *     error-message="El nombre debe tener al menos 3 caracteres"
- *     required-message="El nombre es obligatorio"
+ *     min-length="5"
+ *     max-length="50"
+ *     error-message="El correo debe tener entre 5 y 50 caracteres"
+ *     required-message="El correo es obligatorio"
+ *     invalid-message="Por favor ingresa un correo válido"
  *     validate-on-load
- * ></input-component>
+ *     ></input-component>
+ *
+ * <input-component
+ *    label="Descripción"
+ *    textarea
+ *    width="400px"
+ *    max-words="100"
+ *    ></input-component>
+ *
+ * <input-component
+ *   label="Nombre"
+ *   type="text"
+ *   width="250px"
+ *   disabled
+ *   value="Juan Pérez"
+ *   ></input-component>
+ *
  *
  * Métodos públicos:
  * - setCustomValidation(callback: function): Establece una función de validación personalizada
@@ -35,7 +53,8 @@ class InputComponent extends HTMLElement {
         return [
             'label', 'type', 'width', 'disabled', 'value',
             'error-message', 'required', 'min-length', 'max-length', 'required-message',
-            'validate-on-load', 'textarea', 'max-words', 'invalid-message', 'no-validation'
+            'validate-on-load', 'textarea', 'max-words', 'invalid-message', 'no-validation',
+            'required'
         ];
     }
 
@@ -50,8 +69,24 @@ class InputComponent extends HTMLElement {
         }
     }
 
+    set required(val) {
+        if (val) {
+            this.setAttribute('required', '');
+        } else {
+            this.removeAttribute('required');
+        }
+    }
+
+    get required() {
+        return this.hasAttribute('required');
+    }
+
     async connectedCallback() {
         await window.injectExternalStyles('../css/input-component.css', 'solid-input-styles');
+
+        const width = this.getAttribute('width') || '100%';
+        this.style.display = 'block';
+        this.style.width = width;
 
         this.render();
         this._setupEventListeners();
