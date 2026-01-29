@@ -1,9 +1,6 @@
 const sinopsisInput = document.getElementById('sinopsisInput');
 const misCandidaturasContainer = document.getElementById('misCandidaturasContainer');
-const statusCardRevision = document.getElementById('statusCardRevision');
-const statusCardAceptada = document.getElementById('statusCardAceptada');
-const statusCardRechazada = document.getElementById('statusCardRechazada');
-const statusCardRechazadaSubsanar = document.getElementById('statusCardRechazadaSubsanar');
+const statusContainer = document.getElementById('statusContainer');
 const posterInput = document.getElementById('posterInput');
 const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
 const btnVerVideo = document.getElementById('btnVerVideo');
@@ -11,6 +8,7 @@ const modalVerVideo = document.getElementById('modalVerVideo');
 const playVideoCorto = document.getElementById('playVideoCorto');
 const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
 const btnGuardarCambios = document.getElementById('btnGuardarCambios');
+const videoTrailerInput = document.getElementById('videoTrailerInput');
 
 let pageSize =3;
 
@@ -22,10 +20,8 @@ btnVerVideo.addEventListener('click', () => {
 
 document.addEventListener('click', (e) => {
     const playBtn = e.target.closest('#playVideoCorto');
-
     if (playBtn) {
         playBtn.classList.add('d-none');
-
         const video = document.getElementById('videoCorto');
         if (video) {
             video.play().catch(error => {
@@ -34,7 +30,68 @@ document.addEventListener('click', (e) => {
             });
         }
     }
+
+    if(e.target.closest('.btn-subsanar-trigger')) {
+        renderStatusCard('Subsanar', candidaturaSeleccionada);
+    }
+
+    // Logic for "Volver" button inside Subsanar view
+    if(e.target.id === 'volver') {
+        renderStatusCard('Rechazada', candidaturaSeleccionada);
+    }
 });
+
+const StatusTemplates = {
+    revision: () => `
+        <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-bg-warning-04-01 border-solid bg-warning-04 text-warning-01">
+            <span class="icono-film flex-shrink-0"></span>
+            <div class="text-revision">
+                <span class="title-revision">Tu candidatura se encuentra en revisión</span>
+                <span class="description-revision fw-500 line-height-120">Asegúrate que tu vídeo cumpla con los requisitos establecidos, al igual que el contenido de la ficha técnica.</span>
+            </div>
+        </div>
+    `,
+    nominado: () => `
+        <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-information-01 border-solid bg-information-04">
+            <span class="icon-star w-36px h-36px bg-information-01 flex-shrink-0"></span>
+            <div class="text-aceptada">
+                <span class="title-aceptada">¡Enhorabuena!</span>
+                <span class="description-aceptada">Tu candidatura se encuentra dentro de los cortometrajes finalistas. Necesitamos que subas un vídeo traíler de tu cortometraje para continuar en el concurso.</span>
+            </div>
+        </div>
+    `,
+    rechazada: (motivo) => `
+        <div class="status-card-rechazada border-solid border-error-02">
+            <div class="d-flex flex-row gap-8px">
+                <span class="icon-warning w-36px h-36px bg-error-01 flex-shrink-0"></span>
+                <div class="text-rechazada">
+                    <span class="title-rechazada">Motivo del Rechazo:</span>
+                    <span class="description-rechazada">${motivo || 'Motivo no especificado'}</span>
+                </div>
+            </div>
+            <div class="primary-button-01 w-auto btn-subsanar-trigger cursor-pointer">Subsanar</div>
+        </div>
+    `,
+    subsanar: (motivo) => `
+        <div class="status-card-rechazada-subsanar">
+            <div class="d-flex flex-row gap-8px">
+                <span class="icon-warning w-36px h-36px bg-error-01 flex-shrink-0"></span>
+                <div class="text-rechazada">
+                    <span class="title-rechazada">Motivo del Rechazo:</span>
+                    <span class="description-rechazada-subsanar">${motivo || 'Motivo no especificado'}</span>
+                </div>
+            </div>
+            <div class="mensaje-para-subsanar">
+                <span class="mensaje">Mensaje para los Organizadores:</span>
+                <textarea class="textarea" id="mensajeTextarea" placeholder="Explica como has resuelto los motivos del rechazo"></textarea>
+            </div>
+            <div class="subsanar-action">
+                <span class="volver cursor-pointer" id="volver">Volver</span>
+                <span class="enviar-subsanacion cursor-pointer" id="btnEnviarSubsanación">Enviar Subsanación</span>
+            </div>
+        </div>
+    `
+};
 
 function buildBadge(candidatura) {
     const span = document.createElement('span');
@@ -94,9 +151,7 @@ function renderizarCandidaturas(candidaturas) {
         candidaturaElement.addEventListener('click', () => {
             const allCards = misCandidaturasContainer.querySelectorAll('.candidatura-mini-card-component');
             allCards.forEach(card => card.classList.remove('selected'));
-
             candidaturaElement.classList.add('selected');
-
             mostrarDetallesCandidatura(candidatura);
         });
 
@@ -111,30 +166,45 @@ function renderizarCandidaturas(candidaturas) {
     }
 }
 
+function renderStatusCard(type, candidatura) {
+    statusContainer.replaceChildren();
+
+    switch (type) {
+        case 'En revisión':
+            statusContainer.innerHTML = StatusTemplates.revision();
+            break;
+        case 'Nominado':
+            statusContainer.innerHTML = StatusTemplates.nominado();
+            break;
+        case 'Rechazada':
+            statusContainer.innerHTML = StatusTemplates.rechazada(candidatura.motivoRechazo);
+            break;
+        case 'Subsanar':
+            statusContainer.innerHTML = StatusTemplates.subsanar(candidatura.motivoRechazo);
+            break;
+        default:
+            break;
+    }
+}
+
 function mostrarDetallesCandidatura(candidatura){
     candidaturaSeleccionada = candidatura;
+    videoTrailerInput.classList.add('d-none');
     const playBtn = document.getElementById('playVideoCorto');
-    if (playBtn) {
-        playBtn.classList.remove('d-none');
-    }
+    if (playBtn) playBtn.classList.remove('d-none');
     playVideoCorto.classList.remove('d-none');
-    statusCardRevision.classList.add('d-none');
-    statusCardAceptada.classList.add('d-none');
-    statusCardRechazada.classList.add('d-none');
-    statusCardRechazadaSubsanar.classList.add('d-none');
 
-    const estado = candidatura.estado;
-    if (estado === 'En revisión') {
-        statusCardRevision.classList.remove('d-none');
-    } else if (estado === 'Aceptada') {
-        statusCardAceptada.classList.remove('d-none');
-    } else if (estado === 'Rechazada') {
-        statusCardRechazada.classList.remove('d-none');
+    renderStatusCard(candidatura.estado, candidatura);
+
+    if (candidatura.estado === 'Nominado') {
+        videoTrailerInput.classList.remove('d-none');
+        if(candidatura.rutaTrailer) {
+            videoTrailerInput.setAttachedMode(candidatura.rutaTrailer, candidatura.idArchivoTrailer);
+        }
     }
 
     posterInput.setAttachedMode(candidatura.rutaCartel, candidatura.idArchivoCartel)
     fichaTecnicaInput.setAttachedMode(candidatura.rutaFichaTecnica, candidatura.idArchivoFichaTecnica)
-
     sinopsisInput.setValue(candidatura.sinopsis, true);
 
     // Cargar video
@@ -158,9 +228,7 @@ async function cargarCandidaturas() {
     const page = paginacionCandidaturas.currentPage;
     const response = await listarCandidaturasParticipante(page, pageSize);
     if (response.status === 'success') {
-        const list = response.data.list;
-        const totalPages = response.data.totalPages;
-        const currentPage = response.data.currentPage;
+        const { list, totalPages, currentPage } = response.data;
         renderizarCandidaturas(list);
         paginacionCandidaturas.setAttribute('current-page', currentPage);
         paginacionCandidaturas.setAttribute('total-pages', totalPages);
