@@ -5,6 +5,7 @@
     align-items: center;
     padding: 8px 32px;
     border-bottom: 1px solid var(--neutral-05);
+    gap: 32px;
 }
 
 @media (min-width: 480px) {
@@ -22,12 +23,14 @@
 @media (min-width: 1200px) {
     .header-container {
         padding: 8px 64px;
+        gap: 64px;
     }
 }
 
 @media (min-width: 1400px) {
     .header-container {
         padding: 8px 128px;
+        gap: 72px;
     }
 }
 
@@ -57,7 +60,7 @@
 
 .header-buttons-desktop-container {
     display: none;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     gap: 8px;
     flex: 1;
@@ -72,7 +75,7 @@
 .header-base-button{
     position: relative;
     width: auto;
-    padding: 8px 32px;
+    padding: 8px 0px;
     background-color: var(--neutral-09);
     font-weight: normal;
     transition: all 300ms ease;
@@ -95,24 +98,18 @@
     font-weight: 500;
 }
 
-.header-base-button-responsive-font-size{
+.header-button-font-size{
     font-size: 12px;
 }
 
-@media (min-width: 992px) {
-    .header-base-button-responsive-font-size{
-        font-size: 10px;
-    }
-}
-
 @media (min-width: 1100px) {
-    .header-base-button-responsive-font-size{
+    .header-button-font-size{
         font-size: 14px;
     }
 }
 
 @media (min-width: 1200px) {
-    .header-base-button-responsive-font-size{
+    .header-button-font-size{
         font-size: 16px;
     }
 }
