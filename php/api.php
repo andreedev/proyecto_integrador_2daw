@@ -1648,9 +1648,10 @@ function listarCandidaturasParticipante() {
             a3.ruta as rutaCartel,
             a4.ruta as rutaTrailer,
             a1.id_archivo as idArchivoVideo,
-            a2.id_archivo as idArchivoFicha,
+            a2.id_archivo as idArchivoFichaTecnica,
             a3.id_archivo as idArchivoCartel,
-            a4.id_archivo as idArchivoTrailer
+            a4.id_archivo as idArchivoTrailer,
+            IF(c.estado = 'Rechazada', (SELECT motivo FROM historial_candidatura WHERE id_candidatura = c.id_candidatura AND estado = 'Rechazada' ORDER BY fecha_hora DESC LIMIT 1), NULL) AS motivoRechazo
         FROM candidatura c
         LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
         LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
@@ -1892,25 +1893,50 @@ function obtenerCandidaturasGanadoras() {
     echo json_encode(["status" => "success", "data" => $candidaturasGanadoras]);
 }
 
-
+/**
+ * Actualizar candidatura
+ */
 function actualizarCandidatura(){
     global $conexion;
 
-    $idCandidatura = (int)$_POST['idCandidatura'];
-    $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : null;
-    $sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : null;
-    $idCartel = isset($_POST['idCartel']) ? (int)$_POST['idCartel'] : null;
-    $idFichaTecnica = isset($_POST['idFichaTecnica']) ? (int)$_POST['idFichaTecnica'] : null;
-    $idTrailer = isset($_POST['idTrailer']) ? (int)$_POST['idTrailer'] : null;
+    $idCandidatura      = limpiarDatoInput($_POST['idCandidatura'], true);
+    $titulo             = limpiarDatoInput($_POST['titulo']);
+    $sinopsis           = limpiarDatoInput($_POST['sinopsis']);
+    $idPoster           = limpiarDatoInput($_POST['idPoster'], true);
+    $idFichaTecnica     = limpiarDatoInput($_POST['idFichaTecnica'], true);
+    $idTrailer          = limpiarDatoInput($_POST['idTrailer'], true);
+    $mensajeSubsanacion = limpiarDatoInput($_POST['mensajeSubsanacion']);
 
-    $stmt = $conexion->prepare("UPDATE candidatura SET titulo = ?, id_archivo_cartel = ?, id_archivo_ficha = ?, id_archivo_trailer = ?, sinopsis = ? WHERE id_candidatura = ?");
-    $stmt->bind_param("siisii", $titulo, $idCartel, $idFichaTecnica, $idTrailer, $sinopsis, $idCandidatura);
+    $sql = "UPDATE candidatura SET 
+                titulo = ?, 
+                sinopsis = ?, 
+                id_archivo_cartel = ?, 
+                id_archivo_ficha = ?, 
+                id_archivo_trailer = ?" .
+        ($mensajeSubsanacion ? ", estado = 'En revisión'" : "") . " 
+            WHERE id_candidatura = ?";
+
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("ssiiii", $titulo, $sinopsis, $idPoster, $idFichaTecnica, $idTrailer, $idCandidatura);
 
     if ($stmt->execute()) {
+        if (!empty($mensajeSubsanacion)) {
+            $stmtHistorial = $conexion->prepare("INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES (?, 'En revisión', ?)");
+            $stmtHistorial->bind_param("is", $idCandidatura, $mensajeSubsanacion);
+            $stmtHistorial->execute();
+        }
+
         echo json_encode(["status" => "success", "message" => "Candidatura actualizada correctamente"]);
     } else {
-        echo json_encode(["status" => "error", "message" => "Error al actualizar la candidatura"]);
+        echo json_encode(["status" => "error", "message" => $stmt->error]); // Mejor devolver el error real para debug
     }
+}
+
+function limpiarDatoInput($valor, $esNumero = false) {
+    if ($valor === null || $valor === 'null' || $valor === 'undefined' || trim($valor) === '') {
+        return null;
+    }
+    return $esNumero ? (int)$valor : $valor;
 }
 
 cerrarConexion();

@@ -360,15 +360,16 @@ async function obtenerDatosGala(){
     return await fetchAPI(data);
 }
 
-async function actualizarCandidatura(idCandidatura, titulo, sinopsis, idCartel, idFichaTecnica, idTrailer){
+async function actualizarCandidatura(idCandidatura, titulo, sinopsis, idPoster, idFichaTecnica, idTrailer, mensajeSubsanacion) {
     const data = new FormData();
     data.append('action', 'actualizarCandidatura');
     data.append('idCandidatura', idCandidatura);
     data.append('titulo', titulo);
     data.append('sinopsis', sinopsis);
-    data.append('idCartel', idCartel);
+    data.append('idPoster', idPoster);
     data.append('idFichaTecnica', idFichaTecnica);
     data.append('idTrailer', idTrailer);
+    data.append('mensajeSubsanacion', mensajeSubsanacion);
 
     return await fetchAPI(data);
 }

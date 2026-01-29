@@ -354,7 +354,6 @@ function renderizarHistorial(historial) {
         'Rechazada':   { color: 'error', icon: 'icon-clock' },
         'Aceptada':    { color: 'success', icon: 'icon-check' },
         'Finalista':   { color: 'information', icon: 'icon-clock' },
-        'Nominado':    { color: 'information', icon: 'icon-clock' },
         'Ganador':     { color: 'primary-03', icon: 'icon-trophy' }
     };
 

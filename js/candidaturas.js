@@ -8,6 +8,7 @@ const playVideoCorto = document.getElementById('playVideoCorto');
 const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
 const btnGuardarCambios = document.getElementById('btnGuardarCambios');
 const videoTrailerInput = document.getElementById('videoTrailerInput');
+const mensajeSubsanacionInput = document.getElementById('mensajeSubsanacionInput');
 
 let pageSize =3;
 let candidaturaSeleccionada = null;
@@ -25,14 +26,14 @@ document.addEventListener('click', (e) => {
         }
     }
 
-    if(e.target.closest('.btn-subsanar-trigger')) {
-        renderStatusCard('Subsanar', candidaturaSeleccionada);
-    }
+    // if(e.target.closest('.btn-subsanar-trigger')) {
+    //     renderStatusCard('Subsanar', candidaturaSeleccionada);
+    // }
 
     // Logic for "Volver" button inside Subsanar view
-    if(e.target.id === 'volver') {
-        renderStatusCard('Rechazada', candidaturaSeleccionada);
-    }
+    // if(e.target.id === 'volver') {
+    //     renderStatusCard('Rechazada', candidaturaSeleccionada);
+    // }
 });
 
 const StatusTemplates = {
@@ -45,7 +46,7 @@ const StatusTemplates = {
             </div>
         </div>
     `,
-    nominado: () => `
+    finalista: () => `
         <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-information-01 border-solid bg-information-04">
             <span class="icon-star w-36px h-36px bg-information-01 flex-shrink-0"></span>
             <div class="text-aceptada">
@@ -63,7 +64,7 @@ const StatusTemplates = {
                     <span class="description-rechazada">${motivo || 'Motivo no especificado'}</span>
                 </div>
             </div>
-            <div class="primary-button-01 w-auto btn-subsanar-trigger cursor-pointer">Subsanar</div>
+<!--            <div class="primary-button-01 w-auto btn-subsanar-trigger cursor-pointer">Subsanar</div>-->
         </div>
     `,
     subsanar: (motivo) => `
@@ -72,17 +73,17 @@ const StatusTemplates = {
                 <span class="icon-warning w-36px h-36px bg-error-01 flex-shrink-0"></span>
                 <div class="text-rechazada">
                     <span class="title-rechazada">Motivo del Rechazo:</span>
-                    <span class="description-rechazada-subsanar">${motivo || 'Motivo no especificado'}</span>
+                    <span class="description-rechazada-subsanar">${motivo}</span>
                 </div>
             </div>
-            <div class="mensaje-para-subsanar">
-                <span class="mensaje">Mensaje para los Organizadores:</span>
-                <textarea class="textarea" id="mensajeTextarea" placeholder="Explica como has resuelto los motivos del rechazo"></textarea>
-            </div>
-            <div class="subsanar-action">
-                <span class="volver cursor-pointer" id="volver">Volver</span>
-                <span class="enviar-subsanacion cursor-pointer" id="btnEnviarSubsanación">Enviar Subsanación</span>
-            </div>
+<!--            <div class="mensaje-para-subsanar">-->
+<!--                <span class="mensaje">Mensaje para los Organizadores:</span>-->
+<!--                <textarea class="textarea" id="mensajeTextarea" placeholder="Explica como has resuelto los motivos del rechazo"></textarea>-->
+<!--            </div>-->
+<!--            <div class="subsanar-action">-->
+<!--                <span class="volver cursor-pointer" id="volver">Volver</span>-->
+<!--                <span class="enviar-subsanacion cursor-pointer" id="btnEnviarSubsanación">Enviar Subsanación</span>-->
+<!--            </div>-->
         </div>
     `
 };
@@ -99,7 +100,7 @@ function buildBadge(candidatura) {
     if (candidatura.estado === 'Rechazada') {
         span.classList.add('border-solid', 'border-error-03', 'text-error-01', 'bg-error-04');
     }
-    if (candidatura.estado === 'Nominado'){
+    if (candidatura.estado === 'Finalista'){
         span.classList.add('border-solid', 'border-information-03', 'text-information-01', 'bg-information-04');
     }
     span.id = 'textEstadoCandidatura';
@@ -146,7 +147,7 @@ function renderizarCandidaturas(candidaturas) {
             const allCards = misCandidaturasContainer.querySelectorAll('.candidatura-mini-card-component');
             allCards.forEach(card => card.classList.remove('selected'));
             candidaturaElement.classList.add('selected');
-            mostrarDetallesCandidatura(candidatura);
+            renderizarDetalleCandidatura(candidatura);
         });
 
         if (index === 0) {
@@ -156,7 +157,7 @@ function renderizarCandidaturas(candidaturas) {
         misCandidaturasContainer.appendChild(candidaturaElement);
     });
     if (candidaturas.length > 0) {
-        mostrarDetallesCandidatura(candidaturas[0]);
+        renderizarDetalleCandidatura(candidaturas[0]);
     }
 }
 
@@ -167,8 +168,8 @@ function renderStatusCard(type, candidatura) {
         case 'En revisión':
             statusContainer.innerHTML = StatusTemplates.revision();
             break;
-        case 'Nominado':
-            statusContainer.innerHTML = StatusTemplates.nominado();
+        case 'Finalista':
+            statusContainer.innerHTML = StatusTemplates.finalista();
             break;
         case 'Rechazada':
             statusContainer.innerHTML = StatusTemplates.rechazada(candidatura.motivoRechazo);
@@ -181,20 +182,32 @@ function renderStatusCard(type, candidatura) {
     }
 }
 
-function mostrarDetallesCandidatura(candidatura){
+function renderizarDetalleCandidatura(candidatura){
     candidaturaSeleccionada = candidatura;
     videoTrailerInput.classList.add('d-none');
+    mensajeSubsanacionInput.classList.add('d-none-force');
+    btnGuardarCambios.textContent = 'Guardar Cambios';
     const playBtn = document.getElementById('playVideoCorto');
     if (playBtn) playBtn.classList.remove('d-none');
     playVideoCorto.classList.remove('d-none');
 
     renderStatusCard(candidatura.estado, candidatura);
 
-    if (candidatura.estado === 'Nominado') {
+    if (candidatura.estado === 'Finalista') {
         videoTrailerInput.classList.remove('d-none');
         if(candidatura.rutaTrailer) {
             videoTrailerInput.setAttachedMode(candidatura.rutaTrailer, candidatura.idArchivoTrailer);
         }
+    }
+
+    if(candidatura.estado !== 'En revisión') {
+        btnGuardarCambios.classList.add('d-none');
+    }
+
+    if (candidatura.estado === 'Rechazada') {
+        mensajeSubsanacionInput.classList.remove('d-none-force');
+        btnGuardarCambios.classList.remove('d-none');
+        btnGuardarCambios.textContent = 'Enviar Subsanación';
     }
 
     posterInput.setAttachedMode(candidatura.rutaCartel, candidatura.idArchivoCartel)
@@ -232,15 +245,25 @@ async function cargarCandidaturas() {
 
 btnGuardarCambios.addEventListener('click', async () => {
     if (!candidaturaSeleccionada) return;
+    const tituloValido = tituloInput.validate(true).valid
+    const sinopsisValida = sinopsisInput.validate(true).valid;
+    const posterValido = posterInput.validate(true);
+    const fichaTecnicaValida = fichaTecnicaInput.validate(true);
+    const necesitaMensaje = candidaturaSeleccionada.estado === 'Rechazada';
+    const mensajeValido = necesitaMensaje ? mensajeSubsanacionInput.validate(true).valid : true;
 
-    const titulo = tituloInput.getValue();
-    const sinopsis = sinopsisInput.getValue();
-    const posterFile = posterInput.getAttachedFile();
-    const fichaTecnicaFile = fichaTecnicaInput.getAttachedFile();
-    const videoTrailerFile = videoTrailerInput.getAttachedFile();
+    if (!tituloValido || !sinopsisValida || !posterValido || !fichaTecnicaValida || !mensajeValido) {
+        return;
+    }
 
-    let response = await actualizarCandidatura(candidaturaSeleccionada.id, titulo, sinopsis, posterFile, fichaTecnicaFile, videoTrailerFile);
+    const titulo = tituloInput.value
+    const sinopsis = sinopsisInput.value;
+    const idPoster = await posterInput.uploadIfNeeded();
+    const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
+    const idVideoTrailer = await videoTrailerInput.uploadIfNeeded();
+    const mensajeSubsanacion = necesitaMensaje ? mensajeSubsanacionInput.value : null;
 
+    let response = await actualizarCandidatura(candidaturaSeleccionada.idCandidatura, titulo, sinopsis, idPoster, idFichaTecnica, idVideoTrailer, mensajeSubsanacion);
     if (response.status === 'success') {
         await cargarCandidaturas();
     } else {
