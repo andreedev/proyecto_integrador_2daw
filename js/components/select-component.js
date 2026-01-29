@@ -3,7 +3,7 @@
  * Dropdown reutilizable que sigue la estética del InputComponent
  *
  * Ejemplo de uso:
- * <select-component label="Selecciona una opción" width="250px" required required-message="Este campo es obligatorio"></select-component>
+ * <select-component label="Selecciona una opción" width="200px" required required-message="Este campo es obligatorio"></select-component>
  */
 class SelectComponent extends HTMLElement {
     constructor() {

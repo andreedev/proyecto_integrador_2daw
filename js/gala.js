@@ -182,3 +182,8 @@ function renderizarDatosGala(data) {
 
     }
 }
+
+const btnCalendario = document.getElementById('btnCalendario');
+btnCalendario.addEventListener('click', () => {
+    window.open('https://www.google.com/calendar/render?action=TEMPLATE&text=Festival+de+Cortometraje+2026&dates=20260123T090000Z/20260123T180000Z&details=Asistencia+al+Festival+de+Cortometraje&location=Auditorio+Principal', '_blank');
+});
