@@ -1,3 +1,4 @@
+const tituloInput = document.getElementById('tituloInput');
 const sinopsisInput = document.getElementById('sinopsisInput');
 const misCandidaturasContainer = document.getElementById('misCandidaturasContainer');
 const statusContainer = document.getElementById('statusContainer');
@@ -199,6 +200,7 @@ function mostrarDetallesCandidatura(candidatura){
     posterInput.setAttachedMode(candidatura.rutaCartel, candidatura.idArchivoCartel)
     fichaTecnicaInput.setAttachedMode(candidatura.rutaFichaTecnica, candidatura.idArchivoFichaTecnica)
     sinopsisInput.setValue(candidatura.sinopsis, true);
+    tituloInput.setValue(candidatura.titulo, true);
 
     // Cargar video
     const video = document.getElementById('videoCorto');

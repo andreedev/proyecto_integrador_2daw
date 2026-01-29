@@ -1641,6 +1641,7 @@ function listarCandidaturasParticipante() {
             c.tipo_candidatura as tipoCandidatura,
             c.fecha_presentacion as fechaPresentacion,
             c.fecha_ultima_modificacion as fechaUltimaModificacion,
+            c.titulo as titulo,
             c.sinopsis as sinopsis,
             a1.ruta as rutaVideo,
             a2.ruta as rutaFichaTecnica,
