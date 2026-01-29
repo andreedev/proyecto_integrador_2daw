@@ -134,7 +134,7 @@ if (isset($_POST['action'])) {
             break;
         case 'editarCandidatura':
             validarRol(['organizador']);
-            editarCandidatura();
+            actualizarEstadoCandidatura();
             break;
         case 'obtenerBasesLegales':
             obtenerBasesLegales();
@@ -152,6 +152,10 @@ if (isset($_POST['action'])) {
             break;
         case 'obtenerDatosGala':
             obtenerDatosGala();
+            break;
+        case 'actualizarCandidatura':
+            validarRol(['participante']);
+            actualizarCandidatura();
             break;
         default:
             break;
@@ -1502,7 +1506,7 @@ function mostrarCandidaturas() {
 /**
  * Editar la candidatura
  */
-function editarCandidatura() {
+function actualizarEstadoCandidatura() {
     global $conexion;
 
     $idCandidatura = (int)($_POST['idCandidatura'] ?? 0);
@@ -1602,6 +1606,7 @@ function guardarCandidatura() {
 
     $sqlInsertCandidatura = $conexion->prepare("INSERT INTO candidatura (id_participante, estado, tipo_candidatura, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel) VALUES (?, 'En revisión', 'alumno', ?, ?, ?, ?)");
     $sqlInsertCandidatura->bind_param("issii", $idParticipante, $sinopsis, $idVideo, $idFichaTecnica, $idPoster);
+
     if (!$sqlInsertCandidatura->execute()) {
         echo json_encode(["status" => "error", "message" => "Error al crear la candidatura: " . $sqlInsertCandidatura->error]);
     }
@@ -1888,7 +1893,23 @@ function obtenerCandidaturasGanadoras() {
 
 
 function actualizarCandidatura(){
+    global $conexion;
 
+    $idCandidatura = (int)$_POST['idCandidatura'];
+    $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : null;
+    $sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : null;
+    $idCartel = isset($_POST['idCartel']) ? (int)$_POST['idCartel'] : null;
+    $idFichaTecnica = isset($_POST['idFichaTecnica']) ? (int)$_POST['idFichaTecnica'] : null;
+    $idTrailer = isset($_POST['idTrailer']) ? (int)$_POST['idTrailer'] : null;
+
+    $stmt = $conexion->prepare("UPDATE candidatura SET titulo = ?, id_archivo_cartel = ?, id_archivo_ficha = ?, id_archivo_trailer = ?, sinopsis = ? WHERE id_candidatura = ?");
+    $stmt->bind_param("siisii", $titulo, $idCartel, $idFichaTecnica, $idTrailer, $sinopsis, $idCandidatura);
+
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "success", "message" => "Candidatura actualizada correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al actualizar la candidatura"]);
+    }
 }
 
 cerrarConexion();

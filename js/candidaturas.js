@@ -3,20 +3,13 @@ const misCandidaturasContainer = document.getElementById('misCandidaturasContain
 const statusContainer = document.getElementById('statusContainer');
 const posterInput = document.getElementById('posterInput');
 const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
-const btnVerVideo = document.getElementById('btnVerVideo');
-const modalVerVideo = document.getElementById('modalVerVideo');
 const playVideoCorto = document.getElementById('playVideoCorto');
 const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
 const btnGuardarCambios = document.getElementById('btnGuardarCambios');
 const videoTrailerInput = document.getElementById('videoTrailerInput');
 
 let pageSize =3;
-
 let candidaturaSeleccionada = null;
-
-btnVerVideo.addEventListener('click', () => {
-    modalVerVideo.open();
-});
 
 document.addEventListener('click', (e) => {
     const playBtn = e.target.closest('#playVideoCorto');
@@ -236,7 +229,21 @@ async function cargarCandidaturas() {
 }
 
 btnGuardarCambios.addEventListener('click', async () => {
+    if (!candidaturaSeleccionada) return;
 
+    const titulo = tituloInput.getValue();
+    const sinopsis = sinopsisInput.getValue();
+    const posterFile = posterInput.getAttachedFile();
+    const fichaTecnicaFile = fichaTecnicaInput.getAttachedFile();
+    const videoTrailerFile = videoTrailerInput.getAttachedFile();
+
+    let response = await actualizarCandidatura(candidaturaSeleccionada.id, titulo, sinopsis, posterFile, fichaTecnicaFile, videoTrailerFile);
+
+    if (response.status === 'success') {
+        await cargarCandidaturas();
+    } else {
+        alert('Error al actualizar la candidatura: ' + response.message);
+    }
 });
 
 cargarCandidaturas();

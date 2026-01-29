@@ -60,7 +60,14 @@
                     </div>
                     <span class="fs-16px fw-500 text-neutral-03">El vídeo no se puede editar una vez subido</span>
                 </div>
-                <span class="primary-button-01 flex-shrink-0" id="btnVerVideo">Ver vídeo</span>
+            </div>
+
+            <div class="d-flex flex-column w-100 position-relative">
+                <div class="play-video" id="playVideoCorto">
+                    <span class="icon-play-video"></span>
+                </div>
+                <video id="videoCorto" class="w-100" controls preload="metadata" disablePictureInPicture controlsList="nodownload">
+                </video>
             </div>
 
             <file-component
@@ -121,22 +128,6 @@
 
 </div>
 <home-footer></home-footer>
-
-<modal-component id="modalVerVideo" duration="500" >
-    <div class="d-flex gap-16px flex-column align-items-center p-32px">
-        <div class="d-flex justify-space-between align-items-center w-100">
-            <h2 class="modal-title">Video del cortometraje</h2>
-            <span class="close-modal cursor-pointer icon-close w-24px h-24px d-block bg-neutral-02" id="closeModalVerVideo"></span>
-        </div>
-        <div class="d-flex flex-column w-100 position-relative">
-            <div class="play-video" id="playVideoCorto">
-                <span class="icon-play-video"></span>
-            </div>
-            <video id="videoCorto" class="w-100" controls preload="metadata" disablePictureInPicture controlsList="nodownload">
-            </video>
-        </div>
-    </div>
-</modal-component>
 
 <script src="../js/libraries/air-datepicker.min.js"></script>
 <script src="../js/components/pagination-component.js"></script>

@@ -143,13 +143,6 @@
     margin: 8px 0px;
 }
 
-.error{
-    color: var(--error-02);
-}
-
-.success{
-    color: var(--success-02);
-}
 
 .formLogin{
     display: flex;

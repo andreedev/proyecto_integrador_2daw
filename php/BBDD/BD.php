@@ -49,6 +49,7 @@ function crearBaseDatosSiNoExiste()
                     tipo_candidatura ENUM('alumno', 'alumni') NOT NULL,
                     fecha_presentacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     fecha_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    titulo varchar(200),
                     sinopsis TEXT,
                     id_archivo_video INT comment 'Archivo del video del cortometraje',
                     id_archivo_ficha INT comment 'Archivo de la ficha técnica del cortometraje',
@@ -160,6 +161,16 @@ function crearBaseDatosSiNoExiste()
                     FOREIGN KEY (id_archivo_logo) REFERENCES archivo(id_archivo)
                 );
                 
+                
+                -- TRIGGERS
+                CREATE TRIGGER tr_crear_historial_insercion
+                AFTER INSERT ON candidatura
+                FOR EACH ROW
+                BEGIN
+                    INSERT INTO historial_candidatura (id_candidatura, estado, motivo, fecha_hora)
+                    VALUES (NEW.id_candidatura, 'En revisión', NULL, NOW());
+                END;
+                
                 -- =========================
                 -- INSERTS
                 
@@ -173,7 +184,7 @@ function crearBaseDatosSiNoExiste()
                 (4, 'uploads/public/_ENTRENADORES_CABECERA_GENERAL_3.width-800.jpg'),
                 (5, 'uploads/public/_Gemini_Generated_Image_u3h353u3h353u3h3.png'),
                 (6, 'uploads/public/_salidas-profesionales.png'),
-                (7, 'uploads/public/_Pentawards_35_4aognhs.width-800.png'),
+                (7, 'uploads/public/Pentawards_35_4aognhs.width-800.png'),
                 
                 -- DOCUMENTOS (IDs 8)
                 (8, 'uploads/public/_dummy.pdf'),
@@ -196,27 +207,27 @@ function crearBaseDatosSiNoExiste()
                 ('Laura Gómez', '44444444D', 'laura@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-004'),
                 ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
                 
-                INSERT INTO candidatura (id_participante, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer, tipo_candidatura, estado) VALUES
-                (1, 'Corto urbano sobre la vida moderna.', 1, 8, 3, 2, 'alumno', 'Aceptada'),
-                (2, 'Documental sobre la fauna local.', 2, 8, 4, 10, 'alumno', 'En revisión'),
-                (3, 'Animación infantil educativa.', 10, 8, 5, NULL, 'alumni', 'Rechazada'),
-                (4, 'Drama social ambientado en un barrio.', 12, 8, 6, 1, 'alumno', 'Aceptada'),
-                (5, 'Corto experimental en blanco y negro.', 1, 8, 7, NULL, 'alumni', 'En revisión'),
-                (1, 'Comedia sobre la universidad.', 2, 8, 9, 12, 'alumno', 'Rechazada'),
-                (2, 'Thriller psicológico de suspense.', 10, 8, 11, 1, 'alumno', 'Aceptada'),
-                (3, 'Fantasía épica de bajo presupuesto.', 12, 8, 3, NULL, 'alumni', 'En revisión'),
-                (4, 'Crítica social al consumismo.', 1, 8, 4, 2, 'alumno', 'Rechazada'),
-                (5, 'Documental sobre música urbana.', 2, 8, 5, NULL, 'alumni', 'Aceptada'),
-                (1, 'Corto histórico ambientado en 1900.', 10, 8, 6, 12, 'alumno', 'En revisión'),
-                (2, 'Relato futurista de ciencia ficción.', 12, 8, 7, 1, 'alumno', 'Aceptada'),
-                (3, 'Terror psicológico en espacio cerrado.', 1, 8, 9, NULL, 'alumni', 'Rechazada'),
-                (4, 'Historia de superación personal.', 2, 8, 11, 10, 'alumno', 'En revisión'),
-                (5, 'Corto musical con artistas locales.', 10, 8, 3, NULL, 'alumni', 'Aceptada'),
-                (1, 'Romance juvenil contemporáneo.', 12, 8, 4, 1, 'alumno', 'Rechazada'),
-                (2, 'Corto ecológico sobre reciclaje.', 1, 8, 5, 2, 'alumno', 'En revisión'),
-                (3, 'Animación stop motion artesanal.', 2, 8, 6, NULL, 'alumni', 'Aceptada'),
-                (4, 'Drama familiar intergeneracional.', 10, 8, 7, 12, 'alumno', 'Rechazada'),
-                (5, 'Corto artístico abstracto.', 12, 8, 9, NULL, 'alumni', 'Finalista');
+                INSERT INTO candidatura (id_participante, titulo, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer, tipo_candidatura) VALUES
+                (1, 'Ritmo de Asfalto'     , 'Corto urbano sobre la vida moderna.'      , 1 , 8, 3 , NULL, 'alumno'),
+                (2, 'Latido Salvaje'       , 'Documental sobre la fauna local.'         , 2 , 8, 4 , NULL, 'alumno'),
+                (3, 'Pequeños Sabios'      , 'Animación infantil educativa.'            , 10, 8, 5 , NULL, 'alumni'),
+                (4, 'Entre Bloques'        , 'Drama social ambientado en un barrio.'    , 12, 8, 6 , NULL, 'alumno'),
+                (5, 'Sombras Estáticas'    , 'Corto experimental en blanco y negro.'    , 1 , 8, 7 , NULL, 'alumni'),
+                (1, 'Crónicas del Campus'  , 'Comedia sobre la universidad.'            , 2 , 8, 9 , NULL, 'alumno'),
+                (2, 'Laberinto Mental'     , 'Thriller psicológico de suspense.'        , 10, 8, 11, NULL, 'alumno'),
+                (3, 'Reinos de Cartón'     , 'Fantasía épica de bajo presupuesto.'      , 12, 8, 3 , NULL, 'alumni'),
+                (4, 'Código de Barras'     , 'Crítica social al consumismo.'            , 1 , 8, 4 , NULL, 'alumno'),
+                (5, 'Voz de Calle'         , 'Documental sobre música urbana.'          , 2 , 8, 5 , NULL, 'alumni'),
+                (1, 'Ecos de 1900'         , 'Corto histórico ambientado en 1900.'      , 10, 8, 6 , NULL, 'alumno'),
+                (2, 'Neón y Acero'         , 'Relato futurista de ciencia ficción.'     , 12, 8, 7 , NULL, 'alumno'),
+                (3, 'Claustro'             , 'Terror psicológico en espacio cerrado.'   , 1 , 8, 7 , NULL, 'alumni'),
+                (4, 'Contra la Corriente'  , 'Historia de superación personal.'         , 2 , 8, 11, NULL, 'alumno'),
+                (5, 'Acordes Locales'      , 'Corto musical con artistas locales.'      , 10, 8, 3 , NULL, 'alumni'),
+                (1, 'A un Click de Ti'     , 'Romance juvenil contemporáneo.'           , 12, 8, 4 , NULL, 'alumno'),
+                (2, 'Ciclo Infinito'       , 'Corto ecológico sobre reciclaje.'         , 1 , 8, 5 , NULL, 'alumno'),
+                (3, 'Manos de Barro'       , 'Animación stop motion artesanal.'         , 2 , 8, 6 , NULL, 'alumni'),
+                (4, 'Raíces y Ramas'       , 'Drama familiar intergeneracional.'        , 10, 8, 7 , NULL, 'alumno'),
+                (5, 'Formas del Vacío'     , 'Corto artístico abstracto.'               , 12, 8, 9 , NULL, 'alumni');
 
                 
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES
@@ -370,7 +381,6 @@ function crearBaseDatosSiNoExiste()
                     (1, 'Documental'  , 'Juan Pérez' , 'Mejor Documental'  , 1),
                     (1, 'Cortometraje', 'María López', 'Mejor Cortometraje', 4);
                 
-                INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES (1, 'En revisión', 'Inicio');
                 INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES (1, 2);
                 
                 INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES
@@ -402,6 +412,29 @@ function crearBaseDatosSiNoExiste()
                 
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
                 ('Canon', 4);
+                
+                
+                -- UPDATES
+                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 1;
+                INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
+                (1, 'Rechazada', 'El cortometraje no cumple con los requisitos de duración.', true);
+                UPDATE candidatura SET estado = 'En revisión' WHERE id_candidatura = 1;
+                INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES
+                (1, 'En revisión', 'He subsanado los problemas de duración.');
+                
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 2;
+                INSERT INTO historial_candidatura (id_candidatura, estado) VALUES
+                (3, 'Aceptada');
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (2, 'Aceptada', true);
+                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 2;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (2, 'Finalista', true);
+                
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 3;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (3, 'Aceptada', true);
+                
             ";
 
         if ($conexion->multi_query($sql_tables)) {
