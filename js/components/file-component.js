@@ -244,7 +244,7 @@ class FileComponent extends HTMLElement {
                 </label>
                 
                 <div class="drop-zone-wrapper">
-                    <div class="imageDropZone min-h-120px py-24px d-flex flex-column align-items-center justify-content-center cursor-pointer border-dashed border-neutral-04 transition-all">
+                    <div class="imageDropZone min-h-120px py-24px d-flex flex-column align-items-center justify-content-center cursor-pointer border border-dashed border-neutral-03 transition-all">
                         <input type="file" accept="${accept}" hidden>
                         <div class="d-flex flex-column align-items-center text-center px-16px">
                             <span class="icon-upload d-block w-32px h-32px bg-neutral-01"></span>

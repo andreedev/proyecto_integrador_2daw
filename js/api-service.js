@@ -280,10 +280,11 @@ async function eliminarEvento(idEvento) {
     return await fetchAPI(formData);
 }
 
-async function mostrarCandidaturas(filtroTexto, filtroEstado, filtroFecha, pagina) {
+async function mostrarCandidaturas(filtroTexto, filtroTipo, filtroEstado, filtroFecha, pagina) {
     const data = new FormData();
     data.append('action', 'mostrarCandidaturas');
     data.append('filtroTexto', filtroTexto);
+    data.append('filtroTipo', filtroTipo);
     data.append('filtroEstado', filtroEstado);
     data.append('filtroFecha', filtroFecha);
     data.append('pagina', pagina);

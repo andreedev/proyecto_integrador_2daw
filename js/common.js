@@ -18,7 +18,7 @@ function setupDynamicDropZone(container, allowedExtensions, maxSizeBytes, valida
 
     container.innerHTML = `
         <div class="drop-zone-wrapper">
-            <div class="imageDropZone h-100px d-flex flex-column align-items-center justify-content-center cursor-pointer border-dashed border-neutral-04">
+            <div class="imageDropZone h-100px d-flex flex-column align-items-center justify-content-center cursor-pointer border border-dashed border-neutral-04">
                 <input type="file" accept="${allowedExtensions.map(ext => '.' + ext).join(',')}" hidden>
                 <div class="contenidoInput">
                     <div class="d-flex flex-column align-items-center">
@@ -359,10 +359,51 @@ function formatDateTimeToSpanish(dateSource) {
 
 /**
  * Normaliza strings de fecha para compatibilidad (Sustituye espacio por T)
+ *  Convierte "YYYY-MM-DD HH:mm:ss" a "YYYY-MM-DDTHH:mm:ss"
  */
 function normalizeDateInput(dateSource) {
     if (!dateSource) return null;
     if (dateSource instanceof Date) return dateSource;
-    // Convierte "YYYY-MM-DD HH:mm:ss" a "YYYY-MM-DDTHH:mm:ss"
     return dateSource.replace(' ', 'T');
+}
+
+/**
+ * Capitaliza la primera letra de un string
+ */
+function capitalize(str) {
+    if (!str || typeof str !== 'string') return '';
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+
+/**
+ * Escucha cambios en el tamaño de la pantalla y ejecuta un callback con las nuevas dimensiones como parámetro.
+ * @param {Function} callback - Funcion de callback que recibe un objeto { width, height }
+ * @returns {Function} - Function para remover el listener
+ */
+function watchScreenSize(callback) {
+    let timeoutId;
+
+    function getDimensions() {
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+    }
+
+    function handleResize() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function() {
+            callback(getDimensions());
+        }, 150);
+    }
+
+    callback(getDimensions());
+
+    window.addEventListener('resize', handleResize);
+
+    return function() {
+        window.removeEventListener('resize', handleResize);
+    };
 }

@@ -30,14 +30,21 @@
 
             <div class="admin-content">
                 <div class="d-flex gap-24px flex-column">
-                    <div class="d-flex flex-row gap-24px align-items-center w-100 justify-space-between bg-neutral-08 p-20px">
+                    <div class="d-flex flex-row flex-wrap gap-24px align-items-center w-100 justify-space-between bg-neutral-09 border border-neutral-05 p-20px">
                         <input-component
-                                label="Buscar por participante o sinopsis"
+                                label="Buscar por participante, titulo o sinopsis"
                                 id="filtroTexto"
                                 width="auto"
                                 no-validation
                                 class="flex-grow-1">
                         </input-component>
+
+                        <select-component
+                                id="filtroTipo"
+                                label="Filtrar por tipo"
+                                width="auto"
+                        >
+                        </select-component>
 
                         <select-component
                                 id="filtroEstado"
@@ -49,8 +56,9 @@
                         <date-component
                                 label="Fecha de presentación"
                                 id="filtroFecha"
+                                width="150px"
                         ></date-component>
-                        <button id="btnAplicarFiltros" class="primary-button-02">Aplicar filtros</button>
+                        <button id="btnAplicarFiltros" class="primary-button-02">Buscar</button>
                         <button id="btnLimpiarFiltros" class="secondary-button-03">Limpiar filtros</button>
                     </div>
 
@@ -58,12 +66,29 @@
                         <table>
                             <thead>
                             <tr>
-                                <th>Participante</th>
-                                <th>Sinopsis</th>
-                                <th>Estado</th>
-                                <th>Fecha presentación</th>
-                                <th>Últ. actualización</th>
-                                <th>Acciones</th>
+                                <!-- 140px -->
+                                <th style="width: auto">Participante</th>
+                                <!-- 220px -->
+                                <th style="width: auto" class="text-left">
+                                    <div>Titulo</div>
+                                </th>
+                                <th style="width: auto" class="text-left">
+                                    <div>Sinopsis</div>
+                                </th>
+                                <!-- 80px -->
+                                <th style="width:auto">Tipo</th>
+                                <!-- 120px -->
+                                <th style="width: auto">Estado</th>
+                                <!-- 100px -->
+                                <th style="width: auto" class="text-left">
+                                    <div>Fecha</div>
+                                    <div>presentación</div>
+                                </th>
+                                <!-- 136px -->
+                                <th style="width: auto" class="text-left">
+                                    <div>Ult. actualización</div>
+                                </th>
+                                <th style="width: auto">Acciones</th>
                             </tr>
                             </thead>
                             <tbody></tbody>

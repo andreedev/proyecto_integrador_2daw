@@ -4,6 +4,7 @@ const notificationMessage = document.getElementById('notificationMessage');
 const btnLimpiarFiltros = document.getElementById('btnLimpiarFiltros');
 const btnAplicarFiltros = document.getElementById('btnAplicarFiltros');
 const filtroTexto = document.getElementById('filtroTexto');
+const filtroTipo = document.getElementById('filtroTipo');
 const filtroEstado = document.getElementById('filtroEstado');
 const filtroFecha = document.getElementById('filtroFecha');
 const totalCandidaturasSpan = document.getElementById('totalCandidaturas');
@@ -42,6 +43,12 @@ filtroEstado.setOptions([
     {value: 'Finalista', label: 'Finalista'}
 ])
 
+filtroTipo.setOptions([
+    {value: '', label: 'Todos los tipos', default: true},
+    {value: 'alumno', label: 'Alumno'},
+    {value: 'alumni', label: 'Alumni'}
+]);
+
 filtroFecha.addEventListener('date-change', (e) => {
     cargarCandidaturas();
 });
@@ -50,7 +57,12 @@ filtroEstado.addEventListener('change', () => {
     cargarCandidaturas();
 });
 
+filtroTipo.addEventListener('change', () => {
+    cargarCandidaturas();
+});
+
 btnLimpiarFiltros.addEventListener('click', async () => {
+    filtroTipo.value = '';
     filtroEstado.value = '';
     filtroTexto.value = '';
     filtroFecha.clear();
@@ -118,13 +130,17 @@ function getEstadoKey(status) {
     }
 }
 
+/**
+ * Carga y renderiza las candidaturas según los filtros y paginación
+ */
 async function cargarCandidaturas() {
     try {
         const texto = filtroTexto.value.trim();
         const estado = filtroEstado.value;
+        const tipo = filtroTipo.value;
         const fecha = filtroFecha.getISOValue();
         const pagina = paginacionCandidaturas.currentPage;
-        const response = await mostrarCandidaturas(texto, estado, fecha, pagina);
+        const response = await mostrarCandidaturas(texto, tipo, estado, fecha, pagina);
         if (!response || response.status !== 'success') {
             showNotification('Error al cargar candidaturas');
             return;
@@ -163,13 +179,20 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
             <div class="email">${c.dni}</div>
         `;
 
+        const tdTitulo = document.createElement('td');
+        tdTitulo.className = 'fw-500 fs-14px max-w-200px';
+        tdTitulo.textContent = c.titulo;
+
         const tdSinopsis = document.createElement('td');
-        tdSinopsis.className = 'synopsis';
-        tdSinopsis.textContent = c.sinopsis || '-';
+        tdSinopsis.className = 'text-neutral-04 fs-12px max-w-200px';
+        tdSinopsis.textContent = c.sinopsis;
+
+        const tdTipoCandidatura = document.createElement('td');
+        tdTipoCandidatura.textContent = capitalize(c.tipo_candidatura);
 
         const tdEstado = document.createElement('td');
         const badge = document.createElement('span');
-        badge.className = `badge ${getBadgeClass(c.estado)}`;
+        badge.className = `badge ${getBadgeClass(c.estado)} text-nowrap`;
         badge.textContent = estadoTexto;
         tdEstado.appendChild(badge);
 
@@ -229,7 +252,7 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
         }
         tdAcciones.appendChild(actionsDiv);
 
-        tr.append(tdParticipante, tdSinopsis, tdEstado, tdFechaPres, tdFechaMod, tdAcciones);
+        tr.append(tdParticipante, tdTitulo, tdSinopsis, tdTipoCandidatura, tdEstado, tdFechaPres, tdFechaMod, tdAcciones);
         tbody.appendChild(tr);
     });
 

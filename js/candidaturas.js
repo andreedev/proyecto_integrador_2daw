@@ -25,16 +25,8 @@ document.addEventListener('click', (e) => {
             });
         }
     }
-
-    // if(e.target.closest('.btn-subsanar-trigger')) {
-    //     renderStatusCard('Subsanar', candidaturaSeleccionada);
-    // }
-
-    // Logic for "Volver" button inside Subsanar view
-    // if(e.target.id === 'volver') {
-    //     renderStatusCard('Rechazada', candidaturaSeleccionada);
-    // }
 });
+
 
 const StatusTemplates = {
     revision: () => `
@@ -117,7 +109,7 @@ function renderizarCandidaturas(candidaturas) {
 
         const titleCortometraje = document.createElement('span');
         titleCortometraje.classList.add('fw-600');
-        titleCortometraje.textContent = candidatura.sinopsis;
+        titleCortometraje.textContent = candidatura.titulo;
         candidaturaElement.appendChild(titleCortometraje);
 
         const horaPresentada = document.createElement('div');
@@ -161,6 +153,9 @@ function renderizarCandidaturas(candidaturas) {
     }
 }
 
+/**
+ * Renderiza la tarjeta de estado según el tipo de estado de la candidatura
+ */
 function renderStatusCard(type, candidatura) {
     statusContainer.replaceChildren();
 
@@ -182,6 +177,9 @@ function renderStatusCard(type, candidatura) {
     }
 }
 
+/**
+ * Renderiza el detalle de una candidatura seleccionada
+ */
 function renderizarDetalleCandidatura(candidatura){
     candidaturaSeleccionada = candidatura;
     videoTrailerInput.classList.add('d-none');
@@ -270,5 +268,11 @@ btnGuardarCambios.addEventListener('click', async () => {
         alert('Error al actualizar la candidatura: ' + response.message);
     }
 });
+
+watchScreenSize((dimensions) =>{
+    const isMobile = dimensions.width < 768;
+    pageSize = isMobile ? 2 : 3;
+    cargarCandidaturas();
+})
 
 cargarCandidaturas();

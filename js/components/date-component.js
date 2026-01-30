@@ -53,7 +53,6 @@ class DateComponent extends HTMLElement {
         const type = this.getAttribute('type') || 'date';
         const displayFormat = this.getAttribute('format') || (type === 'time' ? 'HH:mm' : 'dd/MM/yyyy');
 
-        // 2. Verificar si está deshabilitado
         const isDisabled = this.hasAttribute('disabled');
 
         const containerSelector = this.getAttribute('container');
@@ -159,7 +158,6 @@ class DateComponent extends HTMLElement {
         const type = this.getAttribute('type') || 'date';
         const iconClass = type === 'time' ? 'icon-clock' : 'icon-calendar';
 
-        // 3. Lógica para el estado deshabilitado
         const isDisabled = this.hasAttribute('disabled');
         const disabledAttr = isDisabled ? 'disabled' : '';
         const disabledClass = isDisabled ? 'is-disabled' : '';

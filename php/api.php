@@ -1404,7 +1404,7 @@ function eliminarEvento() {
 
 
 /**
- * Mostrar Candidaturas
+ * Listar candidaturas con filtros y paginación
  */
 function mostrarCandidaturas() {
     global $conexion;
@@ -1414,6 +1414,7 @@ function mostrarCandidaturas() {
     $offset = ($pagina - 1) * $limit;
 
     $filtroTexto  = $_POST['filtroTexto'] ?? '';
+    $filtroTipo   = $_POST['filtroTipo'] ?? '';
     $filtroEstado = $_POST['filtroEstado'] ?? '';
     $filtroFecha  = $_POST['filtroFecha'] ?? '';
 
@@ -1422,10 +1423,18 @@ function mostrarCandidaturas() {
     $types = "";
 
     if ($filtroTexto) {
-        $whereSql .= " AND (p.nombre LIKE ? OR c.sinopsis LIKE ?) ";
-        $term = "%$filtroTexto%";
-        $params[] = $term; $params[] = $term;
-        $types .= "ss";
+        $whereSql .= " AND (p.nombre LIKE ? OR c.titulo LIKE ? OR c.sinopsis LIKE ?) ";
+        $likeTexto = "%" . $filtroTexto . "%";
+        $params[] = $likeTexto;
+        $params[] = $likeTexto;
+        $params[] = $likeTexto;
+        $types .= "sss";
+    }
+
+    if ($filtroTipo) {
+        $whereSql .= " AND c.tipo_candidatura = ? ";
+        $params[] = $filtroTipo;
+        $types .= "s";
     }
 
     if ($filtroEstado) {
