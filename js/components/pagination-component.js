@@ -66,43 +66,29 @@ class PaginationComponent extends HTMLElement {
     }
 
     /**
-     * Lógica para calcular qué números mostrar (máximo 7 items)
-     * Estilo: < 1 2 (3) ... 16 >
+     * Lógica para calcular cuáles páginas mostrar
+     * con elipsis cuando sea necesario.
      */
     _getPages() {
         const total = this._totalPages;
         const current = this._currentPage;
         const pages = [];
 
-        if (total <= 7) {
+        if (total <= 5) {
             for (let i = 1; i <= total; i++) pages.push(i);
-        } else {
-            // Siempre mostrar la primera
-            pages.push(1);
-
-            if (current > 4) {
-                pages.push('...');
-            }
-
-            // Páginas centrales
-            let start = Math.max(2, current - 1);
-            let end = Math.min(total - 1, current + 1);
-
-            // Ajuste para mantener consistencia visual cerca de los extremos
-            if (current <= 4) end = 5;
-            if (current > total - 4) start = total - 4;
-
-            for (let i = start; i <= end; i++) {
-                if (!pages.includes(i)) pages.push(i);
-            }
-
-            if (current < total - 3) {
-                pages.push('...');
-            }
-
-            // Siempre mostrar la última
-            if (!pages.includes(total)) pages.push(total);
+            return pages;
         }
+
+        if (current <= 3) {
+            pages.push(1, 2, 3, '...', total);
+        }
+        else if (current >= total - 2) {
+            pages.push(1, '...', total - 2, total - 1, total);
+        }
+        else {
+            pages.push(1, '...', current, '...', total);
+        }
+
         return pages;
     }
 

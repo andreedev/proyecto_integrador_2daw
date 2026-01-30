@@ -15,7 +15,7 @@
 </head>
 <body>
     <home-header></home-header>
-    <div class="d-flex flex-column justify-content-center align-items-center py-36px px-16px mx-0 container-md">
+    <div class="d-flex flex-column justify-content-center align-items-center py-36px px-16px mx-0 container-sm-to-md">
         <p class="upload-short-film-title">Subir cortometraje</p>
         <span class="upload-short-film-secondary-text">Comparte tu obra con nosotros. Completa el formulario paso a paso.</span>
         <div class="steps-container d-flex flex-row w-100">
@@ -27,7 +27,7 @@
                 <span class="step-text">Datos del Participante</span>
             </div>
             <div class="step-line-divider"></div>
-            <div id="step2" class="step active-step">
+            <div id="step2" class="step">
                 <span class="step-number-container">
                     <span id="numberStep2" class="step-number-text">2</span>
                     <span id="checkIconStep2" class="icon-check w-20px h-20px bg-neutral-09 d-none"></span>
@@ -157,6 +157,14 @@
                             error-size="La imagen es muy pesada. El máximo permitido son 10MB"
                             error-required="El póster es obligatorio"
                     ></file-component>
+
+                    <input-component
+                            id="tituloInput"
+                            label="Título de la obra"
+                            width="100%"
+                            required
+                            required-message="El título es obligatorio para identificar tu obra"
+                    ></input-component>
 
                     <input-component
                             id="sinopsisInput"

@@ -39,9 +39,13 @@ const nroExpedienteInput = document.getElementById('nroExpedienteInput');
 const tipoCandidaturaSelect = document.getElementById('tipoCandidaturaSelect');
 const videoInput = document.getElementById('videoInput');
 const posterInput = document.getElementById('posterInput');
+const tituloInput = document.getElementById('tituloInput');
 const sinopsisInput = document.getElementById('sinopsisInput');
 const contadorPalabras = document.getElementById('sinopsisTotalWords');
 const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
+
+
+const sesionIniciada = sessionStorage.getItem('sesionIniciada') === 'true';
 
 step1ContinueBtn.addEventListener('click', () => {
     const inputs = [nombreInput, correoInput, passwordInput, dniInput, nroExpedienteInput];
@@ -56,11 +60,12 @@ step1ContinueBtn.addEventListener('click', () => {
 });
 
 step2ContinueBtn.addEventListener('click', () => {
-    const inputs = [videoInput, posterInput, sinopsisInput];
-
-    const resultados = inputs.map(input => input.validate(true).valid);
-
-    if (resultados.includes(false)) {
+    const validate1 = videoInput.validate(true);
+    const validate2 = posterInput.validate(true);
+    const validate3 = sinopsisInput.validate(true).valid;
+    const validate4 = tituloInput.validate(true).valid;
+    
+    if (!validate1 || !validate2 || !validate3 || !validate4) {
         return;
     }
 
@@ -80,6 +85,7 @@ step3ContinueBtn.addEventListener('click', () => {
 });
 
 step2BackBtn.addEventListener('click', () => {
+    if (sesionIniciada) return;
     switchStep(1);
 });
 
@@ -89,6 +95,7 @@ step3BackBtn.addEventListener('click', () => {
 
 
 function switchStep(targetStep) {
+    console.log(`Switching to step ${targetStep}`);
     // reset all steps to default
     cardBodyStep1.classList.add('d-none');
     cardBodyStep2.classList.add('d-none');
@@ -106,6 +113,8 @@ function switchStep(targetStep) {
 
     if (targetStep === 1){
         step1.classList.add('active-step');
+        step2.classList.remove('active-step');
+        step3.classList.remove('active-step');
 
         cardBodyStep1.classList.remove('d-none');
 
@@ -163,7 +172,6 @@ function switchStep(targetStep) {
 }
 
 async function enviarCandidatura() {
-
     const nombre = nombreInput.value.trim();
     const correo = correoInput.value.trim();
     const password = passwordInput.value.trim();
@@ -171,10 +179,12 @@ async function enviarCandidatura() {
     const nroExpediente = nroExpedienteInput.value.trim();
     const idVideo = await videoInput.uploadIfNeeded();
     const idPoster = await posterInput.uploadIfNeeded();
+    const titulo = tituloInput.value.trim();
     const sinopsis = sinopsisInput.value.trim();
     const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
+    const tipoCandidatura = tipoCandidaturaSelect.value;
 
-    const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, sinopsis, idFichaTecnica);
+    const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura);
 
     if (response.status === 'success') {
         window.location.href = 'candidaturas.html';
@@ -195,3 +205,14 @@ tipoCandidaturaSelect.setOptions([
     { value: 'alumno', label: 'Alumno'},
     { value :'alumni', label: 'Alumni'}
 ])
+
+mostrarPasosSegunAutenticacion();
+
+function mostrarPasosSegunAutenticacion() {
+    if (sesionIniciada) {
+        switchStep(2, true);
+        step2BackBtn.classList.add('invisible', 'pointer-events-none');
+    } else {
+        switchStep(1, false);
+    }
+}

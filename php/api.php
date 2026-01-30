@@ -1586,26 +1586,34 @@ function guardarCandidatura() {
     $nroExpediente = $_POST['nroExpediente'];
     $idVideo = isset($_POST['idVideo']) ? (int)$_POST['idVideo'] : null;
     $idPoster = isset($_POST['idPoster']) ? (int)$_POST['idPoster'] : null;
+    $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : null;
     $sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : null;
     $idFichaTecnica = isset($_POST['idFichaTecnica']) ? (int)$_POST['idFichaTecnica'] : null;
+    $tipoCandidatura = isset($_POST['tipoCandidatura']) ? $_POST['tipoCandidatura'] : null;
 
-    $sqlInsert = $conexion->prepare("INSERT INTO participante (nombre, correo, contrasena, dni, nro_expediente) VALUES (?, ?, ?, ?, ?)");
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    $sqlInsert->bind_param("sssss", $nombre, $correo, $hashedPassword, $dni, $nroExpediente);
-    if (!$sqlInsert->execute()) {
-        echo json_encode(["status" => "error", "message" => "Error al crear el participante: " . $sqlInsert->error]);
-        return;
+    // si hay sesion, usar el id de la sesion, sino crear participante nuevo
+    $idParticipante = null;
+    if ($_SESSION['iniciada']){
+        $idParticipante = (int)$_SESSION['id'];
+
+    } else {
+        $sqlInsert = $conexion->prepare("INSERT INTO participante (nombre, correo, contrasena, dni, nro_expediente) VALUES (?, ?, ?, ?, ?)");
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $sqlInsert->bind_param("sssss", $nombre, $correo, $hashedPassword, $dni, $nroExpediente);
+        if (!$sqlInsert->execute()) {
+            echo json_encode(["status" => "error", "message" => "Error al crear el participante: " . $sqlInsert->error]);
+            return;
+        }
+        $idParticipante = $conexion->insert_id;
+
+        // crear sesion
+        $_SESSION['iniciada'] = true;
+        $_SESSION['rol'] = 'participante';
+        $_SESSION['id'] = $idParticipante;
     }
 
-    $idParticipante = $conexion->insert_id;
-
-    // crear sesion
-    $_SESSION['iniciada'] = true;
-    $_SESSION['rol'] = 'participante';
-    $_SESSION['id'] = $idParticipante;
-
-    $sqlInsertCandidatura = $conexion->prepare("INSERT INTO candidatura (id_participante, estado, tipo_candidatura, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel) VALUES (?, 'En revisión', 'alumno', ?, ?, ?, ?)");
-    $sqlInsertCandidatura->bind_param("issii", $idParticipante, $sinopsis, $idVideo, $idFichaTecnica, $idPoster);
+    $sqlInsertCandidatura = $conexion->prepare("INSERT INTO candidatura (id_participante, tipo_candidatura, titulo, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $sqlInsertCandidatura->bind_param("isssiii", $idParticipante, $tipoCandidatura, $titulo, $sinopsis, $idVideo, $idFichaTecnica, $idPoster);
 
     if (!$sqlInsertCandidatura->execute()) {
         echo json_encode(["status" => "error", "message" => "Error al crear la candidatura: " . $sqlInsertCandidatura->error]);
@@ -1928,10 +1936,13 @@ function actualizarCandidatura(){
 
         echo json_encode(["status" => "success", "message" => "Candidatura actualizada correctamente"]);
     } else {
-        echo json_encode(["status" => "error", "message" => $stmt->error]); // Mejor devolver el error real para debug
+        echo json_encode(["status" => "error", "message" => $stmt->error]);
     }
 }
 
+/**
+ * Limpia datos de inputs
+ */
 function limpiarDatoInput($valor, $esNumero = false) {
     if ($valor === null || $valor === 'null' || $valor === 'undefined' || trim($valor) === '') {
         return null;

@@ -318,17 +318,8 @@ async function obtenerBasesLegales(){
 
 /**
  * Guarda la candidatura
- * @param {string} nombre
- * @param {string} correo
- * @param {string} password
- * @param {string} dni
- * @param {string} nroExpediente
- * @param {string} idVideo
- * @param {string} idPoster
- * @param {string} sinopsis
- * @param {string} idFichaTecnica
  */
-async function guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, sinopsis, idFichaTecnica) {
+async function guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura) {
     const data = new FormData();
     data.append('action', 'guardarCandidatura');
     data.append('nombre', nombre);
@@ -338,8 +329,10 @@ async function guardarCandidatura(nombre, correo, password, dni, nroExpediente, 
     data.append('nroExpediente', nroExpediente);
     data.append('idVideo', idVideo);
     data.append('idPoster', idPoster);
+    data.append('titulo', titulo);
     data.append('sinopsis', sinopsis);
     data.append('idFichaTecnica', idFichaTecnica);
+    data.append('tipoCandidatura', tipoCandidatura);
 
     return await fetchAPI(data);
 }
