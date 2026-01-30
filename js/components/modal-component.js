@@ -2,7 +2,7 @@
  * Componente de modal personalizado
  *
  * Ejemplo de uso:
- * <modal-component z-index="2000" full-screen duration="500" auto-open>
+ * <modal-component z-index="2000" full-screen duration="500" auto-open size="auto">
  *     <h2>Título del Modal</h2>
  *     <p>Contenido del modal aquí.</p>
  *     <button class="close-modal">Cerrar</button>
@@ -13,15 +13,15 @@
  * - full-screen: Si está presente, el modal ocupará toda la pantalla.
  * - duration: Duración de la animación en milisegundos (por defecto 300).
  * - auto-open: Si está presente, el modal se abrirá automáticamente al cargar.
- * - static: Si está presente, el modal no se cerrará al hacer clic fuera de él o al presionar Esc.
+ * - static: Si está presente, el modal no se cerrará al hacer clic fuera de él o al presionar Esc
  * - size: Define el tamaño del modal. Valores posibles:
  *  "full" (ocupa todo el espacio disponible)
  *  "auto" (ajusta su tamaño al contenido)
  *  (ningún valor, tamaño predeterminado 400px)
  *
  * Eventos:
- * - modal-opened: Se dispara cuando el modal se abre.
- * - modal-closed: Se dispara cuando el modal se cierra.
+ * - modal-opened: Se dispara cuando el modal se abre
+ * - modal-closed: Se dispara cuando el modal se cierra
  */
 class ModalComponent extends HTMLElement {
     constructor() {

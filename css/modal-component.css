@@ -49,6 +49,9 @@ modal-component:has(.is-active) {
     overflow: hidden;
     transform: scale(0.9);
     transition: transform var(--modal-duration, 300ms) cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 90vh;
+    position: relative;
+
 }
 
 .solid-modal-content {
@@ -64,7 +67,6 @@ modal-component:has(.is-active) {
     transform: scale(1);
 }
 
-/* 4. Variantes de tamaño */
 .solid-modal-container.is-size-auto {
     width: auto;
     min-width: min-content;
@@ -79,6 +81,7 @@ modal-component:has(.is-active) {
 .solid-modal-container.is-full-screen {
     width: 100vw !important;
     height: 100vh !important;
+    max-height: none !important;
     max-width: none !important;
     margin: 0 !important;
     border-radius: 0 !important;

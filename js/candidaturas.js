@@ -10,7 +10,7 @@ const btnGuardarCambios = document.getElementById('btnGuardarCambios');
 const videoTrailerInput = document.getElementById('videoTrailerInput');
 const mensajeSubsanacionInput = document.getElementById('mensajeSubsanacionInput');
 
-let pageSize =3;
+let pageSize = 3;
 let candidaturaSeleccionada = null;
 
 document.addEventListener('click', (e) => {
@@ -30,7 +30,7 @@ document.addEventListener('click', (e) => {
 
 const StatusTemplates = {
     revision: () => `
-        <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-bg-warning-04-01 border-solid bg-warning-04 text-warning-01">
+        <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 bg-warning-04 text-warning-01">
             <span class="icono-film flex-shrink-0"></span>
             <div class="text-revision">
                 <span class="title-revision">Tu candidatura se encuentra en revisión</span>
@@ -39,7 +39,7 @@ const StatusTemplates = {
         </div>
     `,
     finalista: () => `
-        <div class="d-flex flex-row p-24px gap-16px align-items-center w-100 border-information-01 border-solid bg-information-04">
+        <div class="d-flex flex-row p-16px gap-16px align-items-center w-100 border-information-01 border-solid bg-information-04">
             <span class="icon-star w-36px h-36px bg-information-01 flex-shrink-0"></span>
             <div class="text-aceptada">
                 <span class="title-aceptada">¡Enhorabuena!</span>
@@ -56,7 +56,6 @@ const StatusTemplates = {
                     <span class="description-rechazada">${motivo || 'Motivo no especificado'}</span>
                 </div>
             </div>
-<!--            <div class="primary-button-01 w-auto btn-subsanar-trigger cursor-pointer">Subsanar</div>-->
         </div>
     `,
     subsanar: (motivo) => `
@@ -68,14 +67,6 @@ const StatusTemplates = {
                     <span class="description-rechazada-subsanar">${motivo}</span>
                 </div>
             </div>
-<!--            <div class="mensaje-para-subsanar">-->
-<!--                <span class="mensaje">Mensaje para los Organizadores:</span>-->
-<!--                <textarea class="textarea" id="mensajeTextarea" placeholder="Explica como has resuelto los motivos del rechazo"></textarea>-->
-<!--            </div>-->
-<!--            <div class="subsanar-action">-->
-<!--                <span class="volver cursor-pointer" id="volver">Volver</span>-->
-<!--                <span class="enviar-subsanacion cursor-pointer" id="btnEnviarSubsanación">Enviar Subsanación</span>-->
-<!--            </div>-->
         </div>
     `
 };
@@ -83,16 +74,16 @@ const StatusTemplates = {
 function buildBadge(candidatura) {
     const span = document.createElement('span');
     span.classList.add('estado-candidatura');
-    if (candidatura.estado === 'En revisión') {
+    if (candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
         span.classList.add('border-solid', 'border-warning-03', 'text-warning-01', 'bg-warning-04');
     }
-    if (candidatura.estado === 'Aceptada') {
+    if (candidatura.estado === ESTADOS_CANDIDATURA.ACEPTADA) {
         span.classList.add('border-solid', 'border-success-03', 'text-success-03', 'bg-success-04');
     }
-    if (candidatura.estado === 'Rechazada') {
+    if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA) {
         span.classList.add('border-solid', 'border-error-03', 'text-error-01', 'bg-error-04');
     }
-    if (candidatura.estado === 'Finalista'){
+    if (candidatura.estado === ESTADOS_CANDIDATURA.FINALISTA) {
         span.classList.add('border-solid', 'border-information-03', 'text-information-01', 'bg-information-04');
     }
     span.id = 'textEstadoCandidatura';
@@ -160,13 +151,13 @@ function renderStatusCard(type, candidatura) {
     statusContainer.replaceChildren();
 
     switch (type) {
-        case 'En revisión':
+        case ESTADOS_CANDIDATURA.EN_REVISION:
             statusContainer.innerHTML = StatusTemplates.revision();
             break;
-        case 'Finalista':
+        case ESTADOS_CANDIDATURA.FINALISTA:
             statusContainer.innerHTML = StatusTemplates.finalista();
             break;
-        case 'Rechazada':
+        case ESTADOS_CANDIDATURA.RECHAZADA:
             statusContainer.innerHTML = StatusTemplates.rechazada(candidatura.motivoRechazo);
             break;
         case 'Subsanar':
@@ -181,37 +172,55 @@ function renderStatusCard(type, candidatura) {
  * Renderiza el detalle de una candidatura seleccionada
  */
 function renderizarDetalleCandidatura(candidatura){
+    console.log(candidatura);
+
     candidaturaSeleccionada = candidatura;
     videoTrailerInput.classList.add('d-none');
     mensajeSubsanacionInput.classList.add('d-none-force');
-    btnGuardarCambios.textContent = 'Guardar Cambios';
+    btnGuardarCambios.classList.add('d-none');
     const playBtn = document.getElementById('playVideoCorto');
     if (playBtn) playBtn.classList.remove('d-none');
     playVideoCorto.classList.remove('d-none');
 
     renderStatusCard(candidatura.estado, candidatura);
 
-    if (candidatura.estado === 'Finalista') {
+    if(candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
+        tituloInput.disabled = false;
+        sinopsisInput.disabled = false;
+        btnGuardarCambios.textContent = 'Guardar cambios';
+        btnGuardarCambios.classList.remove('d-none');
+    }
+
+    if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA){
+        sinopsisInput.disabled = false;
+        mensajeSubsanacionInput.classList.remove('d-none-force');
+        btnGuardarCambios.classList.remove('d-none');
+        btnGuardarCambios.textContent = 'Enviar subsanación';
+    }
+
+
+    if (candidatura.estado === ESTADOS_CANDIDATURA.ACEPTADA){
+        btnGuardarCambios.classList.add('d-none');
+        tituloInput.disabled = true;
+        sinopsisInput.disabled = true;
+    }
+
+    if (candidatura.estado === ESTADOS_CANDIDATURA.FINALISTA) {
+        tituloInput.disabled = true;
+        sinopsisInput.disabled = true;
         videoTrailerInput.classList.remove('d-none');
+        btnGuardarCambios.textContent = 'Enviar';
+        btnGuardarCambios.classList.remove('d-none');
         if(candidatura.rutaTrailer) {
             videoTrailerInput.setAttachedMode(candidatura.rutaTrailer, candidatura.idArchivoTrailer);
         }
     }
 
-    if(candidatura.estado !== 'En revisión') {
-        btnGuardarCambios.classList.add('d-none');
-    }
-
-    if (candidatura.estado === 'Rechazada') {
-        mensajeSubsanacionInput.classList.remove('d-none-force');
-        btnGuardarCambios.classList.remove('d-none');
-        btnGuardarCambios.textContent = 'Enviar Subsanación';
-    }
 
     posterInput.setAttachedMode(candidatura.rutaCartel, candidatura.idArchivoCartel)
     fichaTecnicaInput.setAttachedMode(candidatura.rutaFichaTecnica, candidatura.idArchivoFichaTecnica)
-    sinopsisInput.setValue(candidatura.sinopsis, true);
-    tituloInput.setValue(candidatura.titulo, true);
+    sinopsisInput.setValue(candidatura.sinopsis);
+    tituloInput.setValue(candidatura.titulo);
 
     // Cargar video
     const video = document.getElementById('videoCorto');
@@ -230,6 +239,11 @@ paginacionCandidaturas.addEventListener('page-change', async (e) => {
     await cargarCandidaturas();
 });
 
+
+btnGuardarCambios.addEventListener('click', async () => {
+    actualizarCandidatura();
+});
+
 async function cargarCandidaturas() {
     const page = paginacionCandidaturas.currentPage;
     const response = await listarCandidaturasParticipante(page, pageSize);
@@ -241,7 +255,7 @@ async function cargarCandidaturas() {
     }
 }
 
-btnGuardarCambios.addEventListener('click', async () => {
+async function actualizarCandidatura() {
     if (!candidaturaSeleccionada) return;
     const tituloValido = tituloInput.validate(true).valid
     const sinopsisValida = sinopsisInput.validate(true).valid;
@@ -250,7 +264,10 @@ btnGuardarCambios.addEventListener('click', async () => {
     const necesitaMensaje = candidaturaSeleccionada.estado === 'Rechazada';
     const mensajeValido = necesitaMensaje ? mensajeSubsanacionInput.validate(true).valid : true;
 
-    if (!tituloValido || !sinopsisValida || !posterValido || !fichaTecnicaValida || !mensajeValido) {
+    const necesitaVideoTrailer = candidaturaSeleccionada.estado === 'Finalista';
+    const videoTrailerValido = necesitaVideoTrailer ? videoTrailerInput.validate(true) : true;
+
+    if (!tituloValido || !sinopsisValida || !posterValido || !fichaTecnicaValida || !mensajeValido || !videoTrailerValido) {
         return;
     }
 
@@ -267,12 +284,14 @@ btnGuardarCambios.addEventListener('click', async () => {
     } else {
         alert('Error al actualizar la candidatura: ' + response.message);
     }
-});
+}
 
+let isMobileMode = null;
 watchScreenSize((dimensions) =>{
-    const isMobile = dimensions.width < 768;
-    pageSize = isMobile ? 2 : 3;
-    cargarCandidaturas();
+    const isNowMobile = dimensions.width < 768;
+    if (isNowMobile !== isMobileMode) {
+        isMobileMode = isNowMobile;
+        pageSize = isMobileMode ? 2 : 3;
+        cargarCandidaturas();
+    }
 })
-
-cargarCandidaturas();

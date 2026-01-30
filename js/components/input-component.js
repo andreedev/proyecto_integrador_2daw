@@ -81,6 +81,19 @@ class InputComponent extends HTMLElement {
         return this.hasAttribute('required');
     }
 
+
+    get disabled() {
+        return this.hasAttribute('disabled');
+    }
+
+    set disabled(val) {
+        if (val) {
+            this.setAttribute('disabled', '');
+        } else {
+            this.removeAttribute('disabled');
+        }
+    }
+
     async connectedCallback() {
         await window.injectExternalStyles('../css/input-component.css', 'solid-input-styles');
 

@@ -30,6 +30,7 @@
     transition: 0.2s ease all;
     transform-origin: left top;
     line-height: 1;
+    z-index: 2;
 }
 
 .solid-input-icon-container {
@@ -76,6 +77,11 @@
     line-height: 1.5;
     display: block;
     overflow-y: auto;
+    z-index: 1;
+}
+
+.solid-input-container.is-disabled .solid-input-label {
+    background: transparent;
 }
 
 .solid-input-container.variant-textarea .solid-input-icon-container {

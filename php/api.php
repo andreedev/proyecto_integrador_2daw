@@ -128,11 +128,11 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             eliminarEvento();
             break;
-        case 'mostrarCandidaturas':
+        case 'listarCandidaturasAdmin':
             validarRol(['organizador']);
-            mostrarCandidaturas();
+            listarCandidaturasAdmin();
             break;
-        case 'editarCandidatura':
+        case 'actualizarEstadoCandidatura':
             validarRol(['organizador']);
             actualizarEstadoCandidatura();
             break;
@@ -299,26 +299,10 @@ function obtenerConfiguracion() {
     }
     $stmtGallery->close();
 
-    // obtener datos de la edicion actual
-    $sqlEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, fecha_envio_email_informativo as fechaEnvioEmailInformativo, fecha_borrado_datos as fechaBorradoDatos
-                    FROM edicion WHERE tipo = ? LIMIT 1";
-    $stmtEdicion = $conexion->prepare($sqlEdicion);
-    $tipoActual = 'actual';
-    $stmtEdicion->bind_param("s", $tipoActual);
-    $stmtEdicion->execute();
-    $resultadoEdicion = $stmtEdicion->get_result();
-
-    $edicionActual = null;
-    if ($resultadoEdicion && $resultadoEdicion->num_rows > 0) {
-        $edicionActual = $resultadoEdicion->fetch_assoc();
-        $edicionActual['nroParticipantes'] = contarParticipantesEdicionActual();
-    }
-    $stmtEdicion->close();
-
     $configuracionCompleta = [
         "archivosPostEvento" => $archivosPostEvento,
         "configuracion" => $config,
-        "edicionActual" => $edicionActual
+        "edicionActual" => obtenerEdicionActual()
     ];
 
     echo json_encode(["status" => "success", "data" => $configuracionCompleta]);
@@ -412,6 +396,9 @@ function actualizarDatosPostEvento() {
     echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
 }
 
+/**
+ * Obtener el id de la edición actual
+ */
 function obtenerIdEdicionActual() {
     global $conexion;
 
@@ -428,14 +415,10 @@ function obtenerIdEdicionActual() {
 
 
 /**
- * Subir archivo, guardar en carpeta, guardar en BD y devolver id
- * Si es publico lo guarda en ./../uploads/public/
- * Si es privado lo guarda en ./../uploads/private/
- * Por defecto se guardaa de manera publica
+ * Subir archivo, guardar en directorio de archivos, guardar en BD y devolver id
  */
 function subirArchivo() {
-    $privado = isset($_POST['privado']) && $_POST['privado'] === 'true';
-    $directorioSubida = $privado ? './../uploads/private/' : './../uploads/public/';
+    $directorioSubida = './../uploads/public/';
 
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
 
@@ -1406,7 +1389,7 @@ function eliminarEvento() {
 /**
  * Listar candidaturas con filtros y paginación
  */
-function mostrarCandidaturas() {
+function listarCandidaturasAdmin() {
     global $conexion;
 
     $limit  = 10;
@@ -1827,19 +1810,33 @@ function obtenerDatosGala() {
     ]);
 }
 
+/**
+ * Obtener edición actual
+ * @throws Exception
+ */
 function obtenerEdicionActual() {
     global $conexion;
 
-    $queryEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, nro_participantes as nroParticipantes
-                     FROM edicion
-                     WHERE tipo = 'actual'
-                     LIMIT 1";
+    $queryEdicion = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, fecha_envio_email_informativo as fechaEnvioEmailInformativo, fecha_borrado_datos as fechaBorradoDatos FROM edicion WHERE tipo = ? LIMIT 1";
     $stmtEdicion = $conexion->prepare($queryEdicion);
+    $tipoEdicion = 'actual';
+    $stmtEdicion->bind_param("s", $tipoEdicion);
     $stmtEdicion->execute();
     $resultEdicion = $stmtEdicion->get_result();
-    return $resultEdicion->fetch_assoc();
+    $result = $resultEdicion->fetch_assoc();
+    $stmtEdicion->close();
+    if ($result) {
+        $result['nroParticipantes'] = contarParticipantesEdicionActual();
+        return $result;
+
+    } else {
+        throw new Exception("No se encontró la edición actual");
+    }
 }
 
+/**
+ * Obtener galería de la edición actual
+ */
 function obtenerGaleriaEdicionActual(){
     global $conexion;
 
@@ -1869,6 +1866,9 @@ function obtenerGaleriaEdicionActual(){
     return $galeria;
 }
 
+/**
+ * Obtener candidaturas ganadoras
+ */
 function obtenerCandidaturasGanadoras() {
     global $conexion;
 
@@ -1950,7 +1950,7 @@ function actualizarCandidatura(){
 }
 
 /**
- * Limpia datos de inputs
+ * Limpia datos de inputs provenientes de javascript
  */
 function limpiarDatoInput($valor, $esNumero = false) {
     if ($valor === null || $valor === 'null' || $valor === 'undefined' || trim($valor) === '') {

@@ -2328,3 +2328,11 @@ dialog::backdrop {
 .visible{
     visibility: visible;
 }
+
+.object-fit-cover{
+    object-fit: cover;
+}
+
+.object-fit-contain{
+    object-fit: contain;
+}

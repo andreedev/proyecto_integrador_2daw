@@ -280,9 +280,9 @@ async function eliminarEvento(idEvento) {
     return await fetchAPI(formData);
 }
 
-async function mostrarCandidaturas(filtroTexto, filtroTipo, filtroEstado, filtroFecha, pagina) {
+async function listarCandidaturasAdmin(filtroTexto, filtroTipo, filtroEstado, filtroFecha, pagina) {
     const data = new FormData();
-    data.append('action', 'mostrarCandidaturas');
+    data.append('action', 'listarCandidaturasAdmin');
     data.append('filtroTexto', filtroTexto);
     data.append('filtroTipo', filtroTipo);
     data.append('filtroEstado', filtroEstado);
@@ -291,9 +291,9 @@ async function mostrarCandidaturas(filtroTexto, filtroTipo, filtroEstado, filtro
     return await fetchAPI(data);
 }
 
-async function editarCandidatura(idCandidatura, nuevoEstadoCandidatura, $motivoCambioEstado) {
+async function actualizarEstadoCandidatura(idCandidatura, nuevoEstadoCandidatura, $motivoCambioEstado) {
     const data = new FormData();
-    data.append('action', 'editarCandidatura');
+    data.append('action', 'actualizarEstadoCandidatura');
     data.append('idCandidatura', idCandidatura);
     data.append('nuevoEstadoCandidatura', nuevoEstadoCandidatura);
     data.append('motivoCambioEstado', $motivoCambioEstado);

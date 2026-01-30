@@ -1,5 +1,12 @@
 /** Constantes globales */
 const URL_API = "./../php/api.php";
+const ESTADOS_CANDIDATURA = {
+    EN_REVISION: 'En revisión',
+    ACEPTADA: 'Aceptada',
+    RECHAZADA: 'Rechazada',
+    FINALISTA: 'Finalista',
+    GANADOR: 'Ganador'
+};
 
 /**
  *

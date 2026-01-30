@@ -108,25 +108,23 @@ function showNotification(message) {
 
 function getBadgeClass(status) {
     if (!status) return 'review';
-    if (status.includes('En revisión')) return 'review';
-    if (status.includes('Aceptada')) return 'accepted';
-    if (status.includes('Rechazada')) return 'rejected';
-    if (status.includes('Finalista')) return 'finalist';
+    if (status.includes(ESTADOS_CANDIDATURA.EN_REVISION)) return 'review';
+    if (status.includes(ESTADOS_CANDIDATURA.ACEPTADA)) return 'accepted';
+    if (status.includes(ESTADOS_CANDIDATURA.RECHAZADA)) return 'rejected';
+    if (status.includes(ESTADOS_CANDIDATURA.FINALISTA)) return 'finalist';
     return 'review';
 }
 
 function getEstadoKey(status) {
     switch (status) {
-        case 'En revisión':
+        case ESTADOS_CANDIDATURA.EN_REVISION:
             return 'review';
-        case 'Aceptada':
+        case ESTADOS_CANDIDATURA.ACEPTADA:
             return 'accepted';
-        case 'Rechazada':
+        case ESTADOS_CANDIDATURA.RECHAZADA:
             return 'rejected';
-        case 'Finalista':
+        case ESTADOS_CANDIDATURA.FINALISTA:
             return 'finalist';
-        default:
-            return 'review';
     }
 }
 
@@ -140,7 +138,7 @@ async function cargarCandidaturas() {
         const tipo = filtroTipo.value;
         const fecha = filtroFecha.getISOValue();
         const pagina = paginacionCandidaturas.currentPage;
-        const response = await mostrarCandidaturas(texto, tipo, estado, fecha, pagina);
+        const response = await listarCandidaturasAdmin(texto, tipo, estado, fecha, pagina);
         if (!response || response.status !== 'success') {
             showNotification('Error al cargar candidaturas');
             return;
@@ -210,7 +208,7 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
             renderizarDetalleCandidatura(c);
             modalDetalleCandidatura.open();
         });
-        const btnDocs = createBtn('Documentos', 'secondary-button-02', () => {
+        const btnDocs = createBtn('Adjuntos', 'secondary-button-02', () => {
             candidaturaSeleccionada = c;
             renderizarDocumentos(c);
             modalDocumentos.open();
@@ -226,28 +224,28 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
             nombreParticipanteInput.setValue(c.participante);
             nroExpedienteInput.setValue(c.nroExpediente);
             estadoActualInput.setValue(estadoTexto);
-            if (c.estado === 'En revisión') {
+            if (c.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
                 nuevoEstadoCandidatura.setOptions([
-                    {value: 'Aceptada', label: 'Aceptada'},
-                    {value: 'Rechazada', label: 'Rechazada'}
+                    {value: ESTADOS_CANDIDATURA.ACEPTADA, label: ESTADOS_CANDIDATURA.ACEPTADA},
+                    {value: ESTADOS_CANDIDATURA.RECHAZADA, label: ESTADOS_CANDIDATURA.RECHAZADA}
                 ]);
-                actualizarEstadoMotivoRechazoInput('Aceptada');
-            } else if (c.estado === 'Aceptada') {
+                actualizarEstadoMotivoRechazoInput(ESTADOS_CANDIDATURA.ACEPTADA);
+            } else if (c.estado === ESTADOS_CANDIDATURA.ACEPTADA) {
                 nuevoEstadoCandidatura.setOptions([
-                    {value: 'Finalista', label: 'Finalista'}
+                    {value: ESTADOS_CANDIDATURA.FINALISTA, label: ESTADOS_CANDIDATURA.FINALISTA}
                 ]);
-                actualizarEstadoMotivoRechazoInput('Finalista');
-            } else if (c.estado === 'Rechazada') {
+                actualizarEstadoMotivoRechazoInput(ESTADOS_CANDIDATURA.FINALISTA);
+            } else if (c.estado === ESTADOS_CANDIDATURA.RECHAZADA) {
                 nuevoEstadoCandidatura.setOptions([
-                    {value: 'En revisión', label: 'En revisión'}
+                    {value: ESTADOS_CANDIDATURA.EN_REVISION, label: ESTADOS_CANDIDATURA.EN_REVISION}
                 ]);
-                actualizarEstadoMotivoRechazoInput('En revisión');
+                actualizarEstadoMotivoRechazoInput(ESTADOS_CANDIDATURA.EN_REVISION);
             }
             candidaturaSeleccionada = c;
         });
 
         actionsDiv.append(btnDetail, btnDocs, btnHistory);
-        if (c.estado == 'Aceptada' || c.estado == 'En revisión') {
+        if (c.estado == ESTADOS_CANDIDATURA.ACEPTADA || c.estado == ESTADOS_CANDIDATURA.EN_REVISION) {
             actionsDiv.appendChild(btnChange);
         }
         tdAcciones.appendChild(actionsDiv);
@@ -286,34 +284,30 @@ function createBtn(text, className, onClick) {
 }
 
 function renderizarDocumentos(c) {
-    const videoCont = document.getElementById('videoCorto');
+    const videoContainer = document.getElementById('videoCorto');
     const cartelImg = document.getElementById('cartel');
-    const fichaCont = document.getElementById('fichaTecnica');
+    const fichaTecnicaContainer = document.getElementById('fichaTecnica');
+    const trailerContainer = document.getElementById('trailerCorto');
 
     const tabVideo = document.querySelector('[data-tab="video"]');
     if (tabVideo) tabVideo.click();
 
-    videoCont.innerHTML = `
+    videoContainer.innerHTML = `
             <video 
                 id="playerCandidatura"
-                width="100%" 
-                height="100%" 
                 controls 
                 preload="metadata" 
-                class="rounded-8px"
-                style="background: #000; object-fit: contain;"
-                poster="${c.rutaCartel || ''}"
+                class="w-100 h-100 bg-neutral-09 object-fit-contain"
             >
                 <source src="${c.rutaVideo}" type="video/mp4">
-                Tu navegador no soporta la reproducción de video.
             </video>`;
 
-    cartelImg.src = c.rutaCartel || '../img/Foto_corto.png';
+    cartelImg.src = c.rutaCartel;
 
-    fichaCont.innerHTML = `
+    fichaTecnicaContainer.innerHTML = `
             <div class="d-flex flex-column gap-12px w-100">
                 <div class="d-flex justify-space-between align-center">
-                    <span class="fs-14px fw-600 text-neutral-02">Documento PDF</span>
+                    <span class="fs-14px fw-600 text-neutral-02">PDF</span>
                     <a href="${c.rutaFicha}" target="_blank" class="text-primary-03 fs-12px fw-600 d-flex align-center gap-4px">
                         Ver en otra pestaña
                     </a>
@@ -326,12 +320,22 @@ function renderizarDocumentos(c) {
                     class="rounded-8px border-solid border-neutral-05"
                 />
             </div>`;
+
+    trailerContainer.innerHTML = `
+            <video 
+                id="playerTrailerCandidatura"
+                controls 
+                preload="metadata"
+                class="w-100 h-100 bg-neutral-09 object-fit-contain"
+            >
+                <source src="${c.rutaTrailer}" type="video/mp4">
+            </video>`;
 }
 
 btnConfimarCambioEstado.addEventListener('click', async () => {
     if (!motivoCambioEstado.validate(true).valid) return;
 
-    const response = await editarCandidatura(candidaturaSeleccionada.id_candidatura,  nuevoEstadoCandidatura.value, motivoCambioEstado.value.trim());
+    const response = await actualizarEstadoCandidatura(candidaturaSeleccionada.id_candidatura,  nuevoEstadoCandidatura.value, motivoCambioEstado.value.trim());
     if (!response || response.status !== 'success') {
         showNotification('Error al cambiar el estado de la candidatura');
         return;
@@ -381,8 +385,8 @@ function renderizarHistorial(historial) {
     };
 
     historial.forEach((item, index) => {
-        const config = statusConfig[item.estado] || statusConfig['En revisión'];
-        const isRechazada = item.estado === 'Rechazada';
+        const config = statusConfig[item.estado] || statusConfig[ESTADOS_CANDIDATURA.EN_REVISION];
+        const isRechazada = item.estado === ESTADOS_CANDIDATURA.RECHAZADA;
 
         const itemDiv = document.createElement('div');
         itemDiv.className = `timeline-item d-flex gap-24px mb-32px position-relative z-index-1`;
