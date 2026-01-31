@@ -47,7 +47,13 @@ function renderizarDatosGala(data) {
 
         const slides = [];
         data.galeria.forEach(archivo => {
-            slides.push(`<div class="w-100"><img src="${archivo.rutaArchivo}" class="w-100"/></div>`);
+            let html = '';
+            if (archivo.tipoArchivo === 'video') {
+                html = `<video-player-component src="${archivo.rutaArchivo}" ></video-player-component>`;
+            } else if (archivo.tipoArchivo === 'imagen') {
+                html = `<div class="w-100"><img src="${archivo.rutaArchivo}" class="w-100"/></div>`;
+            }
+            slides.push(html);
         });
         galeriaFotograficaCarousel.setSlides(slides);
     }

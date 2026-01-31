@@ -1776,12 +1776,12 @@ function obtenerDatosGala() {
 
         $edicionActual = obtenerEdicionActual();
         $galeriaEdicionActual = obtenerGaleriaEdicionActual();
-//        $candidaturasGanadoras = obtenerCandidaturasGanadoras();
+        $candidaturasGanadoras = obtenerCandidaturasGanadoras();
 
         $datos['titulo'] = "El cine cobró vida: Así fue la Gala " . $edicionActual['anioEdicion'];
         $datos['descripcion'] = $edicionActual['resumenEvento'];
         $datos['galeria'] = $galeriaEdicionActual;
-//        $datos['candidaturasGanadoras'] = $candidaturasGanadoras;
+        $datos['candidaturasGanadoras'] = $candidaturasGanadoras;
 
     }
 
@@ -1880,12 +1880,32 @@ function obtenerGaleriaEdicionActual(){
     $baseUrl = obtenerBaseUrl();
     $galeria = [];
     while ($row = $resultGaleria->fetch_assoc()) {
+        $row['tipoArchivo'] = obtenerTipoArchivoPorExtension($row['rutaArchivo']);
         if ($row['rutaArchivo']) {
             $row['rutaArchivo'] = $baseUrl . $row['rutaArchivo'];
         }
         $galeria[] = $row;
     }
     return $galeria;
+}
+
+/**
+ * Función auxiliar para obtener el tipo de archivo (imagen o video) según su extensión
+ */
+function obtenerTipoArchivoPorExtension($rutaArchivo) {
+    $extension = pathinfo($rutaArchivo, PATHINFO_EXTENSION);
+    $extension = strtolower($extension);
+
+    $tiposImagen = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+    $tiposVideo = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'webm'];
+
+    if (in_array($extension, $tiposImagen)) {
+        return 'imagen';
+    } elseif (in_array($extension, $tiposVideo)) {
+        return 'video';
+    } else {
+        return 'otro';
+    }
 }
 
 /**
