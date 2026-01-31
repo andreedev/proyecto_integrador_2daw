@@ -13,10 +13,6 @@
     display: block;
 }
 
-.d-block-force{
-    display: block !important;
-}
-
 .d-inline-block{
     display: inline-block;
 }

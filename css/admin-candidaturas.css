@@ -610,23 +610,6 @@ th {
     color: var(--neutral-02);
 }
 
-/* Botones en modales de confirmación y notificación */
-#notificationModal .btn {
-    padding: 6px 12px;
-    border: none;
-    cursor: pointer;
-}
-
-/* Botón "Aceptar" en confirmación y botón en notificación: rojo primario */
-#notificationModal .btn {
-    background-color: var(--primary-03, #d32f2f);
-    color: white;
-}
-
-#notificationModal .btn:hover {
-    background-color: var(--primary-02, #b71c1c);
-}
-
 /* Estructura del Modal */
 .history-modal-custom {
     max-width: 750px !important;
@@ -962,8 +945,6 @@ th {
         padding: 16px;
     }
 }
-
-
 
 #timeline-container {
     position: relative;

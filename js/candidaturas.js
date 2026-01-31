@@ -1,5 +1,6 @@
 const tituloInput = document.getElementById('tituloInput');
 const sinopsisInput = document.getElementById('sinopsisInput');
+const contadorPalabras = document.getElementById('contadorPalabras');
 const misCandidaturasContainer = document.getElementById('misCandidaturasContainer');
 const statusContainer = document.getElementById('statusContainer');
 const posterInput = document.getElementById('posterInput');
@@ -25,6 +26,10 @@ document.addEventListener('click', (e) => {
             });
         }
     }
+});
+
+sinopsisInput.addEventListener('solid-input-word-count', (e) => {
+    contadorPalabras.textContent = e.detail.count;
 });
 
 
@@ -93,9 +98,19 @@ function buildBadge(candidatura) {
 
 function renderizarCandidaturas(candidaturas) {
     misCandidaturasContainer.replaceChildren();
+
+    const idASeleccionar = candidaturaSeleccionada
+        ? candidaturaSeleccionada.idCandidatura
+        : (candidaturas.length > 0 ? candidaturas[0].idCandidatura : null);
+
     candidaturas.forEach((candidatura, index) => {
         const candidaturaElement = document.createElement('div');
         candidaturaElement.classList.add('candidatura-mini-card-component', 'cursor-pointer', 'gap-16px', 'p-24px', 'd-flex', 'flex-column', 'position-relative');
+
+        if (candidatura.idCandidatura === idASeleccionar) {
+            candidaturaElement.classList.add('selected');
+        }
+
         candidaturaElement.appendChild(buildBadge(candidatura));
 
         const titleCortometraje = document.createElement('span');
@@ -133,14 +148,12 @@ function renderizarCandidaturas(candidaturas) {
             renderizarDetalleCandidatura(candidatura);
         });
 
-        if (index === 0) {
-            candidaturaElement.classList.add('selected');
-        }
-
         misCandidaturasContainer.appendChild(candidaturaElement);
     });
+
     if (candidaturas.length > 0) {
-        renderizarDetalleCandidatura(candidaturas[0]);
+        const candidataActualizada = candidaturas.find(c => c.idCandidatura === idASeleccionar) || candidaturas[0];
+        renderizarDetalleCandidatura(candidataActualizada);
     }
 }
 
@@ -172,11 +185,12 @@ function renderStatusCard(type, candidatura) {
  * Renderiza el detalle de una candidatura seleccionada
  */
 function renderizarDetalleCandidatura(candidatura){
-    console.log(candidatura);
-
     candidaturaSeleccionada = candidatura;
+
+    console.log('Candidatura seleccionada:', candidaturaSeleccionada);
+
     videoTrailerInput.classList.add('d-none');
-    mensajeSubsanacionInput.classList.add('d-none-force');
+    mensajeSubsanacionInput.classList.add('d-none');
     btnGuardarCambios.classList.add('d-none');
     const playBtn = document.getElementById('playVideoCorto');
     if (playBtn) playBtn.classList.remove('d-none');
@@ -184,18 +198,22 @@ function renderizarDetalleCandidatura(candidatura){
 
     renderStatusCard(candidatura.estado, candidatura);
 
+    let puedeEditarArchivos = false;
+
     if(candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
         tituloInput.disabled = false;
         sinopsisInput.disabled = false;
         btnGuardarCambios.textContent = 'Guardar cambios';
         btnGuardarCambios.classList.remove('d-none');
+        puedeEditarArchivos = true;
     }
 
     if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA){
         sinopsisInput.disabled = false;
-        mensajeSubsanacionInput.classList.remove('d-none-force');
+        mensajeSubsanacionInput.classList.remove('d-none');
         btnGuardarCambios.classList.remove('d-none');
         btnGuardarCambios.textContent = 'Enviar subsanación';
+        puedeEditarArchivos = true;
     }
 
 
@@ -212,14 +230,15 @@ function renderizarDetalleCandidatura(candidatura){
         btnGuardarCambios.textContent = 'Enviar';
         btnGuardarCambios.classList.remove('d-none');
         if(candidatura.rutaTrailer) {
-            videoTrailerInput.setAttachedMode(candidatura.rutaTrailer, candidatura.idArchivoTrailer);
+            videoTrailerInput.setAttachedMode(candidatura.rutaTrailer, candidatura.idArchivoTrailer, true);
         }
     }
 
 
-    posterInput.setAttachedMode(candidatura.rutaCartel, candidatura.idArchivoCartel)
-    fichaTecnicaInput.setAttachedMode(candidatura.rutaFichaTecnica, candidatura.idArchivoFichaTecnica)
+    posterInput.setAttachedMode(candidatura.rutaCartel, candidatura.idArchivoCartel, puedeEditarArchivos)
+    fichaTecnicaInput.setAttachedMode(candidatura.rutaFichaTecnica, candidatura.idArchivoFichaTecnica, puedeEditarArchivos)
     sinopsisInput.setValue(candidatura.sinopsis);
+    contadorPalabras.textContent = countWords(candidatura.sinopsis);
     tituloInput.setValue(candidatura.titulo);
 
     // Cargar video
@@ -241,7 +260,7 @@ paginacionCandidaturas.addEventListener('page-change', async (e) => {
 
 
 btnGuardarCambios.addEventListener('click', async () => {
-    actualizarCandidatura();
+    handleGuardarCambios();
 });
 
 async function cargarCandidaturas() {
@@ -255,16 +274,16 @@ async function cargarCandidaturas() {
     }
 }
 
-async function actualizarCandidatura() {
+async function handleGuardarCambios() {
     if (!candidaturaSeleccionada) return;
     const tituloValido = tituloInput.validate(true).valid
     const sinopsisValida = sinopsisInput.validate(true).valid;
     const posterValido = posterInput.validate(true);
     const fichaTecnicaValida = fichaTecnicaInput.validate(true);
-    const necesitaMensaje = candidaturaSeleccionada.estado === 'Rechazada';
+    const necesitaMensaje = candidaturaSeleccionada.estado === ESTADOS_CANDIDATURA.RECHAZADA;
     const mensajeValido = necesitaMensaje ? mensajeSubsanacionInput.validate(true).valid : true;
 
-    const necesitaVideoTrailer = candidaturaSeleccionada.estado === 'Finalista';
+    const necesitaVideoTrailer = candidaturaSeleccionada.estado === ESTADOS_CANDIDATURA.FINALISTA;
     const videoTrailerValido = necesitaVideoTrailer ? videoTrailerInput.validate(true) : true;
 
     if (!tituloValido || !sinopsisValida || !posterValido || !fichaTecnicaValida || !mensajeValido || !videoTrailerValido) {
@@ -275,15 +294,25 @@ async function actualizarCandidatura() {
     const sinopsis = sinopsisInput.value;
     const idPoster = await posterInput.uploadIfNeeded();
     const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
-    const idVideoTrailer = await videoTrailerInput.uploadIfNeeded();
+
+    let idTrailer = null;
+    if (necesitaVideoTrailer) {
+        idTrailer = await videoTrailerInput.uploadIfNeeded();
+    }
+
     const mensajeSubsanacion = necesitaMensaje ? mensajeSubsanacionInput.value : null;
 
-    let response = await actualizarCandidatura(candidaturaSeleccionada.idCandidatura, titulo, sinopsis, idPoster, idFichaTecnica, idVideoTrailer, mensajeSubsanacion);
+    let response = await actualizarCandidatura(candidaturaSeleccionada.idCandidatura, titulo, sinopsis, idPoster, idFichaTecnica, idTrailer, mensajeSubsanacion);
     if (response.status === 'success') {
         await cargarCandidaturas();
+        notify('Candidatura actualizada correctamente');
     } else {
-        alert('Error al actualizar la candidatura: ' + response.message);
+        notify('Error al actualizar la candidatura: ' + response.message);
     }
+}
+
+function notify(message){
+    document.getElementById('notification').show(message);
 }
 
 let isMobileMode = null;

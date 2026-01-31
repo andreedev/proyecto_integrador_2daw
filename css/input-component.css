@@ -22,6 +22,10 @@
     cursor: not-allowed;
 }
 
+.solid-input-field.is-textarea {
+    resize: vertical;
+}
+
 .solid-input-label {
     position: absolute;
     top: 24px;
@@ -66,18 +70,21 @@
 }
 
 .solid-input-container.variant-textarea {
-    min-height: 100px;
+    padding-top: 20px;
+    min-height: 120px;
+}
+
+.solid-input-container.variant-textarea .solid-input-label{
+    top: 45px;
+    background: transparent;
 }
 
 .solid-input-container.variant-textarea .solid-input-field {
     height: 100px;
-    resize: none;
-    padding-top: 32px;
+    padding-top: 10px;
     padding-right: 40px;
-    line-height: 1.5;
-    display: block;
-    overflow-y: auto;
     z-index: 1;
+    overflow-y: auto;
 }
 
 .solid-input-container.is-disabled .solid-input-label {
@@ -85,13 +92,16 @@
 }
 
 .solid-input-container.variant-textarea .solid-input-icon-container {
-    top: 32px;
-    bottom: auto;
+    top: 35px;
+    right: 12px;
+    z-index: 3;
 }
 
 .solid-input-container.variant-textarea.is-focused .solid-input-label,
 .solid-input-container.variant-textarea.has-value .solid-input-label {
-    transform: translateY(-24px) scale(0.85);
+    top: 5px;
+    transform: scale(0.85);
+    color: var(--neutral-01);
 }
 
 .solid-select-field {
@@ -114,4 +124,22 @@
 .solid-input-container.state-error .solid-select-field {
     border-bottom: 1px solid var(--neutral-04) !important;
     color: var(--neutral-01) !important;
+}
+
+
+.solid-input-field.is-textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.solid-input-field.is-textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.solid-input-field.is-textarea::-webkit-scrollbar-thumb {
+    background: var(--neutral-04);
+    border-radius: 10px;
+}
+
+.solid-input-field.is-textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--neutral-01);
 }

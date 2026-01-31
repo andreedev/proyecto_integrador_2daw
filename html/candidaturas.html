@@ -100,16 +100,20 @@
                         required-message="El título es obligatorio para identificar tu obra"
                 ></input-component>
 
-                <input-component
-                        id="sinopsisInput"
-                        label="Sinopsis de la obra"
-                        textarea
-                        width="100%"
-                        required
-                        max-words="100"
-                        required-message="La sinopsis es obligatoria para conocer tu obra"
-                        error-message="La sinopsis es demasiado larga. Máximo 100 palabras"
-                ></input-component>
+                <div class="d-flex flex-column gap-4px">
+                    <input-component
+                            id="sinopsisInput"
+                            label="Sinopsis de la obra"
+                            textarea
+                            width="100%"
+                            required
+                            max-words="100"
+                            required-message="La sinopsis es obligatoria para conocer tu obra"
+                            error-message="La sinopsis es demasiado larga. Máximo 100 palabras"
+                    ></input-component>
+
+                    <span class="fs-12px text-neutral-04"><span id="contadorPalabras">0</span>/100 palabras</span>
+                </div>
 
                 <file-component
                         id="videoTrailerInput"
@@ -130,7 +134,7 @@
                         textarea
                         width="100%"
                         required
-                        class="d-none-force"
+                        class="d-none"
                         required-message="El mensaje es obligatorio para enviar la subsanación"
                 ></input-component>
 
@@ -143,12 +147,15 @@
     </div>
     <home-footer></home-footer>
 
+    <notification-component id="notification"></notification-component>
+
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/pagination-component.js"></script>
     <script src="../js/components/modal-component.js"></script>
     <script src="../js/components/input-component.js"></script>
     <script src="../js/components/date-component.js"></script>
     <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/notification-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/candidaturas.js"></script>

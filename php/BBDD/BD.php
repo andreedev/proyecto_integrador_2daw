@@ -413,27 +413,33 @@ function crearBaseDatosSiNoExiste()
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
                 ('Canon', 4);
                 
+               
                 
                 -- UPDATES
-                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 1;
+                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 16;
                 INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
                 (1, 'Rechazada', 'El cortometraje no cumple con los requisitos de duración.', true);
-                UPDATE candidatura SET estado = 'En revisión' WHERE id_candidatura = 1;
+                UPDATE candidatura SET estado = 'En revisión' WHERE id_candidatura = 16;
                 INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES
                 (1, 'En revisión', 'He subsanado los problemas de duración.');
                 
-                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 2;
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 1;
                 INSERT INTO historial_candidatura (id_candidatura, estado) VALUES
                 (3, 'Aceptada');
                 INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
                 (2, 'Aceptada', true);
-                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 2;
+                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 1;
                 INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
                 (2, 'Finalista', true);
                 
-                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 3;
+                UPDATE candidatura SET sinopsis = 'En el caótico ecosistema de la Universidad Estatal, Álex, un estudiante experto en procrastinar, se enfrenta a su mayor pesadilla: el \'Lunes Negro\'. Tras quedarse dormido para el examen final que define su graduación, debe cruzar un campus convertido en una carrera de obstáculos surrealista. Entre reclutadores de sectas de café y la temida \'Hermandad del Silencio\' en la biblioteca, la jornada se vuelve una sátira sobre la desesperación académica. \'Crónicas del Campus\' es una oda humorística a esos años donde el mayor drama es conseguir una fotocopia antes del cierre.' WHERE id_candidatura = 6;
+                
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 6;
                 INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
-                (3, 'Aceptada', true);
+                (6, 'Aceptada', true);
+                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 6;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (6, 'Finalista', true);
                 
             ";
 

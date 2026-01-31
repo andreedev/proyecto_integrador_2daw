@@ -1,6 +1,3 @@
-const notificationModal = document.getElementById('notificationModal');
-const notificationMessage = document.getElementById('notificationMessage');
-
 const btnLimpiarFiltros = document.getElementById('btnLimpiarFiltros');
 const btnAplicarFiltros = document.getElementById('btnAplicarFiltros');
 const filtroTexto = document.getElementById('filtroTexto');
@@ -102,8 +99,7 @@ const statusLabels = {
 
 
 function showNotification(message) {
-    notificationMessage.textContent = message;
-    notificationModal.open();
+    document.getElementById('notification').show(message);
 }
 
 function getBadgeClass(status) {

@@ -98,7 +98,6 @@ class InputComponent extends HTMLElement {
         await window.injectExternalStyles('../css/input-component.css', 'solid-input-styles');
 
         const width = this.getAttribute('width') || '100%';
-        this.style.display = 'block';
         this.style.width = width;
 
         this.render();
@@ -109,6 +108,15 @@ class InputComponent extends HTMLElement {
         }
 
         this.style.visibility = 'visible';
+    }
+
+    show() {
+        this.classList.remove('d-none');
+        this.style.display = '';
+    }
+
+    hide() {
+        this.classList.add('d-none');
     }
 
     setCustomValidation(callback) {
@@ -150,11 +158,13 @@ class InputComponent extends HTMLElement {
         if (container) {
             container.classList.remove('state-error', 'state-success');
 
-            if (successIcon) successIcon.classList.add('d-none-force');
-            if (errorIcon) errorIcon.classList.add('d-none-force');
+            if (successIcon) successIcon.classList.add('d-none');
+            if (errorIcon) errorIcon.classList.add('d-none');
 
             if (errorMsgSpan) {
-                errorMsgSpan.classList.replace('d-block', 'd-none-force');
+                errorMsgSpan.classList.remove('d-block');
+                errorMsgSpan.classList.add('d-none');
+                errorMsgSpan.textContent = '';
             }
         }
     }
@@ -203,12 +213,13 @@ class InputComponent extends HTMLElement {
 
         if (!valid) {
             container.classList.add('state-error');
-            errorIcon.classList.remove('d-none-force');
+            errorIcon.classList.remove('d-none');
             errorMsgSpan.textContent = message;
-            errorMsgSpan.classList.replace('d-none-force', 'd-block');
+            errorMsgSpan.classList.remove('d-none');
+            errorMsgSpan.classList.add('d-block');
         } else if (this.value.length > 0 && !this.hasAttribute('no-validation')) {
             container.classList.add('state-success');
-            successIcon.classList.remove('d-none-force');
+            successIcon.classList.remove('d-none');
         }
     }
 
@@ -239,10 +250,8 @@ class InputComponent extends HTMLElement {
             const val = e.target.value;
             this._handleFloatingLabel(val);
 
-            const wordCount = val.trim() ? val.trim().split(/\s+/).length : 0;
-
             this.dispatchEvent(new CustomEvent('solid-input-word-count', {
-                detail: { count: wordCount, value: val },
+                detail: { count: countWords(val), value: val },
                 bubbles: true
             }));
 
@@ -362,13 +371,13 @@ class InputComponent extends HTMLElement {
             
             ${inputTag}
             
-            <div class="solid-input-icon-container icon-success-wrapper d-none-force">
+            <div class="solid-input-icon-container icon-success-wrapper d-none">
                     <span class="icon-check w-24px h-24px bg-success-02 d-block"></span>
                 </div>
-                <div class="solid-input-icon-container icon-error-wrapper d-none-force">
+                <div class="solid-input-icon-container icon-error-wrapper d-none">
                     <span class="icon-close w-24px h-24px bg-error-02 d-block"></span>
                 </div>
-                <span class="solid-input-error-text text-error-02 d-none-force"></span>
+                <span class="solid-input-error-text text-error-02 d-none"></span>
         </div>
     `;
 

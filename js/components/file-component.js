@@ -11,7 +11,7 @@
  *     required
  *     error-type="Tipo de archivo no permitido"
  *     error-size="El archivo excede el tamaño máximo"
- *     error-required="Este campo es obligatorio">
+ *     error-required="Este campo es obligatorio"
  * </file-component>
  *
  * Atributos:
@@ -93,14 +93,24 @@ class FileComponent extends HTMLElement {
         return true;
     }
 
-    setAttachedMode(filePath, fileId) {
+    setAttachedMode(filePath, fileId, editable = true) {
         const fileName = getFileNameFromPath(filePath);
 
         this._file = null;
         this._fileId = fileId;
         this._isChanged = false;
+        this._isEditable = editable;
 
         this._updateUI({ name: fileName, isExisting: true });
+
+        const removeBtn = this.querySelector('.btnEliminarArchivo');
+        if (removeBtn) {
+            if (!editable) {
+                removeBtn.classList.add('d-none');
+            } else {
+                removeBtn.classList.remove('d-none');
+            }
+        }
 
         const errorSpan = this.querySelector('.mensajeError');
         if (errorSpan) errorSpan.textContent = "";
@@ -176,6 +186,11 @@ class FileComponent extends HTMLElement {
             this._file = file;
             this._fileId = null;
             this._isChanged = true;
+            this._isEditable = true;
+
+            const removeBtn = this.querySelector('.btnEliminarArchivo');
+            if (removeBtn) removeBtn.classList.remove('hidden-force');
+
             this._updateUI(file);
             this._dispatchChangeEvent(file);
         }

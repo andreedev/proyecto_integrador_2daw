@@ -414,3 +414,17 @@ function watchScreenSize(callback) {
         window.removeEventListener('resize', handleResize);
     };
 }
+
+/**
+ * Cuenta palabras reales ignorando espacios múltiples,
+ * saltos de línea y caracteres especiales solitarios.
+ */
+function countWords(text) {
+    if (!text || typeof text !== 'string') return 0;
+
+    // Match busca grupos de caracteres alfanuméricos
+    // El regex \p{L} soporta caracteres con tildes y eñes (Unicode)
+    const words = text.match(/[\w\u00C0-\u00ff]+/g);
+
+    return words ? words.length : 0;
+}

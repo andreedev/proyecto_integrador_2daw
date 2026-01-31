@@ -5,6 +5,7 @@ header("Content-Type: application/json");
 
 require_once "./BBDD/BD.php";
 require_once "./BBDD/connection.php";
+require_once "./model/EstadosCandidatura.php";
 
 abrirConexion();
 crearBaseDatosSiNoExiste();
@@ -1406,7 +1407,7 @@ function listarCandidaturasAdmin() {
     $types = "";
 
     if ($filtroTexto) {
-        $whereSql .= " AND (p.nombre LIKE ? OR c.titulo LIKE ? OR c.sinopsis LIKE ?) ";
+        $whereSql .= " AND (LOWER(p.nombre) LIKE LOWER(?) OR LOWER(c.titulo) LIKE LOWER(?) OR LOWER(c.sinopsis) LIKE LOWER(?)) ";
         $likeTexto = "%" . $filtroTexto . "%";
         $params[] = $likeTexto;
         $params[] = $likeTexto;
@@ -1924,28 +1925,84 @@ function actualizarCandidatura(){
     $idTrailer          = limpiarDatoInput($_POST['idTrailer'], true);
     $mensajeSubsanacion = limpiarDatoInput($_POST['mensajeSubsanacion']);
 
-    $sql = "UPDATE candidatura SET 
-                titulo = ?, 
-                sinopsis = ?, 
-                id_archivo_cartel = ?, 
-                id_archivo_ficha = ?, 
-                id_archivo_trailer = ?" .
-        ($mensajeSubsanacion ? ", estado = 'En revisión'" : "") . " 
-            WHERE id_candidatura = ?";
 
-    $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("ssiiii", $titulo, $sinopsis, $idPoster, $idFichaTecnica, $idTrailer, $idCandidatura);
+    $estadoActual = obtenerEstadoCandidaturaPorId($idCandidatura);
+    $nuevoEstado  = $estadoActual;
+
+    /**
+     * Si hay mensaje, siempre vuelve a revisión
+     */
+    if (!empty($mensajeSubsanacion) || $estadoActual === EstadosCandidatura::RECHAZADA) {
+        $nuevoEstado = EstadosCandidatura::EN_REVISION;
+    }
+
+    /**
+     * Si es finalista, solo se permite cambiar el trailer
+     */
+    if ($estadoActual === EstadosCandidatura::FINALISTA) {
+        $sql = "UPDATE candidatura SET id_archivo_trailer = ? WHERE id_candidatura = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("ii", $idTrailer, $idCandidatura);
+
+    } else {
+        /**
+         * Si está en revisión o finalista, se pueden cambiar todos los campos
+         */
+        $sql = "UPDATE candidatura SET 
+                    titulo = ?, 
+                    sinopsis = ?, 
+                    id_archivo_cartel = ?, 
+                    id_archivo_ficha = ?, 
+                    id_archivo_trailer = ?,
+                    estado = ?
+                WHERE id_candidatura = ?";
+
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("ssiiisi", $titulo, $sinopsis, $idPoster, $idFichaTecnica, $idTrailer, $nuevoEstado, $idCandidatura);
+    }
 
     if ($stmt->execute()) {
+        $stmt->close();
+
         if (!empty($mensajeSubsanacion)) {
-            $stmtHistorial = $conexion->prepare("INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES (?, 'En revisión', ?)");
-            $stmtHistorial->bind_param("is", $idCandidatura, $mensajeSubsanacion);
-            $stmtHistorial->execute();
+            insertarHistorialCandidatura($idCandidatura, $nuevoEstado, $mensajeSubsanacion);
         }
 
         echo json_encode(["status" => "success", "message" => "Candidatura actualizada correctamente"]);
     } else {
-        echo json_encode(["status" => "error", "message" => $stmt->error]);
+        echo json_encode(["status" => "error", "message" => "Error al actualizar: " . $conexion->error]);
+    }
+}
+
+/**
+ * Registra un movimiento en el historial de la candidatura
+ */
+function insertarHistorialCandidatura($id, $estado, $mensaje) {
+    global $conexion;
+    if (empty($mensaje)) return;
+
+    $sql = "INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES (?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("iss", $id, $estado, $mensaje);
+    $stmt->execute();
+    $stmt->close();
+}
+
+/*
+ * Obtener estado de una candidatura por id
+ */
+function obtenerEstadoCandidaturaPorId($idCandidatura){
+    global $conexion;
+
+    $query = "SELECT estado FROM candidatura WHERE id_candidatura = ? LIMIT 1";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idCandidatura);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        return $row['estado'];
+    } else {
+        return null;
     }
 }
 
