@@ -5,15 +5,6 @@ const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
 const streamingEventoVideoPlayer = document.getElementById('streamingEventoVideoPlayer');
 const galeriaFotograficaCarousel = document.getElementById('galeriaFotograficaCarousel');
 
-const slides = [
-    '<div class="w-100"><img src="../img/festival-foto-1.png" class="w-100"></div>',
-    '<div class="w-100"><img src="../img/festival-foto-1.png" class="w-100"></div>',
-    '<div class="w-100"><img src="../img/festival-foto-1.png" class="w-100"></div>',
-    '<div class="w-100"><img src="../img/festival-foto-1.png" class="w-100"></div>'
-];
-
-galeriaFotograficaCarousel.setSlides(slides);
-
 cargarDatosGala();
 
 async function cargarDatosGala() {
@@ -40,7 +31,7 @@ function renderizarDatosGala(data) {
         preEventoFecha.textContent = formatDateToLongSpanish(data.fecha);
         preEventoUbicacion.textContent = data.ubicacion;
 
-        if (data.streamingActivo){
+        if (data.streamingActivo) {
             streamingEventoVideoPlayer.setVisible(true);
             textoTransmision.classList.remove('d-none');
             streamingEventoVideoPlayer.setSource(data.streamingUrl)
@@ -54,6 +45,11 @@ function renderizarDatosGala(data) {
     if (data.modo === 'post-evento') {
         contenidoPostEvento.classList.remove('d-none');
 
+        const slides = [];
+        data.galeria.forEach(archivo => {
+            slides.push(`<div class="w-100"><img src="${archivo.rutaArchivo}" class="w-100"/></div>`);
+        });
+        galeriaFotograficaCarousel.setSlides(slides);
     }
 }
 
@@ -63,7 +59,7 @@ btnCalendario.addEventListener('click', () => {
 });
 
 
-function renderizarEventos(eventos){
+function renderizarEventos(eventos) {
     const contenedorEventos = document.getElementById('contenedorEventos');
     contenedorEventos.replaceChildren();
 

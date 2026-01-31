@@ -1714,8 +1714,6 @@ function listarCandidaturasParticipante() {
 /**
  * Obtener datos de la gala
  */
-/**
- */
 function obtenerDatosGala() {
     global $conexion;
 
@@ -1777,12 +1775,12 @@ function obtenerDatosGala() {
     } else if ($modo == 'post-evento'){
 
         $edicionActual = obtenerEdicionActual();
-//        $galeriaEdicionActual = obtenerGaleriaEdicionActual();
+        $galeriaEdicionActual = obtenerGaleriaEdicionActual();
 //        $candidaturasGanadoras = obtenerCandidaturasGanadoras();
 
         $datos['titulo'] = "El cine cobró vida: Así fue la Gala " . $edicionActual['anioEdicion'];
         $datos['descripcion'] = $edicionActual['resumenEvento'];
-//        $datos['galeria'] = $galeriaEdicionActual;
+        $datos['galeria'] = $galeriaEdicionActual;
 //        $datos['candidaturasGanadoras'] = $candidaturasGanadoras;
 
     }
@@ -1864,21 +1862,16 @@ function obtenerEdicionActual() {
     }
 }
 
-/**
- * Obtener galería de la edición actual
- */
 function obtenerGaleriaEdicionActual(){
     global $conexion;
 
     $edicionActual = obtenerEdicionActual();
     $idEdicionActual = (int)$edicionActual['idEdicion'];
 
-    $queryGaleria = "SELECT g.id_galeria as idGaleria, g.titulo as tituloGaleria, a.ruta as rutaImagenGaleria, a.id_archivo as idArchivoImagenGaleria
-                     FROM archivo a
-                     LEFT JOIN archivo a ON g.id_archivo_imagen = a.id_archivo
-                     WHERE g.id_edicion = ?
-                     ORDER BY g.id_galeria DESC";
-
+    $queryGaleria = "SELECT a.id_archivo as idArchivo, a.ruta as rutaArchivo
+                     FROM edicion_archivos ea
+                     INNER JOIN archivo a ON ea.id_archivo = a.id_archivo
+                     WHERE ea.id_edicion = ?";
     $stmtGaleria = $conexion->prepare($queryGaleria);
     $stmtGaleria->bind_param("i", $idEdicionActual);
     $stmtGaleria->execute();
@@ -1887,12 +1880,11 @@ function obtenerGaleriaEdicionActual(){
     $baseUrl = obtenerBaseUrl();
     $galeria = [];
     while ($row = $resultGaleria->fetch_assoc()) {
-        if ($row['rutaImagenGaleria']) {
-            $row['rutaImagenGaleria'] = $baseUrl . $row['rutaImagenGaleria'];
+        if ($row['rutaArchivo']) {
+            $row['rutaArchivo'] = $baseUrl . $row['rutaArchivo'];
         }
         $galeria[] = $row;
     }
-
     return $galeria;
 }
 

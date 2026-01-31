@@ -248,7 +248,7 @@
 
 .post-evento-header{
     background-image: url("../img/festi-2_1.png");
-    height: 463px;
+    height: calc(100vh - 84px);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -287,7 +287,6 @@
     font-size: 18px;
     font-weight: 500;
     line-height: 120%;
-    width:50%
 }
 
 

@@ -892,8 +892,56 @@
     font-size: 20px;
 }
 
+@media (min-width: 480px) {
+    .fs-xs-20px{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-20px{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-20px{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-20px{
+        font-size: 20px;
+    }
+}
+
 .fs-24px{
     font-size: 24px;
+}
+
+@media (min-width: 480px) {
+    .fs-xs-24px{
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-24px{
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-24px{
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-24px{
+        font-size: 24px;
+    }
 }
 
 .fs-28px{
@@ -936,8 +984,56 @@
     font-size: 40px;
 }
 
+@media (min-width: 480px) {
+    .fs-xs-40px{
+        font-size: 40px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-40px{
+        font-size: 40px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-40px{
+        font-size: 40px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-40px{
+        font-size: 40px;
+    }
+}
+
 .fs-48px{
     font-size: 48px;
+}
+
+@media (min-width: 480px) {
+    .fs-xs-48px{
+        font-size: 48px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-48px{
+        font-size: 48px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-48px{
+        font-size: 48px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-48px{
+        font-size: 48px;
+    }
 }
 
 .fs-56px{
@@ -1578,6 +1674,41 @@ dialog::backdrop {
     padding-right: 32px;
 }
 
+@media (min-width: 480px) {
+    .px-xs-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 576px) {
+    .px-sm-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 768px) {
+    .px-md-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 992px) {
+    .px-lg-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .px-xl-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
 .px-40px{
     padding-left: 40px;
     padding-right: 40px;
@@ -1596,6 +1727,34 @@ dialog::backdrop {
 .px-64px{
     padding-left: 64px;
     padding-right: 64px;
+}
+
+@media (min-width: 480px) {
+    .px-xs-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
+@media (min-width: 768px) {
+    .px-md-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
+@media (min-width: 992px) {
+    .px-lg-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .px-xl-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
 }
 
 .px-72px{
