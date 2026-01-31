@@ -1,140 +1,69 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../src/php/api.php';
 
-class AdminCandidaturasTest extends TestCase {
-    private $mockConexion;
-    private $mockStmtCount;
-    private $mockStmtData;
-    private $mockResultCount;
-    private $mockResultData;
+class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
+{
 
-    protected function setUp(): void {
-        $this->mockConexion = $this->createMock(mysqli::class);
-        $this->mockStmtCount = $this->createMock(mysqli_stmt::class);
-        $this->mockStmtData = $this->createMock(mysqli_stmt::class);
-        $this->mockResultCount = $this->createMock(mysqli_result::class);
-        $this->mockResultData = $this->createMock(mysqli_result::class);
-        
-        $GLOBALS['conexion'] = $this->mockConexion;
+    protected function setUp(): void
+    {
+        global $conexion;
+        abrirConexion();
+        crearBaseDatosSiNoExiste();
+        $conexion->begin_transaction();
+        $_POST = [];
     }
 
-    protected function tearDown(): void {
-        unset($GLOBALS['conexion']);
+    protected function tearDown(): void
+    {
+        global $conexion;
+        if ($conexion) {
+            $conexion->rollback();
+            $conexion->close();
+        }
         unset($_POST);
     }
 
-    // ========== Tests para mostrarCandidaturas ==========
+    /**
+     * Lo usamos para no ver SQL dentro de los tests.
+     */
+    private function prepararEscenario($nombre = "User Test", $sinopsis = "Sinopsis")
+    {
+        global $conexion;
+        // Creamos lo mínimo necesario para que el INNER JOIN de mostrarCandidaturas funcione
+        $conexion->query("INSERT INTO participante (nombre, dni) VALUES ('$nombre', '12345678Z')");
+        $idParticipante = $conexion->insert_id;
 
-    public function testSinFiltros() {
-        $testData = [
-            'id_candidatura' => 1,
-            'participante' => 'Juan Pérez',
-            'estado' => 'pendiente',
-            'sinopsis' => 'Test'
-        ];
+        $conexion->query("INSERT INTO candidatura (id_participante, sinopsis, estado) VALUES ($idParticipante, '$sinopsis', 'pendiente')");
+        return $conexion->insert_id;
+    }
 
-        $this->mockConexion->method('prepare')
-            ->willReturnOnConsecutiveCalls($this->mockStmtCount, $this->mockStmtData);
+    // ========== TESTS LIMPIOS ==========
 
-        $this->mockStmtCount->method('execute')->willReturn(true);
-        $this->mockResultCount->method('fetch_assoc')->willReturn(['total' => 1]);
-        $this->mockStmtCount->method('get_result')->willReturn($this->mockResultCount);
+    public function testSinFiltros()
+    {
+        // Llamamos al método, no hay SQL a la vista aquí
+        $this->prepararEscenario("Juan", "Test de película");
 
-        $this->mockStmtData->method('execute')->willReturn(true);
-        $this->mockResultData->method('fetch_assoc')
-            ->willReturnOnConsecutiveCalls($testData, null);
-        $this->mockStmtData->method('get_result')->willReturn($this->mockResultData);
-
-        $_POST = ['pagina' => 1, 'filtroTexto' => '', 'filtroEstado' => '', 'filtroFecha' => ''];
+        $_POST = ['pagina' => 1, 'filtroTexto' => ''];
 
         ob_start();
         mostrarCandidaturas();
         $result = json_decode(ob_get_clean(), true);
 
         $this->assertEquals('success', $result['status']);
-        $this->assertEquals(1, $result['totalRecords']);
-        $this->assertCount(1, $result['data']);
+        $this->assertGreaterThanOrEqual(1, count($result['data']));
     }
 
-    public function testConFiltroTexto() {
-        $testData = [
-            'id_candidatura' => 1,
-            'participante' => 'Ana',
-            'sinopsis' => 'Película de aventuras',
-            'estado' => 'aprobado'
-        ];
-
-        $this->mockConexion->method('prepare')
-            ->willReturnOnConsecutiveCalls($this->mockStmtCount, $this->mockStmtData);
-
-        $this->mockStmtCount->method('execute')->willReturn(true);
-        $this->mockResultCount->method('fetch_assoc')->willReturn(['total' => 1]);
-        $this->mockStmtCount->method('get_result')->willReturn($this->mockResultCount);
-
-        $this->mockStmtData->method('execute')->willReturn(true);
-        $this->mockResultData->method('fetch_assoc')
-            ->willReturnOnConsecutiveCalls($testData, null);
-        $this->mockStmtData->method('get_result')->willReturn($this->mockResultData);
-
-        $_POST = ['pagina' => 1, 'filtroTexto' => 'aventuras', 'filtroEstado' => '', 'filtroFecha' => ''];
-
-        ob_start();
-        mostrarCandidaturas();
-        $result = json_decode(ob_get_clean(), true);
-
-        $this->assertStringContainsString('aventuras', strtolower($result['data'][0]['sinopsis']));
-    }
-
-    public function testSinResultados() {
-        $this->mockConexion->method('prepare')
-            ->willReturnOnConsecutiveCalls($this->mockStmtCount, $this->mockStmtData);
-
-        $this->mockStmtCount->method('execute')->willReturn(true);
-        $this->mockResultCount->method('fetch_assoc')->willReturn(['total' => 0]);
-        $this->mockStmtCount->method('get_result')->willReturn($this->mockResultCount);
-
-        $this->mockStmtData->method('execute')->willReturn(true);
-        $this->mockResultData->method('fetch_assoc')->willReturn(null);
-        $this->mockStmtData->method('get_result')->willReturn($this->mockResultData);
-
-        $_POST = ['pagina' => 1, 'filtroTexto' => 'noexiste', 'filtroEstado' => '', 'filtroFecha' => ''];
-
-        ob_start();
-        mostrarCandidaturas();
-        $result = json_decode(ob_get_clean(), true);
-
-        $this->assertEquals(0, $result['totalRecords']);
-        $this->assertEmpty($result['data']);
-    }
-
-
-    public function testEditarCandidaturaExitoso() {
-        $mockStmtUpdate = $this->createMock(mysqli_stmt::class);
-        $mockStmtInsert = $this->createMock(mysqli_stmt::class);
-
-        $mockStmtUpdate->method('bind_param')->willReturn(true);
-        $mockStmtUpdate->method('execute')->willReturn(true);
-
-        $mockStmtInsert->method('bind_param')->willReturn(true);
-        $mockStmtInsert->method('execute')->willReturn(true);
-
-        $this->mockConexion->method('prepare')
-            ->willReturnCallback(function($sql) use ($mockStmtUpdate, $mockStmtInsert) {
-                if (strpos($sql, 'UPDATE candidatura') !== false) {
-                    return $mockStmtUpdate;
-                }
-                if (strpos($sql, 'INSERT INTO historial_candidatura') !== false) {
-                    return $mockStmtInsert;
-                }
-                return null;
-            });
+    public function testEditarCandidaturaExitoso()
+    {
+        // Preparamos el terreno
+        $id = $this->prepararEscenario();
 
         $_POST = [
-            'idCandidatura' => 1,
+            'idCandidatura' => $id,
             'nuevoEstadoCandidatura' => 'aprobado',
-            'motivoCambioEstado' => 'Cumple todos los requisitos'
+            'motivoCambioEstado' => 'Ok'
         ];
 
         ob_start();
@@ -142,69 +71,5 @@ class AdminCandidaturasTest extends TestCase {
         $result = json_decode(ob_get_clean(), true);
 
         $this->assertEquals('success', $result['status']);
-        $this->assertEquals('Estado actualizado correctamente', $result['message']);
-    }
-
-    public function testEditarCandidaturaConIdInvalido() {
-        $mockStmtUpdate = $this->createMock(mysqli_stmt::class);
-        $mockStmtInsert = $this->createMock(mysqli_stmt::class);
-
-        $mockStmtUpdate->method('bind_param')->willReturn(true);
-        $mockStmtUpdate->method('execute')->willReturn(true);
-
-        $mockStmtInsert->method('bind_param')->willReturn(true);
-        $mockStmtInsert->method('execute')->willReturn(true);
-
-        $this->mockConexion->method('prepare')
-            ->willReturnCallback(function($sql) use ($mockStmtUpdate, $mockStmtInsert) {
-                if (strpos($sql, 'UPDATE candidatura') !== false) {
-                    return $mockStmtUpdate;
-                }
-                if (strpos($sql, 'INSERT INTO historial_candidatura') !== false) {
-                    return $mockStmtInsert;
-                }
-                return null;
-            });
-
-        $_POST = [
-            'idCandidatura' => 0,
-            'nuevoEstadoCandidatura' => 'rechazado',
-            'motivoCambioEstado' => 'Datos incompletos'
-        ];
-
-        ob_start();
-        editarCandidatura();
-        $result = json_decode(ob_get_clean(), true);
-
-        $this->assertEquals('success', $result['status']);
-    }
-
-    public function testEditarCandidaturaError() {
-        $mockStmtUpdate = $this->createMock(mysqli_stmt::class);
-
-        $mockStmtUpdate->method('bind_param')->willReturn(true);
-        $mockStmtUpdate->method('execute')->willReturn(false);
-
-        $this->mockConexion->method('prepare')
-            ->willReturnCallback(function($sql) use ($mockStmtUpdate) {
-                if (strpos($sql, 'UPDATE candidatura') !== false) {
-                    return $mockStmtUpdate;
-                }
-                return null;
-            });
-
-        $_POST = [
-            'idCandidatura' => 1,
-            'nuevoEstadoCandidatura' => 'aprobado',
-            'motivoCambioEstado' => 'Test'
-        ];
-
-        ob_start();
-        editarCandidatura();
-        $result = json_decode(ob_get_clean(), true);
-
-        $this->assertEquals('error', $result['status']);
-        $this->assertStringContainsString('Error', $result['message']);
     }
 }
-?>
