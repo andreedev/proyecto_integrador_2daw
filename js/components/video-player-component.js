@@ -265,7 +265,7 @@ class VideoPlayerComponent extends HTMLElement {
         }
 
         this.innerHTML = `
-                <div class="${wrapperClass}" style="min-height: 300px; width: 100%; height: 100%;">
+                <div class="${wrapperClass}" style="width: 100%; height: 100%;">
                 ${playButtonHtml}
                 ${contentHtml}
             </div>
