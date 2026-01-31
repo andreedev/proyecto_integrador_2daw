@@ -612,6 +612,14 @@
     width: 100%;
 }
 
+.w-8px{
+    width: 8px;
+}
+
+.w-12px{
+    width: 12px;
+}
+
 .w-16px{
     width: 16px;
 }
@@ -710,6 +718,14 @@
 
 .h-100{
     height: 100%;
+}
+
+.h-8px{
+    height: 8px;
+}
+
+.h-12px{
+    height: 12px;
 }
 
 .h-16px{
@@ -1433,8 +1449,8 @@
     transition: all 300ms ease;
 }
 
-.icon-right-chevron{
-    mask-image: url('../img/icon/icon-rightchevron.svg');
+.icon-left-chevron{
+    mask-image: url('../img/icon/icon-leftchevron.svg');
     mask-repeat: no-repeat;
     mask-size: contain;
     mask-position: center;
@@ -2391,4 +2407,8 @@ dialog::backdrop {
 
 .transform-center{
     transform: translate(-50%, -50%);
+}
+
+.touch-action-pan-y{
+    touch-action: pan-y;
 }
