@@ -43,8 +43,17 @@ class CarouselComponent extends HTMLElement {
         }
     }
 
-    setSlides(htmlItems) {
-        this._slidesData = htmlItems;
+    setSlides(items, useDOMElements = false) {
+        if (useDOMElements) {
+            this._slidesData = items.map(item => {
+                if (item instanceof HTMLElement) {
+                    return item.outerHTML;
+                }
+                return item;
+            });
+        } else {
+            this._slidesData = items;
+        }
         this._currentIndex = 0;
         this.render();
     }
@@ -61,23 +70,21 @@ class CarouselComponent extends HTMLElement {
 
         this.innerHTML = `
             <div class="carousel-container position-relative w-100 d-flex flex-column align-items-center">
-                <div class="carousel-wrapper position-relative w-100 d-flex align-items-center">
-                    
-                    <button class="carousel-arrow prev d-none" aria-label="Anterior">
-                        <span class="icon-left-chevron w-20px h-20px bg-primary-03 d-block"></span>
-                    </button>
-
-                    <div class="carousel-viewport touch-action-pan-y overflow-hidden w-100">
-                        <div class="carousel-track" style="gap: ${gap}px;">
-                            ${this._renderSlides()}
-                        </div>
+                
+                <button class="carousel-arrow prev d-none" aria-label="Anterior">
+                    <span class="icon-left-chevron w-20px h-20px bg-primary-03 d-block"></span>
+                </button>
+    
+                <div class="carousel-viewport touch-action-pan-y overflow-hidden w-100">
+                    <div class="carousel-track" style="gap: ${gap}px;">
+                        ${this._renderSlides()}
                     </div>
-
-                    <button class="carousel-arrow next d-none" aria-label="Siguiente">
-                        <span class="icon-right-chevron w-20px h-20px bg-primary-03 d-block"></span>
-                    </button>
                 </div>
-
+    
+                <button class="carousel-arrow next d-none" aria-label="Siguiente">
+                    <span class="icon-right-chevron w-20px h-20px bg-primary-03 d-block"></span>
+                </button>
+    
                 <div class="carousel-indicators d-flex justify-content-center gap-8px mt-24px"></div>
             </div>
         `;

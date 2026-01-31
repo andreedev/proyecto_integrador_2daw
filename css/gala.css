@@ -307,8 +307,6 @@
 }
 
 .slide-info-corto {
-    min-width: 240px;
-    height: 470px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -319,13 +317,6 @@
     gap:16px;
 }
 
-.img-info-corto {
-    width:240px;
-    height:345px;
-    mask-image: url("../img/portada-corto.png");
-    mask-size: cover;
-    mask-repeat: no-repeat;
-}
 
 .text-info-corto{
     display: flex;

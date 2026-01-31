@@ -1918,24 +1918,24 @@ function obtenerCandidaturasGanadoras() {
     global $conexion;
 
     $query = "SELECT 
-        c.id_candidatura,
-        c.titulo,
-        c.sinopsis,
-        p.nombre as nombreParticipante,
-        pr.nombre as nombrePremio,
-        cat.nombre as nombreCategoria,
-        av.ruta as rutaVideo,
-        at.ruta as rutaTrailer,
-        ac.ruta as rutaCartel
-    FROM premio_candidatura pc
-    INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
-    INNER JOIN participante p ON c.id_participante = p.id_participante
-    INNER JOIN premio pr ON pc.id_premio = pr.id_premio
-    INNER JOIN categoria cat ON pr.id_categoria = cat.id_categoria
-    LEFT JOIN archivo av ON c.id_archivo_video = av.id_archivo
-    LEFT JOIN archivo at ON c.id_archivo_trailer = at.id_archivo
-    LEFT JOIN archivo ac ON c.id_archivo_cartel = ac.id_archivo
-    ORDER BY cat.nombre, pr.nombre";
+            c.id_candidatura,
+            c.titulo,
+            c.sinopsis,
+            p.nombre as nombreParticipante,
+            pr.nombre as nombrePremio,
+            cat.nombre as nombreCategoria,
+            av.ruta as rutaVideo,
+            at.ruta as rutaTrailer,
+            ac.ruta as rutaCartel
+        FROM premio_candidatura pc
+        INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
+        INNER JOIN participante p ON c.id_participante = p.id_participante
+        INNER JOIN premio pr ON pc.id_premio = pr.id_premio
+        INNER JOIN categoria cat ON pr.id_categoria = cat.id_categoria
+        LEFT JOIN archivo av ON c.id_archivo_video = av.id_archivo
+        LEFT JOIN archivo at ON c.id_archivo_trailer = at.id_archivo
+        LEFT JOIN archivo ac ON c.id_archivo_cartel = ac.id_archivo
+        ORDER BY cat.nombre, pr.nombre";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();

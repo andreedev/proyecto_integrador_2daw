@@ -1,9 +1,10 @@
-//Carousel info corto
-
 const textoTransmision = document.getElementById('textoTransmision');
-const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
 const streamingEventoVideoPlayer = document.getElementById('streamingEventoVideoPlayer');
 const galeriaFotograficaCarousel = document.getElementById('galeriaFotograficaCarousel');
+const ganadoresCortosCarousel = document.getElementById('ganadoresCortosCarousel');
+const modalSinopsisTrailer = document.getElementById('modalSinopsisTrailer');
+const sinopsisText = document.getElementById('sinopsisText');
+const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
 
 cargarDatosGala();
 
@@ -45,18 +46,105 @@ function renderizarDatosGala(data) {
     if (data.modo === 'post-evento') {
         contenidoPostEvento.classList.remove('d-none');
 
-        const slides = [];
-        data.galeria.forEach(archivo => {
-            let html = '';
-            if (archivo.tipoArchivo === 'video') {
-                html = `<video-player-component src="${archivo.rutaArchivo}" ></video-player-component>`;
-            } else if (archivo.tipoArchivo === 'imagen') {
-                html = `<div class="w-100"><img src="${archivo.rutaArchivo}" class="w-100"/></div>`;
-            }
-            slides.push(html);
-        });
-        galeriaFotograficaCarousel.setSlides(slides);
+        renderizarCarruselGaleria(data.galeria);
+        renderizarCarruselCortos(data.candidaturasGanadoras);
     }
+}
+
+function renderizarCarruselGaleria(galeria) {
+    const slides = [];
+    galeria.forEach(archivo => {
+        let html = '';
+        if (archivo.tipoArchivo === 'video') {
+            html = `<video-player-component src="${archivo.rutaArchivo}"></video-player-component>`;
+        } else if (archivo.tipoArchivo === 'imagen') {
+            html = `<div class="w-100"><img src="${archivo.rutaArchivo}" class="w-100"/></div>`;
+        }
+        slides.push(html);
+    });
+    galeriaFotograficaCarousel.setSlides(slides);
+}
+
+function renderizarCarruselCortos(candidaturasGanadoras) {
+    const ganadoresSlides = [];
+
+    candidaturasGanadoras.forEach((candidatura, index) => {
+        const container = document.createElement('div');
+        container.className = 'd-flex flex-column gap-16px align-items-center p-16px';
+
+        const img = document.createElement('img');
+        img.src = candidatura.rutaCartel;
+        img.alt = 'Portada corto';
+        img.className = 'img-info-corto w-100';
+
+        const textContainer = document.createElement('div');
+        textContainer.className = 'text-info-corto';
+
+        const title = document.createElement('span');
+        title.className = 'title-corto';
+        title.textContent = candidatura.titulo;
+
+        const autor = document.createElement('span');
+        autor.className = 'autor';
+        autor.textContent = candidatura.nombreParticipante;
+
+        const posicion = document.createElement('span');
+        posicion.className = 'posicion';
+        posicion.textContent = `${candidatura.nombrePremio} - ${candidatura.nombreCategoria}`;
+
+        const botonWrapper = document.createElement('span');
+        botonWrapper.className = 'ver-trailer-sinopsis';
+
+        const boton = document.createElement('u');
+        const link = document.createElement('span');
+        link.className = 'text-decoration-none text-inherit cursor-pointer';
+        link.textContent = 'Sinopsis y trailer';
+        link.setAttribute('data-candidatura-index', index);
+
+        boton.appendChild(link);
+        botonWrapper.appendChild(boton);
+
+        textContainer.appendChild(title);
+        textContainer.appendChild(autor);
+        textContainer.appendChild(posicion);
+        textContainer.appendChild(botonWrapper);
+
+        container.appendChild(img);
+        container.appendChild(textContainer);
+
+        ganadoresSlides.push(container);
+    });
+
+    ganadoresCortosCarousel.setSlides(ganadoresSlides, true);
+
+    // Agregar event listeners DESPUÉS de que el carousel renderice
+    setTimeout(() => {
+        const links = ganadoresCortosCarousel.querySelectorAll('.ver-trailer-sinopsis span');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const index = parseInt(link.getAttribute('data-candidatura-index'));
+                const candidatura = candidaturasGanadoras[index];
+                abrirModalSinopsisTrailer(candidatura);
+            });
+        });
+    }, 200);
+}
+
+function abrirModalSinopsisTrailer(candidatura) {
+    const sinopsisText = document.getElementById('sinopsisText');
+    const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
+
+    sinopsisText.textContent = candidatura.sinopsis || 'Sin sinopsis disponible';
+
+    if (candidatura.rutaTrailer) {
+        trailerVideoPlayer.setSource(candidatura.rutaTrailer);
+        trailerVideoPlayer.setVisible(true);
+    } else {
+        trailerVideoPlayer.setVisible(false);
+    }
+
+    modalSinopsisTrailer.open();
 }
 
 const btnCalendario = document.getElementById('btnCalendario');
