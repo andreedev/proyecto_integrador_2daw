@@ -4,26 +4,26 @@
 // * descomentar para probar localmente
 // * comentar esto para probar en una BD compartida
 // */
-//$servidor = "localhost";
-//$usuario = "root";
-//$password = "";
-//$db = "festival_cortos";
-//$port = 3306;
+$servidor = "localhost";
+$usuario = "root";
+$password = "";
+$db = "festival_cortos_pruebas";
+$port = 3306;
 
 /**
  * comentar esto para probar localmente
  * descomentar esto para probar en una BD compartida
  */
- $servidor = "proyecto-integrador-db-aereodb.c.aivencloud.com";
- $usuario = "avnadmin";
- $password = "AVNS_Lh2lXbxWC0nSTMynXuH";
- $db = "festival_cortos";
- $port = 20236;
+//  $servidor = "proyecto-integrador-db-aereodb.c.aivencloud.com";
+//  $usuario = "avnadmin";
+//  $password = "AVNS_Lh2lXbxWC0nSTMynXuH";
+//  $db = "festival_cortos_pruebas";
+//  $port = 20236;
 
 function abrirConexion() {
-    global $conexion, $servidor, $usuario, $password, $port;
+    global $conexion, $servidor, $usuario, $password,$db, $port;
 
-    $conexion = new mysqli($servidor, $usuario, $password, null, $port);
+    $conexion = new mysqli($servidor, $usuario, $password, $db, $port);
 
     if ($conexion->connect_error) {
         header("Content-Type: application/json; charset=UTF-8");
