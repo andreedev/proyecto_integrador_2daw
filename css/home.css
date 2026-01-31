@@ -1,35 +1,54 @@
-/* CONTENEDOR GENERAL */
-#home-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.5rem;
-    margin-bottom: 5rem;
-}
-
-/* ---------------- HERO ---------------- */
 .hero {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 36px;
+    background-color: var(--neutral-01);
+    color: var(--neutral-09);
+    width:100%;
+    padding:80px 96px;
 }
 
-.hero-text h1 {
-    font-size: 1.8rem;
-    line-height: 1.2;
+.hero h1 {
+    font-size: 49px;
+    line-height: 120%;
+    color: var(--neutral-09);
 }
 
-.hero-video {
-    width: 100%;
+.video-presentacion-concurso{
+    width:100%;
+    height:auto;
+    position:relative;
+
 }
 
-.video-placeholder {
-    background: #e0e0e0;
-    height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
+.btn-play-video{
+    position: absolute;
+    background-color: var(--primary-03);
+    width: 48px;
+    height: 48px;
     cursor: pointer;
+    z-index:2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.play-video{
+    mask-image: url("../img/icon/icon-play.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-09);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translate(-50%, -50%);
+}
+
+.presentacion-concurso{
+    width:100%;
+    height:auto;
 }
 
 .primary-btn {
@@ -51,175 +70,586 @@
     border: 1px solid var(--primary-03);
 }
 
-
-/* ---------------- CARRUSEL ---------------- */
-.winners h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
+.space-ediciones-anteriores{
+    justify-content: center;
+    align-items: center;
+    padding: 48px 0;
 }
 
-.carousel-container {
+.space-ediciones-anteriores-text{
+    font-size: 39px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+    margin: 0px 96px;
+}
+
+.ediciones-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    justify-items: center;
+    margin: 0px 96px 0px 96px;
+}
+
+.edicion-anterior{
+    width: 612px;
+    height: auto;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid var(--neutral-06);
+}
+.img-container{
+    width: 612px;
+    height: 246px;
+}
+
+.img-edicion-anterior{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.texto-edicion-anterior{
+    width: 100%;
+    padding: 0px 16px;
+    align-items: center;
+    justify-content: center;
+}
+
+.num-edicion{
+    font-size: 20px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+}
+
+.text-edicion{
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.participantes-ganadores{
+    font-size: 14px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+}
+
+.flecha-container{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-03);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-}
-
-.carousel {
-    width: 100%;
-    overflow: hidden;
-}
-
-.slide {
-    display: none;
-    text-align: center;
-}
-
-.thumb {
-    height: 240px;
-    width: 90%; 
-    background: #cfcfcf;
-    margin: 0 auto 1rem;
-}
-
-
-.carousel-btn {
-    background: #000;
-    color: #fff;
-    border: none;
-    padding: 0.4rem 0.8rem;
-    font-size: 1.4rem;
+    justify-content: center;
     cursor: pointer;
 }
 
-/* ---------------- GALA ---------------- */
-.gala-content {
+.flecha-derecha{
+    mask-image: url("../img/icon/icon-rightarrow.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-09);
+    width: 24px;
+    height: 24px;
+}
+
+/* Carousel eventos*/
+.carousel-ediciones-anteriores {
+    width: 100%;
+    max-width:612px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.carousel-track-edicion-anterior {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    gap:24px;
+}
+
+.slide-edicion-anterior {
+    min-width: 612px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+    flex-direction: column;
+    gap:16px;
+}
+
+.indicators-edicion-anterior-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    gap: 8px;
+}
+
+.indicator-edicion-anterior {
+    width: 12px;
+    height: 12px;
+    background: var(--neutral-05);
+    cursor: pointer;
+    transition: background 0.3s;
+    display: inline-block;
+}
+
+/* Estado activo y hover */
+.indicator-edicion-anterior:hover,
+.indicator-edicion-anterior.active {
+    background: var(--primary-03);
+}
+
+.space-calendario-eventos{
+    width: 100%;
+    background-color: var(--neutral-08);
+    padding: 48px 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+.space-calendario-eventos-text{
+    font-size: 39px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+    margin: 0px 96px;
+}
+
+.calendario-evento{
+    margin: 0px 96px 0px 96px;
+}
+
+.calendario{
+    border:solid 1px var(--neutral-01);
+    width:50%;
+    height:250px;
+}
+
+.eventos{
+    overflow-y: scroll;
+    scrollbar-width: none;
+    height: 368px;
+    padding:4px;
+}
+
+.evento{
+    width: 100%;
+    box-shadow: var(--shadow-01);
+    height: auto;
+    background-color: var(--neutral-09);
+}
+
+.img-evento-container{
+    width:251px;
+    height:168px;
+}
+
+.img-evento{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.evento-texto{
+    position: relative;
+}
+
+.evento-title{
+    font-size: 20px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+}
+
+.icono-reloj{
+    mask-image: url("../img/icon/icon-time.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-03);
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+.hora{
+    font-size: 16px;
+    line-height: 120%;
+    font-weight: 500;
+    color: var(--neutral-03);
+}
+
+.descipcion-evento{
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 400;
+}
+
+.space-noticias{
+    padding-top:48px;
+    padding-bottom:48px;
+    justify-content: center;
+    align-items: center;
+}
+
+.space-noticias-text{
+    font-size: 39px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+}
+
+.noticia{
+    box-shadow: var(--shadow-01);
+    width: 400px;
+    height: auto;
+    cursor: pointer;
+}
+
+.img-noticia-contenedor{
+    width:400px;
+    height:276px;
+}
+
+.img-noticia{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.noticia-texto{
+    padding:16px;
+}
+
+.fecha-noticia{
+    font-size: 14px;
+    line-height: 120%;
+    color: var(--neutral-03);
+    font-weight: 400;
+    justify-content: end;
+    align-items: end;
+    display: flex;
+}
+
+.title-noticia{
+    font-size: 20px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+}
+
+.noticia-content{
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 400;
+}
+
+/* Carousel noticias*/
+.noticias {
+    position: relative;
+    max-width: 900px; /* Un poco más para dar aire a las flechas */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.noticias-carousel {
+    width: 100%;
+    max-width: 824px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.noticias-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    gap: 24px;
+    height: 480px;
+}
+
+.noticia-slide {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer; /* Indica que se puede hacer clic */
+    user-select: none;
+    transition: opacity 0.3s;
 }
 
-/* MINI CALENDARIO */
-.mini-calendar {
-    width: 220px;
-    background: #f2f2f2;
-    padding: 1rem;
-    font-size: 0.9rem;
-}
 
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+.noticia-slide:active {
+    transform: scale(0.98); /* Efecto de pulsación */
 }
-
-.calendar-weekdays,
-.calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-}
-
-.calendar-weekdays span {
-    font-weight: 600;
-    font-size: 0.75rem;
-    margin-bottom: 0.3rem;
-}
-
-.calendar-days span {
-    padding: 0.3rem 0;
-}
-
-.event-day {
-    background: #ff2d2d;
-    color: #fff;
-}
-
-/* ---------------- NOTICIAS ---------------- */
-.news-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
-
-.news-thumb {
-    height: 140px;
-    background: #d0d0d0;
-    margin-bottom: 1rem;
-}
-
-/* ---------------- PREMIOS ---------------- */
-.awards-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
-
-.award-icon {
-    height: 80px;
-    width: 80px;
-    background: #bdbdbd;
+/* Botones Flechas */
+.noticia-btn {
+    position: absolute;
+    transform: translateY(-50%);
+    color: var(--primary-03);
+    border: none;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    margin: 0 auto 1rem;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 20px;
+    transition: all 0.3s ease;
 }
 
-/*Diseño responsive*/
-
-/* TABLET */
-@media (min-width: 768px) {
-
-    /* HERO */
-    .hero {
-        flex-direction: row;
+@media (min-width: 992px) {
+    .noticia-btn{
+        display: flex;
         align-items: center;
-    }
-
-    .hero-text h1 {
-        font-size: 2.2rem;
-    }
-
-    .video-placeholder {
-        height: 280px;
-    }
-
-    /* NOTICIAS */
-    .news-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    /* PREMIOS */
-    .awards-grid {
-        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
     }
 }
 
-/* DESKTOP */
-@media (min-width: 1024px) {
+.noticia-btn.prev {
+    left: -132px;
+    mask-image: url("../img/icon/icon-leftchevron.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--primary-03);
+    width: 45px;
+    height: 45px;
 
-    #home-content {
-        padding: 2.5rem;
-    }
-
-    #home-content>section {
-        margin-bottom: 7rem;
-    }
-
-    .hero-text h1 {
-        font-size: 2.6rem;
-    }
-
-    .carousel-btn {
-        font-size: 1.6rem;
-        padding: 0.6rem 1rem;
-    }
+}
+.noticia-btn.next {
+    right: -132px;
+    mask-image: url("../img/icon/icon-rightchevron.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--primary-03);
+    width: 45px;
+    height: 45px;
 }
 
-/*Diseño responsive del calendario*/
+/* Indicadores */
+.noticias-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
 
-@media (min-width: 768px) {
-    .gala-content {
-        flex-direction: row;
+.galeria-foto-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--neutral-05);
+    border-radius: 0;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.galeria-foto-dot.active {
+    background: var(--primary-03);
+}
+
+.galeria-foto-dot:hover {
+    background: var(--primary-03);
+}
+
+
+/* Contenedor principal de la sección */
+.premios {
+    position: relative;
+    max-width: 900px; /* Un poco más para dar aire a las flechas */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.premios-carousel {
+    width: 100%;
+    max-width: 824px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.premios-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    gap: 24px;
+}
+
+.premio-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer; /* Indica que se puede hacer clic */
+    user-select: none;
+    transition: opacity 0.3s;
+}
+
+.premio-slide:active {
+    transform: scale(0.98); /* Efecto de pulsación */
+}
+
+/* Botones Flechas */
+.premio-btn {
+    position: absolute;
+    transform: translateY(-50%);
+    color: var(--primary-03);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+@media (min-width: 992px) {
+    .premio-btn {
+        display: flex;
         align-items: center;
-        gap: 3rem;
+        justify-content: center;
     }
+}
+
+.premio-btn.prev {
+    left: -132px;
+    mask-image: url("../img/icon/icon-leftchevron.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--primary-03);
+    width: 45px;
+    height: 45px;
+}
+
+.premio-btn.next {
+    right: -132px;
+    mask-image: url("../img/icon/icon-rightchevron.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--primary-03);
+    width: 45px;
+    height: 45px;
+}
+
+/* Indicadores */
+.premios-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.galeria-foto-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--neutral-05);
+    border-radius: 0;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.galeria-foto-dot.active {
+    background: var(--primary-03);
+}
+
+.galeria-foto-dot:hover {
+    background: var(--primary-03);
+}
+
+.space-premios{
+    padding-top:48px;
+    padding-bottom:48px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: var(--neutral-08);
+}
+
+.space-premios-text{
+    font-size: 39px;
+    line-height: 120%;
+    color: var(--neutral-01);
+    font-weight: 600;
+}
+
+.premio{
+    border: solid 1px var(--neutral-06);
+    width: 400px;
+    height: auto;
+    cursor: pointer;
+    background-color: var(--neutral-09);
+    padding:24px;
+    justify-content: center;
+    align-items: center;
+    gap:24px;
+}
+
+.categoria{
+    font-size: 20px;
+    line-height: 120%;
+    font-weight: 600;
+}
+
+.icon-premio{
+    mask-image: url("../img/Medal.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+    background-color: var(--neutral-01);
+}
+.icon-premio:hover {
+    background-color: var(--neutral-09);
+
+}
+.puesto{
+    font-size: 25px;
+    line-height: 120%;
+    font-weight: 600;
+}
+
+.cantidad{
+    align-items: center;
+}
+
+.premio-cantidad{
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.icon-billete {
+    mask-image: url("../img/icon/icon-money.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
+
+.icon-billete:hover {
+    background-color: var(--neutral-09);
+}
+
+.premio-patrocinador{
+    font-size: 16px;
+    line-height: 120%;
+    font-weight: 400;
+}
+
+.premio:hover {
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
 }
