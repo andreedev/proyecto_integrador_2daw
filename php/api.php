@@ -1862,6 +1862,9 @@ function obtenerEdicionActual() {
     }
 }
 
+/**
+ * Contar participantes de la edición actual
+ */
 function obtenerGaleriaEdicionActual(){
     global $conexion;
 
@@ -1914,18 +1917,25 @@ function obtenerTipoArchivoPorExtension($rutaArchivo) {
 function obtenerCandidaturasGanadoras() {
     global $conexion;
 
-    $query = "SELECT pc.id_premio as idPremioCandidatura, pc.id_candidatura as idCandidatura, pc.nombre_premio as nombrePremio,
-                     c.sinopsis as sinopsisCandidatura, p.nombre as nombreParticipante, p.dni as dniParticipante,
-                     a1.ruta as rutaVideo, a2.ruta as rutaFicha, a3.ruta as rutaCartel, a4.ruta as rutaTrailer
-              FROM premio_candidatura pc
-              LEFT JOIN 
-              INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
-              INNER JOIN participante p ON c.id_participante = p.id_participante
-              LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
-              LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
-              LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
-              LEFT JOIN archivo a4 ON c.id_archivo_trailer = a4.id_archivo
-              ORDER BY pc.id_premio DESC";
+    $query = "SELECT 
+        c.id_candidatura,
+        c.titulo,
+        c.sinopsis,
+        p.nombre as nombreParticipante,
+        pr.nombre as nombrePremio,
+        cat.nombre as nombreCategoria,
+        av.ruta as rutaVideo,
+        at.ruta as rutaTrailer,
+        ac.ruta as rutaCartel
+    FROM premio_candidatura pc
+    INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
+    INNER JOIN participante p ON c.id_participante = p.id_participante
+    INNER JOIN premio pr ON pc.id_premio = pr.id_premio
+    INNER JOIN categoria cat ON pr.id_categoria = cat.id_categoria
+    LEFT JOIN archivo av ON c.id_archivo_video = av.id_archivo
+    LEFT JOIN archivo at ON c.id_archivo_trailer = at.id_archivo
+    LEFT JOIN archivo ac ON c.id_archivo_cartel = ac.id_archivo
+    ORDER BY cat.nombre, pr.nombre";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();
@@ -1937,19 +1947,16 @@ function obtenerCandidaturasGanadoras() {
         if ($row['rutaVideo']) {
             $row['rutaVideo'] = $baseUrl . $row['rutaVideo'];
         }
-        if ($row['rutaFicha']) {
-            $row['rutaFicha'] = $baseUrl . $row['rutaFicha'];
+        if ($row['rutaTrailer']) {
+            $row['rutaTrailer'] = $baseUrl . $row['rutaTrailer'];
         }
         if ($row['rutaCartel']) {
             $row['rutaCartel'] = $baseUrl . $row['rutaCartel'];
         }
-        if ($row['rutaTrailer']) {
-            $row['rutaTrailer'] = $baseUrl . $row['rutaTrailer'];
-        }
         $candidaturasGanadoras[] = $row;
     }
 
-    echo json_encode(["status" => "success", "data" => $candidaturasGanadoras]);
+    return $candidaturasGanadoras;
 }
 
 /**
