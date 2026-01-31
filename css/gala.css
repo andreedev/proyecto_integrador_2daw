@@ -114,16 +114,6 @@
     z-index:2;
 }
 
-.video-container{
-    width: 100%;
-    max-width: 600px;
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    z-index:2;
-}
-
 .video-play-container{
     width: 48px;
     height: 48px;
@@ -180,7 +170,7 @@
     left:489px;
     bottom: 59px;
     transform:rotateZ(90deg) rotateX(180deg);
-    z-index:1;
+    z-index:0;
 }
 
 .agenda-container{

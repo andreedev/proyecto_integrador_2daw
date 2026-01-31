@@ -252,7 +252,7 @@ function crearBaseDatosSiNoExiste()
                     ('galaPreEventoUbicacion', 'Auditorio Principal', 1),
                     ('galaPreEventoDescripcion', '¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni', 1),
                     ('galaPreEventoStreamingActivo', 'true', 1),
-                    ('galaPreEventoStreamingUrl', 'https://youtube.com/watch?v=', 1),
+                    ('galaPreEventoStreamingUrl', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 1),
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1),
                     ('basesLegales', '<div style=\"font-family\": \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 8px;\">

@@ -54,13 +54,9 @@
 
                <div class="d-flex flex-row">
                    <div class="col-12 col-md-8">
-                       <div class="d-flex flex-column w-100 position-relative">
-                           <div class="play-video" id="playVideoCorto">
-                               <span class="icon-play-video"></span>
-                           </div>
-                           <video id="videoCorto" class="w-100" controls preload="metadata" disablePictureInPicture controlsList="nodownload">
-                           </video>
-                       </div>
+                       <video-player-component
+                               id="videoCandidatura"
+                       ></video-player-component>
                    </div>
                </div>
 
@@ -156,6 +152,7 @@
     <script src="../js/components/date-component.js"></script>
     <script src="../js/components/file-component.js"></script>
     <script src="../js/components/notification-component.js"></script>
+    <script src="../js/components/video-player-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/candidaturas.js"></script>

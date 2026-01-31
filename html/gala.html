@@ -39,15 +39,11 @@
                 <div class="pre-evento-video align-items-center justify-content-center position-relative">
                     <span class="bloque3"></span>
                     <span class="bloque4"></span>
-                    <span class="pre-evento-video-text">Transmisión en directo</span>
-                    <div class="video-container d-flex justify-content-center">
-                        <div class="video-play-container">
-                            <span class="video-play"></span>
-                        </div>
-                        <video class="video-gala" controls>
-                            <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
-                        </video>
-                    </div>
+                    <span class="pre-evento-video-text" id="textoTransmision">Transmisión en directo</span>
+                    <video-player-component
+                            id="streamingEventoVideoPlayer"
+                            class="max-w-600px "
+                    ></video-player-component>
                 </div>
             </div>
         </div>
@@ -166,12 +162,9 @@
                     <p class="sinopsis-text" id="sinopsisText">Una joven lucha por encontrar su identidad en un mundo que no siempre la acepta. A través de su viaje, descubre el poder de la autoaceptación y la importancia de ser fiel a uno mismo.</p>
                 </div>
                 <div class="trailer-container">
-                    <div class="video-play-modal">
-                        <span class="video-play-trailer"></span>
-                    </div>
-                    <video class="video-trailer" controls>
-                        <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
-                    </video>
+                    <video-player-component
+                        id="trailerVideoPlayer"
+                    ></video-player-component>
                 </div>
             </div>
         </div>
@@ -180,6 +173,7 @@
     <home-footer></home-footer>
 
     <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/video-player-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/gala.js"></script>

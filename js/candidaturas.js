@@ -5,28 +5,15 @@ const misCandidaturasContainer = document.getElementById('misCandidaturasContain
 const statusContainer = document.getElementById('statusContainer');
 const posterInput = document.getElementById('posterInput');
 const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
-const playVideoCorto = document.getElementById('playVideoCorto');
 const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
 const btnGuardarCambios = document.getElementById('btnGuardarCambios');
 const videoTrailerInput = document.getElementById('videoTrailerInput');
 const mensajeSubsanacionInput = document.getElementById('mensajeSubsanacionInput');
+const videoCandidatura = document.getElementById('videoCandidatura');
 
 let pageSize = 3;
 let candidaturaSeleccionada = null;
 
-document.addEventListener('click', (e) => {
-    const playBtn = e.target.closest('#playVideoCorto');
-    if (playBtn) {
-        playBtn.classList.add('d-none');
-        const video = document.getElementById('videoCorto');
-        if (video) {
-            video.play().catch(error => {
-                console.error("Error al reproducir:", error);
-                playBtn.classList.remove('d-none');
-            });
-        }
-    }
-});
 
 sinopsisInput.addEventListener('solid-input-word-count', (e) => {
     contadorPalabras.textContent = e.detail.count;
@@ -192,9 +179,6 @@ function renderizarDetalleCandidatura(candidatura){
     videoTrailerInput.classList.add('d-none');
     mensajeSubsanacionInput.classList.add('d-none');
     btnGuardarCambios.classList.add('d-none');
-    const playBtn = document.getElementById('playVideoCorto');
-    if (playBtn) playBtn.classList.remove('d-none');
-    playVideoCorto.classList.remove('d-none');
 
     renderStatusCard(candidatura.estado, candidatura);
 
@@ -241,17 +225,7 @@ function renderizarDetalleCandidatura(candidatura){
     contadorPalabras.textContent = countWords(candidatura.sinopsis);
     tituloInput.setValue(candidatura.titulo);
 
-    // Cargar video
-    const video = document.getElementById('videoCorto');
-    video.pause();
-    if (video.src !== candidatura.rutaVideo) {
-        video.src = candidatura.rutaVideo;
-    }
-    video.load();
-    setTimeout(() => {
-        video.src = candidatura.rutaVideo;
-        video.load();
-    }, 50);
+    videoCandidatura.setSource(candidatura.rutaVideo);
 }
 
 paginacionCandidaturas.addEventListener('page-change', async (e) => {

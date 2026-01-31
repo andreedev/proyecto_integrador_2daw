@@ -1,5 +1,8 @@
 //Carousel info corto
 
+const textoTransmision = document.getElementById('textoTransmision');
+const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
+const streamingEventoVideoPlayer = document.getElementById('streamingEventoVideoPlayer');
 const carousel = document.querySelector('.carousel-info-corto');
 const track = document.querySelector('.carousel-track-info-corto');
 const slides = document.querySelectorAll('.slide-info-corto');
@@ -179,6 +182,15 @@ function renderizarDatosGala(data) {
         preEventoDescripcion.textContent = data.descripcion;
         preEventoFecha.textContent = formatDateToLongSpanish(data.fecha);
         preEventoUbicacion.textContent = data.ubicacion;
+
+        if (data.streamingActivo){
+            streamingEventoVideoPlayer.setVisible(true);
+            textoTransmision.classList.remove('d-none');
+            streamingEventoVideoPlayer.setSource(data.streamingUrl)
+        } else {
+            streamingEventoVideoPlayer.setVisible(false);
+            textoTransmision.classList.add('d-none');
+        }
 
         renderizarEventos(data.eventosDiaGala);
     }
