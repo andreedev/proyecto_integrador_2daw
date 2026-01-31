@@ -464,6 +464,14 @@
     gap: 48px;
 }
 
+.gap-56px{
+    gap: 56px;
+}
+
+.gap-64px{
+    gap: 64px;
+}
+
 .bg-neutral-01{
     background-color: var(--neutral-01);
 }
@@ -1929,6 +1937,22 @@ dialog::backdrop {
 
 .mb-48px{
     margin-bottom: 48px;
+}
+
+.mb-56px{
+    margin-bottom: 56px;
+}
+
+.mb-64px{
+    margin-bottom: 64px;
+}
+
+.mb-72px{
+    margin-bottom: 72px;
+}
+
+.mb-80px{
+    margin-bottom: 80px;
 }
 
 .ms-0{

@@ -1773,25 +1773,7 @@ function obtenerDatosGala() {
         $resPreEvento = $stmtPreEvento->get_result();
         $datos['streamingUrl'] = $resPreEvento->fetch_assoc()['valor'];
 
-        $queryEventosDiaGala = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
-                e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
-                e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento, a.id_archivo as idArchivoImagenEvento
-              FROM evento e
-              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo 
-              WHERE e.fecha = ?
-              ORDER BY e.hora_inicio ASC";
-        $stmtEventos = $conexion->prepare($queryEventosDiaGala);
-        $stmtEventos->bind_param("s", $datos['fecha']);
-        $stmtEventos->execute();
-        $resultEventos = $stmtEventos->get_result();
-
-        $eventosDiaGala = [];
-        while ($row = $resultEventos->fetch_assoc()) {
-            if ($row['rutaImagenEvento']) {
-                $row['rutaImagenEvento'] = $baseUrl . $row['rutaImagenEvento'];
-            }
-            $eventosDiaGala[] = $row;
-        }
+        $datos['eventosDiaGala'] = obtenerEventosDiaGala($datos['fecha']);
     } else if ($modo == 'post-evento'){
 
         $edicionActual = obtenerEdicionActual();
@@ -1809,6 +1791,53 @@ function obtenerDatosGala() {
         "status" => "success",
         "data" => $datos
     ]);
+}
+
+/**
+ * Obtener eventos del día de la gala
+ */
+function obtenerEventosDiaGala($fechaGala) {
+    global $conexion;
+
+    $fechaGala = formatToSqlDate($fechaGala);
+
+    $queryEventosDiaGala = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
+            e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
+            e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento, a.id_archivo as idArchivoImagenEvento
+          FROM evento e
+          LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo 
+          WHERE e.fecha = ?
+          ORDER BY e.hora_inicio ASC";
+    $stmtEventos = $conexion->prepare($queryEventosDiaGala);
+    $stmtEventos->bind_param("s", $fechaGala);
+    $stmtEventos->execute();
+    $resultEventos = $stmtEventos->get_result();
+
+    $baseUrl = obtenerBaseUrl();
+    $eventosDiaGala = [];
+    while ($row = $resultEventos->fetch_assoc()) {
+        if ($row['rutaImagenEvento']) {
+            $row['rutaImagenEvento'] = $baseUrl . $row['rutaImagenEvento'];
+        }
+        $eventosDiaGala[] = $row;
+    }
+
+    return $eventosDiaGala;
+}
+
+/**
+ * Formatear fecha de d/m/Y a Y-m-d
+ */
+function formatToSqlDate($fechaString) {
+    // Creamos el objeto desde el formato específico
+    $date = DateTime::createFromFormat('d/m/Y', $fechaString);
+
+    // Verificamos si la fecha es válida
+    if ($date && $date->format('d/m/Y') === $fechaString) {
+        return $date->format('Y-m-d');
+    }
+
+    return false;
 }
 
 /**
