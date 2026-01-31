@@ -1,26 +1,27 @@
-<?php
+    <?php
 
-require_once __DIR__ . '/../src/php/api.php';
+    require_once __DIR__ . '/../src/php/api.php';
 
 
-class LoginTest extends PHPUnit\Framework\TestCase{
+    class LoginTest extends PHPUnit\Framework\TestCase{
+
     protected function setUp(): void
     {
-        if ($this->assertTrue(session_status()) !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
+        global $conexion;
+        abrirConexion();
+        crearBaseDatosSiNoExiste();
 
-        $_SESSION = [];
+        // Desactivar el autocommit e iniciar la transacción
+        $conexion->begin_transaction();
     }
 
 
     protected function tearDown(): void
     {
-        $_SESSION = [];
-
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            session_unset();
-            session_destroy();
+        global $conexion;
+        // Revertir todos los cambios hechos durante el test
+        if ($conexion) {
+            $conexion->rollback();
         }
     }
 
@@ -53,16 +54,32 @@ class LoginTest extends PHPUnit\Framework\TestCase{
         );
     }
 
-    public function testSesionIniciada()
+    public function testInicioSesion()
     {
-        // Limpiar sesión
-        $_SESSION = [];
 
-        // Simular que login ha ocurrido
-        $_SESSION['iniciada'] = true;
+        $_POST['numExpediente'] = 'PAR-001';
+        $_POST['password'] = '123';
+
+        login();
 
         // Comprobamos que la sesión está marcada como iniciada
-        $this->assertTrue(isset($_SESSION['iniciada']) && $_SESSION['iniciada'] === true);
+        $this->assertEquals($_SESSION['iniciada'], 1);
+    }
+
+    public function testAgregarPatrocinador(){
+        $this->testInicioSesion();
+
+        $_POST['nombre'] = 'ADOBE';
+        $_POST['idArchivoLogo'] = 3;
+
+        agregarPatrocinador();
+
+        // Capturar el buffer
+        ob_start();
+        listarPatrocinadores();
+        $json = ob_get_clean();
+
+        $this->assertStringContainsString('ADOBE', $json);
     }
 
 

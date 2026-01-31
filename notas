@@ -5,3 +5,10 @@ http://localhost/DWES/proyecto_integrador_2daw/
 rutaArchivo ejemplo:
 uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg
 
+
+
+# instalar PHPUnit si no está instalado
+composer require --dev phpunit/phpunit
+
+# ejecutar prueba
+./vendor/bin/phpunit tests/LoginTest.php

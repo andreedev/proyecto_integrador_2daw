@@ -1,9 +1,11 @@
 <?php
-require_once "connection.php";
+require_once __DIR__ . "/connection.php";
 
 function crearBaseDatosSiNoExiste()
 {
-    global $conexion, $db;
+    global $conexion;
+
+    $db = $_ENV['DB_NAME'];
 
     $sql = "SHOW DATABASES LIKE '$db'";
     $resultado = $conexion->query($sql);
@@ -243,7 +245,7 @@ function crearBaseDatosSiNoExiste()
                     ('galaPreEventoStreamingActivo', 'true', 1),
                     ('galaPreEventoStreamingUrl', 'https://streaming.ejemplo.com/gala2026  ', 1),
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
-                    ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1),
+                    ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/src/', 1),
                     ('basesLegales', '<div style=\"font-family\": \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 8px;\">
 
   <div style=\"text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #e60012; margin-left: 32px; margin-right: 32px;\">

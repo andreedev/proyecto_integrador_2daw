@@ -1,43 +1,33 @@
 <?php
 
-///**
-// * descomentar para probar localmente
-// * comentar esto para probar en una BD compartida
-// */
-$servidor = "localhost";
-$usuario = "root";
-$password = "";
-$db = "festival_cortos";
-$port = 3306;
-
-/**
- * comentar esto para probar localmente
- * descomentar esto para probar en una BD compartida
- */
-//  $servidor = "proyecto-integrador-db-aereodb.c.aivencloud.com";
-//  $usuario = "avnadmin";
-//  $password = "AVNS_Lh2lXbxWC0nSTMynXuH";
-//  $db = "festival_cortos";
-//  $port = 20236;
-
 function abrirConexion() {
-    global $conexion, $servidor, $usuario, $password, $port;
+    global $conexion;
+
+    $servidor = $_ENV['DB_SERVER'] ;
+    $usuario  = $_ENV['DB_USER'];
+    $password = $_ENV['DB_PASS'];
+    $port     = $_ENV['DB_PORT'];
 
     $conexion = new mysqli($servidor, $usuario, $password, null, $port);
 
     if ($conexion->connect_error) {
-        header("Content-Type: application/json; charset=UTF-8");
+        if (php_sapi_name() !== 'cli') {
+            header("Content-Type: application/json; charset=UTF-8");
+        }
         echo json_encode(["status" => "error", "message" => "Error de servidor: " . $conexion->connect_error]);
         exit;
     }
 }
 
 function seleccionarBaseDatos() {
-    global $conexion, $db;
+    global $conexion;
+    $db = $_ENV['DB_NAME'] ?? "festival_cortos";
     return $conexion->select_db($db);
 }
 
 function cerrarConexion() {
     global $conexion;
-    if ($conexion) { $conexion->close(); }
+    if (isset($conexion) && $conexion instanceof mysqli) {
+        $conexion->close();
+    }
 }

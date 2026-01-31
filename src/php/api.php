@@ -1,14 +1,39 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
+// cargar variables de entorno provenientes de .env
+function loadEnv($path) {
+    if (!file_exists($path)) return;
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        list($name, $value) = explode('=', $line, 2);
+        $_ENV[trim($name)] = trim($value);
+        putenv(trim($name) . "=" . trim($value));
+    }
+}
+
+loadEnv(__DIR__ . '/../../.env');
+
+if (php_sapi_name() !== 'cli') {
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json");
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+}
 
 require_once __DIR__ . "/BBDD/BD.php";
 require_once __DIR__ . "/BBDD/connection.php";
 
-abrirConexion();
-crearBaseDatosSiNoExiste();
-session_start();
+if (php_sapi_name() !== 'cli' || isset($_POST['action'])) {
+
+    // Solo abrimos conexión si no existe una previa activa
+    if (!isset($conexion) || !($conexion instanceof mysqli) || !$conexion->ping()) {
+        abrirConexion();
+        crearBaseDatosSiNoExiste();
+    }
+}
 
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
