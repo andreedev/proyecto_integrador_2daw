@@ -428,6 +428,10 @@
     gap: 8px;
 }
 
+.gap-10px{
+    gap: 10px;
+}
+
 .gap-12px{
     gap: 12px;
 }
@@ -462,6 +466,10 @@
 
 .gap-48px{
     gap: 48px;
+}
+
+.gap-56px{
+    gap: 56px;
 }
 
 .bg-neutral-01{
