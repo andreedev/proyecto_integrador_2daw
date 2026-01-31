@@ -472,6 +472,10 @@
     gap: 56px;
 }
 
+.gap-64px{
+    gap: 64px;
+}
+
 .bg-neutral-01{
     background-color: var(--neutral-01);
 }
@@ -612,6 +616,14 @@
     width: 100%;
 }
 
+.w-8px{
+    width: 8px;
+}
+
+.w-12px{
+    width: 12px;
+}
+
 .w-16px{
     width: 16px;
 }
@@ -688,11 +700,15 @@
     max-width: 260px;
 }
 
-.max-width-300px{
+.max-w-300px{
     max-width: 300px;
 }
 
-.max-width-1100px{
+.max-w-600px {
+    max-width: 600px;
+}
+
+.max-w-1100px{
     max-width: 1100px;
 }
 
@@ -706,6 +722,14 @@
 
 .h-100{
     height: 100%;
+}
+
+.h-8px{
+    height: 8px;
+}
+
+.h-12px{
+    height: 12px;
 }
 
 .h-16px{
@@ -750,6 +774,10 @@
 
 .h-100px{
     height: 100px;
+}
+
+.h-300px{
+    height: 300px;
 }
 
 .text-primary-01{
@@ -868,8 +896,56 @@
     font-size: 20px;
 }
 
+@media (min-width: 480px) {
+    .fs-xs-20px{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-20px{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-20px{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-20px{
+        font-size: 20px;
+    }
+}
+
 .fs-24px{
     font-size: 24px;
+}
+
+@media (min-width: 480px) {
+    .fs-xs-24px{
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-24px{
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-24px{
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-24px{
+        font-size: 24px;
+    }
 }
 
 .fs-28px{
@@ -912,8 +988,56 @@
     font-size: 40px;
 }
 
+@media (min-width: 480px) {
+    .fs-xs-40px{
+        font-size: 40px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-40px{
+        font-size: 40px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-40px{
+        font-size: 40px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-40px{
+        font-size: 40px;
+    }
+}
+
 .fs-48px{
     font-size: 48px;
+}
+
+@media (min-width: 480px) {
+    .fs-xs-48px{
+        font-size: 48px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-48px{
+        font-size: 48px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-48px{
+        font-size: 48px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-48px{
+        font-size: 48px;
+    }
 }
 
 .fs-56px{
@@ -1425,8 +1549,8 @@
     transition: all 300ms ease;
 }
 
-.icon-right-chevron{
-    mask-image: url('../img/icon/icon-rightchevron.svg');
+.icon-left-chevron{
+    mask-image: url('../img/icon/icon-leftchevron.svg');
     mask-repeat: no-repeat;
     mask-size: contain;
     mask-position: center;
@@ -1554,6 +1678,41 @@ dialog::backdrop {
     padding-right: 32px;
 }
 
+@media (min-width: 480px) {
+    .px-xs-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 576px) {
+    .px-sm-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 768px) {
+    .px-md-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 992px) {
+    .px-lg-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .px-xl-32px{
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
 .px-40px{
     padding-left: 40px;
     padding-right: 40px;
@@ -1572,6 +1731,34 @@ dialog::backdrop {
 .px-64px{
     padding-left: 64px;
     padding-right: 64px;
+}
+
+@media (min-width: 480px) {
+    .px-xs-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
+@media (min-width: 768px) {
+    .px-md-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
+@media (min-width: 992px) {
+    .px-lg-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .px-xl-64px{
+        padding-left: 64px;
+        padding-right: 64px;
+    }
 }
 
 .px-72px{
@@ -1939,6 +2126,22 @@ dialog::backdrop {
     margin-bottom: 48px;
 }
 
+.mb-56px{
+    margin-bottom: 56px;
+}
+
+.mb-64px{
+    margin-bottom: 64px;
+}
+
+.mb-72px{
+    margin-bottom: 72px;
+}
+
+.mb-80px{
+    margin-bottom: 80px;
+}
+
 .ms-0{
     margin-left: 0;
 }
@@ -2017,6 +2220,10 @@ dialog::backdrop {
 
 .me-48px{
     margin-right: 48px;
+}
+
+.top-50-percent{
+    top: 50%;
 }
 
 .top-0{
@@ -2121,6 +2328,10 @@ dialog::backdrop {
 
 .bottom-24px{
     bottom: 24px;
+}
+
+.left-50-percent{
+    left: 50%;
 }
 
 .left-0{
@@ -2321,6 +2532,22 @@ dialog::backdrop {
     z-index: 1;
 }
 
+.z-index-2{
+    z-index: 2;
+}
+
+.z-index-3{
+    z-index: 3;
+}
+
+.z-index-4{
+    z-index: 4;
+}
+
+.z-index-5{
+    z-index: 5;
+}
+
 .opacity-0{
     opacity: 0;
 }
@@ -2339,4 +2566,12 @@ dialog::backdrop {
 
 .object-fit-contain{
     object-fit: contain;
+}
+
+.transform-center{
+    transform: translate(-50%, -50%);
+}
+
+.touch-action-pan-y{
+    touch-action: pan-y;
 }

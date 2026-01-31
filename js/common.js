@@ -183,27 +183,6 @@ function formatBytes(bytes, decimals = 2) {
 }
 
 /**
- * Convierte ISO String YYYY-MM-DD a objeto Date
- */
-function convertISOStringToDate(string) {
-    const parts = string.split('-');
-    const year = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const day = parseInt(parts[2], 10);
-    return new Date(year, month, day);
-}
-
-/**
- * Convertir objeto Date a ISO String YYYY-MM-DD
- */
-function convertDateToISOString(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-
-/**
  * Formatea una fecha de tipo Date a formato legible en español
  */
 function humanizeDate(date) {
@@ -317,6 +296,29 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
+
+
+/**
+ * Convierte ISO String YYYY-MM-DD a objeto Date
+ */
+function convertISOStringToDate(string) {
+    const parts = string.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+    return new Date(year, month, day);
+}
+
+/**
+ * Convertir objeto Date a ISO String YYYY-MM-DD
+ */
+function convertDateToISOString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 /**
  * Formatea una fecha (string o Date) a formato DD/MM/YYYY
  * Soporta formatos con hora como "2026-01-26 03:52:04"
@@ -373,6 +375,31 @@ function normalizeDateInput(dateSource) {
     if (dateSource instanceof Date) return dateSource;
     return dateSource.replace(' ', 'T');
 }
+
+
+/**
+ * Convierte una fecha a formato largo: "31 de enero de 2026"
+ * @param {string|Date} dateSource - Soporta "YYYY-MM-DD", "DD/MM/YYYY" o Date object
+ * @returns {string} Fecha formateada o vacío si es inválida
+ */
+function formatDateToLongSpanish(dateSource) {
+    if (typeof dateSource === 'string' && dateSource.includes('/')) {
+        const [day, month, year] = dateSource.split('/');
+        dateSource = `${year}-${month}-${day}`;
+    }
+
+    const normalized = normalizeDateInput(dateSource);
+    const date = new Date(normalized);
+
+    if (!normalized || isNaN(date.getTime())) return '';
+
+    return new Intl.DateTimeFormat('es-ES', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(date);
+}
+
 
 /**
  * Capitaliza la primera letra de un string
