@@ -374,3 +374,12 @@ async function obtenerDatosHome(){
 
     return await fetchAPI(data);
 }
+
+async function obtenerFechasEventoPorMesAnio(mes, anio) {
+    const data = new FormData();
+    data.append('action', 'obtenerFechasEventoPorMesAnio');
+    data.append('mes', mes);
+    data.append('anio', anio);
+
+    return await fetchAPI(data);
+}

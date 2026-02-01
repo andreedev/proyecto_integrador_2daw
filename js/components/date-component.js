@@ -34,11 +34,12 @@ class DateComponent extends HTMLElement {
         super();
         this._datepicker = null;
         this._onSelectCallback = null;
+        this._eventDates = new Set();
         this.style.visibility = 'hidden';
     }
 
     static get observedAttributes() {
-        return ['label', 'width', 'value', 'type', 'format', 'container', 'disabled'];
+        return ['label', 'width', 'value', 'type', 'format', 'container', 'disabled', 'inline'];
     }
 
     async connectedCallback() {
@@ -52,15 +53,22 @@ class DateComponent extends HTMLElement {
         const input = this.querySelector('input');
         const type = this.getAttribute('type') || 'date';
         const displayFormat = this.getAttribute('format') || (type === 'time' ? 'HH:mm' : 'dd/MM/yyyy');
-
         const isDisabled = this.hasAttribute('disabled');
+        const isInline = this.hasAttribute('inline');
 
         const containerSelector = this.getAttribute('container');
         const containerElement = containerSelector ? document.querySelector(containerSelector) : undefined;
 
+        const anchorElement = isInline
+            ? this.querySelector('.solid-date-inline-container')
+            : this.querySelector('input');
+
+        if (!anchorElement) return;
+
         const config = {
             container: containerElement,
-            autoClose: true,
+            inline: isInline,
+            autoClose: !isInline,
             dateFormat: displayFormat,
             timepicker: type === 'time' || type === 'datetime',
             onlyTimepicker: type === 'time',
@@ -73,8 +81,23 @@ class DateComponent extends HTMLElement {
                     this._datepicker.hide();
                 }
             },
+            onRenderCell: ({date, cellType}) => {
+                if (cellType === 'day') {
+                    const dateKey = this._formatDateToKey(date);
+
+                    if (this._eventDates.has(dateKey)) {
+                        return {
+                            html: `${date.getDate()}<span class="datepicker-event-dot"></span>`,
+                            classes: '-has-event-'
+                        };
+                    }
+                }
+            },
             onSelect: ({date}) => {
-                this._handleFloatingLabel(input.value);
+                const input = this.querySelector('input');
+                if (input) {
+                    this._handleFloatingLabel(input.value);
+                }
                 if (this._onSelectCallback) this._onSelectCallback(date);
 
                 this.dispatchEvent(new CustomEvent('date-change', {
@@ -84,7 +107,7 @@ class DateComponent extends HTMLElement {
             }
         };
 
-        this._datepicker = new AirDatepicker(input, config);
+        this._datepicker = new AirDatepicker(anchorElement, config);
 
         const initialValue = this.getAttribute('value');
         if (initialValue) {
@@ -92,6 +115,21 @@ class DateComponent extends HTMLElement {
         } else {
             this.setDate(new Date());
         }
+    }
+
+    setEvents(dates) {
+        this._eventDates = new Set(dates);
+        if (this._datepicker) {
+            this._datepicker.setViewDate(this._datepicker.viewDate);
+        }
+    }
+
+    _formatDateToKey(date) {
+        const d = new Date(date);
+        const month = '' + (d.getMonth() + 1);
+        const day = '' + d.getDate();
+        const year = d.getFullYear();
+        return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
     }
 
     /**
@@ -125,6 +163,15 @@ class DateComponent extends HTMLElement {
         if (input) this._handleFloatingLabel(input.value);
     }
 
+    getSelectedData() {
+        if (!this._datepicker || this._datepicker.selectedDates.length === 0) return null;
+        const selectedDate = this._datepicker.selectedDates[0];
+        return {
+            month: selectedDate.getMonth(),
+            year: selectedDate.getFullYear()
+        };
+    }
+
     getISOValue() {
         if (!this._datepicker) return '';
         const selected = this._datepicker.selectedDates[0];
@@ -153,26 +200,38 @@ class DateComponent extends HTMLElement {
     }
 
     render() {
-        const label = this.getAttribute('label') || 'Fecha';
+        const label = this.getAttribute('label');
         const width = this.getAttribute('width') || '100%';
         const type = this.getAttribute('type') || 'date';
+        const isInline = this.hasAttribute('inline');
         const iconClass = type === 'time' ? 'icon-clock' : 'icon-calendar';
 
         const isDisabled = this.hasAttribute('disabled');
         const disabledAttr = isDisabled ? 'disabled' : '';
         const disabledClass = isDisabled ? 'is-disabled' : '';
 
-        this.innerHTML = `
-            <div class="solid-date-container ${disabledClass}" style="width: ${width};">
-                <label class="solid-date-label text-neutral-04">${label}</label>
-                <div class="solid-date-input-wrapper">
-                    <div class="solid-date-icon-left">
-                        <span class="${iconClass} w-20px h-20px bg-neutral-03 d-block"></span>
-                    </div>
-                    <input type="text" class="solid-date-field" readonly ${disabledAttr}>
+        const labelHtml = label ? `<label class="solid-date-label text-neutral-04">${label}</label>` : '';
+
+        if (isInline) {
+            this.innerHTML = `
+                <div class="solid-date-inline-wrapper ${disabledClass}" style="width: ${width};">
+                    ${labelHtml}
+                    <div class="solid-date-inline-container"></div>
                 </div>
-            </div>
-        `;
+            `;
+        } else {
+            this.innerHTML = `
+                <div class="solid-date-container ${disabledClass}" style="width: ${width};">
+                    ${labelHtml}
+                    <div class="solid-date-input-wrapper">
+                        <div class="solid-date-icon-left">
+                            <span class="${iconClass} w-20px h-20px bg-neutral-03 d-block"></span>
+                        </div>
+                        <input type="text" class="solid-date-field" readonly ${disabledAttr}>
+                    </div>
+                </div>
+            `;
+        }
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -184,6 +243,7 @@ class DateComponent extends HTMLElement {
 
     _getButtons(type) {
         const isTime = type === 'time';
+        const isInline = this.hasAttribute('inline');
         return [
             {
                 content: isTime ? 'Ahora' : 'Hoy',
@@ -191,7 +251,7 @@ class DateComponent extends HTMLElement {
                 onClick: (dp) => {
                     dp.selectDate(new Date());
                     dp.setViewDate(new Date());
-                    dp.hide();
+                    if (!isInline) dp.hide();
                 }
             }
         ];

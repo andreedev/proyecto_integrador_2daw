@@ -161,6 +161,9 @@ if (isset($_POST['action'])) {
         case 'obtenerDatosHome':
             obtenerDatosHome();
             break;
+        case 'obtenerFechasEventoPorMesAnio':
+            obtenerFechasEventoPorMesAnio();
+            break;
         default:
             break;
     }
@@ -2126,6 +2129,29 @@ function obtenerEdicionesAnteriores(){
 
 function obtenerPremios(){
 
+}
+
+function obtenerFechasEventoPorMesAnio(){
+    global $conexion;
+
+    $mes = (int)$_POST['mes'];
+    $anio = (int)$_POST['anio'];
+
+    $query = "SELECT DISTINCT fecha FROM evento WHERE MONTH(fecha) = ? AND YEAR(fecha) = ? ORDER BY fecha ASC";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("ii", $mes, $anio);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $fechas = [];
+    while ($row = $result->fetch_assoc()) {
+        $fechas[] = $row['fecha'];
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $fechas
+    ]);
 }
 
 cerrarConexion();
