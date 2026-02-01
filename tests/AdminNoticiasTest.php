@@ -4,12 +4,27 @@ require_once __DIR__ . '/../src/php/api.php';
 
 class AdminNoticiasTest extends PHPUnit\Framework\TestCase {
 
-    protected function setUp(): void {
-        global $conexion;
+    /**
+     * Se ejecuta una sola vez al inicio: abre conexión y prepara tablas
+     */
+    public static function setUpBeforeClass(): void {
         abrirConexion();
         crearBaseDatosSiNoExiste();
+    }
 
-        // Desactivar el autocommit e iniciar la transacción para no ensuciar la BD real
+    /**
+     * Se ejecuta una sola vez al final: cierra la conexión con el servidor
+     */
+    public static function tearDownAfterClass(): void {
+        global $conexion;
+        if ($conexion) {
+            $conexion->close();
+        }
+    }
+
+    protected function setUp(): void {
+        global $conexion;
+        // Iniciamos la transacción para no ensuciar la BD real en cada test
         $conexion->begin_transaction();
     }
 
@@ -24,11 +39,15 @@ class AdminNoticiasTest extends PHPUnit\Framework\TestCase {
 
     /**
      * Auxiliar para capturar el JSON de las funciones de api.php
+     * He añadido un bloque try/finally para evitar buffers abiertos si falla
      */
     private function ejecutarFuncion($funcion) {
         ob_start();
-        $funcion();
-        $salida = ob_get_clean();
+        try {
+            $funcion();
+        } finally {
+            $salida = ob_get_clean();
+        }
         return json_decode($salida, true);
     }
 
@@ -75,4 +94,3 @@ class AdminNoticiasTest extends PHPUnit\Framework\TestCase {
         $this->assertEquals(0, $check->num_rows);
     }
 }
-?>
