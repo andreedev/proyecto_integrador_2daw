@@ -1,22 +1,9 @@
-/**
- * Carousel Component
- * Configurable via:
- * - responsive: JSON string { "0": 1, "768": 2, "1200": 3 }
- * - show-arrows: boolean
- * - click-to-nav: boolean
- * - gap: number
- */
 class CarouselComponent extends HTMLElement {
     constructor() {
         super();
         this._slidesData = [];
         this._currentIndex = 0;
-        this._touchStartX = 0;
-        this.resizeObserver = null;
-
-        this._config = {
-            0: 1, 480: 1, 576: 1, 768: 2, 992: 2, 1200: 3, 1400: 4
-        };
+        this._config = { 0: 1 };
     }
 
     static get observedAttributes() {
@@ -32,77 +19,66 @@ class CarouselComponent extends HTMLElement {
         this._setupResizeObserver();
     }
 
+    attributeChangedCallback(name, oldVal, newVal) {
+        if (oldVal !== newVal && this._track) {
+            if (name === 'responsive') this._parseResponsiveConfig();
+            this._updateLayout();
+        }
+    }
+
     _parseResponsiveConfig() {
         const respAttr = this.getAttribute('responsive');
         if (respAttr) {
             try {
                 this._config = JSON.parse(respAttr.replace(/'/g, '"'));
             } catch (e) {
-                console.error("Carousel: Invalid responsive JSON", e);
+                console.error("Carousel: Invalid JSON", e);
             }
         }
     }
 
-    setSlides(items, useDOMElements = false) {
-        if (useDOMElements) {
-            this._slidesData = items.map(item => {
-                if (item instanceof HTMLElement) {
-                    return item.outerHTML;
-                }
-                return item;
-            });
-        } else {
-            this._slidesData = items;
-        }
-        this._currentIndex = 0;
-        this.render();
-    }
-
-    _getItemsInViewport() {
-        const width = window.innerWidth;
-        const breakpoints = Object.keys(this._config).map(Number).sort((a, b) => b - a);
-        const activeBreakpoint = breakpoints.find(b => width >= b) || 0;
-        return this._config[activeBreakpoint];
-    }
-
     render() {
         const gap = this.getAttribute('gap') || '24';
+        this.style.setProperty('--gap', `${gap}px`);
+
+        this._updateItemsInView();
 
         this.innerHTML = `
-            <div class="carousel-container position-relative w-100 d-flex flex-column align-items-center">
-                
+            <div class="carousel-container">
                 <button class="carousel-arrow prev d-none" aria-label="Anterior">
                     <span class="icon-left-chevron w-20px h-20px bg-primary-03 d-block"></span>
                 </button>
-    
-                <div class="carousel-viewport touch-action-pan-y overflow-hidden w-100">
-                    <div class="carousel-track" style="gap: ${gap}px;">
-                        ${this._renderSlides()}
+                <div class="carousel-viewport">
+                    <div class="carousel-track">
+                        ${this._slidesData.map(html => `<div class="carousel-slide">${html}</div>`).join('')}
                     </div>
                 </div>
-    
                 <button class="carousel-arrow next d-none" aria-label="Siguiente">
                     <span class="icon-right-chevron w-20px h-20px bg-primary-03 d-block"></span>
                 </button>
-    
                 <div class="carousel-indicators d-flex justify-content-center gap-8px mt-24px"></div>
             </div>
         `;
-
         this._postRenderSetup();
     }
 
-    _renderSlides() {
-        const itemsInView = this._getItemsInViewport();
-        const gap = parseInt(this.getAttribute('gap') || 24);
+    _updateItemsInView() {
+        const width = window.innerWidth;
+        const breakpoints = Object.keys(this._config).map(Number).sort((a, b) => b - a);
+        const activeBreakpoint = breakpoints.find(b => width >= b) || 0;
+        const count = this._config[activeBreakpoint];
+        this.style.setProperty('--items-in-view', count);
+        return count;
+    }
 
-        const slideWidth = `calc((100% - ${(itemsInView - 1) * gap}px) / ${itemsInView})`;
+    _updateLayout() {
+        const itemsInView = this._updateItemsInView();
+        const totalItems = this._slidesData.length;
+        this._maxIndex = Math.max(0, totalItems - itemsInView);
 
-        return this._slidesData.map((html, index) => `
-            <div class="carousel-slide" style="width: ${slideWidth};">
-                ${html}
-            </div>
-        `).join('');
+        this._checkArrows(totalItems, itemsInView);
+        this._renderDots(totalItems, itemsInView);
+        this.goTo(this._currentIndex);
     }
 
     _postRenderSetup() {
@@ -113,96 +89,72 @@ class CarouselComponent extends HTMLElement {
         this._btnNext = this.querySelector('.carousel-arrow.next');
 
         if (this._slidesData.length > 0) {
-            this._setupTouchEvents();
             this._setupNavigation();
-            this._checkOverflow();
-            this.goTo(this._currentIndex);
+            this._updateLayout();
         }
     }
 
-    _setupTouchEvents() {
-        this._viewport.addEventListener('touchstart', (e) => {
-            this._touchStartX = e.touches[0].clientX;
-        }, { passive: true });
-
-        this._viewport.addEventListener('touchend', (e) => {
-            const touchEndX = e.changedTouches[0].clientX;
-            const diff = touchEndX - this._touchStartX;
-
-            if (Math.abs(diff) > 50) {
-                diff > 0 ? this.move(-1) : this.move(1);
-            }
-        }, { passive: true });
+    setSlides(items, useDOMElements = false) {
+        this._slidesData = items.map(item => (useDOMElements && item instanceof HTMLElement) ? item.outerHTML : item);
+        this._currentIndex = 0;
+        this.render();
     }
 
-    _setupNavigation() {
-        if (this._btnPrev) this._btnPrev.onclick = () => this.move(-1);
-        if (this._btnNext) this._btnNext.onclick = () => this.move(1);
+    _checkArrows(total, visible) {
+        const hasOverflow = total > visible;
+        const arrowsEnabled = this.getAttribute('show-arrows') !== 'false' && hasOverflow;
+        this._btnPrev?.classList.toggle('d-none', !arrowsEnabled);
+        this._btnNext?.classList.toggle('d-none', !arrowsEnabled);
+    }
 
-        if (this.hasAttribute('click-to-nav')) {
-            this.querySelectorAll('.carousel-slide').forEach(s => {
-                s.style.cursor = 'pointer';
-                s.onclick = () => this.move(1);
+    _renderDots(total, visible) {
+        if (!this._dotsContainer) return;
+        this._dotsContainer.innerHTML = '';
+        if (total <= visible) return;
+
+        const steps = total - visible + 1;
+        for (let i = 0; i < steps; i++) {
+            const dot = document.createElement('div');
+            dot.className = `carousel-dot cursor-pointer w-8px h-8px ${i === this._currentIndex ? 'bg-primary-03' : 'bg-neutral-05'}`;
+            dot.onclick = () => this.goTo(i);
+            this._dotsContainer.appendChild(dot);
+        }
+    }
+
+    goTo(index) {
+        if (!this._track || this._slidesData.length === 0) return;
+
+        // Clamp index
+        this._currentIndex = Math.min(Math.max(0, index), this._maxIndex);
+
+        const gap = parseInt(this.getAttribute('gap') || 24);
+        const slideWidth = this._viewport.offsetWidth / this._updateItemsInView();
+
+        const moveAmount = this._currentIndex * (this.querySelector('.carousel-slide').offsetWidth + gap);
+        this._track.style.transform = `translateX(-${moveAmount}px)`;
+
+        if (this._dotsContainer) {
+            Array.from(this._dotsContainer.children).forEach((d, i) => {
+                d.classList.toggle('bg-primary-03', i === this._currentIndex);
+                d.classList.toggle('bg-neutral-05', i !== this._currentIndex);
             });
         }
-    }
-
-    _checkOverflow() {
-        const itemsVisible = this._getItemsInViewport();
-        const totalItems = this._slidesData.length;
-        const hasOverflow = totalItems > itemsVisible;
-
-        const arrowsEnabled = this.getAttribute('show-arrows') !== 'false' && hasOverflow;
-        this._btnPrev.classList.toggle('d-none', !arrowsEnabled);
-        this._btnNext.classList.toggle('d-none', !arrowsEnabled);
-
-        this._dotsContainer.innerHTML = '';
-        if (hasOverflow) {
-            const steps = totalItems - itemsVisible + 1;
-            for (let i = 0; i < steps; i++) {
-                const dot = document.createElement('div');
-                dot.className = `carousel-dot cursor-pointer w-8px h-8px ${i === this._currentIndex ? 'bg-primary-03' : 'bg-neutral-05'}`;
-                dot.onclick = () => this.goTo(i);
-                this._dotsContainer.appendChild(dot);
-            }
-        }
-        this._maxIndex = Math.max(0, totalItems - itemsVisible);
     }
 
     move(dir) {
         let next = this._currentIndex + dir;
         if (next < 0) next = this._maxIndex;
-        if (next > this._maxIndex) next = 0;
+        else if (next > this._maxIndex) next = 0;
         this.goTo(next);
     }
 
-    goTo(index) {
-        if (!this._track) return;
-        this._currentIndex = index;
-
-        const firstSlide = this.querySelector('.carousel-slide');
-        if (firstSlide) {
-            const gap = parseInt(this.getAttribute('gap') || 24);
-            const slideWidth = firstSlide.offsetWidth + gap;
-            this._track.style.transform = `translateX(-${index * slideWidth}px)`;
-        }
-
-        this.querySelectorAll('.carousel-dot').forEach((d, i) => {
-            d.classList.toggle('bg-primary-03', i === index);
-            d.classList.toggle('bg-neutral-05', i !== index);
-        });
+    _setupNavigation() {
+        if (this._btnPrev) this._btnPrev.onclick = () => this.move(-1);
+        if (this._btnNext) this._btnNext.onclick = () => this.move(1);
     }
 
     _setupResizeObserver() {
-        let resizeTimer;
-        this.resizeObserver = new ResizeObserver(() => {
-            clearTimeout(resizeTimer);
-
-            resizeTimer = setTimeout(() => {
-                this._parseResponsiveConfig();
-                this.render();
-            }, 100);
-        });
+        this.resizeObserver = new ResizeObserver(() => this._updateLayout());
         this.resizeObserver.observe(this);
     }
 }

@@ -2073,12 +2073,15 @@ function limpiarDatoInput($valor, $esNumero = false) {
 
 function obtenerDatosHome(){
     $edicionesAnteriores = obtenerEdicionesAnteriores();
+    $noticiasDestacadas = obtenerNoticiasDestacadas();
     $premios = obtenerPremios();
 
     echo json_encode([
         "status" => "success",
         "data" => [
-            "edicionesAnteriores" => $edicionesAnteriores
+            "edicionesAnteriores" => $edicionesAnteriores,
+            "noticiasDestacadas" => $noticiasDestacadas,
+            "premios" => $premios
         ]
     ]);
 }
@@ -2125,6 +2128,46 @@ function obtenerEdicionesAnteriores(){
     }
 
     return $ediciones;
+}
+
+/**
+ * CREATE TABLE noticia (
+ * id_noticia INT AUTO_INCREMENT PRIMARY KEY,
+ * nombre VARCHAR(150),
+ * descripcion TEXT,
+ * fecha DATE,
+ * id_archivo_imagen INT comment 'Imagen de la noticia',
+ * id_organizador INT,
+ * FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador),
+ * FOREIGN KEY (id_archivo_imagen) REFERENCES archivo(id_archivo)
+ * );
+ */
+function obtenerNoticiasDestacadas(){
+    global $conexion;
+    $query = "SELECT 
+                n.id_noticia as idNoticia,
+                n.nombre as nombreNoticia,
+                n.descripcion as descripcionNoticia,
+                n.fecha as fechaNoticia,
+                a.ruta as rutaImagenNoticia,
+                o.nombre as nombreOrganizador
+              FROM noticia n
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo
+              LEFT JOIN organizador o ON n.id_organizador = o.id_organizador
+              ORDER BY n.fecha DESC
+              LIMIT 8";
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $noticias = [];
+    $baseUrl = obtenerBaseUrl();
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaImagenNoticia']) {
+            $row['rutaImagenNoticia'] = $baseUrl . $row['rutaImagenNoticia'];
+        }
+        $noticias[] = $row;
+    }
+    return $noticias;
 }
 
 function obtenerPremios(){

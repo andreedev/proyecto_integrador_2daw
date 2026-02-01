@@ -59,8 +59,6 @@ modal-component:has(.is-active) {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    scrollbar-width: thin;
-    scrollbar-color: var(--neutral-04) transparent;
 }
 
 .solid-modal-overlay.is-active .solid-modal-container {
