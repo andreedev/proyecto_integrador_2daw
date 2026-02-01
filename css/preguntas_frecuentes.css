@@ -1,5 +1,5 @@
 .pf-header{
-    margin: 40px 80px;
+    margin: 80px 80px;
     text-align: center;
     position: relative;
 }
@@ -25,7 +25,7 @@
     mask-repeat: no-repeat;
     mask-size: contain;
     background-color: var(--primary-03);
-    left:362px;
+    left:632px;
     top:164px;
     transform: rotateX(180deg);
 }
@@ -120,29 +120,4 @@
 
 .contact-info a {
     color: var(--primary-03);
-}
-
-/* Diseño responsive */
-@media (min-width: 768px) {
-    .hero-image img {
-        max-width: 450px;
-    }
-}
-
-@media (max-width: 767px) {
-    .hero-section {
-        flex-direction: column;
-        text-align: center;
-        gap: 30px;
-    }
-
-    .hero-text,
-    .hero-image {
-        padding: 0;
-        width: 100%;
-    }
-
-    .faq-container {
-        padding: 32px 20px;
-    }
 }
