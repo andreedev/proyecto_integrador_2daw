@@ -134,11 +134,29 @@ function renderizarNoticiasDestacadas(noticias) {
     noticiasDestacadasCarousel.setSlides(slides);
 }
 
-/**
- *
- *
- */
-function renderizarPremios(premios) {
 
+function renderizarPremios(premios) {
+    const slides = premios.map(premio => {
+        const { nombrePremio, incluyeDinero, cantidadDinero, nombreCategoria } = premio;
+
+        cantidadDineroFormatted = parseFloat(cantidadDinero).toFixed(0);
+
+        return `
+            <div class="premio d-flex flex-column cursor-pointer box-shadow-01 p-16px h-auto">
+                <span class="fs-20px fw-600 text-center">${nombreCategoria}</span>
+                <span class="icon-premio w-120px h-120px"></span>
+                <span class="puesto">${nombrePremio}</span>
+                ${incluyeDinero ? `
+                <div class="premio-cantidad d-flex flex-row align-center gap-8px mt-8px">
+                    <div class="cantidad d-flex flex-row gap-8px align-center">
+                        <span class="icon-money w-24px h-24px bg-neutral-01"></span>
+                        <span class="numero">${cantidadDineroFormatted}€</span>
+                    </div>
+                </div>` : ''}
+            </div>
+        `;
+    });
+
+    premiosCarousel.setSlides(slides);
 }
 

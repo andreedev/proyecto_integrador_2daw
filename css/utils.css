@@ -688,6 +688,10 @@
     width: 80px;
 }
 
+.w-120px{
+    width: 120px;
+}
+
 .max-w-180px{
     max-width: 180px;
 }
@@ -798,6 +802,10 @@
 
 .h-100px{
     height: 100px;
+}
+
+.h-120px{
+    height: 120px;
 }
 
 .h-300px{
@@ -1602,6 +1610,14 @@
 
 .icon-left-chevron{
     mask-image: url('../img/icon/icon-leftchevron.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    transition: all 300ms ease;
+}
+
+.icon-money{
+    mask-image: url('../img/icon/icon-money.svg');
     mask-repeat: no-repeat;
     mask-size: contain;
     mask-position: center;

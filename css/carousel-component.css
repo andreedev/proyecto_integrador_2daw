@@ -3,7 +3,7 @@ carousel-component {
     width: 100%;
     --gap: 24px;
     --items-in-view: 1;
-    --arrow-space: 48px;
+    --arrow-space: 0px;
     box-sizing: border-box;
     position: relative;
 }

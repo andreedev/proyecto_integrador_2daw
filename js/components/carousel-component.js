@@ -103,8 +103,12 @@ class CarouselComponent extends HTMLElement {
     _checkArrows(total, visible) {
         const hasOverflow = total > visible;
         const arrowsEnabled = this.getAttribute('show-arrows') !== 'false' && hasOverflow;
+
         this._btnPrev?.classList.toggle('d-none', !arrowsEnabled);
         this._btnNext?.classList.toggle('d-none', !arrowsEnabled);
+
+        const space = arrowsEnabled ? '48px' : '0px';
+        this.style.setProperty('--arrow-space', space);
     }
 
     _renderDots(total, visible) {
