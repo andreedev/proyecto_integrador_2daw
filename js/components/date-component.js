@@ -84,7 +84,6 @@ class DateComponent extends HTMLElement {
             onRenderCell: ({date, cellType}) => {
                 if (cellType === 'day') {
                     const dateKey = this._formatDateToKey(date);
-
                     if (this._eventDates.has(dateKey)) {
                         return {
                             html: `${date.getDate()}<span class="datepicker-event-dot"></span>`,
@@ -104,7 +103,13 @@ class DateComponent extends HTMLElement {
                     detail: { date, iso: this.getISOValue() },
                     bubbles: true
                 }));
-            }
+            },
+            onChangeViewDate: ({month, year}) => {
+                this.dispatchEvent(new CustomEvent('view-change', {
+                    detail: { month: month + 1, year: year },
+                    bubbles: true
+                }));
+            },
         };
 
         this._datepicker = new AirDatepicker(anchorElement, config);
@@ -119,8 +124,9 @@ class DateComponent extends HTMLElement {
 
     setEvents(dates) {
         this._eventDates = new Set(dates);
+
         if (this._datepicker) {
-            this._datepicker.setViewDate(this._datepicker.viewDate);
+            this._datepicker.update();
         }
     }
 

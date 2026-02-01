@@ -4,17 +4,11 @@ const edicionesAnterioresCarousel = document.getElementById('edicionesAnteriores
 (async function cargarHome() {
     const response = await obtenerDatosHome();
     renderizarHome(response.data);
-
-    const hoy = new Date();
-    const isoHoy = hoy.toISOString().split('T')[0];
-
-    await cargarEventosPorFecha(isoHoy);
-    await cargarFechasConEventos(hoy.getMonth() + 1, hoy.getFullYear());
 })();
 
 async function cargarFechasConEventos(mes, anio) {
     const response = await obtenerFechasEventoPorMesAnio(mes, anio);
-    console.log(response.data);
+    eventoDatepicker.setEvents(response.data);
 }
 
 function renderizarHome(datosHome) {
@@ -45,22 +39,26 @@ function renderizarEdicionesAnteriores(edicionesAnteriores) {
     edicionesAnterioresCarousel.setSlides(slides);
 }
 
+let flagOnce = true;
 eventoDatepicker.addEventListener('date-change', async (event) => {
     const { date, iso } = event.detail;
-
-    // Cargamos eventos del día específico
+    if (!date) {
+        console.log("No hay fecha seleccionada");
+        return;
+    }
     await cargarEventosPorFecha(iso);
-
-    // Cargamos los puntitos (eventos) del mes actual
     await cargarFechasConEventos(date.getMonth() + 1, date.getFullYear());
+});
+
+eventoDatepicker.addEventListener('view-change', async (event) => {
+    const { month, year } = event.detail;
+    await cargarFechasConEventos(month, year);
 });
 
 async function cargarEventosPorFecha(fechaISO) {
     const response = await listarEventos(fechaISO);
     renderizarEventos(response.data);
-    if (response.data) {
-        eventoDatepicker.setEvents(response.data);
-    }
+    eventoDatepicker.setEvents(response.data);
 }
 
 function renderizarEventos(eventos) {
@@ -73,7 +71,7 @@ function renderizarEventos(eventos) {
         const eventoDiv = document.createElement('div');
         eventoDiv.classList.add('evento', 'd-flex', 'flex-row', 'gap-10px');
         eventoDiv.onclick = () => {
-            window.location.href = `evento.html?id=${idEvento}`;
+            window.location.href = `detalle_evento.html?id=${idEvento}`;
         };
 
         eventoDiv.innerHTML = `
@@ -95,4 +93,10 @@ function renderizarEventos(eventos) {
 
         eventosLista.appendChild(eventoDiv);
     });
+    if (eventos.length === 0) {
+        const noEventosDiv = document.createElement('div');
+        noEventosDiv.classList.add('no-eventos', 'd-flex', 'justify-center', 'align-center', 'p-32px', 'flex-grow-1', 'w-100');
+        noEventosDiv.innerText = "No hay eventos para la fecha seleccionada.";
+        eventosLista.appendChild(noEventosDiv);
+    }
 }
