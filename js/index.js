@@ -131,15 +131,17 @@ function renderizarNoticiasDestacadas(noticias) {
         const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
 
         return `
-            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column gap-16px" 
+            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column gap-16px cursor-pointer box-shadow-01 m-1px" 
                  onclick="window.location.href='detalle_noticia.html?id=${idNoticia}'">
                 <div class="w-100">
                     <img class="w-100" src="${rutaImagenNoticia}" alt="Noticia ${idNoticia}">
                 </div>
-                <div class="texto-noticia-destacada d-flex gap-4px flex-column">
-                    <span class="fecha-noticia-destacada">${fechaFormateada}</span>
-                    <span class="title-noticia-destacada">${nombreNoticia}</span>
-                    <span class="descripcion-noticia-destacada">${descripcionNoticia}</span>
+                <div class="d-flex flex-column gap-8px p-16px position-relative pb-16px">
+                    <div class="texto-noticia-destacada d-flex gap-4px flex-column">
+                        <span class="fecha-noticia-destacada">${fechaFormateada}</span>
+                        <span class="title-noticia-destacada">${nombreNoticia}</span>
+                        <span class="descripcion-noticia-destacada">${descripcionNoticia}</span>
+                    </div>
                 </div>
                 <div class="flecha-container">
                     <span class="flecha-derecha"></span>
