@@ -1,24 +1,39 @@
 <?php
-use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../src/php/api.php';
 
-class BasesLegalesTest extends TestCase {
+class BasesLegalesTest extends PHPUnit\Framework\TestCase {
+
+    /**
+     * Se ejecuta una sola vez al inicio: abre conexión y prepara tablas
+     */
+    public static function setUpBeforeClass(): void {
+        abrirConexion();
+        crearBaseDatosSiNoExiste();
+    }
+
+    /**
+     * Se ejecuta una sola vez al final: cierra la conexión con el servidor
+     */
+    public static function tearDownAfterClass(): void {
+        global $conexion;
+        if ($conexion) {
+            $conexion->close();
+        }
+    }
 
     protected function setUp(): void {
         global $conexion;
-        abrirConexion();
-        crearBaseDatosSiNoExiste();
+        // Iniciamos transacción para aislar cada test
         $conexion->begin_transaction();
     }
 
     protected function tearDown(): void {
         global $conexion;
-        // Revertir todos los cambios hechos durante el test
         if ($conexion) {
+            // Revertimos cambios para dejar la BD como estaba
             $conexion->rollback();
         }
-        // Limpiar superglobales
         $_POST = [];
     }
 
@@ -42,6 +57,8 @@ class BasesLegalesTest extends TestCase {
         global $conexion;
 
         $textoTest = "Texto legal de prueba con tildes (áéíóú) y ñ.";
+        
+        // Limpieza y carga de datos controlada para el test
         $conexion->query("DELETE FROM configuracion WHERE nombre = 'basesLegales'");
         $stmt = $conexion->prepare("INSERT INTO configuracion (nombre, valor) VALUES ('basesLegales', ?)");
         $stmt->bind_param("s", $textoTest);
