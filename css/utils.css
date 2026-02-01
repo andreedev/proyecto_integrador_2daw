@@ -1,5 +1,8 @@
 /** Clases utilitarias para estilos comunes **/
 /** Siempre debe ir al final de cualquier otro archivo CSS **/
+:root {
+    --bs-gutter-x: 1.5rem;
+}
 
 .d-flex{
     display: flex;
@@ -165,131 +168,152 @@
     flex-grow: 1;
 }
 
-.col-3{
-    flex: 0 0 25%;
-    max-width: 25%;
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: calc(var(--bs-gutter-x, 1.5rem) * -0.5);
+    margin-right: calc(var(--bs-gutter-x, 1.5rem) * -0.5);
 }
 
-.col-4{
-    flex: 0 0 33.3333%;
-    max-width: 33.3333%;
+.row > * {
+    padding-left: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+    padding-right: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
 }
 
-.col-6{
-    flex: 0 0 50%;
-    max-width: 50%;
+.col-3,
+.col-4,
+.col-6,
+.col-8,
+.col-12 {
+    flex-shrink: 0;
 }
 
-.col-8{
-    flex: 0 0 66.6667%;
-    max-width: 66.6667%;
+.col-3 {
+    flex: 0 0 auto;
+    width: 25%;
 }
 
-.col-12{
-    flex: 0 0 100%;
-    max-width: 100%;
+.col-4 {
+    flex: 0 0 auto;
+    width: 33.3333%;
+}
+
+.col-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+
+.col-8 {
+    flex: 0 0 auto;
+    width: 66.6667%;
+}
+
+.col-12 {
+    flex: 0 0 auto;
+    width: 100%;
 }
 
 @media (min-width: 480px) {
-    .col-xs-3{
-        flex: 0 0 25%;
-        max-width: 25%;
+    .col-xs-3 {
+        flex: 0 0 auto;
+        width: 25%;
     }
 
-    .col-xs-4{
-        flex: 0 0 33.3333%;
-        max-width: 33.3333%;
+    .col-xs-4 {
+        flex: 0 0 auto;
+        width: 33.3333%;
     }
 
-    .col-xs-6{
-        flex: 0 0 50%;
-        max-width: 50%;
+    .col-xs-6 {
+        flex: 0 0 auto;
+        width: 50%;
     }
 
-    .col-xs-8{
-        flex: 0 0 66.6667%;
-        max-width: 66.6667%;
+    .col-xs-8 {
+        flex: 0 0 auto;
+        width: 66.6667%;
     }
 
-    .col-xs-12{
-        flex: 0 0 100%;
-        max-width: 100%;
+    .col-xs-12 {
+        flex: 0 0 auto;
+        width: 100%;
     }
 }
 
 @media (min-width: 768px) {
-    .col-md-3{
-        flex: 0 0 25%;
-        max-width: 25%;
+    .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%;
     }
 
-    .col-md-4{
-        flex: 0 0 33.3333%;
-        max-width: 33.3333%;
+    .col-md-4 {
+        flex: 0 0 auto;
+        width: 33.3333%;
     }
 
-    .col-md-6{
-        flex: 0 0 50%;
-        max-width: 50%;
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 50%;
     }
 
-    .col-md-8{
-        flex: 0 0 66.6667%;
-        max-width: 66.6667%;
+    .col-md-8 {
+        flex: 0 0 auto;
+        width: 66.6667%;
     }
 
-    .col-md-12{
-        flex: 0 0 100%;
-        max-width: 100%;
+    .col-md-12 {
+        flex: 0 0 auto;
+        width: 100%;
     }
 }
 
 @media (min-width: 992px) {
-    .col-lg-3{
-        flex: 0 0 25%;
-        max-width: 25%;
+    .col-lg-3 {
+        flex: 0 0 auto;
+        width: 25%;
     }
 
-    .col-lg-4{
-        flex: 0 0 33.3333%;
-        max-width: 33.3333%;
+    .col-lg-4 {
+        flex: 0 0 auto;
+        width: 33.3333%;
     }
 
-    .col-lg-6{
-        flex: 0 0 50%;
-        max-width: 50%;
+    .col-lg-6 {
+        flex: 0 0 auto;
+        width: 50%;
     }
 
-    .col-lg-8{
-        flex: 0 0 66.6667%;
-        max-width: 66.6667%;
+    .col-lg-8 {
+        flex: 0 0 auto;
+        width: 66.6667%;
     }
 
-    .col-lg-12{
-        flex: 0 0 100%;
-        max-width: 100%;
+    .col-lg-12 {
+        flex: 0 0 auto;
+        width: 100%;
     }
 }
 
 @media (min-width: 1200px) {
-    .col-xl-4{
-        flex: 0 0 33.3333%;
-        max-width: 33.3333%;
+    .col-xl-4 {
+        flex: 0 0 auto;
+        width: 33.3333%;
     }
 
-    .col-xl-6{
-        flex: 0 0 50%;
-        max-width: 50%;
+    .col-xl-6 {
+        flex: 0 0 auto;
+        width: 50%;
     }
 
-    .col-xl-8{
-        flex: 0 0 66.6667%;
-        max-width: 66.6667%;
+    .col-xl-8 {
+        flex: 0 0 auto;
+        width: 66.6667%;
     }
 
-    .col-xl-12{
-        flex: 0 0 100%;
-        max-width: 100%;
+    .col-xl-12 {
+        flex: 0 0 auto;
+        width: 100%;
     }
 }
 
@@ -2472,7 +2496,6 @@ dialog::backdrop {
 [class*="container-sm-to-"],
 [class*="container-md-to-"],
 [class*="container-lg-to-"]{
-    --bs-gutter-x: 1.5rem;
     width: 100%;
     padding-right: calc(var(--bs-gutter-x) * 0.5);
     padding-left: calc(var(--bs-gutter-x) * 0.5);

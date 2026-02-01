@@ -1,79 +1,12 @@
-.hero {
-    display: flex;
-    flex-direction: column;
-    gap: 36px;
-    background-color: var(--neutral-01);
-    color: var(--neutral-09);
-    width:100%;
-    padding:80px 96px;
-}
-
-.hero h1 {
-    font-size: 49px;
-    line-height: 120%;
-    color: var(--neutral-09);
-}
-
 .video-presentacion-concurso{
     width:100%;
     height:auto;
     position:relative;
 
 }
-
-.btn-play-video{
-    position: absolute;
-    background-color: var(--primary-03);
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    z-index:2;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.play-video{
-    mask-image: url("../img/icon/icon-play.svg");
-    mask-size: contain;
-    mask-repeat: no-repeat;
-    background-color: var(--neutral-09);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 24px;
-    height: 24px;
-    transform: translate(-50%, -50%);
-}
-
 .presentacion-concurso{
     width:100%;
     height:auto;
-}
-
-.primary-btn {
-    background: var(--primary-03);
-    color: var(--neutral-09);
-    border: none;
-    padding: 0.8rem 2.4rem;
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.primary-btn:hover {
-    background: var(--neutral-09);
-    color: var(--primary-03);
-    border: 1px solid var(--primary-03);
-}
-
-.space-ediciones-anteriores{
-    justify-content: center;
-    align-items: center;
-    padding: 48px 0;
 }
 
 .space-ediciones-anteriores-text{
@@ -90,18 +23,6 @@
     gap: 24px;
     justify-items: center;
     margin: 0px 96px 0px 96px;
-}
-
-.edicion-anterior{
-    width: 612px;
-    height: auto;
-    cursor: pointer;
-    position: relative;
-    border: 1px solid var(--neutral-06);
-}
-.img-container{
-    width: 612px;
-    height: 246px;
 }
 
 .img-edicion-anterior{

@@ -232,9 +232,6 @@ p{
     .primary-button-02 {
         width: auto;
     }
-    .primary-button-02 {
-        width: auto;
-    }
 }
 
 .primary-button-02:hover{
@@ -251,6 +248,41 @@ p{
 .primary-button-02:disabled:hover{
     background-color: var(--neutral-09);
     color: var(--primary-04);
+}
+
+.primary-button-03{
+    background-color: var(--primary-03);
+    color: var(--neutral-09);
+    border: 1px solid var(--primary-03);
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: min-content;
+    gap: 8px;
+    transition: all 200ms ease;
+}
+
+@media (min-width: 768px){
+    .primary-button-03 {
+        width: auto;
+    }
+}
+
+.primary-button-03:hover{
+    background-color: var(--neutral-09);
+    color: var(--primary-03);
+    border: 1px solid transparent;
+    transition: all 200ms ease;
+}
+
+.primary-button-03.disabled, .primary-button-03:disabled{
+    background-color: var(--primary-04);
+    cursor: not-allowed;
 }
 
 .secondary-button-01{

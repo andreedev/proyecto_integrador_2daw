@@ -158,6 +158,9 @@ if (isset($_POST['action'])) {
             validarRol(['participante']);
             actualizarCandidatura();
             break;
+        case 'obtenerDatosHome':
+            obtenerDatosHome();
+            break;
         default:
             break;
     }
@@ -2062,6 +2065,67 @@ function limpiarDatoInput($valor, $esNumero = false) {
         return null;
     }
     return $esNumero ? (int)$valor : $valor;
+}
+
+
+function obtenerDatosHome(){
+    $edicionesAnteriores = obtenerEdicionesAnteriores();
+    $premios = obtenerPremios();
+
+    echo json_encode([
+        "status" => "success",
+        "data" => [
+            "edicionesAnteriores" => $edicionesAnteriores
+        ]
+    ]);
+}
+
+
+/**
+ * Obtener ediciones anteriores,
+ * Por cada edición:
+ * Sus datos básicos, una imagen representativa de cada una, el total de ganandores
+ */
+function obtenerEdicionesAnteriores(){
+    global $conexion;
+
+    $query = "SELECT 
+                e.id_edicion as idEdicion,
+                e.anio_edicion as anioEdicion,
+                e.resumen_evento as resumenEvento,
+                e.nro_participantes as nroParticipantes,
+                (SELECT a.ruta 
+                 FROM edicion_archivos ea 
+                 INNER JOIN archivo a ON ea.id_archivo = a.id_archivo 
+                 WHERE ea.id_edicion = e.id_edicion 
+                 AND a.ruta NOT LIKE '%.mp4' 
+                 AND a.ruta NOT LIKE '%.mov'
+                 LIMIT 1) as rutaImagenRepresentativa,
+                (SELECT COUNT(*) 
+                 FROM ganadores_edicion ge 
+                 WHERE ge.id_edicion = e.id_edicion) as nroGanadores
+              FROM edicion e
+              WHERE e.tipo = 'anterior' 
+              ORDER BY e.anio_edicion DESC";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $ediciones = [];
+    $baseUrl = obtenerBaseUrl();
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaImagenRepresentativa']) {
+            $row['rutaImagenRepresentativa'] = $baseUrl . $row['rutaImagenRepresentativa'];
+        }
+        $ediciones[] = $row;
+    }
+
+    return $ediciones;
+}
+
+function obtenerPremios(){
+
 }
 
 cerrarConexion();

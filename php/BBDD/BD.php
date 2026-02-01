@@ -11,14 +11,14 @@ function crearBaseDatosSiNoExiste()
     if ($resultado->num_rows <= 0) {
         $conexion->query("CREATE DATABASE $db") or die("Error creando BD: " . $conexion->error);
 
-        seleccionarBaseDatos();
+        $conexion->select_db($db);
 
         $sql_tables = "
                 CREATE TABLE archivo(
                     id_archivo INT AUTO_INCREMENT PRIMARY KEY,
                     ruta TEXT
                 ); 
-        
+                
                 CREATE TABLE categoria (
                     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
                     nombre VARCHAR(100) NOT NULL
@@ -161,39 +161,40 @@ function crearBaseDatosSiNoExiste()
                     FOREIGN KEY (id_archivo_logo) REFERENCES archivo(id_archivo)
                 );
                 
-                
-                -- TRIGGERS
                 CREATE TRIGGER tr_crear_historial_insercion
                 AFTER INSERT ON candidatura
                 FOR EACH ROW
-                BEGIN
-                    INSERT INTO historial_candidatura (id_candidatura, estado, motivo, fecha_hora)
-                    VALUES (NEW.id_candidatura, 'En revisión', NULL, NOW());
-                END;
+                INSERT INTO historial_candidatura (id_candidatura, estado, motivo, fecha_hora)
+                VALUES (NEW.id_candidatura, 'En revisión', NULL, NOW());
                 
                 -- =========================
                 -- INSERTS
                 
                 INSERT INTO archivo (id_archivo, ruta) VALUES
-                -- VIDEOS (IDs 1-2)
-                (1, 'uploads/public/file_example_MP4_480_1_5MG.mp4'),
-                (2, 'uploads/public/_file_example_MP4_480_1_5MG.mp4'),
-                
-                -- IMAGENES/POSTERS (IDs 3-7)
-                (3, 'uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                (4, 'uploads/public/_ENTRENADORES_CABECERA_GENERAL_3.width-800.jpg'),
-                (5, 'uploads/public/_Gemini_Generated_Image_u3h353u3h353u3h3.png'),
-                (6, 'uploads/public/_salidas-profesionales.png'),
-                (7, 'uploads/public/Pentawards_35_4aognhs.width-800.png'),
-                
-                -- DOCUMENTOS (IDs 8)
-                (8, 'uploads/public/_dummy.pdf'),
-                
-                -- 
-                (9, 'uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                (10, 'uploads/public/file_example_MP4_480_1_5MG.mp4'),
-                (11, 'uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg'),
-                (12, 'uploads/public/_file_example_MP4_480_1_5MG.mp4');
+                (1, 'uploads/public/corto_blava_terra.mp4'),
+                (2, 'uploads/public/corto_la_otra_orilla.mp4'),
+                (3, 'uploads/public/corto_si_no_fuera_por_mi.mp4'),
+                (4, 'uploads/public/corto_un_dia_perfecto.mp4'),
+                (5, 'uploads/public/corto_violetas.mp4'),
+                (6,  'uploads/public/cartel_BLAVA-TERRA.jpg'),
+                (7,  'uploads/public/cartel_LA-OTRA-ORILLA.jpg'),
+                (8,  'uploads/public/cartel_SI-NO-FUERA-POR-MI.jpg'),
+                (9,  'uploads/public/cartel_UN-DIA-PERFECTO.jpg'),
+                (10, 'uploads/public/cartel_VIOLETAS.jpg'),
+                (11, 'uploads/public/evento1.jpg'),
+                (12, 'uploads/public/evento2.jpg'),
+                (13, 'uploads/public/evento3.jpg'),
+                (14, 'uploads/public/evento4.jpg'),
+                (15, 'uploads/public/evento5.jpg'),
+                (16, 'uploads/public/festival1.png'),
+                (17, 'uploads/public/festival2.jpg'),
+                (18, 'uploads/public/festival3.jpg'),
+                (19, 'uploads/public/patrocinador_canon.jpg'),
+                (20, 'uploads/public/ficha_tecnica_blava_terra.pdf'),
+                (21, 'uploads/public/ficha_tecnica_la_otra_orilla.pdf'),
+                (22, 'uploads/public/ficha_tecnica_si_no_fuera_por_mi.pdf'),
+                (23, 'uploads/public/ficha_tecnica_un_dia_perfecto.pdf'),
+                (24, 'uploads/public/ficha_tecnica_violetas.pdf');
                 
                 INSERT INTO categoria (nombre) VALUES
                 ('Mejor cortometraje UE (alumno)'),
@@ -208,27 +209,26 @@ function crearBaseDatosSiNoExiste()
                 ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
                 
                 INSERT INTO candidatura (id_participante, titulo, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer, tipo_candidatura) VALUES
-                (1, 'Ritmo de Asfalto'     , 'Corto urbano sobre la vida moderna.'      , 1 , 8, 3 , NULL, 'alumno'),
-                (2, 'Latido Salvaje'       , 'Documental sobre la fauna local.'         , 2 , 8, 4 , NULL, 'alumno'),
-                (3, 'Pequeños Sabios'      , 'Animación infantil educativa.'            , 10, 8, 5 , NULL, 'alumni'),
-                (4, 'Entre Bloques'        , 'Drama social ambientado en un barrio.'    , 12, 8, 6 , NULL, 'alumno'),
-                (5, 'Sombras Estáticas'    , 'Corto experimental en blanco y negro.'    , 1 , 8, 7 , NULL, 'alumni'),
-                (1, 'Crónicas del Campus'  , 'Comedia sobre la universidad.'            , 2 , 8, 9 , NULL, 'alumno'),
-                (2, 'Laberinto Mental'     , 'Thriller psicológico de suspense.'        , 10, 8, 11, NULL, 'alumno'),
-                (3, 'Reinos de Cartón'     , 'Fantasía épica de bajo presupuesto.'      , 12, 8, 3 , NULL, 'alumni'),
-                (4, 'Código de Barras'     , 'Crítica social al consumismo.'            , 1 , 8, 4 , NULL, 'alumno'),
-                (5, 'Voz de Calle'         , 'Documental sobre música urbana.'          , 2 , 8, 5 , NULL, 'alumni'),
-                (1, 'Ecos de 1900'         , 'Corto histórico ambientado en 1900.'      , 10, 8, 6 , NULL, 'alumno'),
-                (2, 'Neón y Acero'         , 'Relato futurista de ciencia ficción.'     , 12, 8, 7 , NULL, 'alumno'),
-                (3, 'Claustro'             , 'Terror psicológico en espacio cerrado.'   , 1 , 8, 7 , NULL, 'alumni'),
-                (4, 'Contra la Corriente'  , 'Historia de superación personal.'         , 2 , 8, 11, NULL, 'alumno'),
-                (5, 'Acordes Locales'      , 'Corto musical con artistas locales.'      , 10, 8, 3 , NULL, 'alumni'),
-                (1, 'A un Click de Ti'     , 'Romance juvenil contemporáneo.'           , 12, 8, 4 , NULL, 'alumno'),
-                (2, 'Ciclo Infinito'       , 'Corto ecológico sobre reciclaje.'         , 1 , 8, 5 , NULL, 'alumno'),
-                (3, 'Manos de Barro'       , 'Animación stop motion artesanal.'         , 2 , 8, 6 , NULL, 'alumni'),
-                (4, 'Raíces y Ramas'       , 'Drama familiar intergeneracional.'        , 10, 8, 7 , NULL, 'alumno'),
-                (5, 'Formas del Vacío'     , 'Corto artístico abstracto.'               , 12, 8, 9 , NULL, 'alumni');
-
+                (1,'Ritmo de Asfalto','Elionor descubre los entresijos de la adultez en la Mallorca de 1940. Vive en una remota finca, de la cual los habitantes jamás han salido. Todo cambiará con la llegada de una película.',1,20,6,NULL,'alumno'),
+                (2,'Latido Salvaje','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña, mostrando que es una parte natural de la vida. María, una niña con una rara enfermedad, aprende a enfrentar sus miedos con música, esperanza y amor por la vida. Conoce a Marisol, una musicoterapeuta, y a Soledad, una anciana que repara instrumentos. Sus vidas se entrelazarán inesperadamente.',2,21,7,NULL,'alumno'),
+                (3,'Pequeños Sabios','Javier va casi todos los días a comer a casa de su madre. Se hace mayor y así la tiene contenta. Pero esa rutina de aparente normalidad, esconde un profundo secreto. Hay veces en las que el fin justifica los medios.',3,22,8,NULL,'alumni'),
+                (4,'Entre Bloques','Julia decide dejar el hospital apresuradamente para pasar el fin de semana con sus amigos de toda la vida, en una casa llena de recuerdos compartidos, se disponen a celebrar como si un hubiese un mañana. Mientras julia tiene que tomar una decisión importante.',4,23,9,NULL,'alumno'),
+                (5,'Sombras Estáticas','En 1945, bajo la sombra de la dictadura franquista, Juan, un ayudante universitario, conoce a Manuel tras un encuentro fortuito durante la noche en el Parque del Retiro.',5,24,10,NULL,'alumni'),
+                (1,'Crónicas del Campus','Elionor descubre los entresijos de la adultez en la Mallorca de 1940. Vive en una remota finca, de la cual los habitantes jamás han salido. Todo cambiará con la llegada de una película.',1,20,6,NULL,'alumno'),
+                (2,'Laberinto Mental','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña...',2,21,7,NULL,'alumno'),
+                (3,'Reinos de Cartón','Javier va casi todos los días a comer a casa de su madre...',3,22,8,NULL,'alumni'),
+                (4,'Código de Barras','Julia decide dejar el hospital apresuradamente...',4,23,9,NULL,'alumno'),
+                (5,'Voz de Calle','En 1945, bajo la sombra de la dictadura franquista...',5,24,10,NULL,'alumni'),
+                (1,'Ecos de 1900','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',1,20,6,NULL,'alumno'),
+                (2,'Neón y Acero','La Otra Orilla es más que una historia...',2,21,7,NULL,'alumno'),
+                (3,'Claustro','Javier va casi todos los días a comer a casa de su madre...',3,22,8,NULL,'alumni'),
+                (4,'Contra la Corriente','Julia decide dejar el hospital apresuradamente...',4,23,9,NULL,'alumno'),
+                (5,'Acordes Locales','En 1945, bajo la sombra de la dictadura franquista...',5,24,10,NULL,'alumni'),
+                (1,'A un Click de Ti','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',1,20,6,NULL,'alumno'),
+                (2,'Ciclo Infinito','La Otra Orilla es más que una historia...',2,21,7,NULL,'alumno'),
+                (3,'Manos de Barro','Javier va casi todos los días a comer a casa de su madre...',3,22,8,NULL,'alumni'),
+                (4,'Raíces y Ramas','Julia decide dejar el hospital apresuradamente...',4,23,9,NULL,'alumno'),
+                (5,'Formas del Vacío','En 1945, bajo la sombra de la dictadura franquista...',5,24,10,NULL,'alumni');
                 
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES
                 ('Primer premio', true, 600.00, 1),
@@ -254,166 +254,56 @@ function crearBaseDatosSiNoExiste()
                     ('galaPreEventoStreamingActivo', 'true', 1),
                     ('galaPreEventoStreamingUrl', 'https://www.youtube.com/watch?v=OdiUGCJIAC8', 1),
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
-                    ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1),
-                    ('basesLegales', '<div style=\"font-family\": \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 8px;\">
-
-  <div style=\"text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #e60012; margin-left: 32px; margin-right: 32px;\">
-    <span style=\"font-size: 2.5em; font-weight: 700; color: #000;\">Festival Universitario de Cortometrajes de Animación - II Edición</span><br>
-    <span style=\"font-size: 1.4em; color: #000; margin-top: 10px; display: block;\">Creative Campus Universidad Europea</span>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">ANTECEDENTES</span>
-    Creative Campus de la Universidad Europea de Madrid, en colaboración con Digital Monster Collective y MIA, lanza el segundo festival de cortometrajes de animación con la intención de:
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Generar un espacio donde los estudiantes de diferentes universidades e institutos puedan compartir sus mejores trabajos</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premiar el talento y la creatividad en el mundo de la animación audiovisual.</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Características de las obras:</span>
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Cortometrajes de menos de 10 minutos realizados con cualquier técnica de animación durante 2024 hasta la fecha de entrega de este concurso en 2025.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El formato deberá ser MP4 o Mov (H.264) con resolución HD 1080</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Las obras podrán estar en cualquier idioma oficial del territorio español y deberán incluir subtítulos en español.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Podrán ser obras de temática libre, siempre que no incurran en la discriminación, promuevan el odio o la xenofobia y no sean obras de carácter sexual explícito.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Se aceptarán cortometrajes tanto narrativos como experimentales, videoclips o piezas promocionales, así como cinemáticas de videojuegos, siempre y cuando el autor o autora posea los derechos de explotación de la obra y la marca que en ella figure.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Las obras deberán ser originales y el autor o autora deberá ser el propietario de los derechos de explotación de la obra presentada.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> No se permite el uso de inteligencias artificiales generativas para la realización de los cortometrajes.</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Requisitos de participación:</span>
-    Habrá dos categorías: estudiante y profesional
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> <strong>Categoría estudiante:</strong> podrán optar todos los estudiantes mayores de 16 o alumni que se hayan graduado máximo en 2024.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> <strong>Categoría profesional:</strong> profesionales de la industria de la animación o los videojuegos con proyectos audiovisuales que cumplan los requisitos anteriormente expuestos.</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Inscripción</span>
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La fecha límite para la inscripción de cortometrajes es el 1 de septiembre de 2025.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La inscripción se realizará mediante la página FESTHOME</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La inscripción es gratuita.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> La inscripción de una obra conlleva la aceptación de las bases.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> No serán admitidas las candidaturas entregadas fuera de plazo, así como aquellas que no se adecuen a los criterios establecidos en la convocatoria (cualquier obra en la que se detecte plagio, uso de IA, una vulneración de los derechos de autor o contemple contenidos o una duración no aceptados será rechazada del festival y la competición).</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Para participar en la categoría de estudiantes, junto con el cortometraje, se presentarán evidencias de tener una matrícula en vigor en alguna universidad, instituto o centro adscrito en el momento de la inscripción, o de haberse graduado entre 2024 y 2025. Además, incluirán un teaser del cortometraje para la difusión del evento en caso de resultar seleccionados finalistas, en el mismo formato que el cortometraje. También se presentará un cartel de la obra para promocionar en caso de resultar seleccionados finalistas.</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left:32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Categorías y premios:</span>
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio al mejor cortometraje de animación.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio Digital Monster Collective a Mejor Cortometraje de Animación de Estudiantes: 500€</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio Creative Campus a Mejor Cortometraje de Animación Profesional: 1000€</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Premio del público: 250€</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Se reserva la posibilidad de un accésit o mención especial si hubiera alguna obra meritoria</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Criterios para concesión de los premios:</span>
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los criterios que se valorarán para la concesión de los premios serán originalidad, la calidad técnica, la profundidad narrativa o complejidad de la técnica empleada en el caso de obras experimentales y el aporte de valor en cuanto a la elección del tema.</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Cesión de derechos de propiedad intelectual:</span>
-    La participación en la presente convocatoria supone la cesión gratuita, no exclusiva, universal y sin límite de tiempo, así como la capacidad de cesión a terceros (prensa, redes sociales y medios) de los derechos de propiedad intelectual de los trabajos presentados, con la finalidad de:
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Proyección en la plataforma digital online los días del festival de los cortometrajes finalistas.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Promoción del evento en redes sociales y prensa utilizando fragmentos del vídeo, o teasers.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Promoción en futuras ediciones del evento utilizando fragmentos del vídeo o teasers.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> En concreto, los cortometrajes ganadores, serán proyectados de nuevo en un evento público presencial</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Promoción en redes sociales y notas de prensa utilizando los carteles presentados.</li>
-    </ul>
-    <p style=\"margin-top: 12px;\">Esta cesión abarca, de manera enunciativa pero no limitativa, los derechos de reproducción, distribución, comunicación pública, transformación, y cualquier otro derecho de propiedad intelectual o industrial reconocido por la legislación aplicable, siempre limitado a las aplicaciones anteriormente expuestas.</p>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Jurado y Resolución:</span>
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El fallo del jurado, que será inapelable y los proyectos ganadores, se anunciarán el 25 de septiembre de 2025, en el Campus Creativo de la Universidad Europea en la calle María de Molina 39, durante el evento realizado a tal efecto a partir de las 18 horas.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los finalistas serán anunciados el 19 de septiembre en redes sociales y se comunicará vía mail a los participantes.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Jurado estará compuesto por miembros designados por la UNIVERSIDAD EUROPEA DE MADRID.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El jurado podrá declarar desierto el Premio. En este caso, la cuantía del Premio se reservará para la siguiente edición.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El premio del público se recogerá de las votaciones realizadas a través de la cuenta oficial de Instagram de Creative Campus y serán votados los cortometrajes seleccionados finalistas por el jurado. La votación comenzará desde el momento que se anuncie la lista finalista del jurado hasta que se visionen los cortometrajes en la gala de entrega de premios. El ganador será el que más votos haya obtenido.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los premiados se comprometen a hacer figurar en el cortometraje y sus comunicaciones públicas el laurel del festival.</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Datos de carácter personal</span>
-    <p style=\"margin: 0;\">El Candidato otorga pleno consentimiento y acepta en su totalidad las bases de participación en la presente convocatoria. Los datos que se faciliten a la UNIVERSIDAD en virtud de las presentes bases serán tratados por el responsable del tratamiento, UNIVERSIDAD EUROPEA DE MADRID, S.A.U., para las finalidades de gestión de la presente convocatoria y gestión de actividades varias para las cuales entrega sus datos, así como la remisión de publicidad y actividades de la Universidad que pudiera ser del interés del titular de los datos. Los datos facilitados en virtud de la presente solicitud se incluirán en los sistemas del responsable. Asimismo, de no manifestar fehacientemente lo contrario, usted consiente expresamente el tratamiento de dichos datos por el tiempo que sea necesario para cumplir con los fines indicados. El titular de los datos tiene derecho a acceder, rectificar y suprimir los datos, limitar su tratamiento, oponerse al tratamiento y ejercer su derecho a la portabilidad de los datos de carácter personal, todo ello de forma gratuita, tal como se detalla en la Política de Privacidad de las citadas entidades, en el enlace https://universidadeuropea.es/politica-de-privacidad. Podrá efectuar cualquier consulta en relación con el tratamiento de sus datos personales, así como ejercer los derechos antedichos, en la dirección que prefiera: dpo@universidadeuropea.es</p>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px;  border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">DISPOSICIONES FINALES</span>
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador formado por 3 profesores de la Universidad Europea de Madrid, será el responsable del buen desarrollo del concurso.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador se reservará el derecho de aplicar cualquier cambio a estas bases que ayude a mejorar la consecución de los objetivos del presente concurso.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador del concurso se reservará el derecho de anular o cancelar la totalidad o parte del concurso en caso de detectar el fraude o incumplimiento de las normas. En este caso, se reservará el derecho de no dar un premio a cualquier participante fraudulento. Una acción fraudulenta descalificará inmediatamente a la persona que la cometa.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> El Comité Organizador será quien determine y comunique cualquier cambio o excepción que afecte las presentes bases.</li>
-    </ul>
-  </div>
-
-  <div style=\"margin: 25px 0; padding: 15px; border-radius: 4px; margin-right: 32px; margin-left: 32px;\">
-    <span style=\"font-size: 1.6em; font-weight: 600; text-transform: uppercase; color: #000; display: block; margin-bottom: 12px;\">Aceptación de las Bases:</span>
-    <ul style=\"padding-left: 0; margin: 12px 0 0 0; list-style: none;\">
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Los participantes, por el hecho de presentar sus candidaturas, aceptan las presentes bases y la decisión del Jurado, renunciando a toda reclamación.</li>
-      <li style=\"margin: 8px 0; position: relative; padding-left: 22px;\"><span style=\"position: absolute; left: 0; color: #e60012; font-size: 0.8em;\">▪</span> Las presentes bases que serán publicadas en la presente página y en la web designada de la Universidad Europea, se aplicarán a partir de la fecha de su publicación.</li>
-    </ul>
-  </div>
-
-</div>',1);
+                    ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                     
                 INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador, fecha_envio_email_informativo, fecha_borrado_datos) VALUES
                     (2024, 'Resumen 2024', 120, 'anterior', 1, CURDATE(), CURDATE()),
+                    (2025, 'Resumen 2025', 150, 'anterior' , 1, CURDATE(), CURDATE()),
                     (2026, 'Resumen 2026', NULL, 'actual'  , 1, CURDATE(), CURDATE());
                 
                 INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
-                    (1, 'Documental'  , 'Juan Pérez' , 'Mejor Documental'  , 1),
-                    (1, 'Cortometraje', 'María López', 'Mejor Cortometraje', 4);
-                
-                INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES (1, 2);
+                    (1, 'Documental', 'Juan Pérez', 'Mejor Documental', 1),
+                    (1, 'Cortometraje', 'María López', 'Mejor Cortometraje', 4),
+                    (2, 'Animación', 'Ana Gómez', 'Mejor Animación', 2),
+                    (2, 'Ficción', 'Luis Ruiz', 'Mejor Ficción', 3);
                 
                 INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES
-                (1, 1),
-                (2, 1),
-                (3, 2),
-                (4, 2);
+                (16, 1),
+                (17, 1),
+                (18, 1),
+                (19, 1),
+                (16, 2),
+                (17, 2),
+                (18, 2),
+                (19, 2),
+                (16, 3),
+                (17, 3),
+                (18, 3),
+                (19, 3);
                 
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador, id_archivo_imagen) VALUES
-                ('Anuncio del festival', 'Lanzamiento oficial del festival de cortometrajes.', '2024-05-01', 1, 4),
-                ('Jurado confirmado', 'Presentación del jurado para esta edición.', '2024-05-10', 1, 3),
-                ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 5),
-                ('Ganadores 2024', 'Lista de ganadores del festival de cortometrajes 2024.', '2024-12-20', 1, 4),
-                ('Convocatoria 2025', 'Apertura de inscripciones para la edición 2025.', '2024-12-31', 1, 4),
-                ('Evento especial', 'Anuncio de un evento especial durante el festival.', '2024-06-20', 1, 5),
-                ('Colaboración con escuelas', 'Nuevas colaboraciones con escuelas de cine.', '2024-07-05', 1, 5),
-                ('Talleres para participantes', 'Talleres gratuitos para los inscritos en el festival.', '2024-08-15', 1, 6);
+                ('Anuncio del festival', 'Lanzamiento oficial del festival de cortometrajes.', '2024-05-01', 1, 16),
+                ('Jurado confirmado', 'Presentación del jurado para esta edición.', '2024-05-10', 1, 17),
+                ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 18),
+                ('Ganadores 2024', 'Lista de ganadores del festival de cortometrajes 2024.', '2024-12-20', 1, 16),
+                ('Convocatoria 2025', 'Apertura de inscripciones para la edición 2025.', '2024-12-31', 1, 16),
+                ('Evento especial', 'Anuncio de un evento especial durante el festival.', '2024-06-20', 1, 18),
+                ('Colaboración con escuelas', 'Nuevas colaboraciones con escuelas de cine.', '2024-07-05', 1, 18),
+                ('Talleres para participantes', 'Talleres gratuitos para los inscritos en el festival.', '2024-08-15', 1, 17);
                 
                 INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_organizador, id_archivo_imagen) VALUES
-                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', CURDATE(), '19:00', '21:00', 1, 3),
-                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', CURDATE(), '10:00', '13:00', 1, 4),
-                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', CURDATE(), '20:00', '22:00', 1, 5),
-                ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 6),
-                ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 7),
-                ('Proyección de cortos ganadores', 'Proyección de los cortometrajes ganadores de ediciones anteriores.', 'Cine Secundario', CURDATE(), '15:00', '17:00', 1, 4),
-                ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 5),
-                ('Fiesta de clausura', 'Fiesta para celebrar el cierre del festival.', 'Club Nocturno', CURDATE(), '23:00', '02:00', 1, 6),
-                ('Proyección temática', 'Proyección de cortometrajes con temática específica.', 'Cine Temático', CURDATE(), '14:00', '16:00', 1, 4);
+                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', CURDATE(), '19:00', '21:00', 1, 11),
+                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', CURDATE(), '10:00', '13:00', 1, 12),
+                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', CURDATE(), '20:00', '22:00', 1, 13),
+                ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 14),
+                ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 15),
+                ('Proyección de cortos ganadores', 'Proyección de los cortometrajes ganadores de ediciones anteriores.', 'Cine Secundario', CURDATE(), '15:00', '17:00', 1, 12),
+                ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 13),
+                ('Fiesta de clausura', 'Fiesta para celebrar el cierre del festival.', 'Club Nocturno', CURDATE(), '23:00', '02:00', 1, 14),
+                ('Proyección temática', 'Proyección de cortometrajes con temática específica.', 'Cine Temático', CURDATE(), '14:00', '16:00', 1, 12);
                 
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
-                ('Canon', 4);
-                
-               
+                ('Canon', 19);
                 
                 -- UPDATES
                 UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 16;
@@ -432,7 +322,7 @@ function crearBaseDatosSiNoExiste()
                 INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
                 (2, 'Finalista', true);
                 
-                UPDATE candidatura SET sinopsis = 'En el caótico ecosistema de la Universidad Estatal, Álex, un estudiante experto en procrastinar, se enfrenta a su mayor pesadilla: el \'Lunes Negro\'. Tras quedarse dormido para el examen final que define su graduación, debe cruzar un campus convertido en una carrera de obstáculos surrealista. Entre reclutadores de sectas de café y la temida \'Hermandad del Silencio\' en la biblioteca, la jornada se vuelve una sátira sobre la desesperación académica. \'Crónicas del Campus\' es una oda humorística a esos años donde el mayor drama es conseguir una fotocopia antes del cierre.' WHERE id_candidatura = 6;
+                UPDATE candidatura SET sinopsis = 'En el caótico ecosistema de la Universidad Estatal, Álex, un estudiante experto en procrastinar, se enfrenta a su mayor pesadilla: el \\'Lunes Negro\\'. Tras quedarse dormido para el examen final que define su graduación, debe cruzar un campus convertido en una carrera de obstáculos surrealista. Entre reclutadores de sectas de café y la temida \\'Hermandad del Silencio\\' en la biblioteca, la jornada se vuelve una sátira sobre la desesperación académica. \\'Crónicas del Campus\\' es una oda humorística a esos años donde el mayor drama es conseguir una fotocopia antes del cierre.' WHERE id_candidatura = 6;
                 
                 UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 6;
                 INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
@@ -440,6 +330,20 @@ function crearBaseDatosSiNoExiste()
                 UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 6;
                 INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
                 (6, 'Finalista', true);
+                
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 2;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (2, 'Aceptada', true);
+                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 2;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (2, 'Finalista', true);
+                
+                UPDATE candidatura
+                SET id_archivo_trailer = id_archivo_video
+                WHERE estado = 'Finalista' AND id_archivo_trailer IS NULL;
+                
+                INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(1, 1);
+                INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(4, 2);
                 
             ";
 

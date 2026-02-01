@@ -290,16 +290,6 @@
 }
 
 
-
-/*Carrusel con las portadas de los cortos*/
-
-.carousel-info-corto {
-    width: 100%;
-    max-width:792px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
 .carousel-track-info-corto {
     display: flex;
     transition: transform 0.4s ease-in-out;

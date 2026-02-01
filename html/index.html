@@ -8,6 +8,7 @@
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/libraries/air-datepicker.min.css">
     <link rel="stylesheet" href="../css/utils.css">
 
     <script src="../js/common.js"></script>
@@ -18,80 +19,33 @@
 <body>
     <home-header></home-header>
 
-    <div class="home-content d-flex flex-column  justify-content-center align-items-center" id="home-content">
+    <div class="home-content d-flex flex-column justify-content-center align-items-center gap-48px">
 
-        <section class="hero d-flex justify-content-space-between align-items-center flex-row">
-            <div class="d-flex flex-column gap-24px">
-                <h1>Participa en el III Concurso de Cortos de la Universidad Europea</h1>
-                <p>Sube tu corto y participa en el concurso.</p>
-                <a class="primary-btn text-center" href="subir-corto.html">Subir corto</a>
-            </div>
-            <div class="video-presentacion-concurso" controls>
-                <div class="btn-play-video">
-                    <span class="play-video"></span>
+        <div class="bg-neutral-01 text-neutral-09 w-100">
+            <section class="container py-80px w-100 d-grid grid-template-columns-1 grid-md-template-columns-2 gap-24px justify-space-between align-items-center">
+                <div class="d-flex flex-column gap-24px">
+                    <h2 class="fs-48px">Tu talento merece ser visto: III Edición del Festival de Cortos UE</h2>
+                    <p class="fs-20px">Sube tu corto y participa en el concurso</p>
+                    <a class="primary-button-03 py-16px fs-20px text-center w-max-content px-32px" href="subir-corto.html">Subir corto</a>
                 </div>
-                <video class="presentacion-concurso">
-                    <source src="../uploads/public/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
-                </video>
-            </div>
-        </section>
 
-        <div class="space-ediciones-anteriores d-flex flex-column gap-48px">
+                <div class="">
+                    <video-player-component
+                            src="../img/5222537-uhd_3840_2160_30fps.mp4"
+                    ></video-player-component>
+                </div>
+            </section>
+        </div>
+
+        <div class="container-md-to-lg d-flex flex-column gap-48px justify-content-center align-items-center">
             <span class="space-ediciones-anteriores-text m">Revive el talento de ediciones anteriores</span>
 
-            <div class="carousel-ediciones-anteriores">
+            <carousel-component
+                    id="edicionesAnterioresCarousel"
+                    gap="24"
+                    responsive='{"0": 1, "576": 1, "768": 2, "992": 2, "1200": 2, "1400": 2}'
+            ></carousel-component>
 
-                <div class="carousel-track-edicion-anterior">
-                    <div class="slide-edicion-anterior">
-                        <div class="edicion-anterior d-flex flex-column gap-16px">
-                            <div class="img-container">
-                                <img class="img-edicion-anterior" src="../img/festival-foto-2.jpg" alt="Edición 2023">
-                            </div>
-                            <div class="texto-edicion-anterior d-flex gap-4px flex-column">
-                                <span class="num-edicion">Edición 2024</span>
-                                <span class="text-edicion">Una gala inolvidable</span>
-                                <span class="participantes-ganadores">110 participantes y 5 ganadores</span>
-                            </div>
-                            <div class="flecha-container">
-                                <span class="flecha-derecha"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-edicion-anterior">
-                        <div class="edicion-anterior d-flex flex-column gap-16px">
-                            <div class="img-container">
-                                <img class="img-edicion-anterior" src="../img/festival-foto-2.jpg" alt="Edición 2023">
-                            </div>
-                            <div class="texto-edicion-anterior d-flex gap-4px flex-column">
-                                <span class="num-edicion">Edición 2024</span>
-                                <span class="text-edicion">Una gala inolvidable</span>
-                                <span class="participantes-ganadores">110 participantes y 5 ganadores</span>
-                            </div>
-                            <div class="flecha-container">
-                                <span class="flecha-derecha"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-edicion-anterior">
-                        <div class="edicion-anterior d-flex flex-column gap-16px">
-                            <div class="img-container">
-                                <img class="img-edicion-anterior" src="../img/festival-foto-2.jpg" alt="Edición 2023">
-                            </div>
-                            <div class="texto-edicion-anterior d-flex gap-4px flex-column">
-                                <span class="num-edicion">Edición 2024</span>
-                                <span class="text-edicion">Una gala inolvidable</span>
-                                <span class="participantes-ganadores">110 participantes y 5 ganadores</span>
-                            </div>
-                            <div class="flecha-container">
-                                <span class="flecha-derecha"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="indicators-edicion-anterior-container">
-                </div>
-            </div>
         </div>
 
         <div class="space-calendario-eventos d-flex gap-48px flex-column px-96px">
@@ -177,30 +131,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="noticia-slide">
-                                <div class="noticia">
-                                    <div class="img-noticia-contenedor">
-                                        <img class="img-noticia" src="../img/8af8cd7e799be1b89c542ebbf842f31bc9475db1.jpg" alt="Noticia 1">
-                                    </div>
-                                    <div class="noticia-texto d-flex flex-column gap-8px">
-                                        <span class="fecha-noticia">23 de enero</span>
-                                        <span class="title-noticia">La Universidad Europea da la bienvenida a sus estudiantes de intercambio del segundo semestre</span>
-                                        <span class="noticia-content">Organizado por la Oficina de Relaciones Internacionales del Vicerrectorado de Estudiantes y Vida Universitaria</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="noticia-slide">
-                                <div class="noticia">
-                                    <div class="img-noticia-contenedor">
-                                        <img class="img-noticia" src="../img/8af8cd7e799be1b89c542ebbf842f31bc9475db1.jpg" alt="Noticia 1">
-                                    </div>
-                                    <div class="noticia-texto d-flex flex-column gap-8px">
-                                        <span class="fecha-noticia">23 de enero</span>
-                                        <span class="title-noticia">La Universidad Europea da la bienvenida a sus estudiantes de intercambio del segundo semestre</span>
-                                        <span class="noticia-content">Organizado por la Oficina de Relaciones Internacionales del Vicerrectorado de Estudiantes y Vida Universitaria</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -239,38 +169,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="premio-slide">
-                                <div class="premio d-flex flex-column">
-                                    <span class="categoria">Mejor Cortometraje UE</span>
-                                    <span class="icon-premio"></span>
-                                    <span class="puesto">Primer premio</span>
-                                    <div class="premio-cantidad d-flex flex-row">
-                                        <div class="cantidad d-flex flex-row gap-8px">
-                                            <span class="icon-billete"></span>
-                                            <span class="numero">600€</span>
-                                        </div>
-                                        <div class="premio-patrocinador">
-                                            <span class="texto-premio">+ Premio del patrocinador Canon</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="premio-slide">
-                                <div class="premio d-flex flex-column">
-                                    <span class="categoria">Mejor Cortometraje UE</span>
-                                    <span class="icon-premio"></span>
-                                    <span class="puesto">Primer premio</span>
-                                    <div class="premio-cantidad d-flex flex-row">
-                                        <div class="cantidad d-flex flex-row gap-8px">
-                                            <span class="icon-billete"></span>
-                                            <span class="numero">600€</span>
-                                        </div>
-                                        <div class="premio-patrocinador">
-                                            <span class="texto-premio">+ Premio del patrocinador Canon</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -286,8 +184,11 @@
 
     <home-footer></home-footer>
     <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/video-player-component.js"></script>
+    <script src="../js/components/carousel-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
+    <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/index.js"></script>
 </body>
 

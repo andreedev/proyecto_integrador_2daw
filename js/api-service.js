@@ -367,3 +367,10 @@ async function actualizarCandidatura(idCandidatura, titulo, sinopsis, idPoster, 
 
     return await fetchAPI(data);
 }
+
+async function obtenerDatosHome(){
+    const data = new FormData();
+    data.append('action', 'obtenerDatosHome');
+
+    return await fetchAPI(data);
+}

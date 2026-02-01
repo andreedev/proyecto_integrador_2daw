@@ -21,13 +21,16 @@
  $port = 20236;
 
 function abrirConexion() {
-    global $conexion, $servidor, $usuario, $password, $port;
+    global $conexion, $servidor, $usuario, $password, $port, $db;
 
     $conexion = new mysqli($servidor, $usuario, $password, null, $port);
 
     if ($conexion->connect_error) {
         header("Content-Type: application/json; charset=UTF-8");
-        echo json_encode(["status" => "error", "message" => "Error de servidor: " . $conexion->connect_error]);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error de servidor: " . $conexion->connect_error
+        ]);
         exit;
     }
 }
