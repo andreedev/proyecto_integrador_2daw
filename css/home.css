@@ -129,20 +129,11 @@
     background: var(--primary-03);
 }
 
-.space-calendario-eventos{
-    width: 100%;
-    background-color: var(--neutral-08);
-    padding: 48px 0px;
-    justify-content: center;
-    align-items: center;
-}
-
 .space-calendario-eventos-text{
     font-size: 39px;
     line-height: 120%;
     color: var(--neutral-01);
     font-weight: 600;
-    margin: 0px 96px;
 }
 
 .calendario-evento{
@@ -179,10 +170,6 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-}
-
-.evento-texto{
-    position: relative;
 }
 
 .evento-title{
