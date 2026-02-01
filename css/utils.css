@@ -915,6 +915,30 @@
     font-size: 16px;
 }
 
+@media (min-width: 480px) {
+    .fs-xs-16px{
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-16px{
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-16px{
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-16px{
+        font-size: 16px;
+    }
+}
+
 .fs-18px{
     font-size: 18px;
 }

@@ -153,8 +153,15 @@
 }
 
 .img-evento-container{
-    width:251px;
-    height:168px;
+    width: 100%;
+    height: 100%;
+}
+
+@media (min-width: 768px) {
+    .img-evento-container{
+        width:251px;
+        height:168px;
+    }
 }
 
 .img-evento{
@@ -552,4 +559,14 @@
 .premio:hover {
     background-color: var(--primary-03);
     color: var(--neutral-09);
+}
+
+.calendario-eventos{
+    width: 100%;
+}
+
+@media (min-width: 578px){
+    .calendario-eventos{
+        width: 350px;
+    }
 }

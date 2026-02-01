@@ -2170,8 +2170,28 @@ function obtenerNoticiasDestacadas(){
     return $noticias;
 }
 
+/**
+ * Obtener premios y su categoria como campo adicional
+ */
 function obtenerPremios(){
-
+    global $conexion;
+    $query = "SELECT 
+                p.id_premio as idPremio,
+                p.nombre as nombrePremio,
+                p.incluye_dinero as incluyeDinero,
+                p.cantidad_dinero as cantidadDinero,
+                c.nombre as nombreCategoria
+              FROM premio p
+              INNER JOIN categoria c ON p.id_categoria = c.id_categoria
+              ORDER BY c.nombre, p.nombre";
+    $stmt = $conexion->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $premios = [];
+    while ($row = $result->fetch_assoc()) {
+        $premios[] = $row;
+    }
+    return $premios;
 }
 
 function obtenerFechasEventoPorMesAnio(){

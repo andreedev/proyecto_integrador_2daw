@@ -24,7 +24,7 @@
         <div class="bg-neutral-01 text-neutral-09 w-100">
             <section class="container py-80px w-100 d-grid grid-template-columns-1 grid-md-template-columns-2 gap-48px justify-space-between align-items-center">
                 <div class="d-flex flex-column gap-24px">
-                    <h2 class="fs-48px">Tu talento merece ser visto: III Edición del Festival de Cortos UE</h2>
+                    <h2 class="fs-36px fs-md-48px">Tu talento merece ser visto: III Edición del Festival de Cortos UE</h2>
                     <p class="fs-20px">Sube tu corto y participa en el concurso</p>
                     <a class="primary-button-03 py-16px fs-20px text-center col-12 col-md-8 px-32px" href="subir-corto.html">Subir corto</a>
                 </div>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="container-md-to-lg d-flex flex-column gap-48px py-48px justify-content-center align-items-center">
-            <span class="fs-40px fw-600">Revive el talento de ediciones anteriores</span>
+            <span class="fs-24px fs-md-40px fw-600">Revive el talento de ediciones anteriores</span>
 
             <carousel-component
                     id="edicionesAnterioresCarousel"
@@ -49,14 +49,14 @@
         </div>
 
         <div class="bg-neutral-08 w-100 py-48px">
-            <div class="container justify-content-center align-items-center w-100 d-flex gap-48px flex-column">
-                <span class="fs-40px fw-600">No te pierdas nada: Agenda de eventos</span>
+            <div class="container-sm px-24px justify-content-center align-items-center w-100 d-flex gap-48px flex-column">
+                <span class="fs-24px fs-md-40px fw-600">No te pierdas nada: Agenda de eventos</span>
 
                 <div class="d-flex flex-column flex-md-row gap-56px" >
                     <date-component
                             id="eventoDatepicker"
                             inline
-                            width="350px">
+                            class="calendario-eventos">
                     </date-component>
 
                     <div class="eventos scrollbar-style-1 d-flex gap-16px flex-column" id="eventosLista">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="container-lg-to-xl d-flex flex-column gap-48px py-48px justify-content-center align-items-center">
-            <span class="fs-40px fw-600">Las noticias más destacadas</span>
+            <span class="fs-24px fs-md-40px fw-600">Las noticias más destacadas</span>
 
             <carousel-component
                     id="noticiasDestacadasCarousel"
@@ -76,6 +76,20 @@
             ></carousel-component>
 
         </div>
+
+        <div class="w-100 bg-neutral-08">
+            <div class="container-lg-to-xl d-flex flex-column gap-48px py-48px justify-content-center align-items-center ">
+                <span class="fs-24px fs-md-40px fw-600">Reconocemos tu creatividad</span>
+
+                <carousel-component
+                        id="premiosCarousel"
+                        gap="24"
+                        responsive='{"0": 1, "576": 2, "768": 2, "992": 3, "1200": 3, "1400": 3}'
+                ></carousel-component>
+
+            </div>
+        </div>
+
 
 
 

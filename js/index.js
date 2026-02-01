@@ -1,6 +1,7 @@
 const eventoDatepicker = document.getElementById('eventoDatepicker');
 const edicionesAnterioresCarousel = document.getElementById('edicionesAnterioresCarousel');
 const noticiasDestacadasCarousel = document.getElementById('noticiasDestacadasCarousel');
+const premiosCarousel = document.getElementById('premiosCarousel');
 
 (async function cargarHome() {
     const response = await obtenerDatosHome();
@@ -15,6 +16,7 @@ async function cargarFechasConEventos(mes, anio) {
 function renderizarHome(datosHome) {
     renderizarEdicionesAnteriores(datosHome.edicionesAnteriores);
     renderizarNoticiasDestacadas(datosHome.noticiasDestacadas);
+    renderizarPremios(datosHome.premios);
 }
 
 function renderizarEdicionesAnteriores(edicionesAnteriores) {
@@ -85,7 +87,7 @@ function renderizarEventos(eventos) {
                     <span class="icono-reloj"></span>
                     <span class="hora">${horaInicioEvento.substring(0,5)} - ${horaFinEvento.substring(0,5)}</span>
                 </div>
-                <span class="descipcion-evento">${descripcionEvento}</span>
+                <span class="fs-12px fs-md-16px">${descripcionEvento}</span>
                 <div class="flecha-container">
                     <span class="flecha-derecha"></span>
                 </div>
@@ -102,27 +104,6 @@ function renderizarEventos(eventos) {
     }
 }
 
-/**
- * <div class="noticia">
- *                                     <div class="img-noticia-contenedor">
- *                                         <img class="img-noticia" src="../img/8af8cd7e799be1b89c542ebbf842f31bc9475db1.jpg" alt="Noticia 1">
- *                                     </div>
- *                                     <div class="noticia-texto d-flex flex-column gap-8px">
- *                                         <span class="fecha-noticia">23 de enero</span>
- *                                         <span class="title-noticia">La Universidad Europea da la bienvenida a sus estudiantes de intercambio del segundo semestre</span>
- *                                         <span class="noticia-content">Organizado por la Oficina de Relaciones Internacionales del Vicerrectorado de Estudiantes y Vida Universitaria</span>
- *                                     </div>
- *                                 </div>
- *
- *   {
- *                 "idNoticia": 5,
- *                 "nombreNoticia": "Convocatoria 2025",
- *                 "descripcionNoticia": "Apertura de inscripciones para la edici\u00f3n 2025.",
- *                 "fechaNoticia": "2024-12-31",
- *                 "rutaImagenNoticia": "http:\/\/localhost\/DWES\/proyecto_integrador_2daw\/uploads\/public\/festival1.png",
- *                 "nombreOrganizador": "Organizador Madrid"
- *             },
- */
 function renderizarNoticiasDestacadas(noticias) {
     const slides = noticias.map(noticia => {
         const { idNoticia, nombreNoticia, descripcionNoticia, fechaNoticia, rutaImagenNoticia } = noticia;
@@ -131,15 +112,15 @@ function renderizarNoticiasDestacadas(noticias) {
         const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
 
         return `
-            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column gap-16px cursor-pointer box-shadow-01 m-1px" 
+            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column cursor-pointer box-shadow-01 m-1px" 
                  onclick="window.location.href='detalle_noticia.html?id=${idNoticia}'">
                 <div class="w-100">
                     <img class="w-100" src="${rutaImagenNoticia}" alt="Noticia ${idNoticia}">
                 </div>
                 <div class="d-flex flex-column gap-8px p-16px position-relative pb-16px">
                     <div class="texto-noticia-destacada d-flex gap-4px flex-column">
-                        <span class="fecha-noticia-destacada">${fechaFormateada}</span>
-                        <span class="title-noticia-destacada">${nombreNoticia}</span>
+                        <span class="fs-14px text-right">${fechaFormateada}</span>
+                        <span class="fw-600 fs-20px">${nombreNoticia}</span>
                         <span class="descripcion-noticia-destacada">${descripcionNoticia}</span>
                     </div>
                 </div>
@@ -151,5 +132,13 @@ function renderizarNoticiasDestacadas(noticias) {
     });
 
     noticiasDestacadasCarousel.setSlides(slides);
+}
+
+/**
+ *
+ *
+ */
+function renderizarPremios(premios) {
 
 }
+
