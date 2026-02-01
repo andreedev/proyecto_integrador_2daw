@@ -896,6 +896,9 @@
     line-height: 120%;
 }
 
+.fs-8px{
+    font-size: 8px;
+}
 .fs-10px{
     font-size: 10px;
 }
@@ -1366,7 +1369,7 @@
 }
 
 .icon-clock{
-    mask-image: url('../img/icon/icon-sandclock.svg');
+    mask-image: url('../img/icon/icon-time.svg');
     mask-repeat: no-repeat;
     mask-size: contain;
     mask-position: center;

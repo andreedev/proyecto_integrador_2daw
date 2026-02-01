@@ -385,7 +385,7 @@ function renderizarHistorial(historial) {
         const isRechazada = item.estado === ESTADOS_CANDIDATURA.RECHAZADA;
 
         const itemDiv = document.createElement('div');
-        itemDiv.className = `timeline-item d-flex gap-24px mb-32px position-relative z-index-1`;
+        itemDiv.className = `timeline-item d-flex align-items-center gap-24px mb-32px position-relative z-index-1`;
 
         let messageHtml = '';
         if (item.motivo && item.motivo.trim() !== "") {
@@ -395,29 +395,29 @@ function renderizarHistorial(historial) {
 
             messageHtml = `
             <div class="d-flex gap-16px p-16px mt-12px rounded-8px border-solid border-1px ${bgBox} ${borderBox}">
-                <div class="w-32px h-32px border-radius-50 d-flex align-items-center justify-content-center border-solid border-2px ${borderBox} ${textColor} fw-bold fs-18px">
-                    ${isRechazada ? '!' : 'i'}
-                </div>
+                <div class="w-32px h-32px border-radius-50 d-flex align-items-center justify-content-center fw-bold fs-18px">
+                <span class="icon-warning w-24px h-24px bg-${config.color}-01 "></span>
+            </div>
                 <div class="d-flex flex-column gap-4px w-100">
-                    <span class="fs-14px fw-700 ${textColor}">${isRechazada ? 'Motivo del Rechazo:' : 'Subsanación enviada:'}</span>
-                    <p class="fs-14px m-0 ${textColor}">${item.motivo}</p>
+                    <span class="fs-14px fw-400 ${textColor}">${isRechazada ? 'Motivo del Rechazo:' : 'Subsanación enviada:'}</span>
+                    <p class="fs-14px fw-600 m-0 ${textColor}">${item.motivo}</p>
                 </div>
             </div>`;
         }
 
         itemDiv.innerHTML = `
             <div class="d-flex flex-column align-items-center position-relative">
-                <div class="w-40px h-40px border-radius-50 d-flex align-items-center justify-content-center bg-neutral-09 border-solid border-${config.color}-02 text-${config.color}-01 shadow-01">
+                <div class="w-40px h-40px border-radius-50 d-flex align-items-center justify-content-center bg-neutral-09 border-solid border-${config.color}-02 text-${config.color}-01 shadow-01 bg-${config.color}-04">
                     <span class="icon-clock w-20px h-20px bg-${config.color}-01"></span>
                 </div>
             </div>
 
             <div class="d-flex flex-column flex-1 w-100">
                 <div class="d-flex align-items-center gap-16px">
-                    <span class="px-12px py-4px rounded-4px fs-12px fw-600 bg-${config.color}-04 text-${config.color}-01 border-solid  border-${config.color}-02">
+                    <span class="px-12px py-4px rounded-4px fs-8px fw-600 bg-${config.color}-04 text-${config.color}-01 border-solid  border-${config.color}-02">
                         ${item.estado.toUpperCase()}
                     </span>
-                    <span class="fs-14px text-neutral-04">
+                    <span class="fs-12px text-neutral-04">
                         ${formatDateTimeToSpanish(item.fechaHora)}
                     </span>
                 </div>
