@@ -1,46 +1,42 @@
-.container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-.hero-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 40px 0;
-    background: var(--neutral-09);
-}
-
-.hero-text {
-    flex: 1;
+.pf-header{
+    margin: 40px 80px;
     text-align: center;
-    padding: 0 30px;
+    position: relative;
 }
 
-.hero-text h1 {
-    font-size: 2.8rem;
-    margin: 0 0 12px 0;
+.bloque1{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    position: absolute;
+    width: 142px;
+    height: 95px;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    background-color: var(--primary-03);
+    left:-80px;
+    top:16px;
+    transform: rotateY(180deg) rotateX(180deg);
+}
+
+.bloque2{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    position: absolute;
+    width: 142px;
+    height: 95px;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    background-color: var(--primary-03);
+    left:362px;
+    top:164px;
+    transform: rotateX(180deg);
+}
+
+.title{
+    font-size: 49px;
+    font-weight: 600;
     color: var(--neutral-01);
-}
-
-.hero-text p {
-    color: var(--neutral-03);
-    font-size: 1.2rem;
-    line-height: 1.6;
-}
-
-.hero-image {
-    flex: 1;
     text-align: center;
-    padding: 0 30px;
+    margin-bottom: 40px;
 }
-
-.hero-image img {
-    max-width: 100%;
-    height: auto;
-}
-
 .faq-container {
     background: var(--neutral-09);
     margin-top: 30px;
@@ -123,7 +119,7 @@
 }
 
 .contact-info a {
-    color: var(--primary-02);
+    color: var(--primary-03);
 }
 
 /* Diseño responsive */
