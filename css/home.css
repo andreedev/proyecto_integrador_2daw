@@ -129,13 +129,6 @@
     background: var(--primary-03);
 }
 
-.space-calendario-eventos-text{
-    font-size: 39px;
-    line-height: 120%;
-    color: var(--neutral-01);
-    font-weight: 600;
-}
-
 .calendario-evento{
     margin: 0px 96px 0px 96px;
 }
@@ -148,7 +141,6 @@
 
 .eventos{
     overflow-y: scroll;
-    scrollbar-width: none;
     height: 368px;
     padding:4px;
 }

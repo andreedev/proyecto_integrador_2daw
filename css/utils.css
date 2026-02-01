@@ -2598,3 +2598,24 @@ dialog::backdrop {
 .touch-action-pan-y{
     touch-action: pan-y;
 }
+
+.scrollbar-style-1{
+    scrollbar-width: thin;
+    scrollbar-color: var(--neutral-04) transparent;
+}
+.scrollbar-style-1::-webkit-scrollbar {
+    width: 8px;
+    display: block;
+}
+.scrollbar-style-1::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scrollbar-style-1::-webkit-scrollbar-thumb {
+    background-color: var(--neutral-04);
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+.scrollbar-style-1::-webkit-scrollbar-thumb:hover {
+    background-color: var(--neutral-03);
+}

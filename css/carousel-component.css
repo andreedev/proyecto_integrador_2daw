@@ -1,5 +1,5 @@
 .carousel-container {
-    padding: 0 24px; /* Space for arrows */
+    padding: 0 24px;
 }
 
 @media (max-width: 992px) {

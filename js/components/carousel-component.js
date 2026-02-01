@@ -67,6 +67,7 @@ class CarouselComponent extends HTMLElement {
 
     render() {
         const gap = this.getAttribute('gap') || '24';
+        this.style.width = '100%';
 
         this.innerHTML = `
             <div class="carousel-container position-relative w-100 d-flex flex-column align-items-center">
