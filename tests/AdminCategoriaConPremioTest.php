@@ -1,7 +1,29 @@
 <?php
+
 require_once __DIR__ . '/../src/php/api.php';
 
-class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
+class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase
+{
+
+    /**
+     * Se ejecuta una sola vez al inicio: abre conexión y prepara tablas
+     */
+    public static function setUpBeforeClass(): void
+    {
+        abrirConexion();
+        crearBaseDatosSiNoExiste();
+    }
+
+    /**
+     * Se ejecuta una sola vez al final: cierra la conexión con el servidor
+     */
+    public static function tearDownAfterClass(): void
+    {
+        global $conexion;
+        if ($conexion) {
+            $conexion->close();
+        }
+    }
 
     /**
      * Configuración inicial antes de cada test.
@@ -9,11 +31,10 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
     protected function setUp(): void
     {
         global $conexion;
-        if (function_exists('abrirConexion')) abrirConexion();
-        if (function_exists('crearBaseDatosSiNoExiste')) crearBaseDatosSiNoExiste();
 
+        // Limpiar $_POST para evitar arrastrar datos de tests anteriores
         $_POST = [];
-        
+
         // Inicia una transacción para que los cambios no afecten a la base de datos real
         $conexion->begin_transaction();
     }
@@ -33,18 +54,22 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
      * Método auxiliar para capturar la salida de las funciones que usan 'echo'.
      * Convierte el JSON impreso en un array asociativo de PHP.
      */
-    private function capturarRespuestaAPI($funcion) {
-        ob_start(); // Inicia el buffer de salida
-        $funcion(); // Ejecuta la función de la API
-        $output = ob_get_clean(); // Captura el contenido y limpia el buffer
+    private function capturarRespuestaAPI($funcion)
+    {
+        ob_start();
+        try {
+            $funcion();
+        } finally {
+            $output = ob_get_clean();
+        }
         return json_decode($output, true);
     }
-
 
     /**
      * Verifica que se puedan listar las categorías con sus premios.
      */
-    public function testObtenerCategoriasConPremios() {
+    public function testObtenerCategoriasConPremios()
+    {
         $response = $this->capturarRespuestaAPI('obtenerCategoriasConPremios');
 
         $this->assertEquals('success', $response['status']);
@@ -54,7 +79,8 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
     /**
      * Verifica la creación de una nueva categoría junto con una lista de premios.
      */
-    public function testAgregarCategoriaConPremios() {
+    public function testAgregarCategoriaConPremios()
+    {
         $_POST['nombreCategoria'] = 'Categoría de Prueba';
         $_POST['premios'] = json_encode([
             ['nombre' => 'Premio 1', 'incluye_dinero' => true, 'cantidad_dinero' => 100],
@@ -63,7 +89,6 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
 
         $response = $this->capturarRespuestaAPI('agregarCategoriaConPremios');
 
-        // Validamos que la respuesta sea exitosa y contenga los datos correctos
         $this->assertEquals('success', $response['status']);
         $this->assertEquals('Categoría de Prueba', $response['data']['nombre']);
         $this->assertCount(2, $response['data']['premios']);
@@ -73,14 +98,13 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
     /**
      * Verifica la actualización del nombre de una categoría y sus premios asociados.
      */
-    public function testEditarCategoriaConPremios() {
+    public function testEditarCategoriaConPremios()
+    {
         global $conexion;
-        
-        // Creamos una categoría previa para poder editarla
+
         $conexion->query("INSERT INTO categoria (nombre) VALUES ('Original')");
         $idInsertado = $conexion->insert_id;
 
-        // Configuramos los nuevos datos en $_POST
         $_POST['idCategoria'] = $idInsertado;
         $_POST['nombreCategoria'] = 'Nombre Editado';
         $_POST['premios'] = json_encode([
@@ -96,10 +120,10 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
     /**
      * Verifica la eliminación lógica/física de una categoría.
      */
-    public function testEliminarCategoria() {
+    public function testEliminarCategoria()
+    {
         global $conexion;
 
-        // Creamos un registro temporal para borrar
         $conexion->query("INSERT INTO categoria (nombre) VALUES ('A Borrar')");
         $idABorrar = $conexion->insert_id;
 
@@ -112,16 +136,15 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase {
     }
 
     /**
-     * Este test prueba que haya pruebas que no funcionen o que estén incompletas.
+     * Verifica el manejo de errores por datos faltantes.
      */
-    public function testAgregarCategoriaFaltanDatos() {
-        // Enviamos nombre pero no enviamos el campo 'premios'
+    public function testAgregarCategoriaFaltanDatos()
+    {
         $_POST['nombreCategoria'] = 'Incompleta';
-        
+
         $response = $this->capturarRespuestaAPI('agregarCategoriaConPremios');
 
         $this->assertEquals('error', $response['status']);
         $this->assertEquals('Faltan datos', $response['message']);
     }
 }
-?>
