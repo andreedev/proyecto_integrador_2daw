@@ -1,215 +1,152 @@
-const btnCrearEdicionAnterior = document.getElementById("btnCrearEdicionAnterior");
+const btnCrearEdicionAnterior = document.getElementById('btnCrearEdicionAnterior');
+const modalCrearEdicionAnterior = document.getElementById('modalCrearEdicionAnterior');
+const modalVerEdicionAnterior = document.getElementById('modalVerEdicionAnterior');
+const modalEditarEdicionAnterior = document.getElementById('modalEditarEdicionAnterior');
+const notificador = document.getElementById('notificador');
+const edicionesContainer = document.getElementById('edicionesContainer');
+const paginacion = document.getElementById('paginacion');
+const btnConfirmarCrearEdicion = document.getElementById('btnConfirmarCrearEdicion');
+const inputYearCrearEdicion = document.getElementById('inputYearCrearEdicion');
+const inputNumParticipantesCrearEdicion = document.getElementById('inputNumParticipantesCrearEdicion');
+const descripcionInputCrearEdicion = document.getElementById('descripcionInputCrearEdicion');
 
-const numEdiciones = document.getElementById("numEdiciones");
+let tipo = 'anterior';
+let edicionSeleccionada = null;
 
-const editionCard = document.getElementById("editionCard");
-const editarEdicion = document.getElementById("editarEdicion");
-const eliminarEdicion = document.getElementById("eliminarEdicion");
-const editionTitle = document.getElementById("editionTitle");
-const statValueParticipantes = document.getElementById("statValueParticipantes");
-const statValueGanadores = document.getElementById("statValueGanadores");
-const statValueImagenes = document.getElementById("statValueImagenes");
-const statValueTipo = document.getElementById("statValueTipo");
+async function listarEdicionesAnteriores() {
+    const response = await listarEdiciones(tipo, paginacion.currentPage);
+    renderizarEdicionesAnteriores(response.data.list);
+    paginacion.setAttribute('current-page', response.data.currentPage);
+    paginacion.setAttribute('total-pages', response.data.totalPages);
+}
 
-/*Modal*/
-const label = document.getElementById("label");
-const labelNum = document.getElementById("labelNum");
-const labelResumen = document.getElementById("labelResumen");
-const labelNom = document.getElementById("labelNom");
-const labelCategoria = document.getElementById("labelCategoria");
-const labelPuesto = document.getElementById("labelPuesto");
-const icon =  document.getElementById("icon");
-const modalCrearEdicionAnterior = document.getElementById("modalCrearEdicionAnterior");
-const cerrarModalCrear = document.getElementById("cerrarModalCrear");
-const inputYear = document.getElementById("inputYear");
-const errorMessageYear = document.getElementById("errorMessageYear");
-const inputNumParticipantes = document.getElementById("inputNumParticipantes");
-const errorMessageNumParticipantes = document.getElementById("errorMessageNumParticipantes");
-const iconNum = document.getElementById("iconNum");
-const inputResumen = document.getElementById("inputResumen");
-const iconResumen = document.getElementById("iconResumen");
-const errorMessageResumen = document.getElementById("errorMessageResumen");
-
-const dropZoneCrearEdicion = document.getElementById("dropZoneCrearEdicion");
-const fileInputCrearEdicion = document.getElementById("fileInputCrearEdicion");
-const numImagenesVideos = document.getElementById("numImagenesVideos");
-
-const numGanadoresRegistrados = document.getElementById("numGanadoresRegistrados");
-const btnAgregarGanador = document.getElementById("btnAgregarGanador");
-const iconoEliminarGanador = document.getElementById("iconoEliminarGanador");
-const nombreGanador = document.getElementById("nombreGanador");
-const categoriaGanador = document.getElementById("categoriaGanador");
-const puestoGanador = document.getElementById("puestoGanador");
-const nombreVideoGanador = document.getElementById("nombreVideoGanador");
-const inputNombre = document.getElementById("inputNombre");
-const iconNom = document.getElementById("iconNom");
-const errorMessageNombre = document.getElementById("errorMessageNombre");
-const inputCategoria = document.getElementById("inputCategoria");
-const iconCategoria = document.getElementById("iconCategoria");
-const errorMessageCategoria = document.getElementById("errorMessageCategoria");
-const inputPuesto = document.getElementById("inputPuesto");
-const iconPuesto = document.getElementById("iconPuesto");
-const errorMessagePuesto = document.getElementById("errorMessagePuesto");
-
-const dropZoneVideoGanador = document.getElementById("dropZoneVideoGanador");
-const fileInputVideoGanador = document.getElementById("fileInputVideoGanador");
-
-const btnGuardarGanador = document.getElementById("btnGuardarGanador");
-
-const btnCancelarModal = document.getElementById("btnCancelarModal");
-const btnGuardarModal = document.getElementById("btnGuardarModal");
-
-
-/*Eventos*/
-btnCrearEdicionAnterior.addEventListener("click", () => {
-    modalCrearEdicionAnterior.showModal();
-})
-
-//Accion para que salga el modal  de editar edicion anterior
-
-//Accion para que se elimine la edicion anterior
-
-cerrarModalCrear.addEventListener("click", () => {
-    modalCrearEdicionAnterior.close();
+paginacion.addEventListener('page-change', async (e) => {
+    await listarEdicionesAnteriores();
 });
 
-btnCancelarModal.addEventListener("click", () => {
-    modalCrearEdicionAnterior.close();
+btnCrearEdicionAnterior.addEventListener('click', () => {
+    modalCrearEdicionAnterior.open();
 });
 
-// Focus si está vacío el imput
-inputYear.addEventListener("blur", () => {
-    if (inputYear.value.trim() === "") {
-        errorMessageYear.textContent = "* El año de edición es obligatorio.";
-        label.classList.add("incorrecto");
-        icon.classList.add("cross");
+btnConfirmarCrearEdicion.addEventListener('click', async () => {
+   const anioEdicionValid =  inputYearCrearEdicion.validate().valid;
+    const nroParticipantesValid = inputNumParticipantesCrearEdicion.validate().valid;
+    const descripcionValid = descripcionInputCrearEdicion.validate().valid;
 
-    } else{
-        errorMessageYear.textContent = "";
-        label.classList.remove("incorrecto");
-        icon.classList.remove("cross");
+    if (!anioEdicionValid || !nroParticipantesValid || !descripcionValid) {
+        return;
     }
-});
-
-inputNumParticipantes.addEventListener("blur", () => {
-    if (inputNumParticipantes.value.trim() === "") {
-        errorMessageNumParticipantes.textContent = "El número de participantes es obligatorio.";
-        labelNum.classList.add("incorrecto");
-        iconNum.classList.add("cross");
-    } else {
-        errorMessageNumParticipantes.textContent = "";
-        labelNum.classList.remove("incorrecto");
-        iconNum.classList.remove("cross");
-    }
-});
-
-inputResumen.addEventListener("blur", () => {
-    if (inputResumen.value.trim() === "") {
-        errorMessageResumen.textContent= "* El resumen es obligatorio.";
-        labelResumen.classList.add("incorrecto");
-        iconResumen.classList.add("cross");
-    } else {
-        errorMessageResumen.textContent = "";
-        labelResumen.classList.remove("incorrecto");
-        iconResumen.classList.remove("cross");
-    }
-});
-
-inputNombre.addEventListener("blur", () => {
-    if (inputNombre.value.trim() === "") {
-        errorMessageNombre.textContent = "* El nombre es obligatorio.";
-        labelNom.classList.add("incorrecto");
-        iconNom.classList.add("cross");
-    } else {
-        errorMessageNombre.textContent = "";
-        labelNom.classList.remove("incorrecto");
-        iconNom.classList.remove("cross");
-    }
-});
-
-inputCategoria.addEventListener("blur", () => {
-    if (inputCategoria.value.trim() === "") {
-        errorMessageCategoria.textContent = "* La categoría es obligatoria.";
-        labelCategoria.classList.add("incorrecto");
-        iconCategoria.classList.add("cross");
-    } else {
-        errorMessageCategoria.textContent = "";
-        labelCategoria.classList.remove("incorrecto");
-        iconCategoria.classList.remove("cross");
-    }
-});
-
-inputPuesto.addEventListener("blur", () => {
-    if (inputPuesto.value.trim() === "") {
-        errorMessagePuesto.textContent = "* El puesto es obligatorio.";
-        labelPuesto.classList.add("incorrecto");
-        iconPuesto.classList.add("cross");
-    } else {
-        errorMessagePuesto.textContent = "";
-        labelPuesto.classList.remove("incorrecto");
-        iconPuesto.classList.remove("cross");
-    }
-});
 
 
-// Si hay algo escrito en el input, que el label se quede arriba
-inputYear.addEventListener("input", () => {
-    if (inputYear.value.trim() !== "") {
-        label.classList.add("label-arriba");
-        icon.classList.add("check");
-    } else {
-        label.classList.remove("label-arriba");
-        icon.classList.remove("check");
-    }
 });
 
-inputNumParticipantes.addEventListener("input", () => {
-    if (inputNumParticipantes.value.trim() !== "") {
-        labelNum.classList.add("label-arriba");
-        iconNum.classList.add("check");
-    } else {
-        labelNum.classList.remove("label-arriba");
-        iconNum.classList.remove("check");
-    }
-});
+/**
+ * Renderiza las ediciones anteriores utilizando DOM nativo
+ */
+function renderizarEdicionesAnteriores(ediciones) {
+    edicionesContainer.replaceChildren();
 
-inputResumen.addEventListener("input", () => {
-    if (inputResumen.value.trim() !== "") {
-        labelResumen.classList.add("label-arriba");
-        iconResumen.classList.add("check");
-    } else {
-        labelResumen.classList.remove("label-arriba");
-        iconResumen.classList.remove("check");
-    }
-});
+    ediciones.forEach(edicion => {
+        const edicionDiv = document.createElement('div');
+        edicionDiv.classList.add('d-flex', 'flex-column', 'gap-8px', 'border', 'border-neutral-06', 'bg-neutral-09', 'p-16px');
 
-inputNombre.addEventListener("input", () => {
-    if (inputNombre.value.trim() !== "") {
-        labelNom.classList.add("label-arriba");
-        iconNom.classList.add("check");
-    }
-    else {
-        labelNom.classList.remove("label-arriba");
-        iconNom.classList.remove("check");
-    }
-});
+        const headerDiv = document.createElement('div');
+        headerDiv.classList.add('d-flex', 'justify-space-between', 'p-8px', 'align-items-center');
 
-inputCategoria.addEventListener("input", () => {
-    if (inputCategoria.value.trim() !== "") {
-        labelCategoria.classList.add("label-arriba");
-        iconCategoria.classList.add("check");
-    } else {
-        labelCategoria.classList.remove("label-arriba");
-        iconCategoria.classList.remove("check");
-    }
-});
+        const title = document.createElement('p');
+        title.classList.add('fs-32px', 'fw-600');
+        title.textContent = `Edición ${edicion.anioEdicion}`;
 
-inputPuesto.addEventListener("input", () => {
-    if (inputPuesto.value.trim() !== "") {
-        labelPuesto.classList.add("label-arriba");
-        iconPuesto.classList.add("check");
-    } else {
-        labelPuesto.classList.remove("label-arriba");
-        iconPuesto.classList.remove("check");
-    }
-});
+        const actionsDiv = document.createElement('div');
+        actionsDiv.classList.add('d-flex', 'gap-8px');
+
+        const btnEdit = document.createElement('span');
+        btnEdit.classList.add('icon-pencil', 'w-24px', 'h-24px', 'bg-neutral-02', 'hover-scale-1-10', 'cursor-pointer');
+        btnEdit.addEventListener('click', () => {
+            edicionSeleccionada = edicion;
+            modalEditarEdicionAnterior.open();
+        });
+
+        // Icono Eliminar
+        const btnDelete = document.createElement('span');
+        btnDelete.classList.add('icon-trash', 'w-24px', 'h-24px', 'bg-neutral-02', 'hover-scale-1-10', 'cursor-pointer');
+        btnDelete.addEventListener('click', () => {
+            edicionSeleccionada = edicion;
+            notificador.show(`¿Estás seguro de eliminar la edición ${edicion.anioEdicion}? Esta acción no se puede deshacer`, {
+                confirm: true,
+                confirmText: "Eliminar",
+                onConfirm: () => {
+                    setTimeout(async () => {
+                        const response = await eliminarEdicion(edicionSeleccionada.idEdicion);
+                        if (response.success) {
+                            notificador.show(`La edición ${edicionSeleccionada.anioEdicion} ha sido eliminada exitosamente.`, { type: 'success' });
+                            await listarEdicionesAnteriores();
+                        } else {
+                            notificador.show(`Error al eliminar la edición: ${response.message}`, { type: 'error' });
+                        }
+                    }, 500);
+                }
+            });
+        });
+
+        actionsDiv.append(btnEdit, btnDelete);
+        headerDiv.append(title, actionsDiv);
+
+        const gridDiv = document.createElement('div');
+        gridDiv.classList.add('d-grid', 'grid-template-columns-2', 'gap-16px');
+
+        const cardPart = document.createElement('div');
+        cardPart.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardPart.innerHTML = `
+            <span class="icon-users w-40px h-40px bg-neutral-02"></span>
+            <div class="d-flex flex-column gap-4px">
+                <p class="fs-14px fw-600 text-neutral-03">Participantes</p>
+                <p class="fs-24px fw-600 text-neutral-02">${edicion.nroParticipantes}</p>
+            </div>
+        `;
+
+        const cardGan = document.createElement('div');
+        cardGan.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardGan.innerHTML = `
+            <span class="icon-trophy w-40px h-40px bg-neutral-02"></span>
+            <div class="d-flex flex-column gap-4px">
+                <p class="fs-14px fw-600 text-neutral-03">Ganadores</p>
+                <p class="fs-24px fw-600 text-neutral-02">${edicion.nroGanadores}</p>
+            </div>
+        `;
+
+        const cardGal = document.createElement('div');
+        cardGal.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardGal.innerHTML = `
+            <span class="icon-video w-40px h-40px bg-neutral-02"></span>
+            <div class="d-flex flex-column gap-4px">
+                <p class="fs-14px fw-600 text-neutral-03">Galería fotográfica</p>
+                <p class="fs-24px fw-600 text-neutral-02">${edicion.nroArchivos}</p>
+            </div>
+        `;
+
+        const cardTipo = document.createElement('div');
+        cardTipo.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardTipo.innerHTML = `
+            <span class="icon-graduation-cap w-40px h-40px bg-neutral-02"></span>
+            <div class="d-flex flex-column gap-4px">
+                <p class="fs-14px fw-600 text-neutral-03">Tipo</p>
+                <p class="fs-20px fw-600 text-neutral-02">Anterior</p>
+            </div>
+        `;
+
+        gridDiv.append(cardPart, cardGan, cardGal, cardTipo);
+        edicionDiv.append(headerDiv, gridDiv);
+        edicionesContainer.appendChild(edicionDiv);
+    });
+}
+
+function handleCrearEdicionAnterior() {
+
+}
+
+function handleEditarEdicionAnterior(edicionId) {
+
+}
+
+listarEdicionesAnteriores();

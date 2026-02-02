@@ -5,6 +5,8 @@ const ganadoresCortosCarousel = document.getElementById('ganadoresCortosCarousel
 const modalSinopsisTrailer = document.getElementById('modalSinopsisTrailer');
 const sinopsisText = document.getElementById('sinopsisText');
 const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
+const postEventoTitulo = document.getElementById('postEventoTitulo');
+const postEventoResumen = document.getElementById('postEventoResumen');
 
 cargarDatosGala();
 
@@ -45,6 +47,8 @@ function renderizarDatosGala(data) {
     }
     if (data.modo === 'post-evento') {
         contenidoPostEvento.classList.remove('d-none');
+        postEventoResumen.textContent = data.resumen;
+        postEventoTitulo.textContent = data.titulo;
 
         renderizarCarruselGaleria(data.galeria);
         renderizarCarruselCortos(data.candidaturasGanadoras);
@@ -132,9 +136,6 @@ function renderizarCarruselCortos(candidaturasGanadoras) {
 }
 
 function abrirModalSinopsisTrailer(candidatura) {
-    const sinopsisText = document.getElementById('sinopsisText');
-    const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
-
     sinopsisText.textContent = candidatura.sinopsis || 'Sin sinopsis disponible';
 
     if (candidatura.rutaTrailer) {

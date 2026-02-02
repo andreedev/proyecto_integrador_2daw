@@ -164,6 +164,18 @@ if (isset($_POST['action'])) {
         case 'obtenerFechasEventoPorMesAnio':
             obtenerFechasEventoPorMesAnio();
             break;
+        case 'listarEdiciones':
+            listarEdiciones();
+            break;
+        case 'crearEdicion':
+            crearEdicion();
+            break;
+        case 'editarEdicion':
+            editarEdicion();
+            break;
+        case 'eliminarEdicion':
+            eliminarEdicion();
+            break;
         default:
             break;
     }
@@ -1784,8 +1796,8 @@ function obtenerDatosGala() {
         $galeriaEdicionActual = obtenerGaleriaEdicionActual();
         $candidaturasGanadoras = obtenerCandidaturasGanadoras();
 
-        $datos['titulo'] = "El cine cobró vida: Así fue la Gala " . $edicionActual['anioEdicion'];
-        $datos['descripcion'] = $edicionActual['resumenEvento'];
+        $datos['titulo'] = "Conoce la edición de " . $edicionActual['anioEdicion'];
+        $datos['resumen'] = $edicionActual['resumenEvento'];
         $datos['galeria'] = $galeriaEdicionActual;
         $datos['candidaturasGanadoras'] = $candidaturasGanadoras;
 
@@ -2070,7 +2082,9 @@ function limpiarDatoInput($valor, $esNumero = false) {
     return $esNumero ? (int)$valor : $valor;
 }
 
-
+/**
+ * Obtener datos para la home
+ */
 function obtenerDatosHome(){
     $edicionesAnteriores = obtenerEdicionesAnteriores();
     $noticiasDestacadas = obtenerNoticiasDestacadas();
@@ -2131,16 +2145,7 @@ function obtenerEdicionesAnteriores(){
 }
 
 /**
- * CREATE TABLE noticia (
- * id_noticia INT AUTO_INCREMENT PRIMARY KEY,
- * nombre VARCHAR(150),
- * descripcion TEXT,
- * fecha DATE,
- * id_archivo_imagen INT comment 'Imagen de la noticia',
- * id_organizador INT,
- * FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador),
- * FOREIGN KEY (id_archivo_imagen) REFERENCES archivo(id_archivo)
- * );
+ * Obtener noticias destacadas
  */
 function obtenerNoticiasDestacadas(){
     global $conexion;
@@ -2194,6 +2199,9 @@ function obtenerPremios(){
     return $premios;
 }
 
+/**
+ * Obtener fechas de eventos por mes y año
+ */
 function obtenerFechasEventoPorMesAnio(){
     global $conexion;
 
@@ -2214,6 +2222,134 @@ function obtenerFechasEventoPorMesAnio(){
     echo json_encode([
         "status" => "success",
         "data" => $fechas
+    ]);
+}
+
+/**
+ * Listar ediciones
+ */
+function listarEdiciones(){
+    global $conexion;
+
+    $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : null;
+    $filtroTipoSql = "";
+    if ($tipo){
+        $filtroTipoSql = " AND tipo = ? ";
+    }
+    $page = (isset($_POST['page']) && is_numeric($_POST['page'])) ? (int)$_POST['page'] : 1;
+    $limit = 4;
+    $offset = ($page - 1) * $limit;
+
+    $queryCount = "SELECT COUNT(*) as total FROM edicion";;
+    $stmtCount = $conexion->prepare($queryCount);
+    $stmtCount->execute();
+    $totalRecords = $stmtCount->get_result()->fetch_assoc()['total'] ?? 0;
+    $totalPages = ceil($totalRecords / $limit);
+
+    $querySelect = "SELECT 
+        e.id_edicion as idEdicion,
+        e.anio_edicion as anioEdicion,
+        e.resumen_evento as resumenEvento,
+        e.nro_participantes as nroParticipantes,
+        e.tipo,
+        (select count(*) from edicion_archivos ea where ea.id_edicion = e.id_edicion) as nroArchivos,
+        (select count(*) from ganadores_edicion ge where ge.id_edicion = e.id_edicion) as nroGanadores
+        FROM edicion e WHERE true $filtroTipoSql ORDER BY anio_edicion DESC LIMIT ? OFFSET ?";
+
+    $stmtSelect = $conexion->prepare($querySelect);
+    if ($tipo){
+        $stmtSelect->bind_param("sii", $tipo, $limit, $offset);
+    } else {
+        $stmtSelect->bind_param("ii", $limit, $offset);
+    }
+    $stmtSelect->execute();
+    $result = $stmtSelect->get_result();
+    $ediciones = [];
+    while ($row = $result->fetch_assoc()) {
+        $idEdicion = (int)$row['idEdicion'];
+        $row['archivos'] = obtenerArchivosEdicion($idEdicion);
+        $row['ganadores'] = obtenerGanadoresEdicion($idEdicion);
+        $ediciones[] = $row;
+    }
+
+    $pageContext = [
+        "totalRecords"   => (int)$totalRecords,
+        "totalPages"     => (int)$totalPages,
+        "currentPage"    => $page,
+        "pageSize"       => $limit,
+        "list"           => $ediciones
+    ];
+
+    echo json_encode([
+        "status"  => "success",
+        "data"    => $pageContext,
+        "message" => "ok"
+    ]);
+}
+
+function obtenerArchivosEdicion($idEdicion){
+    global $conexion;
+
+    $query = "SELECT 
+                a.id_archivo as idArchivo,
+                a.ruta as rutaArchivo
+              FROM edicion_archivos ea
+              INNER JOIN archivo a ON ea.id_archivo = a.id_archivo
+              WHERE ea.id_edicion = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idEdicion);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $archivos = [];
+    $baseUrl = obtenerBaseUrl();
+    while ($row = $result->fetch_assoc()) {
+        if ($row['rutaArchivo']) {
+            $row['rutaArchivo'] = $baseUrl . $row['rutaArchivo'];
+        }
+        $archivos[] = $row;
+    }
+
+    return $archivos;
+}
+
+function obtenerGanadoresEdicion($idEdicion){
+    global $conexion;
+
+    $query = "SELECT
+                ge.id_ganador_edicion as idGanadorEdicion,
+                ge.categoria,
+                ge.nombre,
+                ge.premio,
+                a.ruta as rutaArchivoVideo
+              FROM ganadores_edicion ge
+              LEFT JOIN archivo a ON ge.id_archivo_video = a.id_archivo
+              WHERE ge.id_edicion = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idEdicion);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $ganadores = [];
+    while ($row = $result->fetch_assoc()) {
+        $ganadores[] = $row;
+    }
+
+    return $ganadores;
+}
+
+function crearEdicion(){
+
+}
+
+function editarEdicion(){
+
+}
+
+function eliminarEdicion(){
+    echo json_encode([
+        "status" => "error",
+        "message" => "Funcionalidad pendiente"
     ]);
 }
 

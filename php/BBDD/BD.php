@@ -149,7 +149,7 @@ function crearBaseDatosSiNoExiste()
                     categoria VARCHAR(100),
                     nombre VARCHAR(100),
                     premio VARCHAR(100),
-                    id_archivo_video INT comment 'Video del cortometraje de un ganador',
+                    id_archivo_video INT comment 'Video o trailer del cortometraje de un ganador',
                     FOREIGN KEY (id_edicion) REFERENCES edicion(id_edicion),
                     FOREIGN KEY (id_archivo_video) REFERENCES archivo(id_archivo)
                 );
@@ -257,9 +257,11 @@ function crearBaseDatosSiNoExiste()
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                     
                 INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador, fecha_envio_email_informativo, fecha_borrado_datos) VALUES
-                    (2024, 'Resumen 2024', 120, 'anterior', 1, CURDATE(), CURDATE()),
-                    (2025, 'Resumen 2025', 150, 'anterior' , 1, CURDATE(), CURDATE()),
-                    (2026, 'Resumen 2026', NULL, 'actual'  , 1, CURDATE(), CURDATE());
+                    (2024, 'Una noche llena de emoción, talento y nuevas miradas. Revive los mejores momentos de la edición, desde la alfombra roja hasta el anuncio de los cortometrajes que marcaron la diferencia este año. ¡Gracias por formar parte de nuestra historia!', 120, 'anterior', 1, CURDATE(), CURDATE()),
+                    
+                    (2025, 'Una noche llena de emoción, talento y nuevas miradas. Revive los mejores momentos de la edición, desde la alfombra roja hasta el anuncio de los cortometrajes que marcaron la diferencia este año. ¡Gracias por formar parte de nuestra historia!', 150, 'anterior' , 1, CURDATE(), CURDATE()),
+                    
+                    (2026, 'Una noche llena de emoción, talento y nuevas miradas. Revive los mejores momentos de la edición, desde la alfombra roja hasta el anuncio de los cortometrajes que marcaron la diferencia este año. ¡Gracias por formar parte de nuestra historia!', NULL, 'actual'  , 1, CURDATE(), CURDATE());
                 
                 INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
                     (1, 'Documental', 'Juan Pérez', 'Mejor Documental', 1),

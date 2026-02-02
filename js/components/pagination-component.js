@@ -6,9 +6,18 @@
  * total-pages="16"
  * current-page="2">
  * </pagination-component>
- * * Eventos:
+ * Eventos:
  * - page-change: Disparado al hacer clic en una página o flecha.
  * detail: { page: number }
+ *
+ * Atributos:
+ * - total-pages: Número total de páginas.
+ * - current-page: Página actualmente activa.
+ *
+ * Métodos:
+ * - set currentPage(number): Establece la página actual.
+ * - get currentPage(): Obtiene la página actual.
+ *
  */
 class PaginationComponent extends HTMLElement {
     constructor() {
