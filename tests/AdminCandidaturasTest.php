@@ -4,12 +4,31 @@ require_once __DIR__ . '/../src/php/api.php';
 
 class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
 {
+    /**
+     * Se ejecuta una sola vez antes de lanzar el primer test de la clase.
+     * Ideal para inicializar la conexión y preparar la estructura.
+     */
+    public static function setUpBeforeClass(): void
+    {
+        abrirConexion();
+        crearBaseDatosSiNoExiste();
+    }
+
+    /**
+     * Se ejecuta una sola vez al finalizar todos los tests de la clase.
+     */
+    public static function tearDownAfterClass(): void
+    {
+        global $conexion;
+        if ($conexion) {
+            $conexion->close();
+        }
+    }
 
     protected function setUp(): void
     {
         global $conexion;
-        abrirConexion();
-        crearBaseDatosSiNoExiste();
+        // Iniciamos transacción para que los cambios de cada test no sean permanentes
         $conexion->begin_transaction();
         $_POST = [];
     }
@@ -18,8 +37,8 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
     {
         global $conexion;
         if ($conexion) {
+            // Revertimos los cambios realizados en el test individual
             $conexion->rollback();
-            $conexion->close();
         }
         unset($_POST);
     }
@@ -30,7 +49,6 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
     private function prepararEscenario($nombre = "User Test", $sinopsis = "Sinopsis")
     {
         global $conexion;
-        // Creamos lo mínimo necesario para que el INNER JOIN de mostrarCandidaturas funcione
         $conexion->query("INSERT INTO participante (nombre, dni) VALUES ('$nombre', '12345678Z')");
         $idParticipante = $conexion->insert_id;
 
@@ -38,11 +56,10 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
         return $conexion->insert_id;
     }
 
-    // ========== TESTS LIMPIOS ==========
+    // ========== TESTS ==========
 
     public function testSinFiltros()
     {
-        // Llamamos al método, no hay SQL a la vista aquí
         $this->prepararEscenario("Juan", "Test de película");
 
         $_POST = ['pagina' => 1, 'filtroTexto' => ''];
@@ -57,7 +74,6 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
 
     public function testEditarCandidaturaExitoso()
     {
-        // Preparamos el terreno
         $id = $this->prepararEscenario();
 
         $_POST = [
