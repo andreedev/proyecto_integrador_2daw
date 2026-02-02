@@ -110,9 +110,66 @@
                     error-size="El archivo es muy pesado. El máximo permitido son 200MB"
                     error-required="Debes subir al menos una imagen o vídeo"
             ></file-component>
+
+            <div class="d-flex justify-space-between w-100">
+                <div class="d-flex flex-row align-center gap-8px">
+                    <div class="d-flex w-48px h-48px justify-content-center align-items-center">
+                        <span class="icon-trophy w-24px h-24px bg-neutral-01"></span>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span class="fs-20px fw-600">Ganadores de esta edición</span>
+                        <span class="fs-14px fw-400" id="indicadorGanadores">0 ganadores</span>
+                    </div>
+                </div>
+                <button class="primary-button-02" id="btnAbrirCardAgregarGanador">Agregar ganador</button>
+            </div>
+
+            <div id="ganadoresContainer">
+
+
+
+            </div>
+
+            <div id="cardAgregarNuevoGanador" class="d-none d-flex flex-column border border-neutral-06 position-relative p-16px gap-16px">
+                <p class="fw-600">Nuevo ganador</p>
+                <span class="icon-close bg-neutral-01 w-24px h-24px position-absolute right-16px top-16px cursor-pointer hover-scale-1-10" id="cerrarCardAgregarGanador"></span>
+                <input-component
+                        label="Nombre"
+                        id="inputNombreGanador"
+                        required
+                        required-message="El nombre no puede estar vacío"
+                ></input-component>
+                <div class="d-flex flex-row gap-16px">
+                    <input-component
+                            label="Categoría"
+                            id="inputCategoriaGanador"
+                            required
+                            required-message="La categoría no puede estar vacía"
+                    ></input-component>
+                    <input-component
+                            label="Puesto"
+                            id="inputPuestoGanador"
+                            required
+                            required-message="El puesto no puede estar vacío"
+                    ></input-component>
+                </div>
+                <file-component
+                        label="Cortometraje o traíler del ganador"
+                        id="inputVideoGanador"
+                        primary-text="Arrastra tu imagen o vídeo o haz clic para seleccionar"
+                        accept=".mp4,.mov,.avi"
+                        required
+                        error-type="Formato no válido. Los formatos permitidos son MP4, MOV y AVI"
+                        error-required="Debes subir un vídeo"
+                ></file-component>
+
+                <div class="primary-button-02 w-100" id="btnAgregarGanador">Agregar ganador</div>
+            </div>
+
+
             <div class="d-flex-two-columns-responsive gap-24px">
                 <div class="secondary-button-02 text-center close-modal">Cancelar</div>
-                <div class="primary-button-02 text-center" id="btnConfirmarCrearEdicion">Guardar</div>
+                <div class="primary-button-01 text-center" id="btnConfirmarCrearEdicion">Crear edición</div>
             </div>
         </div>
     </modal-component>
@@ -120,131 +177,6 @@
     <modal-component id="modalVerEdicionAnterior"></modal-component>
     <modal-component id="modalEditarEdicionAnterior"></modal-component>
     <notification-component id="notificador"></notification-component>
-
-    <dialog class="generic-modal" >
-        <div class="modal-content">
-            <div class="modal-body p-20px">
-
-                <div class="modal-multimedia">
-                    <div class="multimedia-header">
-                        <span class="icon-picture w-40px h-40px bg-neutral-03"></span>
-                        <div class="multimedia-header-text">
-                            <span class="header-title fs-20px fw-600">Galería de imágenes y vídeos</span>
-                            <span class="header-subtitle fs-14px fw-400">Sube fotos y vídeos de esta edición</span>
-                        </div>
-                    </div>
-
-                    <div class="drop-zone" id="dropZoneCrearEdicion">
-                        <input type="file" id="fileInputCrearEdicion" class="file hidden-force" accept="image/*">
-                        <span class="icono-cambiar-imagen"></span>
-                        <p class="drop-zone-text">Arrastra tu imagen o video haz clic para seleccionar</p>
-                    </div>
-                    <div class="preview-multimedia-text">
-                        <span class="multimedia-text" id="numImagenesVideos">Imágenes y vídeos cargados(0)</span>
-                        <span class="multimedia-subtitle">Arrastra para ordenar</span>
-                    </div>
-                    <div class="preview-multimedia">
-                        
-                    </div>
-                </div>
-
-                <div class="modal-ganadores">
-                    <div class="ganadores-header">
-                        <span class="icono-ganadores w-40px h-40px"></span>
-                        <div class="btn-text-ganador">
-                            <div class="ganadores-text">
-                                <h2 class="ganadores-title fs-20px fw-600">Ganadores de esta edición</h2>
-                                <span class="ganadores-subtitle fs-14px fw-400" id="numGanadoresRegistrados">1 ganador registrado</span>
-                            </div>
-                            <div class="boton-agregar-ganador" id="btnAgregarGanador">
-                                <span class="icono-agregar-ganador"></span>
-                                <span class="boton-text-agregar-ganador">Agregar ganador</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ganador-card">
-                        <div class="datos-ganador">
-                            <div class="nombre-ganador">
-                                <div class="icono-texto-ganador">
-                                    <span class="icono-ganador"></span>
-                                    <span class="nombre-ganador fs-16px fw-600" id="nombreGanador">Juan Carlos del Prado</span>
-                                </div>
-                                <span class="icon-eliminar-ganador" id="iconoEliminarGanador"></span>
-                            </div>
-
-                            <div class="categoria-ganador">
-                                <span class="icono-categoria-ganador"></span>
-                                <span class="categoria-ganador fs-16px fw-600" id="categoriaGanador">Mejor Cortometraje Alumno</span>
-                            </div>
-                            
-                            <div class="puesto-ganador">
-                                <span class="icono-puesto-ganador"></span>
-                                <span class="puesto-ganador fs-16px fw-600" id="puestoGanador">Segundo puesto 100€</span>
-                            </div>
-
-                            <div class="video-ganador">
-                                <span class="icono-video-ganador"></span>
-                                <div class="nombre-video-ganador">
-                                    <span class="video-ganador fs-16px fw-600">Cortometraje:</span>
-                                    <span class="nombre-video fs-16px fw-600" id="nombreVideoGanador">nombre_video.mp4</span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="agregar-ganador">
-
-                        <div class="agregar-ganador-header">
-                            <span class="agregar-ganador-text fs-16px fw-600">Nuevo ganador</span>
-                            <span class="icono-cancelar-agregar-ganador"></span>
-                        </div>
-
-                        <div class="agregar-ganador-body">
-                            <div class="basic-info-inputs">
-                                <div class="inputs">
-                                    <label for="inputNombre" class="label" id="labelNom">Nombre</label>
-                                    <span class="icon" id="iconNom"></span>
-                                    <input type="text" id="inputNombre" class="input">
-                                    <span class="error-message" id="errorMessageNombre"></span>
-                                </div>
-                                <div class="inputs-categoria-puesto">
-                                    <div class="inputs">
-                                        <label for="inputCategoria" class="label" id="labelCategoria">Categoría</label>
-                                        <span class="icon" id="iconCategoria"></span>
-                                        <input type="text" id="inputCategoria" class="input">
-                                        <span class="error-message" id="errorMessageCategoria"></span>
-                                    </div>
-                                    <div class="inputs">
-                                        <label for="inputPuesto" class="label" id="labelPuesto">Puesto</label>
-                                        <span class="icon" id="iconPuesto"></span>
-                                        <input type="text" id="inputPuesto" class="input">
-                                        <span class="error-message" id="errorMessagePuesto"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="video-ganador-container">
-                                <label class="fs-16px fw-600">Cortometraje del ganador</label>
-                                <div class="drop-zone w-100" id="dropZoneVideoGanador">
-                                    <input type="file" id="fileInputVideoGanador" class="file hidden-force" accept="image/*">
-                                    <span class="icono-cambiar-imagen"></span>
-                                    <p class="drop-zone-text">Arrastra tu imagen o video haz clic para seleccionar</p>
-                                </div>
-                                <div class="btn-guardar-ganador w-100" id="btnGuardarGanador">
-                                    <span class="guardar-ganador-text">Guardar</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-            </div>
-
-        </div>
-    </dialog>
-
 
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/input-component.js"></script>

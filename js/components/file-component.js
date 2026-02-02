@@ -42,6 +42,8 @@
  * - getData(): Retorna { file, fileId, isChanged }.
  * - validate(): Valida requisitos y formatos. Muestra error visual y retorna boolean.
  * - setAttachedMode(filePath, fileId, editable): Configura el componente con un archivo/id existente.
+ *   En modo simple: filePath es String, fileId es String
+ *   En modo múltiple: filePath es Array de Strings, fileId es Array de Strings
  * - uploadIfNeeded(): Sube archivo(s) al servidor si hubo cambios.
  * Retorna ID único (String) en modo simple o Array de IDs en modo múltiple.
  * - clear(): Limpia todos los archivos seleccionados y resetea la UI.
@@ -53,6 +55,7 @@ class FileComponent extends HTMLElement {
         this._files = [];  // Para modo multiple
         this._fileId = null;
         this._isChanged = false;
+        this._isEditable = true;
         this.style.visibility = 'hidden';
     }
 
@@ -100,6 +103,54 @@ class FileComponent extends HTMLElement {
         return true;
     }
 
+    setAttachedMode(filePath, fileId, editable = true) {
+        this._isChanged = false;
+        this._isEditable = editable;
+
+        if (this.isMultiple()) {
+            // Modo múltiple: filePath y fileId deben ser arrays
+            const paths = Array.isArray(filePath) ? filePath : [filePath];
+            const ids = Array.isArray(fileId) ? fileId : [fileId];
+
+            this._files = paths.map((path, index) => {
+                const fileName = this._getFileNameFromPath(path);
+                return {
+                    name: fileName,
+                    url: path,
+                    idArchivo: ids[index],
+                    isExisting: true
+                };
+            });
+
+            this._fileId = ids;
+            this._updateGalleryUI();
+
+            // Control de editabilidad en galería
+            if (!editable) {
+                this._disableGalleryEditing();
+            }
+        } else {
+            // Modo simple: filePath y fileId son strings
+            const fileName = this._getFileNameFromPath(filePath);
+            this._file = null;
+            this._fileId = fileId;
+
+            this._updateUI({ name: fileName, isExisting: true });
+
+            const removeBtn = this.querySelector('.btnEliminarArchivo');
+            if (removeBtn) {
+                if (!editable) {
+                    removeBtn.classList.add('hidden-force');
+                } else {
+                    removeBtn.classList.remove('hidden-force');
+                }
+            }
+        }
+
+        const errorSpan = this.querySelector('.mensajeError');
+        if (errorSpan) errorSpan.textContent = "";
+    }
+
     async uploadIfNeeded() {
         if (!this._isChanged) return this._fileId;
 
@@ -130,6 +181,7 @@ class FileComponent extends HTMLElement {
         this._files = [];
         this._fileId = null;
         this._isChanged = true;
+        this._isEditable = true;
         const input = this.querySelector('input[type="file"]');
         if (input) input.value = '';
 
@@ -204,6 +256,7 @@ class FileComponent extends HTMLElement {
             this._file = file;
             this._fileId = null;
             this._isChanged = true;
+            this._isEditable = true;
             this._updateUI(file);
             this._dispatchChangeEvent(file);
         }
@@ -235,10 +288,14 @@ class FileComponent extends HTMLElement {
         this.querySelector('.imageDropZone').classList.add('hidden-force');
         this.querySelector('.archivo-aceptado').classList.remove('hidden-force');
         this.querySelector('.archivo-nombre').textContent = file.name;
+        this.querySelector('.mensajeError').textContent = "";
+
         const sizeDisplay = this.querySelector('.archivo-tamanio');
         if (file.size && !file.isExisting) {
             sizeDisplay.classList.remove('hidden-force');
             sizeDisplay.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+        } else {
+            sizeDisplay.classList.add('hidden-force');
         }
     }
 
@@ -266,18 +323,32 @@ class FileComponent extends HTMLElement {
             removeBtn.className = 'bg-neutral-05 p-8px border-radius-50 cursor-pointer hover-scale-1-10 transition-all';
             removeBtn.innerHTML = `<span class="icon-close d-block w-16px h-16px bg-neutral-01"></span>`;
 
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                this._files.splice(index, 1);
-                this._isChanged = true;
-                this._updateGalleryUI();
-                this._dispatchChangeEvent(this._files);
-            };
+            if (this._isEditable) {
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this._files.splice(index, 1);
+                    this._isChanged = true;
+                    this._updateGalleryUI();
+                    this._dispatchChangeEvent(this._files);
+                };
+            } else {
+                removeBtn.style.display = 'none';
+            }
 
             overlay.appendChild(removeBtn);
             item.append(media, overlay);
             gallery.appendChild(item);
         });
+    }
+
+    _disableGalleryEditing() {
+        const removeButtons = this.querySelectorAll('.gallery-container .bg-neutral-05');
+        removeButtons.forEach(btn => btn.style.display = 'none');
+    }
+
+    _getFileNameFromPath(path) {
+        if (!path) return '';
+        return path.split('/').pop().split('\\').pop();
     }
 
     _triggerShake() {
