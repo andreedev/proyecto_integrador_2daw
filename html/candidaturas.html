@@ -140,6 +140,31 @@
             </div>
         </div>
 
+        <modal-component id="modalMiPerfil" size="776px" style="visibility:visible">
+            <div class="solid-modal-overlay is-active" style="z-index: 1000; --modal-duration:300ms;">
+                <div class="modal-container d-flex flex-column">
+                    <div class="modal-content d-flex flex-column gap-24px">
+                        <div class="modal-header m-24px d-flex flex-row gap-16px justify-content-start align-items-center">
+                            <span class="icon-user-thick w-48px h-48px bg-neutral-01"></span>
+                            <span class="text-mi-perfil fs-25px fw-600">Mi perfil</span>
+                        </div>
+                        <div class="datos-personales d-flex flex-column">
+                            <div class="datos-personales-header d-flex flex-row align-items-center justify-content-center gap-24px">
+                                <span class="linea"></span>
+                                <span class="text-datos fs-14px fw-400">DATOS PERSONALES</span>
+                                <span class="linea"></span>
+                            </div>
+                            <input-component id="tituloInput" label="Nombre Completo" width="100%" required="" style="visibility: visible; width: 100%;" disabled="">
+                                <div class="solid-input-container is-disabled has-value m-24px">
+                                    <label class="solid-input-label text-neutral-04">Nombre Completo</label>
+                                    <input class="solid-input-field" type="text" value="" required="" disabled=""> Amelia del Prado
+                                </div>
+                            </input-component>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal-component>
     </div>
     <home-footer></home-footer>
 

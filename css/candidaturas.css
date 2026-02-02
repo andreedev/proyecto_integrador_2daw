@@ -259,3 +259,25 @@ deo-element{
     height:auto;
     flex-shrink: 0;
 }
+
+.modal-container{
+    background: var(--neutral-09);
+    width:90%;
+    max-width: 800px;
+    overflow: hidden;
+    transition: transform var(--modal-duration, 300ms) cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 90vh;
+    position: relative;
+}
+
+.modal-content{
+    flex:1;
+    overflow-y: auto;
+}
+
+.linea{
+    width: 271px;
+    height: 0.5px;
+    background-color: var(--neutral-05);
+}
+
