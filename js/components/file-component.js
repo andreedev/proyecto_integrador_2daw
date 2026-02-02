@@ -35,7 +35,7 @@
  *
  * Eventos:
  * - 'file-change': Se dispara cuando se selecciona o elimina un archivo.
- * En modo simple retorna el File; en modo múltiple retorna un Array de Files.
+ * En modo simple retorna el File, en modo múltiple retorna un Array de Files.
  *
  * Métodos públicos:
  * - getFile(): Retorna el File seleccionado (modo simple) o Array de Files (modo múltiple).
@@ -56,7 +56,7 @@ class FileComponent extends HTMLElement {
         this._fileId = null;
         this._isChanged = false;
         this._isEditable = true;
-        this.style.visibility = 'hidden';
+        this._initialized = false;
     }
 
     static get observedAttributes() {
@@ -68,9 +68,12 @@ class FileComponent extends HTMLElement {
     }
 
     connectedCallback() {
+        if (this._initialized) return;
+        this.style.visibility = 'hidden';
         this.render();
         this._setupEventListeners();
         this.style.visibility = 'visible';
+        this._initialized = true;
     }
 
     isMultiple() {
@@ -124,11 +127,6 @@ class FileComponent extends HTMLElement {
 
             this._fileId = ids;
             this._updateGalleryUI();
-
-            // Control de editabilidad en galería
-            if (!editable) {
-                this._disableGalleryEditing();
-            }
         } else {
             // Modo simple: filePath y fileId son strings
             const fileName = this._getFileNameFromPath(filePath);
@@ -147,12 +145,37 @@ class FileComponent extends HTMLElement {
             }
         }
 
+        this._updateEditableState(editable);
+
         const errorSpan = this.querySelector('.mensajeError');
         if (errorSpan) errorSpan.textContent = "";
     }
 
+    setRawFile(file, editable = true) {
+        if (!file) return;
+
+        if (!this._validateFile(file)) return;
+
+        this._file = file;
+        this._fileId = null;
+        this._isChanged = true;
+        this._isEditable = editable;
+
+        if (this.isMultiple()) {
+            file.preview = URL.createObjectURL(file);
+            this._files = [file];
+            this._updateGalleryUI();
+        } else {
+            this._updateUI(file);
+        }
+
+        this._updateEditableState(editable);
+    }
+
     async uploadIfNeeded() {
-        if (!this._isChanged) return this._fileId;
+        if (!this._isChanged && this._fileId) {
+            return this._fileId;
+        }
 
         try {
             if (this.isMultiple()) {
@@ -177,13 +200,25 @@ class FileComponent extends HTMLElement {
     }
 
     clear() {
+        if (this.isMultiple()) {
+            this._files.forEach(f => {
+                if (f.preview) URL.revokeObjectURL(f.preview);
+            });
+        } else if (this._file && this._file.preview) {
+            URL.revokeObjectURL(this._file.preview);
+        }
+
         this._file = null;
         this._files = [];
         this._fileId = null;
         this._isChanged = true;
         this._isEditable = true;
+
         const input = this.querySelector('input[type="file"]');
         if (input) input.value = '';
+
+        const zone = this.querySelector('.imageDropZone');
+        if (zone) zone.style.pointerEvents = 'auto';
 
         if (this.isMultiple()) {
             this._updateGalleryUI();
@@ -192,6 +227,24 @@ class FileComponent extends HTMLElement {
             this.querySelector('.archivo-aceptado').classList.add('hidden-force');
         }
         this.querySelector('.mensajeError').textContent = '';
+    }
+
+    _updateEditableState(editable) {
+        this._isEditable = editable;
+        const removeBtn = this.querySelector('.btnEliminarArchivo');
+        const zone = this.querySelector('.imageDropZone');
+
+        if (removeBtn) {
+            removeBtn.classList.toggle('hidden-force', !editable);
+        }
+
+        if (zone) {
+            zone.style.pointerEvents = editable ? 'auto' : 'none';
+        }
+
+        if (this.isMultiple() && !editable) {
+            this._disableGalleryEditing();
+        }
     }
 
     _setupEventListeners() {

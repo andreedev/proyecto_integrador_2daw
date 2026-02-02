@@ -386,11 +386,8 @@ class InputComponent extends HTMLElement {
 
     clear() {
         this._touched = false;
-        const defaultOption = this._options.find(opt => opt.default === true);
-        const defaultValue = defaultOption ? defaultOption.value : '';
-
+        const defaultValue = this.getAttribute('value') || '';
         this.value = defaultValue;
-
         this._clearUIState();
         this._handleFloatingLabel(defaultValue);
     }

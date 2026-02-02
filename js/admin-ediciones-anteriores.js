@@ -53,23 +53,122 @@ cerrarCardAgregarGanador.addEventListener('click', () => {
 });
 
 btnConfirmarCrearEdicion.addEventListener('click', async () => {
-    const anioEdicionValid =  inputYearCrearEdicion.validate().valid;
+    handleCrearEdicionAnterior();
+});
+
+btnAgregarGanador.addEventListener('click', () => {
+    handleAgregarNuevoGanador();
+});
+
+/**
+ * Maneja la adición de un nuevo ganador a la lista
+ */
+function handleAgregarNuevoGanador() {
+    const validNombre = inputNombreGanador.validate().valid;
+    const validCategoria = inputCategoriaGanador.validate().valid;
+    const validPuesto = inputPuestoGanador.validate().valid;
+    const validVideo = inputVideoGanador.validate();
+
+    if (!validNombre || !validCategoria || !validPuesto || !validVideo) {
+        return;
+    }
+
+    const nuevoGanador = {
+        // Genera un ID único
+        id: Date.now(),
+        nombre: inputNombreGanador.value.trim(),
+        categoria: inputCategoriaGanador.value.trim(),
+        premio: inputPuestoGanador.value.trim(),
+        video: inputVideoGanador.getData()
+    };
+    ganadores.push(nuevoGanador);
+
+    renderizarNuevoCardGanador(nuevoGanador);
+
+    // Limpiar los campos del formulario
+    inputNombreGanador.clear()
+    inputCategoriaGanador.clear();
+    inputPuestoGanador.clear();
+    inputVideoGanador.clear();
+
+    cardAgregarNuevoGanador.classList.add('d-none');
+    actualizarIndicadorGanadores();
+}
+
+/**
+ * Renderiza un nuevo card de ganador en el contenedor de ganadores
+ * @param {Object} ganador - Objeto con los datos del ganador
+ */
+function renderizarNuevoCardGanador(ganador) {
+    const ganadorDiv = document.createElement('div');
+    ganadorDiv.classList.add('d-flex', 'flex-column', 'border', 'border-neutral-06', 'position-relative', 'p-16px', 'gap-16px', 'mb-16px');
+    ganadorDiv.dataset.ganadorId = ganador.id;
+
+    const createRow = (icon, text) => {
+        const div = document.createElement('div');
+        div.classList.add('d-flex', 'flex-row', 'gap-16px');
+        div.innerHTML = `<span class="${icon} w-24px h-24px bg-neutral-01"></span><span class="fw-600">${text}</span>`;
+        return div;
+    };
+
+    const fileComp = document.createElement('file-component');
+    fileComp.setAttribute('label', 'Cortometraje o traíler del ganador');
+    fileComp.setAttribute('id', `inputVideoGanadorCrearEdicion_${ganador.id}`);
+    fileComp.setAttribute('accept', '.mp4,.mov,.avi');
+    fileComp.setAttribute('required', '');
+
+    const index = ganadores.findIndex(g => g.id === ganador.id);
+    if (index !== -1) {
+        ganadores[index].componentRef = fileComp;
+    }
+
+    const btnDelete = document.createElement('span');
+    btnDelete.classList.add('icon-trash', 'bg-neutral-01', 'w-24px', 'h-24px', 'position-absolute', 'right-16px', 'top-16px', 'cursor-pointer', 'hover-scale-1-10');
+    btnDelete.addEventListener('click', () => {
+        ganadorDiv.remove();
+        ganadores = ganadores.filter(g => g.id !== ganador.id);
+        actualizarIndicadorGanadores();
+    });
+
+    ganadorDiv.append(
+        createRow('icon-user-thick', ganador.nombre),
+        createRow('icon-tag', ganador.categoria),
+        createRow('icon-trophy', ganador.premio),
+        fileComp,
+        btnDelete
+    );
+
+    ganadoresContainer.appendChild(ganadorDiv);
+
+    customElements.whenDefined('file-component').then(() => {
+        const videoData = ganador.video;
+        if (videoData.file instanceof File) {
+            fileComp.setRawFile(videoData.file, false);
+        }
+    });
+
+    actualizarIndicadorGanadores();
+}
+
+/**
+ * Maneja la creación de una nueva edición anterior
+ */
+async function handleCrearEdicionAnterior() {
+    const anioEdicionValid = inputYearCrearEdicion.validate().valid;
     const nroParticipantesValid = inputNumParticipantesCrearEdicion.validate().valid;
     const descripcionValid = descripcionInputCrearEdicion.validate().valid;
     const archivoValid = fileInputCrearEdicion.validate();
 
-    if (!anioEdicionValid || !nroParticipantesValid || !descripcionValid || !archivoValid.valid) {
+    if (!anioEdicionValid || !nroParticipantesValid || !descripcionValid || !archivoValid) {
         return;
     }
 
-    let areWinnersValid = true;
-    ganadores.forEach(g => {
-        if (!g.componentRef.validate()) areWinnersValid = false;
-    });
+    if (ganadores.length === 0) {
+        notificador.show("Debes agregar al menos un ganador");
+        return;
+    }
 
     try {
-        notificador.show("Subiendo archivos y guardando edición...", { type: 'info' });
-
         // Subir archivos de galería
         const galleryIds = await fileInputCrearEdicion.uploadIfNeeded();
 
@@ -92,137 +191,16 @@ btnConfirmarCrearEdicion.addEventListener('click', async () => {
             ganadores: ganadoresFinalData
         };
 
-        console.log("Payload Final:", payload);
+        console.log("final payload:", payload);
 
-        notificador.show("Edición creada exitosamente", { type: 'success' });
+        notificador.show("Edición creada exitosamente");
         modalCrearEdicionAnterior.close();
         listarEdicionesAnteriores();
 
     } catch (error) {
         console.error(error);
-        notificador.show("Hubo un error al procesar la solicitud", { type: 'error' });
+        notificador.show("Hubo un error al procesar la solicitud");
     }
-});
-
-btnAgregarGanador.addEventListener('click', () => {
-    const validNombre = inputNombreGanador.validate().valid;
-    const validCategoria = inputCategoriaGanador.validate().valid;
-    const validPuesto = inputPuestoGanador.validate().valid;
-    const validVideo = inputVideoGanador.validate();
-
-    if (!validNombre || !validCategoria || !validPuesto || !validVideo) {
-        return;
-    }
-
-    const nuevoGanador = {
-        id: Date.now(), // Generar un ID único temporalmente
-        nombre: inputNombreGanador.value.trim(),
-        categoria: inputCategoriaGanador.value.trim(),
-        premio: inputPuestoGanador.value.trim(),
-        video: inputVideoGanador.getData()
-        // getData(): Retorna { file, fileId, isChanged }.
-    };
-    ganadores.push(nuevoGanador);
-
-    renderizarNuevoCardGanador(nuevoGanador);
-
-    // Limpiar los campos del formulario
-    inputNombreGanador.clear()
-    inputCategoriaGanador.clear();
-    inputPuestoGanador.clear();
-    inputVideoGanador.clear();
-
-    cardAgregarNuevoGanador.classList.add('d-none');
-    actualizarIndicadorGanadores();
-});
-
-
-/**
- * <!-- Example ganador card, replicate as needed -->
- *                 <div class="d-flex flex-column border border-neutral-06 position-relative p-16px gap-16px">
- *                     <div class="d-flex flex-row gap-16px">
- *                         <span class="icon-user-thick w-24px h-24px bg-neutral-01"></span>
- *                         <span class="fw-600">Nombre del ganador</span>
- *                     </div>
- *                     <div class="d-flex flex-row gap-16px">
- *                         <span class="icon-tag w-24px h-24px bg-neutral-01"></span>
- *                         <span class="fw-600">Nombre de la categoría</span>
- *                     </div>
- *                     <div class="d-flex flex-row gap-16px">
- *                         <span class="icon-trophy w-24px h-24px bg-neutral-01"></span>
- *                         <span class="fw-600">Nombre del premio</span>
- *                     </div>
- *
- *                     <!-- use setAttachedMode() here -->
- *                     <file-component
- *                             label="Cortometraje o traíler del ganador"
- *                             id="inputVideoGanadorCrearEdicion"
- *                             primary-text="Arrastra tu imagen o vídeo o haz clic para seleccionar"
- *                             accept=".mp4,.mov,.avi"
- *                             required
- *                             error-type="Formato no válido. Los formatos permitidos son MP4, MOV y AVI"
- *                             error-required="Debes subir un vídeo"
- *                     ></file-component>
- *
- *                     <span class="icon-trash bg-neutral-01 w-24px h-24px position-absolute right-16px top-16px cursor-pointer hover-scale-1-10"></span>
- *                 </div>
- */
-function renderizarNuevoCardGanador(ganador) {
-    const ganadorDiv = document.createElement('div');
-    ganadorDiv.classList.add('d-flex', 'flex-column', 'border', 'border-neutral-06', 'position-relative', 'p-16px', 'gap-16px', 'mb-16px');
-    ganadorDiv.dataset.ganadorId = ganador.id;
-
-    const createRow = (icon, text) => {
-        const div = document.createElement('div');
-        div.classList.add('d-flex', 'flex-row', 'gap-16px');
-        div.innerHTML = `<span class="${icon} w-24px h-24px bg-neutral-01"></span><span class="fw-600">${text}</span>`;
-        return div;
-    };
-
-    // 1. Create the component cleanly without inline attributes first if necessary,
-    // though setAttribute is generally safe.
-    const fileComp = document.createElement('file-component');
-    fileComp.setAttribute('label', 'Cortometraje o traíler del ganador');
-    fileComp.setAttribute('id', `inputVideoGanadorCrearEdicion_${ganador.id}`);
-    fileComp.setAttribute('accept', '.mp4,.mov,.avi');
-    fileComp.setAttribute('required', '');
-
-    // 2. Link the reference to the winners array for later validation/upload
-    const index = ganadores.findIndex(g => g.id === ganador.id);
-    if (index !== -1) {
-        ganadores[index].componentRef = fileComp;
-    }
-
-    const btnDelete = document.createElement('span');
-    btnDelete.classList.add('icon-trash', 'bg-neutral-01', 'w-24px', 'h-24px', 'position-absolute', 'right-16px', 'top-16px', 'cursor-pointer', 'hover-scale-1-10');
-    btnDelete.addEventListener('click', () => {
-        ganadorDiv.remove(); // Cleaner than removeChild
-        ganadores = ganadores.filter(g => g.id !== ganador.id);
-        actualizarIndicadorGanadores();
-    });
-
-    // 3. Append the rows and the CORRECT variable name (fileComp)
-    ganadorDiv.append(
-        createRow('icon-user-thick', ganador.nombre),
-        createRow('icon-tag', ganador.categoria),
-        createRow('icon-trophy', ganador.premio),
-        fileComp, // Corrected variable name
-        btnDelete
-    );
-
-    ganadoresContainer.appendChild(ganadorDiv);
-
-    // 4. Critical: Wait for the Custom Element to be "Upgraded" before calling methods
-    customElements.whenDefined('file-component').then(() => {
-        console.log('file-component defined, setting attached mode for ganador ID:', ganador.id);
-        if (ganador.video && (ganador.video.file || ganador.video.fileId)) {
-            // Use the file name if it exists, otherwise a fallback
-            const fileName = ganador.video.file ? ganador.video.file.name : "video.mp4";
-            fileComp.setAttachedMode(fileName, ganador.video.fileId, true);
-        }
-    });
-
-    actualizarIndicadorGanadores();
 }
 
 /**
@@ -326,12 +304,11 @@ function renderizarEdicionesAnteriores(ediciones) {
     });
 }
 
+/**
+ * Actualiza el indicador de número de ganadores
+ */
 function actualizarIndicadorGanadores() {
     indicadorGanadores.textContent = `${ganadores.length} ganadores`;
-}
-
-function handleCrearEdicionAnterior() {
-
 }
 
 function handleEditarEdicionAnterior(edicionId) {

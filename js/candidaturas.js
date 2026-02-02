@@ -226,10 +226,15 @@ function renderizarDetalleCandidatura(candidatura){
     tituloInput.setValue(candidatura.titulo);
 
     videoCandidatura.setSource(candidatura.rutaVideo);
+
 }
 
 paginacionCandidaturas.addEventListener('page-change', async (e) => {
     await cargarCandidaturas();
+    statusContainer.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
 });
 
 
