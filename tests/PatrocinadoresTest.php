@@ -46,13 +46,11 @@ class PatrocinadoresTest extends PHPUnit\Framework\TestCase
         $_POST = [];
     }
 
-    /* Nota: No incluyo testAgregarPatrocinador por petición del usuario 
-    */
 
     /**
      * Test para evitar nombres duplicados
      */
-    public function testAgregarPatrocinadorDuplicado() {
+    public function testAgregarPatrocinador() {
 
         // Creamos el primero
         $_POST['nombre'] = 'ADOBE';
