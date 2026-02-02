@@ -2347,7 +2347,10 @@ function editarEdicion(){
 }
 
 function eliminarEdicion(){
-
+    echo json_encode([
+        "status" => "error",
+        "message" => "Funcionalidad pendiente"
+    ]);
 }
 
 cerrarConexion();

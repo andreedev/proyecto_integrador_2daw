@@ -392,3 +392,11 @@ async function listarEdiciones(tipo, page){
 
     return await fetchAPI(data);
 }
+
+async function eliminarEdicion(idEdicion){
+    const data = new FormData();
+    data.append('action', 'eliminarEdicion');
+    data.append('idEdicion', idEdicion);
+
+    return await fetchAPI(data);
+}

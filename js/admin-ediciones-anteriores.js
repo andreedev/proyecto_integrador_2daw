@@ -2,10 +2,13 @@ const btnCrearEdicionAnterior = document.getElementById('btnCrearEdicionAnterior
 const modalCrearEdicionAnterior = document.getElementById('modalCrearEdicionAnterior');
 const modalVerEdicionAnterior = document.getElementById('modalVerEdicionAnterior');
 const modalEditarEdicionAnterior = document.getElementById('modalEditarEdicionAnterior');
-const modalEliminarEdicionAnterior = document.getElementById('modalEliminarEdicionAnterior');
+const notificador = document.getElementById('notificador');
 const edicionesContainer = document.getElementById('edicionesContainer');
 const paginacion = document.getElementById('paginacion');
-const btnConfirmarCrearEdicionAnterior = document.getElementById('btnConfirmarCrearEdicionAnterior');
+const btnConfirmarCrearEdicion = document.getElementById('btnConfirmarCrearEdicion');
+const inputYearCrearEdicion = document.getElementById('inputYearCrearEdicion');
+const inputNumParticipantesCrearEdicion = document.getElementById('inputNumParticipantesCrearEdicion');
+const descripcionInputCrearEdicion = document.getElementById('descripcionInputCrearEdicion');
 
 let tipo = 'anterior';
 let edicionSeleccionada = null;
@@ -25,6 +28,17 @@ btnCrearEdicionAnterior.addEventListener('click', () => {
     modalCrearEdicionAnterior.open();
 });
 
+btnConfirmarCrearEdicion.addEventListener('click', async () => {
+   const anioEdicionValid =  inputYearCrearEdicion.validate().valid;
+    const nroParticipantesValid = inputNumParticipantesCrearEdicion.validate().valid;
+    const descripcionValid = descripcionInputCrearEdicion.validate().valid;
+
+    if (!anioEdicionValid || !nroParticipantesValid || !descripcionValid) {
+        return;
+    }
+
+
+});
 
 /**
  * Renderiza las ediciones anteriores utilizando DOM nativo
@@ -58,7 +72,21 @@ function renderizarEdicionesAnteriores(ediciones) {
         btnDelete.classList.add('icon-trash', 'w-24px', 'h-24px', 'bg-neutral-02', 'hover-scale-1-10', 'cursor-pointer');
         btnDelete.addEventListener('click', () => {
             edicionSeleccionada = edicion;
-            modalEliminarEdicionAnterior.open();
+            notificador.show(`¿Estás seguro de eliminar la edición ${edicion.anioEdicion}? Esta acción no se puede deshacer`, {
+                confirm: true,
+                confirmText: "Eliminar",
+                onConfirm: () => {
+                    setTimeout(async () => {
+                        const response = await eliminarEdicion(edicionSeleccionada.idEdicion);
+                        if (response.success) {
+                            notificador.show(`La edición ${edicionSeleccionada.anioEdicion} ha sido eliminada exitosamente.`, { type: 'success' });
+                            await listarEdicionesAnteriores();
+                        } else {
+                            notificador.show(`Error al eliminar la edición: ${response.message}`, { type: 'error' });
+                        }
+                    }, 500);
+                }
+            });
         });
 
         actionsDiv.append(btnEdit, btnDelete);

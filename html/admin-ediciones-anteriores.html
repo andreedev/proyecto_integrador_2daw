@@ -58,13 +58,57 @@
             </div>
         </div>
         <div class="d-flex flex-column p-24px gap-16px">
-            <div class="d-flex align-center gap-16px">
-                <span class="icon-document w-40px h-40px bg-neutral-03"></span>
-                <div class="basic-info-header-text">
+            <div class="d-flex flex-row align-center gap-8px">
+                <div class="d-flex w-48px h-48px justify-content-center align-items-center">
+                    <span class="icon-document-check w-24px h-24px bg-neutral-01"></span>
+                </div>
+                <div class="d-flex flex-column">
                     <span class="fs-20px fw-600">Información básica</span>
                     <span class="fs-14px fw-400">Información sobre la edición</span>
                 </div>
             </div>
+            <div class="d-flex flex-row gap-16px">
+                <input-component
+                        label="Año de edición"
+                        id="inputYearCrearEdicion"
+                        required
+                        required-message="El año no puede estar vacío"
+                ></input-component>
+                <input-component
+                        label="Número de participantes"
+                        id="inputNumParticipantesCrearEdicion"
+                        required
+                        required-message="El número de participantes no puede estar vacío"
+                ></input-component>
+            </div>
+            <input-component
+                    id="descripcionInputCrearEdicion"
+                    label="Resumen de la edición"
+                    textarea
+                    required
+                    required-message="La descripción no puede estar vacía"
+            ></input-component>
+            <div class="d-flex flex-row align-center gap-8px">
+                <div class="d-flex w-48px h-48px justify-content-center align-items-center">
+                    <span class="icon-picture w-24px h-24px bg-neutral-01"></span>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="fs-20px fw-600">Galería fotográfica</span>
+                    <span class="fs-14px fw-400">Sube fotos y vídeos de esta edición</span>
+                </div>
+            </div>
+            <file-component
+                    id="fileInputCrearEdicion"
+                    label="Galería de imágenes y vídeos"
+                    primary-text="Arrastra tu imagen o vídeo o haz clic para seleccionar"
+                    secondary-text="Formatos aceptados: MP4, MOV, AVI, JPG, JPEG, PNG, WEBP, AVIF. Tamaño máximo: 200MB"
+                    accept=".mp4,.mov,.avi,.jpg,.jpeg,.png,.webp,.avif"
+                    max-size="209715200"
+                    required
+                    error-type="Formato no válido. Los formatos permitidos son MP4, MOV, AVI, JPG, JPEG, PNG, WEBP y AVIF"
+                    error-size="La imagen es muy pesada. El máximo permitido son 200MB"
+                    error-required="Debes subir al menos una imagen o vídeo"
+            ></file-component>
             <div class="d-flex-two-columns-responsive gap-24px">
                 <div class="secondary-button-02 text-center close-modal">Cancelar</div>
                 <div class="primary-button-02 text-center" id="btnConfirmarCrearEdicion">Guardar</div>
@@ -74,42 +118,11 @@
 
     <modal-component id="modalVerEdicionAnterior"></modal-component>
     <modal-component id="modalEditarEdicionAnterior"></modal-component>
-    <modal-component id="modalEliminarEdicionAnterior"></modal-component>
+    <notification-component id="notificador"></notification-component>
 
     <dialog class="generic-modal" >
         <div class="modal-content">
             <div class="modal-body p-20px">
-                <div class="modal-basic-info">
-                    <div class="basic-info-header">
-                        <span class="icon-document-check w-40px h-40px bg-neutral-03"></span>
-                        <div class="basic-info-header-text">
-                            <span class="header-title fs-20px fw-600">Información básica</span>
-                            <span class="header-subtitle fs-14px fw-400">Información sobre la edición</span>
-                        </div>
-                    </div>
-                    <div class="basic-info-inputs">
-                        <div class="input-year-num-participantes">
-                            <div class="inputs">
-                                <label for="inputYear" class="label" id="label">Año de edición</label>
-                                <span class="icon" id="icon"></span>
-                                <input type="text" id="inputYear" class="input">
-                                <span class="error-message" id="errorMessageYear"></span>
-                            </div>
-                            <div class="inputs">
-                                <label for="inputNumParticipantes" class="label" id="labelNum">Número de participantes</label>
-                                <span class="icon" id="iconNum"></span>
-                                <input type="text" id="inputNumParticipantes" class="input">
-                                <span class="error-message" id="errorMessageNumParticipantes"></span>
-                            </div>
-                        </div>
-                        <div class="inputs">
-                            <label for="inputResumen" class="label" id="labelResumen">Resumen</label>
-                            <span class="icon" id="iconResumen"></span>
-                            <input type="text" id="inputResumen" class="input">
-                            <span class="error-message" id="errorMessageResumen"></span>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="modal-multimedia">
                     <div class="multimedia-header">
@@ -233,11 +246,12 @@
 
 
     <script src="../js/libraries/air-datepicker.min.js"></script>
-    <script src="../js/components/notification-component.js"></script>
-    <script src="../js/components/pagination-component.js"></script>
     <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
     <script src="../js/components/modal-component.js"></script>
     <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/notification-component.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
     <script src="../js/menu-admin.js"></script>
     <script src="../js/admin-ediciones-anteriores.js"></script>
 </body>
