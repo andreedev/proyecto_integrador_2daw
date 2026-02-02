@@ -265,7 +265,6 @@ deo-element{
     width:90%;
     max-width: 800px;
     overflow: hidden;
-    transition: transform var(--modal-duration, 300ms) cubic-bezier(0.34, 1.56, 0.64, 1);
     max-height: 90vh;
     position: relative;
 }
@@ -281,3 +280,10 @@ deo-element{
     background-color: var(--neutral-05);
 }
 
+.btn-cerrar{
+    width: 190px;
+}
+
+.btn-cerrar-container{
+    margin-bottom:24px;
+}
