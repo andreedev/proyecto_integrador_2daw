@@ -383,3 +383,12 @@ async function obtenerFechasEventoPorMesAnio(mes, anio) {
 
     return await fetchAPI(data);
 }
+
+async function listarEdiciones(tipo, page){
+    const data = new FormData();
+    data.append('action', 'listarEdiciones');
+    data.append('tipo', tipo);
+    data.append('page', page);
+
+    return await fetchAPI(data);
+}

@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gala - Ediciones Anteriores</title>
+    <title>Ediciones Anteriores</title>
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
+    <link rel="stylesheet" href="../css/libraries/air-datepicker.min.css">
     <link rel="stylesheet" href="../css/admin-edicionesAnteriores.css">
     <link rel="stylesheet" href="../css/utils.css">
 
@@ -22,90 +23,61 @@
         <div class="admin-page-content">
             <div class="admin-header">
                 <div class="admin-header-module-info-container">
-                    <p class="admin-module-name">Gala - Ediciones Anteriores</p>
+                    <p class="admin-module-name">Ediciones Anteriores</p>
                     <span class="admin-module-description">Administra los eventos del festival</span>
                 </div>
                 <div class="admin-header-module-actions-container">
-                    <div class="primary-button-01 btn-create" id="btnCrearEdicionAnterior">Crear edición anterior</div>
+                    <div class="primary-button-01" id="btnCrearEdicionAnterior">Nueva edición anterior</div>
                 </div>
             </div>
-            <div class="admin-content">
-                <div class="admin-content-body">
-                    <div class="all-editions">
-                        <p class="all-editions-title">Todas las ediciones anteriores</p>
-                        <p class="all-editions-subtitle" id="numEdiciones">4 ediciones registradas</p>
-                    </div>
-                    <div class="card-ediciones-body">
-                        <div class="editions-grid">
-                            <!-- Edición 2025 -->
-                            <div class="edition-card" id="editionCard">
-                                <div class="edition-header">
-                                    <h2 class="edition-title" id="editionTitle">Edición 2025</h2>
-                                    <div class="edition-actions">
-                                        <span class="icon-editar" id="editarEdicion"></span>
-                                        <span class="icon-eliminar" id="eliminarEdicion"></span>
-                                    </div>
-                                </div>
-                                <div class="stats-grid">
-                                    <div class="stat-box-participantes">
-                                        <div class="stat-icon">
-                                            <img src="../img/icon/icon-users.svg" alt="Participantes">
-                                        </div>
-                                        <div>
-                                            <div class="stat-label">Participantes</div>
-                                            <div class="stat-value" id="statValueParticipantes">45</div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-box-ganadores">
-                                        <div class="stat-icon">
-                                            <img src="../img/icon/icon-trophy.svg" alt="Ganadores">
-                                        </div>
-                                        <div>
-                                            <div class="stat-label">Ganadores</div>
-                                            <div class="stat-value" id="statValueGanadores">2</div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-box-imagenes">
-                                        <div class="stat-icon">
-                                            <img src="../img/icon/icon-video.svg" alt="Imágenes">
-                                        </div>
-                                        <div>
-                                            <div class="stat-label">Imágenes</div> y videos
-                                            <div class="stat-value" id="statValueImagenes">3</div>
-                                        </div>
-                                    </div>
-                                    <div class="stat-box-tipo">
-                                        <div class="stat-icon">
-                                            <img src="../img/icon/icon-star.svg" alt="Imágenes">
-                                        </div>
-                                        <div>
-                                            <div class="stat-label">Tipo</div>
-                                            <div class="stat-value" id="statValueTipo">Actual</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-        
-                        </div>
-                    </div>
+
+            <div class="container-xl p-24px-force">
+                <div id="edicionesContainer" class="grid-template-columns-1 grid-md-template-columns-2 d-grid gap-24px">
+
+                </div>
+                <div class="d-flex justify-content-center align-items-center p-16px">
+                    <pagination-component
+                            id="paginacion">
+                    </pagination-component>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Modal Crear Edicion Anterior -->
 
-    <dialog class="generic-modal" id="modalCrearEdicionAnterior">
-        <div class="modal-content">
-            <div class="modal-header d-flex justify-space-between align-center px-24px py-16px">
-                <div class="modal-text">
-                    <h2 class="modal-title fs-20px fw-600">Crear Edición Anterior</h2>
-                    <span class="modal-subtitle">Crea una nueva entrada en el histórico de ediciones</span>
-                </div>
-                <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer" id="cerrarModalCrear"></span>
+    <modal-component id="modalCrearEdicionAnterior">
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
+            <div class="d-flex flex-column gap-4px">
+                <span class="fs-20px fw-600">Crear Edición Anterior</span>
+                <span class="fs-12px text-neutral-04">Crea una nueva entrada en el histórico de ediciones</span>
+
             </div>
+            <div class="d-flex align-items-center gap-8px">
+                <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+            </div>
+        </div>
+        <div class="d-flex flex-column p-24px gap-16px">
+            <div class="d-flex align-center gap-16px">
+                <span class="icon-document w-40px h-40px bg-neutral-03"></span>
+                <div class="basic-info-header-text">
+                    <span class="fs-20px fw-600">Información básica</span>
+                    <span class="fs-14px fw-400">Información sobre la edición</span>
+                </div>
+            </div>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
+                <div class="primary-button-02 text-center" id="btnConfirmarCrearEdicion">Guardar</div>
+            </div>
+        </div>
+    </modal-component>
 
+    <modal-component id="modalVerEdicionAnterior"></modal-component>
+    <modal-component id="modalEditarEdicionAnterior"></modal-component>
+    <modal-component id="modalEliminarEdicionAnterior"></modal-component>
+
+    <dialog class="generic-modal" >
+        <div class="modal-content">
             <div class="modal-body p-20px">
                 <div class="modal-basic-info">
                     <div class="basic-info-header">
@@ -256,16 +228,16 @@
                 <hr>
             </div>
 
-
-            <div class="modal-actions">
-                <button class="btn-cancelar-modal" id="btnCancelarModal">Cancelar</button>
-                <button class="btn-guardar-modal" id="btnGuardarModal">Guardar</button>
-            </div>
         </div>
     </dialog>
 
 
-
+    <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/notification-component.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
+    <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
     <script src="../js/menu-admin.js"></script>
     <script src="../js/admin-ediciones-anteriores.js"></script>
 </body>
