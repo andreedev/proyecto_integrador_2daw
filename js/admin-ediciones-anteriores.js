@@ -199,8 +199,10 @@ async function handleCrearEdicionAnterior() {
         if (response.status === "success"){
             notificador.show("Edición creada exitosamente");
             modalCrearEdicionAnterior.close();
-            listarEdicionesAnteriores();
+            await listarEdicionesAnteriores();
             resetFormularioCrearEdicionAnterior();
+        } else {
+            notificador.show(`Error al crear la edición: ${response.message}`);
         }
 
     } catch (error) {
@@ -218,7 +220,8 @@ function renderizarEdicionesAnteriores(ediciones) {
     ediciones.forEach(edicion => {
         const edicionDiv = document.createElement('div');
         edicionDiv.classList.add('d-flex', 'flex-column', 'gap-8px', 'border', 'border-neutral-06', 'bg-neutral-09', 'p-16px');
-        edicionDiv.addEventListener('click', () => {
+        edicionDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
             edicionSeleccionada = edicion;
             handleVerEdicionAnterior();
             modalVerEdicionAnterior.open();
@@ -236,7 +239,8 @@ function renderizarEdicionesAnteriores(ediciones) {
 
         const btnEdit = document.createElement('span');
         btnEdit.classList.add('icon-pencil', 'w-24px', 'h-24px', 'bg-neutral-02', 'hover-scale-1-10', 'cursor-pointer');
-        btnEdit.addEventListener('click', () => {
+        btnEdit.addEventListener('click', (e) => {
+            e.stopPropagation();
             edicionSeleccionada = edicion;
             handleEditarEdicionAnterior();
             modalEditarEdicionAnterior.open();
@@ -245,7 +249,8 @@ function renderizarEdicionesAnteriores(ediciones) {
         // Icono Eliminar
         const btnDelete = document.createElement('span');
         btnDelete.classList.add('icon-trash', 'w-24px', 'h-24px', 'bg-neutral-02', 'hover-scale-1-10', 'cursor-pointer');
-        btnDelete.addEventListener('click', () => {
+        btnDelete.addEventListener('click', (e) => {
+            e.stopPropagation();
             edicionSeleccionada = edicion;
             notificador.show(`¿Estás seguro de eliminar la edición ${edicion.anioEdicion}? Esta acción no se puede deshacer`, {
                 confirm: true,
@@ -260,10 +265,10 @@ function renderizarEdicionesAnteriores(ediciones) {
         headerDiv.append(title, actionsDiv);
 
         const gridDiv = document.createElement('div');
-        gridDiv.classList.add('d-grid', 'grid-template-columns-2', 'gap-16px');
+        gridDiv.classList.add('d-grid', 'grid-template-columns-1', 'grid-md-template-columns-2', 'gap-16px', 'p-8px');
 
         const cardPart = document.createElement('div');
-        cardPart.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardPart.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-16px','p-md-24px', 'align-items-center');
         cardPart.innerHTML = `
             <span class="icon-users w-40px h-40px bg-neutral-02"></span>
             <div class="d-flex flex-column gap-4px">
@@ -273,7 +278,7 @@ function renderizarEdicionesAnteriores(ediciones) {
         `;
 
         const cardGan = document.createElement('div');
-        cardGan.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardGan.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-16px','p-md-24px', 'align-items-center');
         cardGan.innerHTML = `
             <span class="icon-trophy w-40px h-40px bg-neutral-02"></span>
             <div class="d-flex flex-column gap-4px">
@@ -283,7 +288,7 @@ function renderizarEdicionesAnteriores(ediciones) {
         `;
 
         const cardGal = document.createElement('div');
-        cardGal.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardGal.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-16px','p-md-24px', 'align-items-center');
         cardGal.innerHTML = `
             <span class="icon-video w-40px h-40px bg-neutral-02"></span>
             <div class="d-flex flex-column gap-4px">
@@ -293,7 +298,7 @@ function renderizarEdicionesAnteriores(ediciones) {
         `;
 
         const cardTipo = document.createElement('div');
-        cardTipo.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-24px', 'align-items-center');
+        cardTipo.classList.add('d-flex', 'flex-row', 'gap-16px', 'bg-neutral-08', 'p-16px','p-md-24px', 'align-items-center');
         cardTipo.innerHTML = `
             <span class="icon-graduation-cap w-40px h-40px bg-neutral-02"></span>
             <div class="d-flex flex-column gap-4px">
@@ -378,11 +383,11 @@ function handleEditarEdicionAnterior() {
 function handleEliminarEdicion() {
     setTimeout(async () => {
         const response = await eliminarEdicion(edicionSeleccionada.idEdicion);
-        if (response.success) {
-            notificador.show(`La edición ${edicionSeleccionada.anioEdicion} ha sido eliminada exitosamente.`, { type: 'success' });
+        if (response.status === 'success') {
+            notificador.show(`La edición ${edicionSeleccionada.anioEdicion} ha sido eliminada exitosamente.`);
             await listarEdicionesAnteriores();
         } else {
-            notificador.show(`Error al eliminar la edición: ${response.message}`, { type: 'error' });
+            notificador.show(`Error al eliminar la edición: ${response.message}`);
         }
     }, 500);
 }

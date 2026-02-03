@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="container-xl p-24px-force">
+            <div class="container-xl p-16px-force p-md-24px-force">
                 <div id="edicionesContainer" class="grid-template-columns-1 grid-xl-template-columns-2 d-grid gap-24px">
 
                 </div>
@@ -67,7 +67,7 @@
                     <span class="fs-14px fw-400">Información sobre la edición</span>
                 </div>
             </div>
-            <div class="d-flex flex-row gap-16px">
+            <div class="d-flex flex-column flex-md-row gap-16px">
                 <input-component
                         label="Año de edición"
                         id="inputYearCrearEdicion"
@@ -139,7 +139,7 @@
                         required
                         required-message="El nombre no puede estar vacío"
                 ></input-component>
-                <div class="d-flex flex-row gap-16px">
+                <div class="d-flex flex-column flex-md-row gap-16px">
                     <input-component
                             label="Categoría"
                             id="inputCategoriaGanador"
@@ -174,6 +174,9 @@
         </div>
     </modal-component>
 
+
+
+
     <modal-component id="modalVerEdicionAnterior" container-class="w-90 w-md-90 w-lg-80 w-xl-70">
         <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
             <div class="d-flex flex-column gap-4px">
@@ -195,7 +198,7 @@
                     <span class="fs-14px fw-400">Información sobre la edición</span>
                 </div>
             </div>
-            <div class="d-flex flex-row gap-16px">
+            <div class="d-flex flex-column flex-md-row gap-16px">
                 <input-component
                         label="Año de edición"
                         id="inputYearVerEdicion"
@@ -240,7 +243,7 @@
                 </div>
                 <div class="d-flex flex-column">
                     <span class="fs-20px fw-600">Ganadores de esta edición</span>
-                    <span class="fs-14px fw-400" id="indicadorGanadoresVerEdicion">0 ganadores</span>
+<!--                    <span class="fs-14px fw-400" id="indicadorGanadoresVerEdicion">0 ganadores</span>-->
                 </div>
             </div>
 
@@ -257,7 +260,26 @@
         </div>
     </modal-component>
 
-    <modal-component id="modalEditarEdicionAnterior"></modal-component>
+    <modal-component id="modalEditarEdicionAnterior">
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
+            <div class="d-flex flex-column gap-4px">
+                <span class="fs-20px fw-600">Editar Edición Anterior</span>
+                <span class="fs-12px text-neutral-04">Aquí puedes editar la información básica, galería fotográfica y los ganadores de esta edición</span>
+
+            </div>
+            <div class="d-flex align-items-center gap-8px">
+                <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+            </div>
+        </div>
+        <div class="d-flex flex-column p-24px gap-16px">
+
+            <p>Funcionalidad no implementada aún.</p>
+
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Cerrar</div>
+            </div>
+        </div>
+    </modal-component>
     <notification-component id="notificador"></notification-component>
 
     <script src="../js/libraries/air-datepicker.min.js"></script>

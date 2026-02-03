@@ -2379,13 +2379,25 @@ function eliminarEdicion(){
 
     $idEdicion = limpiarDatoInput($_POST['idEdicion'], true);
 
+    // eliminar ganadores
+    $sqlDeleteGanadores = $conexion->prepare("DELETE FROM ganadores_edicion WHERE id_edicion = ?");
+    $sqlDeleteGanadores->bind_param("i", $idEdicion);
+    $sqlDeleteGanadores->execute();
+    $sqlDeleteGanadores->close();
+
+    // eliminar archivos de edicion_archivos
+    $sqlDeleteArchivos = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
+    $sqlDeleteArchivos->bind_param("i", $idEdicion);
+    $sqlDeleteArchivos->execute();
+    $sqlDeleteArchivos->close();
+
+    // eliminar edicion
     $sqlDelete = $conexion->prepare("DELETE FROM edicion WHERE id_edicion = ?");
     $sqlDelete->bind_param("i", $idEdicion);
-    if ($sqlDelete->execute()) {
-        echo json_encode(["status" => "success", "message" => "Edición eliminada correctamente"]);
-    } else {
-        echo json_encode(["status" => "error", "message" => "Error al eliminar la edición: " . $conexion->error]);
-    }
+    $sqlDelete->execute();
+    $sqlDelete->close();
+
+    echo json_encode(["status" => "success", "message" => "Edición eliminada correctamente"]);
 }
 
 cerrarConexion();

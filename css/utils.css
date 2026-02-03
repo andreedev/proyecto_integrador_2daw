@@ -1869,6 +1869,10 @@ dialog::backdrop {
     padding: 16px;
 }
 
+.p-16px-force{
+    padding: 16px !important;
+}
+
 .p-20px{
     padding: 20px;
 }
@@ -1879,6 +1883,12 @@ dialog::backdrop {
 
 .p-24px-force{
     padding: 24px !important;
+}
+
+@media (min-width: 768px) {
+    .p-md-24px-force{
+        padding: 24px !important;
+    }
 }
 
 .p-32px{
