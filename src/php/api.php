@@ -470,6 +470,28 @@ function obtenerIdEdicionActual() {
 
 
 /**
+ * Sanitiza un nombre de archivo para eliminar caracteres especiales
+ */
+function sanitizarNombreArchivo($string) {
+    // Reemplazar caracteres con acentos/tildes por versiones planas
+    $search  = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', '`', '´'];
+    $replace = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N', '', ''];
+    $string = str_replace($search, $replace, $string);
+
+    // Convertir a minúsculas y reemplazar espacios por guiones
+    $string = strtolower($string);
+    $string = str_replace(' ', '-', $string);
+
+    // Eliminar cualquier cosa que no sea letras, números, puntos o guiones
+    $string = preg_replace('/[^a-z0-9\.\-]/', '', $string);
+
+    // Evitar múltiples guiones seguidos (opcional pero más limpio)
+    $string = preg_replace('/-+/', '-', $string);
+
+    return trim($string, '-');
+}
+
+/**
  * Subir archivo, guardar en directorio de archivos, guardar en BD y devolver id
  */
 function subirArchivo() {
@@ -480,12 +502,15 @@ function subirArchivo() {
         $fileTmpPath = $_FILES['file']['tmp_name'];
         $fileName = $_FILES['file']['name'];
 
+        $nombreLimpio = sanitizarNombreArchivo($fileName);
+        $nombreFinal = time() . '_' . $nombreLimpio;
+
         // Crear el directorio si no existe
         if (!is_dir($directorioSubida)) {
             mkdir($directorioSubida, 0777, true);
         }
 
-        $rutaArchivo = $directorioSubida . '_' . basename($fileName);
+        $rutaArchivo = $directorioSubida . $nombreFinal;
 
 
         if (move_uploaded_file($fileTmpPath, $rutaArchivo)) {
