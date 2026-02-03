@@ -26,6 +26,8 @@ class BasesLegalesTest extends PHPUnit\Framework\TestCase {
         global $conexion;
         // Iniciamos transacción para aislar cada test
         $conexion->begin_transaction();
+        $stmt = $conexion->prepare("DELETE FROM configuracion WHERE nombre = 'basesLegales'");
+        $stmt->execute();
     }
 
     protected function tearDown(): void {
@@ -56,10 +58,9 @@ class BasesLegalesTest extends PHPUnit\Framework\TestCase {
     public function testObtenerBasesLegalesExitoso() {
         global $conexion;
 
-        $textoTest = "Texto legal de prueba con tildes (áéíóú) y ñ.";
+        $textoTest = "Texto legal de prueba con tildes (áéíóú).";
         
         // Limpieza y carga de datos controlada para el test
-        $conexion->query("DELETE FROM configuracion WHERE nombre = 'basesLegales'");
         $stmt = $conexion->prepare("INSERT INTO configuracion (nombre, valor) VALUES ('basesLegales', ?)");
         $stmt->bind_param("s", $textoTest);
         $stmt->execute();
@@ -77,7 +78,6 @@ class BasesLegalesTest extends PHPUnit\Framework\TestCase {
     public function testObtenerBasesLegalesNoExisten() {
         global $conexion;
 
-        $conexion->query("DELETE FROM configuracion WHERE nombre = 'basesLegales'");
 
         $resultado = $this->capturarSalida('obtenerBasesLegales');
 

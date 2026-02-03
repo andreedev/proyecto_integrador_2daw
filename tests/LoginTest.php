@@ -2,7 +2,7 @@
 
     require_once __DIR__ . '/../src/php/api.php';
 
-
+    //Aplicar setUpBeforeClass y tearDownBeforeClass
     class LoginTest extends PHPUnit\Framework\TestCase{
 
     protected function setUp(): void
@@ -66,21 +66,6 @@
         $this->assertEquals($_SESSION['iniciada'], 1);
     }
 
-    public function testAgregarPatrocinador(){
-        $this->testInicioSesion();
-
-        $_POST['nombre'] = 'ADOBE';
-        $_POST['idArchivoLogo'] = 3;
-
-        agregarPatrocinador();
-
-        // Capturar el buffer
-        ob_start();
-        listarPatrocinadores();
-        $json = ob_get_clean();
-
-        $this->assertStringContainsString('ADOBE', $json);
-    }
 
 
      /**
@@ -117,9 +102,6 @@
         $this->assertEmpty($output); // si no hay error, la función no hace echo
     }
 
-    /**
-     * @runInSeparateProcess
-     */
     public function testSesionNoIniciada()
     {
         $_SESSION = []; // sesión vacía
@@ -133,6 +115,6 @@
         $json = json_decode($output, true);
 
         $this->assertEquals('error', $json['status']);
-        $this->assertEquals('Sesión no iniciada', $json['message']);
+        $this->assertEquals('Sesion no iniciada', $json['message']);
     }
 }

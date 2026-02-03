@@ -198,7 +198,7 @@ function revisarSesion() {
 function cerrarSesion() {
     session_unset();
     session_destroy();
-    echo json_encode(["status" => "success", "message" => "Sesión cerrada correctamente"]);
+    echo json_encode(["status" => "success", "message" => "Sesion cerrada correctamente"]);
 }
 
 /**
@@ -230,7 +230,7 @@ function login() {
     $password = $_POST['password'] ?? '';
 
     if (empty($numIdentidad) || empty($password)) {
-        echo json_encode(["status" => "error", "message" => "Faltan datos de inicio de sesión"]);
+        echo json_encode(["status" => "error", "message" => "Faltan datos de inicio de sesion"]);
         return;
     }
 
@@ -251,7 +251,7 @@ function login() {
         $_SESSION['rol'] = $rol;
         $_SESSION['id'] = $datos[$rol === 'participante' ? 'id_participante' : 'id_organizador'];
 
-        echo json_encode(["status" => "success", "message" => "Sesión iniciada como $rol, redireccionando...", "redirect" => $redirect]);
+        echo json_encode(["status" => "success", "message" => "Sesion iniciada como $rol, redireccionando...", "redirect" => $redirect]);
     } else {
         echo json_encode(["status" => "error", "message" => "Usuario o contraseña incorrectos"]);
     }
@@ -262,7 +262,7 @@ function login() {
  */
 function validarRol($rolesPermitidos) {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
-        echo json_encode(["status" => "error", "message" => "Sesión no iniciada"]);
+        echo json_encode(["status" => "error", "message" => "Sesion no iniciada"]);
         exit;
     }
 
