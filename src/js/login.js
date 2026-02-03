@@ -33,6 +33,8 @@ async function login(){
     datos.append('password', password);
     datos.append('action', 'login');
 
+    btnContinuar.disabled = true;
+
     // Enviar la solicitud a la API
     let response = await fetch(URL_API, {
         method: 'POST',
@@ -44,6 +46,7 @@ async function login(){
     // Procesar la respuesta de la API
     let result = await response.json();
 
+    btnContinuar.disabled = false;
     // Si el login es exitoso, redirigir al usuario
     if(result.status === 'success'){
         mensajeSpan.textContent = result.message;
@@ -51,7 +54,7 @@ async function login(){
         setTimeout(() => {
             window.location.href = result.redirect;
             sessionStorage.setItem('sesionIniciada', 'true');
-        }, 1000);
+        }, 2500);
     } else {
         // Si el login falla, mostrar el mensaje de error
         mensajeSpan.textContent = result.message;

@@ -72,7 +72,7 @@ step2ContinueBtn.addEventListener('click', () => {
     switchStep(3);
 });
 
-step3ContinueBtn.addEventListener('click', () => {
+step3ContinueBtn.addEventListener('click', async () => {
     const inputs = [fichaTecnicaInput];
 
     const resultados = inputs.map(input => input.validate(true).valid);
@@ -81,7 +81,12 @@ step3ContinueBtn.addEventListener('click', () => {
         return;
     }
 
-    enviarCandidatura();
+    // block UI here
+    step3ContinueBtn.disabled = true;
+
+    await enviarCandidatura();
+
+
 });
 
 step2BackBtn.addEventListener('click', () => {
@@ -121,6 +126,8 @@ function switchStep(targetStep) {
         uploadShortFilmCardHeaderText.textContent = 'Registro del Participante';
         uploadShortFilmCardHeaderSubtext.textContent = 'Paso 1 de 3';
         step = 1;
+
+        scrollToElement(step1);
     }
     if (targetStep === 2){
         step1.classList.add('active-step');
@@ -134,6 +141,8 @@ function switchStep(targetStep) {
         uploadShortFilmCardHeaderText.textContent = 'Datos del Cortometraje';
         uploadShortFilmCardHeaderSubtext.textContent = 'Paso 2 de 3';
         step = 2;
+
+        scrollToElement(uploadShortFilmCard);
     }
     if (targetStep === 3){
         step1.classList.add('active-step');
@@ -150,6 +159,8 @@ function switchStep(targetStep) {
         uploadShortFilmCardHeaderText.textContent = 'Documentación';
         uploadShortFilmCardHeaderSubtext.textContent = 'Paso 3 de 3 - Último paso';
         step = 3;
+
+        scrollToElement(step1);
     }
     if (targetStep === 4){
         step1.classList.add('active-step');
@@ -168,6 +179,8 @@ function switchStep(targetStep) {
         setTimeout(() => {
             window.location.href = 'candidaturas.html';
         }, 3000);
+
+        scrollToElement(cortoSubidoExitoCard);
     }
 }
 
@@ -187,7 +200,10 @@ async function enviarCandidatura() {
     const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura);
 
     if (response.status === 'success') {
-        window.location.href = 'candidaturas.html';
+        switchStep(4);
+        setTimeout(() => {
+            window.location.href = 'candidaturas.html';
+        }, 4000);
     } else {
         alert('Hubo un error al enviar la candidatura');
     }

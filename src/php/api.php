@@ -204,6 +204,10 @@ if (isset($_POST['action'])) {
         case 'eliminarEdicion':
             eliminarEdicion();
             break;
+        case 'obtenerDatosParticipante':
+            validarRol(['participante']);
+            obtenerDatosParticipante();
+            break;
         default:
             break;
     }
@@ -513,7 +517,6 @@ function subirArchivo() {
         }
 
         $rutaFisicaDestino = $directorioSubida . $nombreFinal;
-        $rutaArchivo = $directorioSubida . $nombreFinal;
 
         if (move_uploaded_file($fileTmpPath, $rutaFisicaDestino)) {
             // Limpiar la ruta para almacenar en la base de datos
@@ -1666,7 +1669,7 @@ function guardarCandidatura() {
 
     // si hay sesion, usar el id de la sesion, sino crear participante nuevo
     $idParticipante = null;
-    if ($_SESSION['iniciada']){
+    if (isset($_SESSION['iniciada']) && $_SESSION['iniciada'] === true) {
         $idParticipante = (int)$_SESSION['id'];
 
     } else {
@@ -2283,7 +2286,7 @@ function obtenerPremios(){
 }
 
 /**
- * Obtener fechas de eventos por mes y año
+ * Obteniene fechas de eventos por mes y año
  */
 function obtenerFechasEventoPorMesAnio(){
     global $conexion;
@@ -2309,7 +2312,8 @@ function obtenerFechasEventoPorMesAnio(){
 }
 
 /**
- * Listar ediciones
+ * Lista ediciones con paginación y filtro por tipo,
+ * por cada edición incluye su galería de archivos y sus ganadores
  */
 function listarEdiciones(){
     global $conexion;
@@ -2370,6 +2374,9 @@ function listarEdiciones(){
     ]);
 }
 
+/**
+ * Obtener ganadores de una edición, incluyendo la ruta completa del video si existe
+ */
 function obtenerGanadoresEdicion($idEdicion){
     global $conexion;
 
@@ -2400,7 +2407,7 @@ function obtenerGanadoresEdicion($idEdicion){
 }
 
 /**
- * @throws Exception
+ * Crea una edición y todos sus datos relacionados
  */
 function crearEdicion(){
     global $conexion;
@@ -2429,7 +2436,7 @@ function crearEdicion(){
 }
 
 /**
- * @throws Exception
+ * Insertar archivos de galeria de edición masivo
  */
 function insertarGanadoresEdicionMasivo($idEdicion, $ganadores){
     global $conexion;
@@ -2451,6 +2458,9 @@ function editarEdicion(){
 
 }
 
+/**
+ * Elimina una edición y todos sus datos relacionados
+ */
 function eliminarEdicion(){
     global $conexion;
 
@@ -2475,6 +2485,31 @@ function eliminarEdicion(){
     $sqlDelete->close();
 
     echo json_encode(["status" => "success", "message" => "Edición eliminada correctamente"]);
+}
+
+function obtenerDatosParticipante(){
+    global $conexion;
+
+    $idParticipante = (int)$_SESSION['id'];
+
+    $query = "SELECT 
+                nombre,
+                correo,
+                dni,
+                nro_expediente as nroExpediente
+              FROM participante
+              WHERE id_participante = ? LIMIT 1";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idParticipante);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        echo json_encode(["status" => "success", "data" => $row]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "No se encontraron los datos del participante"]);
+    }
 }
 
 cerrarConexion();

@@ -12,6 +12,11 @@ const mensajeSubsanacionInput = document.getElementById('mensajeSubsanacionInput
 const videoCandidatura = document.getElementById('videoCandidatura');
 const modalMiPerfil = document.getElementById('modalMiPerfil');
 const btnMiPerfil = document.getElementById('btnMiPerfil');
+const nombreInput = document.getElementById('nombreInput');
+const correoInput = document.getElementById('correoInput');
+const passwordInput = document.getElementById('passwordInput');
+const dniInput = document.getElementById('dniInput');
+const numExpedienteInput = document.getElementById('numExpedienteInput');
 
 let pageSize = 3;
 let candidaturaSeleccionada = null;
@@ -23,6 +28,7 @@ sinopsisInput.addEventListener('solid-input-word-count', (e) => {
 
 btnMiPerfil.addEventListener('click', () => {
     modalMiPerfil.open();
+    renderizarDatosUsuarioEnModal();
 });
 
 
@@ -191,11 +197,9 @@ function renderizarDetalleCandidatura(candidatura){
     let puedeEditarArchivos = false;
 
     if(candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
-        tituloInput.disabled = false;
-        sinopsisInput.disabled = false;
-        btnGuardarCambios.textContent = 'Guardar cambios';
-        btnGuardarCambios.classList.remove('d-none');
-        puedeEditarArchivos = true;
+        tituloInput.disabled = true;
+        sinopsisInput.disabled = true;
+        puedeEditarArchivos = false;
     }
 
     if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA){
@@ -237,10 +241,7 @@ function renderizarDetalleCandidatura(candidatura){
 
 paginacionCandidaturas.addEventListener('page-change', async (e) => {
     await cargarCandidaturas();
-    statusContainer.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
+    scrollToElement(statusContainer);
 });
 
 
@@ -296,6 +297,9 @@ async function handleGuardarCambios() {
     }
 }
 
+/**
+ * Muestra una notificación en pantalla
+ */
 function notify(message){
     document.getElementById('notification').show(message);
 }
@@ -309,3 +313,18 @@ watchScreenSize((dimensions) =>{
         cargarCandidaturas();
     }
 })
+
+
+/**
+ * Renderiza los datos del usuario en el modal de "Mi Perfil"
+ */
+async function renderizarDatosUsuarioEnModal() {
+    const response = await obtenerDatosParticipante();
+    if (response.status === 'success') {
+        const usuario = response.data;
+        nombreInput.setValue(usuario.nombre);
+        correoInput.setValue(usuario.correo);
+        dniInput.setValue(usuario.dni);
+        numExpedienteInput.setValue(usuario.nroExpediente);
+    }
+}

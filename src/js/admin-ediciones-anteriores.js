@@ -47,10 +47,7 @@ btnCrearEdicionAnterior.addEventListener('click', () => {
 
 btnAbrirCardAgregarGanador.addEventListener('click', () => {
     cardAgregarNuevoGanador.classList.remove('d-none');
-    cardAgregarNuevoGanador.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
+    scrollToElement(cardAgregarNuevoGanador);
 });
 
 cerrarCardAgregarGanador.addEventListener('click', () => {

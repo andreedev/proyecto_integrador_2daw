@@ -507,3 +507,13 @@ async function eliminarEdicion(idEdicion){
 
     return await fetchAPI(data);
 }
+
+/**
+ * Obtener datos del participante
+ */
+async function obtenerDatosParticipante(){
+    const data = new FormData();
+    data.append('action', 'obtenerDatosParticipante');
+
+    return await fetchAPI(data);
+}

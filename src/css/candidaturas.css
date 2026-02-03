@@ -275,7 +275,7 @@ deo-element{
 }
 
 .linea{
-    width: 271px;
+    width: 100%;
     height: 0.5px;
     background-color: var(--neutral-05);
 }

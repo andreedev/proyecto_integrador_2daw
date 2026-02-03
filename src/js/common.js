@@ -455,3 +455,7 @@ function countWords(text) {
 
     return words ? words.length : 0;
 }
+
+function scrollToElement(element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
