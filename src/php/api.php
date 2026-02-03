@@ -188,7 +188,7 @@ if (isset($_POST['action'])) {
  */
 function revisarSesion() {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
-        echo json_encode(["status" => "inactive",]);
+        echo json_encode(["status" => "inactive"]);
         return;
     }
 
@@ -263,12 +263,10 @@ function login() {
 function validarRol($rolesPermitidos) {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode(["status" => "error", "message" => "Sesion no iniciada"]);
-        exit;
-    }
-
-    if (!in_array($_SESSION['rol'], $rolesPermitidos)) {
+        
+    } else if (!in_array($_SESSION['rol'], $rolesPermitidos)) {
         echo json_encode(["status" => "error", "message" => "Acceso denegado para el rol actual"]);
-        exit;
+        
     }
 }
 

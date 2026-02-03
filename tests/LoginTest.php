@@ -1,9 +1,8 @@
-    <?php
+<?php
+require_once __DIR__ . '/../src/php/api.php';
 
-    require_once __DIR__ . '/../src/php/api.php';
-
-    //Aplicar setUpBeforeClass y tearDownBeforeClass
-    class LoginTest extends PHPUnit\Framework\TestCase{
+//Aplicar setUpBeforeClass y tearDownBeforeClass
+class LoginTest extends PHPUnit\Framework\TestCase{
 
     protected function setUp(): void
     {
@@ -25,7 +24,6 @@
         }
     }
 
-
     public function testSesionActiva()
     {
         $_SESSION['iniciada'] = true;
@@ -42,7 +40,7 @@
 
     public function testSesionInactiva()
     {
-        $_SESSION = [];
+        $_SESSION['iniciada'] = false;
 
         ob_start();
         revisarSesion();
@@ -69,7 +67,6 @@
 
 
      /**
-     * @runInSeparateProcess
      */
     public function testParticipantePermitido()
     {
@@ -86,7 +83,6 @@
     }
 
     /**
-     * @runInSeparateProcess
      */
     public function testOrganizadorPermitido()
     {
