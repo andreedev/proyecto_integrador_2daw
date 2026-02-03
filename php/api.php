@@ -403,16 +403,26 @@ function actualizarDatosPostEvento() {
         $stmtDel->bind_param("i", $idEdicion);
         $stmtDel->execute();
 
-        $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
-
-        foreach ($archivos as $idArchivo) {
-            $idArchivoInt = (int)$idArchivo;
-            $stmtInsertRel->bind_param("ii", $idArchivoInt, $idEdicion);
-            $stmtInsertRel->execute();
-        }
+        insertarEdicionArchivosMasivo($idEdicion, $archivos);
     }
 
     echo json_encode(["status" => "success", "message" => "Galería actualizada"]);
+}
+
+/**
+ * Insertar lista de archivos asociados a una edición
+ */
+function insertarEdicionArchivosMasivo($idEdicion, $idsArchivos) {
+    global $conexion;
+
+    $stmtInsertRel = $conexion->prepare("INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES (?, ?)");
+
+    foreach ($idsArchivos as $idArchivo) {
+        $idArchivoInt = (int)$idArchivo;
+        $stmtInsertRel->bind_param("ii", $idArchivoInt, $idEdicion);
+        $stmtInsertRel->execute();
+    }
+    $stmtInsertRel->close();
 }
 
 /**
@@ -1793,8 +1803,9 @@ function obtenerDatosGala() {
     } else if ($modo == 'post-evento'){
 
         $edicionActual = obtenerEdicionActual();
-        $galeriaEdicionActual = obtenerGaleriaEdicionActual();
-        $candidaturasGanadoras = obtenerCandidaturasGanadoras();
+        $idEdicionActual = $edicionActual['idEdicion'];
+        $galeriaEdicionActual = obtenerGaleriaEdicion($idEdicionActual);
+        $candidaturasGanadoras = obtenerCandidaturasGanadorasEdicionActual();
 
         $datos['titulo'] = "Conoce la edición de " . $edicionActual['anioEdicion'];
         $datos['resumen'] = $edicionActual['resumenEvento'];
@@ -1880,21 +1891,16 @@ function obtenerEdicionActual() {
     }
 }
 
-/**
- * Contar participantes de la edición actual
- */
-function obtenerGaleriaEdicionActual(){
-    global $conexion;
 
-    $edicionActual = obtenerEdicionActual();
-    $idEdicionActual = (int)$edicionActual['idEdicion'];
+function obtenerGaleriaEdicion($idEdicion){
+    global $conexion;
 
     $queryGaleria = "SELECT a.id_archivo as idArchivo, a.ruta as rutaArchivo
                      FROM edicion_archivos ea
                      INNER JOIN archivo a ON ea.id_archivo = a.id_archivo
                      WHERE ea.id_edicion = ?";
     $stmtGaleria = $conexion->prepare($queryGaleria);
-    $stmtGaleria->bind_param("i", $idEdicionActual);
+    $stmtGaleria->bind_param("i", $idEdicion);
     $stmtGaleria->execute();
     $resultGaleria = $stmtGaleria->get_result();
 
@@ -1932,7 +1938,7 @@ function obtenerTipoArchivoPorExtension($rutaArchivo) {
 /**
  * Obtener candidaturas ganadoras
  */
-function obtenerCandidaturasGanadoras() {
+function obtenerCandidaturasGanadorasEdicionActual() {
     global $conexion;
 
     $query = "SELECT 
@@ -2267,7 +2273,7 @@ function listarEdiciones(){
     $ediciones = [];
     while ($row = $result->fetch_assoc()) {
         $idEdicion = (int)$row['idEdicion'];
-        $row['archivos'] = obtenerArchivosEdicion($idEdicion);
+        $row['archivos'] = obtenerGaleriaEdicion($idEdicion);
         $row['ganadores'] = obtenerGanadoresEdicion($idEdicion);
         $ediciones[] = $row;
     }
@@ -2285,32 +2291,6 @@ function listarEdiciones(){
         "data"    => $pageContext,
         "message" => "ok"
     ]);
-}
-
-function obtenerArchivosEdicion($idEdicion){
-    global $conexion;
-
-    $query = "SELECT 
-                a.id_archivo as idArchivo,
-                a.ruta as rutaArchivo
-              FROM edicion_archivos ea
-              INNER JOIN archivo a ON ea.id_archivo = a.id_archivo
-              WHERE ea.id_edicion = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("i", $idEdicion);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $archivos = [];
-    $baseUrl = obtenerBaseUrl();
-    while ($row = $result->fetch_assoc()) {
-        if ($row['rutaArchivo']) {
-            $row['rutaArchivo'] = $baseUrl . $row['rutaArchivo'];
-        }
-        $archivos[] = $row;
-    }
-
-    return $archivos;
 }
 
 function obtenerGanadoresEdicion($idEdicion){
@@ -2331,15 +2311,63 @@ function obtenerGanadoresEdicion($idEdicion){
     $result = $stmt->get_result();
 
     $ganadores = [];
+    $baseUrl = obtenerBaseUrl();
     while ($row = $result->fetch_assoc()) {
+        if ($row['rutaArchivoVideo']) {
+            $row['rutaArchivoVideo'] = $baseUrl . $row['rutaArchivoVideo'];
+        }
         $ganadores[] = $row;
     }
 
     return $ganadores;
 }
 
+/**
+ * @throws Exception
+ */
 function crearEdicion(){
+    global $conexion;
 
+    $anioEdicion = limpiarDatoInput($_POST['anioEdicion'], true);
+    $nroParticipantes = limpiarDatoInput($_POST['nroParticipantes'], true);
+    $resumen = limpiarDatoInput($_POST['resumen']);
+    $idsArchivosGaleria = json_decode($_POST['idsArchivosGaleria'], true);
+    $ganadores = json_decode($_POST['ganadores'], true);
+    $tipo = limpiarDatoInput($_POST['tipo']);
+
+    $sqlInsertEdicion = $conexion->prepare("INSERT INTO edicion (anio_edicion, nro_participantes, resumen_evento, tipo) VALUES (?, ?, ?, ?)");
+    $sqlInsertEdicion->bind_param("siss", $anioEdicion, $nroParticipantes, $resumen, $tipo);
+    $sqlInsertEdicion->execute();
+    $idEdicion = $conexion->insert_id;
+    $sqlInsertEdicion->close();
+
+    // insertar archivos de galeria
+    insertarEdicionArchivosMasivo($idEdicion, $idsArchivosGaleria);
+    insertarGanadoresEdicionMasivo($idEdicion, $ganadores);
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Edición creada correctamente"
+    ]);
+}
+
+/**
+ * @throws Exception
+ */
+function insertarGanadoresEdicionMasivo($idEdicion, $ganadores){
+    global $conexion;
+
+    $sqlInsertGanador = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
+    foreach ($ganadores as $ganador){
+        $categoria = limpiarDatoInput($ganador['categoria']);
+        $nombre = limpiarDatoInput($ganador['nombre']);
+        $premio = limpiarDatoInput($ganador['puesto']);
+        $idArchivoVideo = limpiarDatoInput($ganador['idArchivoVideo'], true);
+
+        $sqlInsertGanador->bind_param("isssi", $idEdicion, $categoria, $nombre, $premio, $idArchivoVideo);
+        $sqlInsertGanador->execute();
+    }
+    $sqlInsertGanador->close();
 }
 
 function editarEdicion(){
@@ -2347,10 +2375,17 @@ function editarEdicion(){
 }
 
 function eliminarEdicion(){
-    echo json_encode([
-        "status" => "error",
-        "message" => "Funcionalidad pendiente"
-    ]);
+    global $conexion;
+
+    $idEdicion = limpiarDatoInput($_POST['idEdicion'], true);
+
+    $sqlDelete = $conexion->prepare("DELETE FROM edicion WHERE id_edicion = ?");
+    $sqlDelete->bind_param("i", $idEdicion);
+    if ($sqlDelete->execute()) {
+        echo json_encode(["status" => "success", "message" => "Edición eliminada correctamente"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error al eliminar la edición: " . $conexion->error]);
+    }
 }
 
 cerrarConexion();

@@ -17,7 +17,7 @@
 }
 
 .solid-input-field:disabled {
-    border-bottom: 1px dotted var(--neutral-04);
+    border-bottom: 1px solid var(--neutral-04);
     color: var(--neutral-04);
     cursor: not-allowed;
 }

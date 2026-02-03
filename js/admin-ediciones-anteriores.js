@@ -20,6 +20,11 @@ const inputCategoriaGanador = document.getElementById('inputCategoriaGanador');
 const inputPuestoGanador = document.getElementById('inputPuestoGanador');
 const inputVideoGanador = document.getElementById('inputVideoGanador');
 const indicadorGanadores = document.getElementById('indicadorGanadores');
+const inputYearVerEdicion = document.getElementById('inputYearVerEdicion');
+const inputNumParticipantesVerEdicion = document.getElementById('inputNumParticipantesVerEdicion');
+const descripcionInputVerEdicion = document.getElementById('descripcionInputVerEdicion');
+const galeriaEdicionCarousel = document.getElementById('galeriaEdicionCarousel');
+const galeriaGanadoresCarousel = document.getElementById('galeriaGanadoresCarousel');
 
 let tipo = 'anterior';
 let edicionSeleccionada = null;
@@ -183,19 +188,20 @@ async function handleCrearEdicionAnterior() {
             };
         }));
 
-        const payload = {
-            anioEdicion: inputYearCrearEdicion.value,
-            nroParticipantes: inputNumParticipantesCrearEdicion.value,
-            descripcion: descripcionInputCrearEdicion.value,
-            idsArchivosGaleria: galleryIds,
-            ganadores: ganadoresFinalData
-        };
+        const anioEdicion= inputYearCrearEdicion.value
+        const nroParticipantes= inputNumParticipantesCrearEdicion.value
+        const descripcion= descripcionInputCrearEdicion.value
+        const idsArchivosGaleria= galleryIds
+        const listaGanadores= ganadoresFinalData
+        const tipo= 'anterior'
 
-        console.log("final payload:", payload);
-
-        notificador.show("Edición creada exitosamente");
-        modalCrearEdicionAnterior.close();
-        listarEdicionesAnteriores();
+        const response = await crearEdicion(anioEdicion, nroParticipantes, descripcion, idsArchivosGaleria, listaGanadores, tipo);
+        if (response.status === "success"){
+            notificador.show("Edición creada exitosamente");
+            modalCrearEdicionAnterior.close();
+            listarEdicionesAnteriores();
+            resetFormularioCrearEdicionAnterior();
+        }
 
     } catch (error) {
         console.error(error);
@@ -212,6 +218,11 @@ function renderizarEdicionesAnteriores(ediciones) {
     ediciones.forEach(edicion => {
         const edicionDiv = document.createElement('div');
         edicionDiv.classList.add('d-flex', 'flex-column', 'gap-8px', 'border', 'border-neutral-06', 'bg-neutral-09', 'p-16px');
+        edicionDiv.addEventListener('click', () => {
+            edicionSeleccionada = edicion;
+            handleVerEdicionAnterior();
+            modalVerEdicionAnterior.open();
+        });
 
         const headerDiv = document.createElement('div');
         headerDiv.classList.add('d-flex', 'justify-space-between', 'p-8px', 'align-items-center');
@@ -227,6 +238,7 @@ function renderizarEdicionesAnteriores(ediciones) {
         btnEdit.classList.add('icon-pencil', 'w-24px', 'h-24px', 'bg-neutral-02', 'hover-scale-1-10', 'cursor-pointer');
         btnEdit.addEventListener('click', () => {
             edicionSeleccionada = edicion;
+            handleEditarEdicionAnterior();
             modalEditarEdicionAnterior.open();
         });
 
@@ -239,15 +251,7 @@ function renderizarEdicionesAnteriores(ediciones) {
                 confirm: true,
                 confirmText: "Eliminar",
                 onConfirm: () => {
-                    setTimeout(async () => {
-                        const response = await eliminarEdicion(edicionSeleccionada.idEdicion);
-                        if (response.success) {
-                            notificador.show(`La edición ${edicionSeleccionada.anioEdicion} ha sido eliminada exitosamente.`, { type: 'success' });
-                            await listarEdicionesAnteriores();
-                        } else {
-                            notificador.show(`Error al eliminar la edición: ${response.message}`, { type: 'error' });
-                        }
-                    }, 500);
+                    handleEliminarEdicion();
                 }
             });
         });
@@ -304,6 +308,16 @@ function renderizarEdicionesAnteriores(ediciones) {
     });
 }
 
+function resetFormularioCrearEdicionAnterior() {
+    inputYearCrearEdicion.clear();
+    inputNumParticipantesCrearEdicion.clear();
+    descripcionInputCrearEdicion.clear();
+    fileInputCrearEdicion.clear();
+    ganadores = [];
+    ganadoresContainer.replaceChildren();
+    actualizarIndicadorGanadores();
+}
+
 /**
  * Actualiza el indicador de número de ganadores
  */
@@ -311,8 +325,66 @@ function actualizarIndicadorGanadores() {
     indicadorGanadores.textContent = `${ganadores.length} ganadores`;
 }
 
-function handleEditarEdicionAnterior(edicionId) {
 
+function handleVerEdicionAnterior() {
+    inputYearVerEdicion.setValue(edicionSeleccionada.anioEdicion);
+    inputNumParticipantesVerEdicion.setValue(edicionSeleccionada.nroParticipantes);
+    descripcionInputVerEdicion.setValue(edicionSeleccionada.resumenEvento);
+
+    renderizarCarouselGaleriaEdicion(edicionSeleccionada.archivos);
+    renderizarCarouselGanadoresEdicion(edicionSeleccionada.ganadores);
+}
+
+function renderizarCarouselGaleriaEdicion(archivos) {
+    const slides = archivos.map(archivo => {
+        if (archivo.tipoArchivo === 'imagen') {
+            return `<img src="${archivo.rutaArchivo}" alt="Imagen de la galería" class="w-100 h-auto object-cover">`;
+        } else if (archivo.tipoArchivo === 'video') {
+            return `
+                <video-player-component
+                    src="${archivo.rutaArchivo}"
+                    class="w-100 h-auto object-cover"
+                    ></video-player-component>
+            `;
+        }
+    });
+    galeriaEdicionCarousel.setSlides(slides);
+}
+
+function renderizarCarouselGanadoresEdicion(ganadores) {
+    console.log(ganadores);
+    const slides = ganadores.map(ganador => {
+        return `
+            <div class="d-flex flex-column gap-8px p-16px border border-neutral-06">
+                <video-player-component
+                    src="${ganador.rutaArchivoVideo}"
+                    class="w-100 aspect-ratio-16-9 d-block"
+                ></video-player-component>
+                <div class="d-flex flex-column text-center">
+                    <p class="fs-14px fw-600">${ganador.nombre}</p>
+                    <p class="fs-12px fw-500 text-neutral-03">${ganador.categoria} - ${ganador.premio}</p>
+                </div>
+            </div>
+        `;
+    });
+    galeriaGanadoresCarousel.setSlides(slides);
+}
+
+
+function handleEditarEdicionAnterior() {
+
+}
+
+function handleEliminarEdicion() {
+    setTimeout(async () => {
+        const response = await eliminarEdicion(edicionSeleccionada.idEdicion);
+        if (response.success) {
+            notificador.show(`La edición ${edicionSeleccionada.anioEdicion} ha sido eliminada exitosamente.`, { type: 'success' });
+            await listarEdicionesAnteriores();
+        } else {
+            notificador.show(`Error al eliminar la edición: ${response.message}`, { type: 'error' });
+        }
+    }, 500);
 }
 
 listarEdicionesAnteriores();

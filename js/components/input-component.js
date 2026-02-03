@@ -46,15 +46,13 @@ class InputComponent extends HTMLElement {
         super();
         this._touched = false;
         this._customValidationFn = null;
-        this.style.visibility = 'hidden';
     }
 
     static get observedAttributes() {
         return [
             'label', 'type', 'width', 'disabled', 'value',
             'error-message', 'required', 'min-length', 'max-length', 'required-message',
-            'validate-on-load', 'textarea', 'max-words', 'invalid-message', 'no-validation',
-            'required'
+            'validate-on-load', 'textarea', 'max-words', 'invalid-message', 'no-validation'
         ];
     }
 
@@ -95,6 +93,7 @@ class InputComponent extends HTMLElement {
     }
 
     async connectedCallback() {
+        this.style.visibility = 'hidden';
         await window.injectExternalStyles('../css/input-component.css', 'solid-input-styles');
 
         const width = this.getAttribute('width') || '100%';
@@ -103,7 +102,7 @@ class InputComponent extends HTMLElement {
         this.render();
         this._setupEventListeners();
 
-        if (this.hasAttribute('validate-on-load')) {
+        if (this.hasAttribute('validate-on-load') && !this.hasAttribute('no-validation')) {
             this.validate(true);
         }
 
@@ -131,7 +130,8 @@ class InputComponent extends HTMLElement {
     set value(val) {
         const field = this.querySelector('.solid-input-field');
         if (field) {
-            field.value = val;
+            const safeValue = (val === null || val === undefined) ? '' : val;
+            field.value = safeValue;
             this._handleFloatingLabel(val);
         }
     }
@@ -170,21 +170,25 @@ class InputComponent extends HTMLElement {
     }
 
     validate(showUI = true) {
-        const input = this.querySelector('input');
-        const value = input.value;
-        const validity = input.validity;
+        if (this.hasAttribute('no-validation')) {
+            this._clearUIState();
+            return { valid: true, message: '' };
+        }
 
-        let valid = true;
-        let message = '';
+        const input = this.querySelector('.solid-input-field');
+        if (!input) return { valid: true, message: '' };
 
-        if (!validity.valid) {
-            valid = false;
-            if (validity.valueMissing) {
-                message = this.getAttribute('required-message') || "Este campo es obligatorio";
-            } else if (validity.tooShort) {
-                message = this.getAttribute('error-message') || `Mínimo ${this.getAttribute('min-length')} caracteres`;
-            } else {
-                message = input.validationMessage;
+        const value = String(input.value || "");
+        const maxWords = parseInt(this.getAttribute('max-words'));
+
+        let { valid, message } = this._getNativeValidity(input);
+
+        if (valid && maxWords) {
+            const wordCount = countWords(value);
+
+            if (wordCount > maxWords) {
+                valid = false;
+                message = `Máximo ${maxWords} palabras permitidas`;
             }
         }
 
@@ -196,10 +200,7 @@ class InputComponent extends HTMLElement {
             }
         }
 
-        if (showUI) {
-            this._updateUiState(valid, message);
-        }
-
+        if (showUI) this._updateUiState(valid, message);
         return { valid, message };
     }
 
@@ -227,7 +228,9 @@ class InputComponent extends HTMLElement {
         const container = this.querySelector('.solid-input-container');
         if (!container) return;
 
-        if (value && value.trim() !== '') {
+        const strValue = (value !== null && value !== undefined) ? String(value) : '';
+
+        if (strValue.trim().length > 0) {
             container.classList.add('has-value');
         } else {
             container.classList.remove('has-value');
@@ -280,32 +283,7 @@ class InputComponent extends HTMLElement {
         });
     }
 
-    validate(showUI = true) {
-        const input = this.querySelector('.solid-input-field');
-        const value = input.value;
-        const maxWords = parseInt(this.getAttribute('max-words'));
 
-        let { valid, message } = this._getNativeValidity(input);
-
-        if (valid && maxWords) {
-            const wordCount = value.trim() ? value.trim().split(/\s+/).length : 0;
-            if (wordCount > maxWords) {
-                valid = false;
-                message = `Máximo ${maxWords} palabras permitidas`;
-            }
-        }
-
-        if (valid && this._customValidationFn) {
-            const customResult = this._customValidationFn(value);
-            if (!customResult.valid) {
-                valid = false;
-                message = customResult.message;
-            }
-        }
-
-        if (showUI) this._updateUiState(valid, message);
-        return { valid, message };
-    }
 
     _getNativeValidity(input) {
         const validity = input.validity;

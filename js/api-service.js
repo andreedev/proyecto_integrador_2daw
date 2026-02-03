@@ -61,6 +61,9 @@ async function subirArchivo(file) {
     throw new Error('Error al subir el archivo');
 }
 
+/**
+ * Listar categorías
+ */
 async function listarCategorias(){
     const data = new FormData();
     data.append('action', 'obtenerCategorias');
@@ -68,14 +71,18 @@ async function listarCategorias(){
     return await fetchAPI(data);
 }
 
-// Obtener todas las categorías con sus premios
+/**
+ * Obtener categorías con premios
+ */
 async function obtenerCategoriasConPremios() {
     const data = new FormData();
     data.append('action', 'obtenerCategoriasConPremios');
     return await fetchAPI(data);
 }
 
-// Agregar categoría con premios
+/**
+ * Agregar categoría con premios
+ */
 async function agregarCategoriaConPremios(nombreCategoria, premios) {
     const data = new FormData();
     data.append('action', 'agregarCategoriaConPremios');
@@ -84,7 +91,9 @@ async function agregarCategoriaConPremios(nombreCategoria, premios) {
     return await fetchAPI(data);
 }
 
-// Editar categoría con premios
+/**
+ * Editar categoría con premios
+ */
 async function editarCategoriaConPremios(idCategoria, nombreCategoria, premios) {
     const data = new FormData();
     data.append('action', 'editarCategoriaConPremios');
@@ -94,7 +103,9 @@ async function editarCategoriaConPremios(idCategoria, nombreCategoria, premios) 
     return await fetchAPI(data);
 }
 
-// Eliminar categoría con premios
+/**
+ * Eliminar categoría
+ */
 async function eliminarCategoria(idCategoria) {
     const data = new FormData();
     data.append('action', 'eliminarCategoria');
@@ -102,13 +113,18 @@ async function eliminarCategoria(idCategoria) {
     return await fetchAPI(data);
 }
 
-// -------------------- GANADORES --------------------
+/**
+ * Listar finalistas no ganadores
+ */
 async function listarFinalistasNoGanadores() {
     const data = new FormData();
     data.append('action', 'listarFinalistasNoGanadores');
     return await fetchAPI(data);
 }
 
+/**
+ * Asignar ganador a una candidatura
+ */
 async function asignarGanador(idPremio, idCandidatura) {
     const data = new FormData();
     data.append('action', 'asignarGanador');
@@ -117,6 +133,9 @@ async function asignarGanador(idPremio, idCandidatura) {
     return await fetchAPI(data);
 }
 
+/**
+ * Desasignar ganador de una candidatura
+ */
 async function desasignarGanador(idPremio, idCandidatura) {
     const data = new FormData();
     data.append('action', 'desasignarGanador');
@@ -125,6 +144,9 @@ async function desasignarGanador(idPremio, idCandidatura) {
     return await fetchAPI(data);
 }
 
+/**
+ * Actualiza los datos del pre-evento
+ */
 async function actualizarDatosPreEvento(galaPreEventoTitulo,galaPreEventoFecha,galaPreEventoHora,galaPreEventoUbicacion,galaPreEventoDescripcion,galaPreEventoStreamingActivo,galaPreEventoStreamingUrl){
     const data = new FormData();
     data.append('action', 'actualizarDatosPreEvento');
@@ -139,6 +161,9 @@ async function actualizarDatosPreEvento(galaPreEventoTitulo,galaPreEventoFecha,g
     return await fetchAPI(data);
 }
 
+/**
+ * Actualiza los datos del post-evento
+ */
 async function actualizarDatosPostEvento(resumenPostEvento, archivos){
     const data = new FormData();
     data.append('action', 'actualizarDatosPostEvento');
@@ -148,6 +173,9 @@ async function actualizarDatosPostEvento(resumenPostEvento, archivos){
     return await fetchAPI(data);
 }
 
+/**
+ * Actualiza una edición
+ */
 async function actualizarEdicion(idEdicion, nombreEdicion, anioEdicion, resumenEvento, nroParticipantes, fechaEnvioEmailInformativo, fechaBorradoDatos){
     const data = new FormData();
     data.append('action', 'actualizarEdicion');
@@ -162,6 +190,9 @@ async function actualizarEdicion(idEdicion, nombreEdicion, anioEdicion, resumenE
     return await fetchAPI(data);
 }
 
+/**
+ * Envía la edición actual a las ediciones anteriores
+ */
 async function enviarEdicionAAnteriores(anioEdicion, fechaEnvioEmailInformativo, fechaBorradoDatos){
     const data = new FormData();
     data.append('action', 'enviarEdicionAAnteriores');
@@ -172,6 +203,9 @@ async function enviarEdicionAAnteriores(anioEdicion, fechaEnvioEmailInformativo,
     return await fetchAPI(data);
 }
 
+/**
+ * Cargar configuración
+ */
 async function cargarConfiguracion() {
     const formData = new FormData();
     formData.append('action', 'obtenerConfiguracion');
@@ -179,6 +213,9 @@ async function cargarConfiguracion() {
     return await fetchAPI(formData);
 }
 
+/**
+ * Guardar configuración
+ */
 async function listarNoticias(filtroNombre) {
     const formData = new FormData();
     formData.append('action', 'listarNoticias');
@@ -187,6 +224,9 @@ async function listarNoticias(filtroNombre) {
     return await fetchAPI(formData);
 }
 
+/**
+ * Crear noticia
+ */
 async function crearNoticia(nombre, descripcion, fechaPublicacion, idArchivoImagen) {
     const formData = new FormData();
     formData.append('action', 'crearNoticia');
@@ -198,6 +238,10 @@ async function crearNoticia(nombre, descripcion, fechaPublicacion, idArchivoImag
     return await fetchAPI(formData);
 }
 
+
+/**
+ * Actualizar noticia
+ */
 async function actualizarNoticia(idNoticia, nombre, descripcion, fechaPublicacion, idArchivoImagen) {
     const formData = new FormData();
     formData.append('action', 'actualizarNoticia');
@@ -210,6 +254,9 @@ async function actualizarNoticia(idNoticia, nombre, descripcion, fechaPublicacio
     return await fetchAPI(formData);
 }
 
+/**
+ * Eliminar noticia
+ */
 async function eliminarNoticia(idNoticia) {
     const formData = new FormData();
     formData.append('action', 'eliminarNoticia');
@@ -218,6 +265,9 @@ async function eliminarNoticia(idNoticia) {
     return await fetchAPI(formData);
 }
 
+/**
+ * Obtener noticia por ID
+ */
 async function obtenerNoticiaPorId(idNoticia) {
     const formData = new FormData();
     formData.append('action', 'obtenerNoticiaPorId');
@@ -226,7 +276,9 @@ async function obtenerNoticiaPorId(idNoticia) {
     return await fetchAPI(formData);
 }
 
-
+/**
+ * Listar eventos
+ */
 async function listarEventos(filtroFecha) {
     const formData = new FormData();
     formData.append('action', 'listarEventos');
@@ -235,6 +287,9 @@ async function listarEventos(filtroFecha) {
     return await fetchAPI(formData);
 }
 
+/**
+ * Obtener evento por ID
+ */
 async function obtenerEventoPorId(idEvento) {
     const formData = new FormData();
     formData.append('action', 'obtenerEventoPorId');
@@ -243,6 +298,9 @@ async function obtenerEventoPorId(idEvento) {
     return await fetchAPI(formData);
 }
 
+/**
+ * Crear evento
+ */
 async function crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen) {
     const formData = new FormData();
     formData.append('action', 'crearEvento');
@@ -257,6 +315,9 @@ async function crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, ho
     return await fetchAPI(formData);
 }
 
+/**
+ * Actualizar evento
+ */
 async function actualizarEvento(idEvento, nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen) {
     const formData = new FormData();
     formData.append('action', 'actualizarEvento');
@@ -272,6 +333,9 @@ async function actualizarEvento(idEvento, nombre, descripcion, ubicacion, fecha,
     return await fetchAPI(formData);
 }
 
+/**
+ * Eliminar evento
+ */
 async function eliminarEvento(idEvento) {
     const formData = new FormData();
     formData.append('action', 'eliminarEvento');
@@ -280,6 +344,9 @@ async function eliminarEvento(idEvento) {
     return await fetchAPI(formData);
 }
 
+/**
+ * Listar candidaturas para el admin
+ */
 async function listarCandidaturasAdmin(filtroTexto, filtroTipo, filtroEstado, filtroFecha, pagina) {
     const data = new FormData();
     data.append('action', 'listarCandidaturasAdmin');
@@ -291,6 +358,9 @@ async function listarCandidaturasAdmin(filtroTexto, filtroTipo, filtroEstado, fi
     return await fetchAPI(data);
 }
 
+/**
+ * Actualizar estado de una candidatura
+ */
 async function actualizarEstadoCandidatura(idCandidatura, nuevoEstadoCandidatura, $motivoCambioEstado) {
     const data = new FormData();
     data.append('action', 'actualizarEstadoCandidatura');
@@ -300,6 +370,9 @@ async function actualizarEstadoCandidatura(idCandidatura, nuevoEstadoCandidatura
     return await fetchAPI(data);
 }
 
+/**
+ * Obtener historial de una candidatura
+ */
 async function obtenerHistorialCandidatura(idCandidatura) {
     const data = new FormData();
     data.append('action', 'obtenerHistorialCandidatura');
@@ -338,6 +411,9 @@ async function guardarCandidatura(nombre, correo, password, dni, nroExpediente, 
     return await fetchAPI(data);
 }
 
+/**
+ * Listar candidaturas de un participante
+ */
 async function listarCandidaturasParticipante(page, pageSize){
     const data = new FormData();
     data.append('action', 'listarCandidaturasParticipante');
@@ -347,6 +423,9 @@ async function listarCandidaturasParticipante(page, pageSize){
     return await fetchAPI(data);
 }
 
+/**
+ * Obtener datos de la gala
+ */
 async function obtenerDatosGala(){
     const data = new FormData();
     data.append('action', 'obtenerDatosGala');
@@ -354,6 +433,9 @@ async function obtenerDatosGala(){
     return await fetchAPI(data);
 }
 
+/**
+ * Actualizar candidatura
+ */
 async function actualizarCandidatura(idCandidatura, titulo, sinopsis, idPoster, idFichaTecnica, idTrailer, mensajeSubsanacion) {
     const data = new FormData();
     data.append('action', 'actualizarCandidatura');
@@ -368,6 +450,9 @@ async function actualizarCandidatura(idCandidatura, titulo, sinopsis, idPoster, 
     return await fetchAPI(data);
 }
 
+/**
+ * Obtener datos para la home
+ */
 async function obtenerDatosHome(){
     const data = new FormData();
     data.append('action', 'obtenerDatosHome');
@@ -375,6 +460,9 @@ async function obtenerDatosHome(){
     return await fetchAPI(data);
 }
 
+/**
+ * Obtener fechas de eventos por mes y año
+ */
 async function obtenerFechasEventoPorMesAnio(mes, anio) {
     const data = new FormData();
     data.append('action', 'obtenerFechasEventoPorMesAnio');
@@ -384,6 +472,9 @@ async function obtenerFechasEventoPorMesAnio(mes, anio) {
     return await fetchAPI(data);
 }
 
+/**
+ * Listar ediciones
+ */
 async function listarEdiciones(tipo, page){
     const data = new FormData();
     data.append('action', 'listarEdiciones');
@@ -393,6 +484,22 @@ async function listarEdiciones(tipo, page){
     return await fetchAPI(data);
 }
 
+async function crearEdicion(anioEdicion, nroParticipantes, resumen, idsArchivosGaleria, ganadores, tipo){
+    const data = new FormData();
+    data.append('action', 'crearEdicion');
+    data.append('anioEdicion', anioEdicion);
+    data.append('nroParticipantes', nroParticipantes);
+    data.append('resumen', resumen);
+    data.append('idsArchivosGaleria', JSON.stringify(idsArchivosGaleria));
+    data.append('ganadores', JSON.stringify(ganadores));
+    data.append('tipo', tipo);
+
+    return await fetchAPI(data);
+}
+
+/**
+ * Eliminar edición
+ */
 async function eliminarEdicion(idEdicion){
     const data = new FormData();
     data.append('action', 'eliminarEdicion');

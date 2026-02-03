@@ -8,16 +8,24 @@
  *     <button class="close-modal">Cerrar</button>
  * </modal-component>
  *
+ * Ejemplo con ancho responsive custom:
+ * <modal-component container-class="w-90 w-md-70 w-lg-50">
+ *     ...
+ * </modal-component>
+ *
  * Atributos:
  * - z-index: Define el z-index del modal (por defecto 1000).
  * - full-screen: Si está presente, el modal ocupará toda la pantalla.
  * - duration: Duración de la animación en milisegundos (por defecto 300).
  * - auto-open: Si está presente, el modal se abrirá automáticamente al cargar.
- * - static: Si está presente, el modal no se cerrará al hacer clic fuera de él o al presionar Esc
+ * - static: Si está presente, el modal no se cerrará al hacer clic fuera de él o al presionar Esc.
  * - size: Define el tamaño del modal. Valores posibles:
- *  "full" (ocupa todo el espacio disponible)
- *  "auto" (ajusta su tamaño al contenido)
- *  (ningún valor, tamaño predeterminado 400px)
+ *      "full" (ocupa todo el espacio disponible)
+ *      "auto" (ajusta su tamaño al contenido)
+ *      (ningún valor, tamaño predeterminado max-width 600px)
+ * - container-class: Clases CSS adicionales aplicadas al contenedor del modal.
+ *      Se aplican DESPUÉS de las clases de tamaño, por lo que tienen prioridad.
+ *      Ejemplo: "w-90 w-md-70" para ancho responsive.
  *
  * Eventos:
  * - modal-opened: Se dispara cuando el modal se abre
@@ -27,7 +35,6 @@ class ModalComponent extends HTMLElement {
     constructor() {
         super();
         this._isOpen = false;
-        this.style.visibility = 'hidden';
         this._handleEsc = this._handleEsc.bind(this);
     }
 
@@ -36,12 +43,16 @@ class ModalComponent extends HTMLElement {
     }
 
     async connectedCallback() {
+        if (this._initialized) return;
+
+        this.style.visibility = 'hidden';
         this.render();
         this._setupEventListeners();
 
         await window.injectExternalStyles('../css/modal-component.css', 'solid-modal-styles');
 
         this.style.visibility = 'visible';
+        this._initialized = true;
 
         if (this.hasAttribute('auto-open')) {
             setTimeout(() => {
@@ -55,6 +66,7 @@ class ModalComponent extends HTMLElement {
         const duration = this.getAttribute('duration') || '300';
         const isFullScreen = this.hasAttribute('full-screen') ? 'is-full-screen' : '';
         const sizeAttr = this.getAttribute('size');
+        const containerClass = this.getAttribute('container-class') || '';
 
         let sizeClass = '';
         if (sizeAttr === 'full') sizeClass = 'is-size-full';
@@ -66,7 +78,9 @@ class ModalComponent extends HTMLElement {
         overlay.style.setProperty('--modal-duration', `${duration}ms`);
 
         const container = document.createElement('div');
-        container.className = `solid-modal-container ${isFullScreen} ${sizeClass}`;
+        // container-class se añade al final para que tenga prioridad sobre size
+        container.className = `solid-modal-container ${isFullScreen} ${sizeClass} ${containerClass ? 'has-custom-width' : ''} ${containerClass}`.trim();
+
 
         const content = document.createElement('div');
         content.className = 'solid-modal-content';
@@ -137,6 +151,7 @@ class ModalComponent extends HTMLElement {
             const videos = this.querySelectorAll('video');
             videos.forEach(v => v.pause());
 
+            document.removeEventListener('keydown', this._handleEsc);
             this.dispatchEvent(new CustomEvent('modal-closed'));
         }, duration);
     }
