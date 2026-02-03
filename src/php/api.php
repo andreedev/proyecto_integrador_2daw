@@ -495,7 +495,9 @@ function sanitizarNombreArchivo($string) {
  * Subir archivo, guardar en directorio de archivos, guardar en BD y devolver id
  */
 function subirArchivo() {
-    $directorioSubida = './../../uploads/public/';
+    $folderBase = 'uploads/public/';
+
+    $directorioSubida = __DIR__ . '/../../' . $folderBase;
 
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
 
@@ -503,28 +505,27 @@ function subirArchivo() {
         $fileName = $_FILES['file']['name'];
 
         $nombreLimpio = sanitizarNombreArchivo($fileName);
-        $nombreFinal = time() . '_' . $nombreLimpio;
+        $nombreFinal = $nombreLimpio;
 
         // Crear el directorio si no existe
         if (!is_dir($directorioSubida)) {
             mkdir($directorioSubida, 0777, true);
         }
 
+        $rutaFisicaDestino = $directorioSubida . $nombreFinal;
         $rutaArchivo = $directorioSubida . $nombreFinal;
 
-
-        if (move_uploaded_file($fileTmpPath, $rutaArchivo)) {
+        if (move_uploaded_file($fileTmpPath, $rutaFisicaDestino)) {
             // Limpiar la ruta para almacenar en la base de datos
-            $rutaRelativa = str_replace('./..', '', $rutaArchivo);
-            $rutaAbsoluta = __DIR__ . '/..' . $rutaRelativa;
+            $rutaParaBaseDatos = $folderBase . $nombreFinal;
 
             global $conexion;
             $stmt = $conexion->prepare("INSERT INTO archivo (ruta) VALUES (?)");
-            $stmt->bind_param("s", $rutaRelativa);
+            $stmt->bind_param("s", $rutaParaBaseDatos);
             $stmt->execute();
             $idArchivo = $stmt->insert_id;
 
-            echo json_encode(["status" => "success", "message" => "Archivo subido correctamente", "data" => ["idArchivo" => $idArchivo, "rutaRelativa" => $rutaRelativa]]);
+            echo json_encode(["status" => "success", "message" => "Archivo subido correctamente", "data" => ["idArchivo" => $idArchivo, "rutaRelativa" => $rutaParaBaseDatos]]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido"]);
         }
@@ -2111,7 +2112,7 @@ function insertarHistorialCandidatura($id, $estado, $mensaje) {
     $stmt->close();
 }
 
-/*
+/**
  * Obtener estado de una candidatura por id
  */
 function obtenerEstadoCandidaturaPorId($idCandidatura){
@@ -2157,6 +2158,31 @@ function obtenerDatosHome(){
     ]);
 }
 
+/**
+ * Obtener edición por id
+ */
+function obtenerEdicionPorId($idEdicion){
+    global $conexion;
+
+    $query = "SELECT 
+                e.id_edicion as idEdicion,
+                e.anio_edicion as anioEdicion,
+                e.resumen_evento as resumenEvento,
+                e.nro_participantes as nroParticipantes
+              FROM edicion e
+              WHERE e.id_edicion = ? ";
+
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idEdicion);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        return $row;
+    } else {
+        return null;
+    }
+}
 
 /**
  * Obtener ediciones anteriores,
