@@ -1,0 +1,152 @@
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@media (min-width: 992px){
+    .mainContainer{
+        justify-content: space-between;
+    }
+}
+
+.leftContainer{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    height: 100vh;
+    position: relative;
+}
+
+@media (min-width: 992px){
+    .leftContainer{
+        display: flex;
+    }
+}
+
+.rightContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@media (min-width: 992px){
+    .rightContainer{
+        width: 50vw;
+    }
+}
+
+.imgLogin {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.imgUE{
+    width:320px;
+}
+
+.logoUE{
+    text-align: right;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.logomasbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.bloqueLogin{
+    text-align: center;
+    padding: 16px;
+    margin: 0;
+    width: auto;
+    height: 100%;
+    border: 1px solid var(--neutral-05);
+    background-color: var(--neutral-07);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.13);
+}
+
+@media (min-width: 480px){
+    .bloqueLogin{
+        width: 300px;
+    }
+}
+
+
+.btnLogin{
+    width: 100%;
+    padding: 6px 0px;
+    background-color: var(--neutral-01);
+    color: white;
+    font-size: 16px;
+    transition: all 300ms ease;
+    border: 1px solid var(--neutral-01);
+}
+
+.btnLogin:hover{
+    border: 1px solid transparent;
+    background-color: var(--primary-03);
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+@media screen and (max-width:1000px){
+    .logomasbox{
+        padding:0px;
+    }
+}
+
+
+/* En caso de que sea en móvil */
+@media screen and (max-width: 992px){
+    body{
+        background-image: url(../img/red-white-photo-white-black-camera.jpg);
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+
+    .imgLogin{
+        width:0vw;
+        height:0vh;
+    }
+
+    .imgUE{
+        width:160px;
+        height:80px;
+    }
+
+}
+
+.iniciarSesionTexto{
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.mensaje{
+    font-size: 12px;
+    margin: 8px 0px;
+}
+
+
+.formLogin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}

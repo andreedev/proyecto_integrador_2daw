@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis candidaturas</title>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/general-styles.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/candidaturas.css">
+    <link rel="stylesheet" href="../css/utils.css">
+
+    <script src="../js/common.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="../js/check-session.js"></script>
+</head>
+<body>
+    <home-header></home-header>
+    <div class="d-flex flex-column flex-md-row gap-24px p-32px container-lg-to-xl">
+
+        <div id="left" class="col-12 col-md-4 d-flex flex-column box-shadow-01">
+            <div class="d-flex flex-column">
+                <div class="d-flex justify-content-center border-bottom border-neutral-05 p-16px">
+                    <a class="secondary-button-02 w-100 text-center" id="btnMiPerfil">
+                        Mi perfil
+                    </a>
+                </div>
+                <div class="d-flex justify-content-center border-bottom border-neutral-05 p-16px">
+                    <a class="primary-button-01 w-100 text-center" href="subir-corto.html">
+                        Subir nuevo corto
+                    </a>
+                </div>
+
+                <h2 class="fs-24px fw-600 line-height-120 p-24px border-bottom border-neutral-05">Mis Candidaturas</h2>
+                <div id="misCandidaturasContainer">
+                </div>
+            </div>
+            <div class="d-flex flex-column p-16px justify-content-center align-items-center">
+                <pagination-component
+                        id="paginacionCandidaturas">
+                </pagination-component>
+            </div>
+        </div>
+
+
+        <div id="right" class="flex-grow-1 min-w-0 d-flex flex-column gap-12px">
+
+            <div id="statusContainer" class="w-100"></div>
+
+            <div class="d-flex flex-column gap-16px p-24px box-shadow-01">
+                <p class="fs-24px fw-600"> Datos de mi candidatura</p>
+                <p class="fs-16px fw-500">Vídeo del cortometraje</p>
+
+               <div class="d-flex flex-row">
+                   <div class="col-12 col-md-8">
+                       <video-player-component
+                               id="videoCandidatura"
+                       ></video-player-component>
+                   </div>
+               </div>
+
+                <span class="fs-12px fw-500 text-neutral-04">El vídeo no se puede cambiar una vez subido</span>
+
+                <file-component
+                        id="posterInput"
+                        label="Cartel o póster del cortometraje"
+                        primary-text="Arrastra y suelta el póster aquí o haz clic para seleccionar"
+                        secondary-text="JPG o TIF (Máx. 10MB)"
+                        accept=".jpg,.jpeg,.tif,.tiff"
+                        max-size="10485760"
+                        required
+                        error-type="Formato no válido. Usa JPG o TIF"
+                        error-size="La imagen es muy pesada. El máximo permitido son 10MB"
+                        error-required="El póster es obligatorio"
+                ></file-component>
+
+                <file-component
+                        id="fichaTecnicaInput"
+                        label="Ficha técnica"
+                        primary-text="Arrastra y suelta la ficha técnica aquí o haz clic para seleccionar"
+                        secondary-text="Solo PDF (Máx. 5MB)"
+                        accept=".pdf"
+                        max-size="5242880"
+                        required
+                        error-type="Formato no válido. Solo se permiten archivos PDF"
+                        error-size="El archivo es demasiado pesado. El máximo permitido son 5MB"
+                        error-required="La ficha técnica es obligatoria para procesar la inscripción"
+                ></file-component>
+
+                <input-component
+                        id="tituloInput"
+                        label="Título del cortometraje"
+                        width="100%"
+                        required
+                        required-message="El título es obligatorio para identificar tu obra"
+                ></input-component>
+
+                <div class="d-flex flex-column gap-4px">
+                    <input-component
+                            id="sinopsisInput"
+                            label="Sinopsis de la obra"
+                            textarea
+                            width="100%"
+                            required
+                            max-words="100"
+                            required-message="La sinopsis es obligatoria para conocer tu obra"
+                            error-message="La sinopsis es demasiado larga. Máximo 100 palabras"
+                    ></input-component>
+
+                    <span class="fs-12px text-neutral-04"><span id="contadorPalabras">0</span>/100 palabras</span>
+                </div>
+
+                <file-component
+                        id="videoTrailerInput"
+                        label="Vídeo traíler del cortometraje"
+                        primary-text="Arrastra y suelta tu vídeo aquí o haz clic para seleccionar"
+                        secondary-text="MOV o MP4 (Máx. 2GB)"
+                        accept=".mov,.mp4"
+                        max-size="2147483648"
+                        required
+                        error-type="Formato no válido. Solo se permiten archivos .mov y .mp4"
+                        error-size="El vídeo es demasiado pesado. El máximo permitido son 2GB"
+                        error-required="Debes subir un vídeo traíler para continuar en el concurso"
+                ></file-component>
+
+                <input-component
+                        id="mensajeSubsanacionInput"
+                        label="Explica como has subsanado las observaciones a los organizadores"
+                        textarea
+                        width="100%"
+                        required
+                        class="d-none"
+                        required-message="El mensaje es obligatorio para enviar la subsanación"
+                ></input-component>
+
+                <div class="d-flex justify-content-end w-100">
+                    <div class="primary-button-01 w-auto" id="btnGuardarCambios">Guardar cambios</div>
+                </div>
+            </div>
+        </div>
+
+        <modal-component id="modalMiPerfil" size="776px">
+            <div class="d-flex flex-column">
+                <div class="modal-header m-24px d-flex flex-row gap-16px justify-content-start align-items-center">
+                    <span class="icon-user-thick w-48px h-48px bg-neutral-01"></span>
+                    <span class="text-mi-perfil fs-25px fw-600">Mi perfil</span>
+                </div>
+                <div class="datos-personales d-flex flex-column p-24px gap-24px">
+                    <div class="datos-personales-header d-flex flex-row align-items-center justify-content-center gap-24px">
+                        <span class="linea"></span>
+                        <span class="flex-grow-1 fs-14px fw-400">DATOS PERSONALES</span>
+                        <span class="linea"></span>
+                    </div>
+                    <input-component
+                            id="nombreInput"
+                            label="Nombre Completo"
+                            value="Maria"
+                            width="100%"
+                            required
+                            disabled
+                    ></input-component>
+                    <div class="correo-password d-flex flex-row gap-20px">
+                        <input-component
+                                id="correoInput"
+                                label="Correo electróncico"
+                                value="ameliadelprado25@gmail.com"
+                                width="100%"
+                                required
+                                disabled
+                        ></input-component>
+                        <input-component
+                                id="passwdInput"
+                                label="Contraseña"
+                                value="********"
+                                width="100%"
+                                required
+                                disabled
+                        ></input-component>
+                    </div>
+                    <div class="identificacion-container d-flex flex-column gap-20px">
+                        <div class="identificacion-header d-flex flex-row align-items-center justify-content-center gap-24px mb-16px">
+                            <span class="linea"></span>
+                            <span class="flex-grow-1 fs-14px fw-400">IDENTIFICACIÓN</span>
+                            <span class="linea"></span>
+                        </div>
+                        <div class="input-identificacion d-flex flex-row">
+                            <input-component
+                                    id="dniInput"
+                                    label="DNI / Pasaporte"
+                                    value="12345678A"
+                                    width="100%"
+                                    required
+                                    disabled
+                            ></input-component>
+                            <input-component
+                                    id="numExpedienteInput"
+                                    label="Número de Expediente"
+                                    value="EXP-00123123"
+                                    width="100%"
+                                    required
+                                    disabled
+                            ></input-component>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-cerrar-container d-flex justify-content-center align-items-center">
+                    <div class="btn-cerrar secondary-button-02 d-flex align-items-center justify-content-center">
+                        <span class="btn-text close-modal">Cerrar</span>
+                    </div>
+                </div>
+            </div>
+        </modal-component>
+    </div>
+    <home-footer></home-footer>
+
+    <notification-component id="notification"></notification-component>
+
+    <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
+    <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/notification-component.js"></script>
+    <script src="../js/components/video-player-component.js"></script>
+    <script src="../js/components/header.js"></script>
+    <script src="../js/components/footer.js"></script>
+    <script src="../js/candidaturas.js"></script>
+</body>
+</html>
