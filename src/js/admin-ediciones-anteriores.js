@@ -14,17 +14,34 @@ const btnAbrirCardAgregarGanador = document.getElementById('btnAbrirCardAgregarG
 const cardAgregarNuevoGanador = document.getElementById('cardAgregarNuevoGanador');
 const cerrarCardAgregarGanador = document.getElementById('cerrarCardAgregarGanador');
 const btnAgregarGanador = document.getElementById('btnAgregarGanador');
-const ganadoresContainer = document.getElementById('ganadoresContainer');
+const ganadoresContainerCrearEdicion = document.getElementById('ganadoresContainerCrearEdicion');
 const inputNombreGanador = document.getElementById('inputNombreGanador');
 const inputCategoriaGanador = document.getElementById('inputCategoriaGanador');
 const inputPuestoGanador = document.getElementById('inputPuestoGanador');
 const inputVideoGanador = document.getElementById('inputVideoGanador');
-const indicadorGanadores = document.getElementById('indicadorGanadores');
+const indicadorGanadoresCrearEdicion = document.getElementById('indicadorGanadoresCrearEdicion');
 const inputYearVerEdicion = document.getElementById('inputYearVerEdicion');
 const inputNumParticipantesVerEdicion = document.getElementById('inputNumParticipantesVerEdicion');
 const descripcionInputVerEdicion = document.getElementById('descripcionInputVerEdicion');
 const galeriaEdicionCarousel = document.getElementById('galeriaEdicionCarousel');
 const galeriaGanadoresCarousel = document.getElementById('galeriaGanadoresCarousel');
+const indicadorGanadoresVerEdicion = document.getElementById('indicadorGanadoresVerEdicion');
+
+const inputYearActualizarEdicion = document.getElementById('inputYearActualizarEdicion');
+const inputNumParticipantesActualizarEdicion = document.getElementById('inputNumParticipantesActualizarEdicion');
+const descripcionInputActualizarEdicion = document.getElementById('descripcionInputActualizarEdicion');
+const fileInputActualizarEdicion = document.getElementById('fileInputActualizarEdicion');
+const indicadorGanadoresActualizarEdicion = document.getElementById('indicadorGanadoresActualizarEdicion');
+const btnAbrirCardAgregarGanadorActualizarEdicion = document.getElementById('btnAbrirCardAgregarGanadorActualizarEdicion');
+const ganadoresContainerActualizarEdicion = document.getElementById('ganadoresContainerActualizarEdicion');
+const cardAgregarNuevoGanadorActualizarEdicion = document.getElementById('cardAgregarNuevoGanadorActualizarEdicion');
+const cerrarCardAgregarGanadorActualizarEdicion = document.getElementById('cerrarCardAgregarGanadorActualizarEdicion');
+const inputNombreGanadorActualizarEdicion = document.getElementById('inputNombreGanadorActualizarEdicion');
+const inputCategoriaGanadorActualizarEdicion = document.getElementById('inputCategoriaGanadorActualizarEdicion');
+const btnAgregarGanadorActualizarEdicion = document.getElementById('btnAgregarGanadorActualizarEdicion');
+const inputPuestoGanadorActualizarEdicion = document.getElementById('inputPuestoGanadorActualizarEdicion');
+const inputVideoGanadorActualizarEdicion = document.getElementById('inputVideoGanadorActualizarEdicion');
+const btnConfirmarActualizarEdicion = document.getElementById('btnConfirmarActualizarEdicion');
 
 let tipo = 'anterior';
 let edicionSeleccionada = null;
@@ -42,6 +59,7 @@ paginacion.addEventListener('page-change', async (e) => {
 });
 
 btnCrearEdicionAnterior.addEventListener('click', () => {
+    resetFormularioCrearEdicionAnterior();
     modalCrearEdicionAnterior.open();
 });
 
@@ -59,17 +77,41 @@ btnConfirmarCrearEdicion.addEventListener('click', async () => {
 });
 
 btnAgregarGanador.addEventListener('click', () => {
-    handleAgregarNuevoGanador();
+    handleAgregarNuevoGanador(inputNombreGanador, inputCategoriaGanador, inputPuestoGanador, inputVideoGanador, ganadoresContainerCrearEdicion, indicadorGanadoresCrearEdicion, cardAgregarNuevoGanador);
+});
+
+btnAbrirCardAgregarGanadorActualizarEdicion.addEventListener('click', () => {
+    cardAgregarNuevoGanadorActualizarEdicion.classList.remove('d-none');
+    scrollToElement(cardAgregarNuevoGanadorActualizarEdicion);
+});
+
+cerrarCardAgregarGanadorActualizarEdicion.addEventListener('click', () => {
+    cardAgregarNuevoGanadorActualizarEdicion.classList.add('d-none');
+});
+
+btnAgregarGanadorActualizarEdicion.addEventListener('click', () => {
+    handleAgregarNuevoGanador(inputNombreGanadorActualizarEdicion, inputCategoriaGanadorActualizarEdicion, inputPuestoGanadorActualizarEdicion, inputVideoGanadorActualizarEdicion, ganadoresContainerActualizarEdicion, indicadorGanadoresActualizarEdicion, cardAgregarNuevoGanadorActualizarEdicion);
+});
+
+btnConfirmarActualizarEdicion.addEventListener('click', async () => {
+    handleActualizarEdicionAnterior();
 });
 
 /**
  * Maneja la adición de un nuevo ganador a la lista
+ * @param {InputComponent} inputNombreGanadorElement - Elemento del input del nombre del ganador
+ * @param {InputComponent} inputCategoriaGanadorElement - Elemento del input de la categoría del ganador
+ * @param {InputComponent} inputPuestoGanadorElement - Elemento del input del puesto del ganador
+ * @param {FileComponent} inputVideoGanadorElement - Elemento del file-component del video del ganador
+ * @param {HTMLElement} ganadoresContainer - Contenedor donde se renderizará el nuevo card de ganador
+ * @param {HTMLElement} indicadorGanadores - Elemento para actualizar el indicador de número de ganadores
+ * @param {HTMLElement} cardAgregarGanadorElement - Elemento del card de agregar nuevo ganador para ocultarlo después de agregar
  */
-function handleAgregarNuevoGanador() {
-    const validNombre = inputNombreGanador.validate().valid;
-    const validCategoria = inputCategoriaGanador.validate().valid;
-    const validPuesto = inputPuestoGanador.validate().valid;
-    const validVideo = inputVideoGanador.validate();
+function handleAgregarNuevoGanador(inputNombreGanadorElement, inputCategoriaGanadorElement, inputPuestoGanadorElement, inputVideoGanadorElement, ganadoresContainer, indicadorGanadores, cardAgregarGanadorElement) {
+    const validNombre = inputNombreGanadorElement.validate().valid;
+    const validCategoria = inputCategoriaGanadorElement.validate().valid;
+    const validPuesto = inputPuestoGanadorElement.validate().valid;
+    const validVideo = inputVideoGanadorElement.validate();
 
     if (!validNombre || !validCategoria || !validPuesto || !validVideo) {
         return;
@@ -77,31 +119,33 @@ function handleAgregarNuevoGanador() {
 
     const nuevoGanador = {
         // Genera un ID único
-        id: Date.now(),
-        nombre: inputNombreGanador.value.trim(),
-        categoria: inputCategoriaGanador.value.trim(),
-        premio: inputPuestoGanador.value.trim(),
-        video: inputVideoGanador.getData()
+        idGanadorEdicion: Date.now(),
+        nombre: inputNombreGanadorElement.value.trim(),
+        categoria: inputCategoriaGanadorElement.value.trim(),
+        premio: inputPuestoGanadorElement.value.trim(),
+        video: inputVideoGanadorElement.getData()
     };
     ganadores.push(nuevoGanador);
 
-    renderizarNuevoCardGanador(nuevoGanador);
+    renderizarNuevoCardGanador(nuevoGanador, ganadoresContainer, indicadorGanadores);
 
     // Limpiar los campos del formulario
-    inputNombreGanador.clear()
-    inputCategoriaGanador.clear();
-    inputPuestoGanador.clear();
-    inputVideoGanador.clear();
+    inputNombreGanadorElement.clear()
+    inputCategoriaGanadorElement.clear();
+    inputPuestoGanadorElement.clear();
+    inputVideoGanadorElement.clear();
 
-    cardAgregarNuevoGanador.classList.add('d-none');
-    actualizarIndicadorGanadores();
+    cardAgregarGanadorElement.classList.add('d-none');
 }
 
 /**
  * Renderiza un nuevo card de ganador en el contenedor de ganadores
  * @param {Object} ganador - Objeto con los datos del ganador
+ * @param {Array} ganadoresList - Lista de ganadores actual
+ * @param {HTMLElement} contenedor - Contenedor donde se agregará el card
+ * @param {HTMLElement} indicadorGanadores - Elemento para actualizar el indicador de ganadores
  */
-function renderizarNuevoCardGanador(ganador) {
+function renderizarNuevoCardGanador(ganador, contenedor , indicadorGanadores ) {
     const ganadorDiv = document.createElement('div');
     ganadorDiv.classList.add('d-flex', 'flex-column', 'border', 'border-neutral-06', 'position-relative', 'p-16px', 'gap-16px', 'mb-16px');
     ganadorDiv.dataset.ganadorId = ganador.id;
@@ -115,11 +159,11 @@ function renderizarNuevoCardGanador(ganador) {
 
     const fileComp = document.createElement('file-component');
     fileComp.setAttribute('label', 'Cortometraje o traíler del ganador');
-    fileComp.setAttribute('id', `inputVideoGanadorCrearEdicion_${ganador.id}`);
+    fileComp.setAttribute('id', `inputVideoGanadorCrearEdicion_${ganador.idGanadorEdicion}`);
     fileComp.setAttribute('accept', '.mp4,.mov,.avi');
     fileComp.setAttribute('required', '');
 
-    const index = ganadores.findIndex(g => g.id === ganador.id);
+    const index = ganadores.findIndex(g => g.idGanadorEdicion === ganador.idGanadorEdicion);
     if (index !== -1) {
         ganadores[index].componentRef = fileComp;
     }
@@ -128,8 +172,8 @@ function renderizarNuevoCardGanador(ganador) {
     btnDelete.classList.add('icon-trash', 'bg-neutral-01', 'w-24px', 'h-24px', 'position-absolute', 'right-16px', 'top-16px', 'cursor-pointer', 'hover-scale-1-10');
     btnDelete.addEventListener('click', () => {
         ganadorDiv.remove();
-        ganadores = ganadores.filter(g => g.id !== ganador.id);
-        actualizarIndicadorGanadores();
+        ganadores = ganadores.filter(g => g.idGanadorEdicion !== ganador.idGanadorEdicion);
+        renderizarIndicadorGanadores(indicadorGanadores, ganadores.length);
     });
 
     ganadorDiv.append(
@@ -140,83 +184,19 @@ function renderizarNuevoCardGanador(ganador) {
         btnDelete
     );
 
-    ganadoresContainer.appendChild(ganadorDiv);
+    contenedor.appendChild(ganadorDiv);
 
     customElements.whenDefined('file-component').then(() => {
-        const videoData = ganador.video;
-        if (videoData.file instanceof File) {
-            fileComp.setRawFile(videoData.file, false);
+        if (ganador.video.file instanceof File) {
+            fileComp.setRawFile(ganador.video.file, false);
+        } else if (ganador.rutaArchivoVideo) {
+            fileComp.setAttachedMode(ganador.rutaArchivoVideo, ganador.idArchivoVideo, false);
         }
     });
 
-    actualizarIndicadorGanadores();
+    renderizarIndicadorGanadores(indicadorGanadores, ganadores.length);
 }
 
-/**
- * Maneja la creación de una nueva edición anterior
- */
-async function handleCrearEdicionAnterior() {
-    const anioEdicionValid = inputYearCrearEdicion.validate().valid;
-    const nroParticipantesValid = inputNumParticipantesCrearEdicion.validate().valid;
-    const descripcionValid = descripcionInputCrearEdicion.validate().valid;
-    const archivoValid = fileInputCrearEdicion.validate();
-
-    if (!anioEdicionValid){
-        scrollToElement(inputYearCrearEdicion);
-    } else if (!nroParticipantesValid){
-        scrollToElement(inputNumParticipantesCrearEdicion);
-    } else if (!descripcionValid){
-        scrollToElement(descripcionInputCrearEdicion);
-    } else if (!archivoValid){
-        scrollToElement(fileInputCrearEdicion);
-    }
-
-    if (!anioEdicionValid || !nroParticipantesValid || !descripcionValid || !archivoValid) {
-        return;
-    }
-
-    if (ganadores.length === 0) {
-        notificador.show("Debes agregar al menos un ganador");
-        return;
-    }
-
-    try {
-        // Subir archivos de galería
-        const galleryIds = await fileInputCrearEdicion.uploadIfNeeded();
-
-        // Subir videos de ganadores
-        const ganadoresFinalData = await Promise.all(ganadores.map(async (g) => {
-            const videoId = await g.componentRef.uploadIfNeeded();
-            return {
-                nombre: g.nombre,
-                categoria: g.categoria,
-                puesto: g.premio,
-                idArchivoVideo: videoId
-            };
-        }));
-
-        const anioEdicion= inputYearCrearEdicion.value
-        const nroParticipantes= inputNumParticipantesCrearEdicion.value
-        const descripcion= descripcionInputCrearEdicion.value
-        const idsArchivosGaleria= galleryIds
-        const listaGanadores= ganadoresFinalData
-        const tipo= 'anterior'
-
-        const response = await crearEdicion(anioEdicion, nroParticipantes, descripcion, idsArchivosGaleria, listaGanadores, tipo);
-        if (response.status === "success"){
-            notificador.show("Edición creada exitosamente");
-            modalCrearEdicionAnterior.close();
-            await listarEdicionesAnteriores();
-            resetFormularioCrearEdicionAnterior();
-        } else {
-            notificador.show(`Error al crear la edición: ${response.message}`);
-        }
-
-    } catch (error) {
-        console.error(error);
-        notificador.show("Hubo un error al procesar la solicitud");
-    }
-}
 
 /**
  * Renderiza las ediciones anteriores utilizando DOM nativo
@@ -249,7 +229,8 @@ function renderizarEdicionesAnteriores(ediciones) {
         btnEdit.addEventListener('click', (e) => {
             e.stopPropagation();
             edicionSeleccionada = edicion;
-            handleEditarEdicionAnterior();
+            resetFormularioActualizarEdicionAnterior();
+            renderizarEdicionExistenteEnFormularioActualizarEdicion();
             modalEditarEdicionAnterior.open();
         });
 
@@ -326,17 +307,21 @@ function resetFormularioCrearEdicionAnterior() {
     descripcionInputCrearEdicion.clear();
     fileInputCrearEdicion.clear();
     ganadores = [];
-    ganadoresContainer.replaceChildren();
-    actualizarIndicadorGanadores();
+    ganadoresContainerCrearEdicion.replaceChildren();
+    renderizarIndicadorGanadores(indicadorGanadoresCrearEdicion, ganadores.length);
+}
+
+function resetFormularioActualizarEdicionAnterior() {
+    ganadores = [];
+    ganadoresContainerActualizarEdicion.replaceChildren();
 }
 
 /**
- * Actualiza el indicador de número de ganadores
+ * Renderiza el indicador de número de ganadores
  */
-function actualizarIndicadorGanadores() {
-    indicadorGanadores.textContent = `${ganadores.length} ganadores`;
+function renderizarIndicadorGanadores(indicatorElement, total) {
+    indicatorElement.textContent = `${total} ganadores`;
 }
-
 
 function handleVerEdicionAnterior() {
     inputYearVerEdicion.setValue(edicionSeleccionada.anioEdicion);
@@ -364,7 +349,6 @@ function renderizarCarouselGaleriaEdicion(archivos) {
 }
 
 function renderizarCarouselGanadoresEdicion(ganadores) {
-    console.log(ganadores);
     const slides = ganadores.map(ganador => {
         return `
             <div class="d-flex flex-column gap-8px p-16px border border-neutral-06">
@@ -380,11 +364,173 @@ function renderizarCarouselGanadoresEdicion(ganadores) {
         `;
     });
     galeriaGanadoresCarousel.setSlides(slides);
+    renderizarIndicadorGanadores(indicadorGanadoresVerEdicion, ganadores.length);
 }
 
+function renderizarEdicionExistenteEnFormularioActualizarEdicion() {
+    inputYearActualizarEdicion.setValue(edicionSeleccionada.anioEdicion, true);
+    inputNumParticipantesActualizarEdicion.setValue(edicionSeleccionada.nroParticipantes, true);
+    descripcionInputActualizarEdicion.setValue(edicionSeleccionada.resumenEvento, true);
 
-function handleEditarEdicionAnterior() {
+    ganadoresContainerActualizarEdicion.replaceChildren();
 
+    edicionSeleccionada.ganadores.forEach(ganador => {
+        const ganadorData = {
+            idGanadorEdicion: ganador.idGanadorEdicion,
+            nombre: ganador.nombre,
+            categoria: ganador.categoria,
+            premio: ganador.premio,
+            video: { file: null },
+            rutaArchivoVideo: ganador.rutaArchivoVideo,
+            idArchivoVideo: ganador.idArchivoVideo
+        };
+        ganadores.push(ganadorData);
+        renderizarNuevoCardGanador(ganadorData, ganadoresContainerActualizarEdicion, indicadorGanadoresActualizarEdicion);
+    });
+
+    fileInputActualizarEdicion.setAttachedMode(edicionSeleccionada.archivos.map(a => a.rutaArchivo), edicionSeleccionada.archivos.map(a => a.idArchivo), true);
+}
+
+/**
+ * Maneja la creación de una nueva edición anterior
+ */
+async function handleCrearEdicionAnterior() {
+    const anioEdicionValid = inputYearCrearEdicion.validate().valid;
+    const nroParticipantesValid = inputNumParticipantesCrearEdicion.validate().valid;
+    const descripcionValid = descripcionInputCrearEdicion.validate().valid;
+    const archivoValid = fileInputCrearEdicion.validate();
+
+    if (!anioEdicionValid){
+        scrollToElement(inputYearCrearEdicion);
+    } else if (!nroParticipantesValid){
+        scrollToElement(inputNumParticipantesCrearEdicion);
+    } else if (!descripcionValid){
+        scrollToElement(descripcionInputCrearEdicion);
+    } else if (!archivoValid){
+        scrollToElement(fileInputCrearEdicion);
+    }
+
+    if (!anioEdicionValid || !nroParticipantesValid || !descripcionValid || !archivoValid) {
+        return;
+    }
+
+    if (ganadores.length === 0) {
+        notificador.show("Debes agregar al menos un ganador");
+        return;
+    }
+
+    try {
+        // Subir archivos de galería
+        const galleryIds = await fileInputCrearEdicion.uploadIfNeeded();
+
+        // Subir videos de ganadores
+        const ganadoresFinalData = await Promise.all(ganadores.map(async (g) => {
+            const videoId = await g.componentRef.uploadIfNeeded();
+            return {
+                nombre: g.nombre,
+                categoria: g.categoria,
+                puesto: g.premio,
+                idArchivoVideo: videoId
+            };
+        }));
+
+        const anioEdicion= inputYearCrearEdicion.value
+        const nroParticipantes= inputNumParticipantesCrearEdicion.value
+        const descripcion= descripcionInputCrearEdicion.value
+        const idsArchivosGaleria= galleryIds
+        const listaGanadores= ganadoresFinalData
+        const tipo= 'anterior'
+
+        btnConfirmarCrearEdicion.disabled = true;
+
+        const response = await crearEdicion(anioEdicion, nroParticipantes, descripcion, idsArchivosGaleria, listaGanadores, tipo);
+
+        btnConfirmarCrearEdicion.disabled = false;
+
+        if (response.status === "success"){
+            notificador.show("Edición creada exitosamente");
+            modalCrearEdicionAnterior.close();
+            await listarEdicionesAnteriores();
+            resetFormularioCrearEdicionAnterior();
+        } else {
+            notificador.show(`Error al crear la edición: ${response.message}`);
+        }
+
+    } catch (error) {
+        console.error(error);
+        notificador.show("Hubo un error al procesar la solicitud");
+    }
+}
+
+async function handleActualizarEdicionAnterior() {
+    const validYear = inputYearActualizarEdicion.validate().valid;
+    const validParticipantes = inputNumParticipantesActualizarEdicion.validate().valid;
+    const validDescripcion = descripcionInputActualizarEdicion.validate().valid;
+    const validArchivos = fileInputActualizarEdicion.validate();
+
+    if (!validYear) {
+        scrollToElement(inputYearActualizarEdicion);
+    } else if (!validParticipantes) {
+        scrollToElement(inputNumParticipantesActualizarEdicion);
+    } else if (!validDescripcion) {
+        scrollToElement(descripcionInputActualizarEdicion);
+    } else if (!validArchivos) {
+        scrollToElement(fileInputActualizarEdicion);
+    }
+
+    if (!validYear || !validParticipantes || !validDescripcion || !validArchivos) {
+        return;
+    }
+
+    if (ganadores.length === 0) {
+        notificador.show("Debes agregar al menos un ganador");
+        return;
+    }
+
+    try {
+
+        btnConfirmarActualizarEdicion.disabled = true;
+
+        // Subir archivos de galería
+        const galleryIds = await fileInputActualizarEdicion.uploadIfNeeded();
+
+        // Subir videos de ganadores
+        const ganadoresFinalData = await Promise.all(ganadores.map(async (g) => {
+            let videoId = g.idArchivoVideo;
+            if (g.componentRef) {
+                videoId = await g.componentRef.uploadIfNeeded();
+            }
+            return {
+                idGanadorEdicion: g.idGanadorEdicion,
+                nombre: g.nombre,
+                categoria: g.categoria,
+                puesto: g.premio,
+                idArchivoVideo: videoId
+            };
+        }));
+
+        const anioEdicion = inputYearActualizarEdicion.value
+        const nroParticipantes = inputNumParticipantesActualizarEdicion.value
+        const descripcion = descripcionInputActualizarEdicion.value
+        const idsArchivosGaleria = galleryIds
+        const listaGanadores = ganadoresFinalData
+        const idEdicion = edicionSeleccionada.idEdicion;
+
+        console.log(ganadoresFinalData)
+
+        const response = await actualizarEdicion(idEdicion, anioEdicion, nroParticipantes, descripcion, idsArchivosGaleria, listaGanadores);
+        btnConfirmarActualizarEdicion.disabled = false;
+        if (response.status === "success") {
+            notificador.show("Edición actualizada exitosamente");
+            await listarEdicionesAnteriores();
+            modalEditarEdicionAnterior.close();
+        } else {
+            notificador.show(`Error al actualizar la edición: ${response.message}`);
+        }
+    } catch (error) {
+        console.error(error);
+        notificador.show("Hubo un error al procesar la solicitud");
+    }
 }
 
 function handleEliminarEdicion() {

@@ -173,12 +173,18 @@ class FileComponent extends HTMLElement {
         this.clear();
     }
 
+    /**
+     * Configura el componente con un archivo existente (modo adjunto)
+     * @param {string|string[]} filePath - URL(s) del archivo(s) existente(s)
+     * @param {string|string[]} fileId - ID(s) del archivo(s) en el servidor
+     * @param {boolean} editable - Si es editable o solo preview (default: true)
+     */
     setAttachedMode(filePath, fileId, editable = true) {
         this._isChanged = false;
         this._isEditable = editable;
 
         if (this.isMultiple()) {
-            // Modo múltiple: filePath y fileId deben ser arrays
+            // Modo múltiple: validar que filePath y fileId sean arrays
             const paths = Array.isArray(filePath) ? filePath : [filePath];
             const ids = Array.isArray(fileId) ? fileId : [fileId];
 
@@ -187,8 +193,8 @@ class FileComponent extends HTMLElement {
                 return {
                     name: fileName,
                     url: path,
-                    idArchivo: ids[index],
-                    isExisting: true
+                    idArchivo: ids[index], // mapeo directo por índice
+                    isExisting: true       // marca como archivo existente para que uploadIfNeeded lo ignore
                 };
             });
 
@@ -239,6 +245,9 @@ class FileComponent extends HTMLElement {
         this._updateEditableState(editable);
     }
 
+    /**
+     * Sube el archivo al servidor si ha habido cambios. Retorna el ID del archivo subido
+     */
     async uploadIfNeeded() {
         if (!this._isChanged && this._fileId) {
             return this._fileId;
@@ -246,14 +255,24 @@ class FileComponent extends HTMLElement {
 
         try {
             if (this.isMultiple()) {
-                // Sube todos los archivos nuevos y retorna array de IDs
-                const uploadPromises = this._files.map(f => f.idArchivo ? Promise.resolve({data: {idArchivo: f.idArchivo}}) : subirArchivo(f));
+                // Modo múltiple: Sube todos los archivos nuevos y retorna array de IDs
+                const uploadPromises = this._files.map(file => {
+                    // Si el archivo ya existía (viene de setAttachedMode), no lo subimos de nuevo
+                    if (file.isExisting || file.idArchivo) {
+                        return Promise.resolve({ data: { idArchivo: file.idArchivo } });
+                    }
+                    // Si es un archivo nuevo, lo subimos
+                    return subirArchivo(file);
+                });
                 const results = await Promise.all(uploadPromises);
-                const ids = results.map(r => r.data.idArchivo);
-                this._fileId = ids;
+                // Este array contiene los IDs de todos los archivos subidos o existentes
+                const finalIds = results.map(r => r.data.idArchivo);
+
+                this._fileId = finalIds;
                 this._isChanged = false;
-                return ids;
+                return finalIds;
             } else {
+                // Modo simple: si no hay cambios o no hay archivo, retornamos el ID existente
                 if (!this._file) return this._fileId;
                 const result = await subirArchivo(this._file);
                 this._fileId = result.data.idArchivo;

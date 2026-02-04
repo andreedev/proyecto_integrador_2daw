@@ -3,3 +3,4 @@
 /vendor/*
 !/vendor/autoload.php
 /node_modules/*
+.idea/*

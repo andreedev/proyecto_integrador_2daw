@@ -120,17 +120,13 @@
                     </div>
                     <div class="d-flex flex-column">
                         <span class="fs-20px fw-600">Ganadores de esta edición</span>
-                        <span class="fs-14px fw-400" id="indicadorGanadores">0 ganadores</span>
+                        <span class="fs-14px fw-400" id="indicadorGanadoresCrearEdicion">0 ganadores</span>
                     </div>
                 </div>
                 <button class="primary-button-02" id="btnAbrirCardAgregarGanador">Agregar ganador</button>
             </div>
 
-            <div id="ganadoresContainer">
-
-
-
-            </div>
+            <div id="ganadoresContainerCrearEdicion"></div>
 
             <div id="cardAgregarNuevoGanador" class="d-none d-flex flex-column border border-neutral-06 position-relative p-16px gap-16px">
                 <p class="fw-600">Nuevo ganador</p>
@@ -171,7 +167,7 @@
 
             <div class="d-flex-two-columns-responsive gap-24px">
                 <div class="secondary-button-02 text-center close-modal">Cancelar</div>
-                <div class="primary-button-01 text-center" id="btnConfirmarCrearEdicion">Crear edición</div>
+                <button class="primary-button-01 text-center" id="btnConfirmarCrearEdicion">Crear edición</button>
             </div>
         </div>
     </modal-component>
@@ -262,7 +258,7 @@
         </div>
     </modal-component>
 
-    <modal-component id="modalEditarEdicionAnterior">
+    <modal-component id="modalEditarEdicionAnterior" static>
         <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
             <div class="d-flex flex-column gap-4px">
                 <span class="fs-20px fw-600">Editar Edición Anterior</span>
@@ -274,11 +270,116 @@
             </div>
         </div>
         <div class="d-flex flex-column p-24px gap-16px">
+            <div class="d-flex flex-row align-center gap-8px">
+                <div class="d-flex w-48px h-48px justify-content-center align-items-center">
+                    <span class="icon-document-check w-24px h-24px bg-neutral-01"></span>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="fs-20px fw-600">Información básica</span>
+                    <span class="fs-14px fw-400">Información sobre la edición</span>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-md-row gap-16px">
+                <input-component
+                        label="Año de edición"
+                        id="inputYearActualizarEdicion"
+                        type="number"
+                        required
+                        required-message="El año no puede estar vacío"
+                ></input-component>
+                <input-component
+                        label="Número de participantes"
+                        id="inputNumParticipantesActualizarEdicion"
+                        required
+                        type="number"
+                        required-message="El número de participantes no puede estar vacío"
+                ></input-component>
+            </div>
+            <input-component
+                    id="descripcionInputActualizarEdicion"
+                    label="Resumen de la edición"
+                    textarea
+                    required
+                    required-message="La descripción no puede estar vacía"
+            ></input-component>
 
-            <p>Funcionalidad no implementada aún.</p>
+            <div class="d-flex flex-row align-center gap-8px">
+                <div class="d-flex w-48px h-48px justify-content-center align-items-center">
+                    <span class="icon-picture w-24px h-24px bg-neutral-01"></span>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="fs-20px fw-600">Galería fotográfica</span>
+                    <span class="fs-14px fw-400">Sube fotos y vídeos de esta edición</span>
+                </div>
+            </div>
+
+            <file-component
+                    id="fileInputActualizarEdicion"
+                    label="Galería de imágenes y vídeos"
+                    primary-text="Arrastra tu imagen o vídeo o haz clic para seleccionar"
+                    secondary-text="Formatos aceptados: MP4, MOV, AVI, JPG, JPEG, PNG, WEBP, AVIF. Tamaño máximo: 200MB"
+                    accept=".mp4,.mov,.avi,.jpg,.jpeg,.png,.webp,.avif"
+                    max-size="209715200"
+                    required
+                    multiple
+                    error-type="Formato no válido. Los formatos permitidos son MP4, MOV, AVI, JPG, JPEG, PNG, WEBP y AVIF"
+                    error-size="El archivo es muy pesado. El máximo permitido son 200MB"
+                    error-required="Debes subir al menos una imagen o vídeo"
+            ></file-component>
+
+            <div class="d-flex justify-space-between w-100">
+                <div class="d-flex flex-row align-center gap-8px">
+                    <div class="d-flex w-48px h-48px justify-content-center align-items-center">
+                        <span class="icon-trophy w-24px h-24px bg-neutral-01"></span>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span class="fs-20px fw-600">Ganadores de esta edición</span>
+                        <span class="fs-14px fw-400" id="indicadorGanadoresActualizarEdicion">0 ganadores</span>
+                    </div>
+                </div>
+                <button class="primary-button-02" id="btnAbrirCardAgregarGanadorActualizarEdicion">Agregar ganador</button>
+            </div>
+
+            <div id="ganadoresContainerActualizarEdicion"></div>
+
+            <div id="cardAgregarNuevoGanadorActualizarEdicion" class="d-none d-flex flex-column border border-neutral-06 position-relative p-16px gap-16px">
+                <span class="icon-close bg-neutral-01 w-24px h-24px position-absolute right-16px top-16px cursor-pointer hover-scale-1-10" id="cerrarCardAgregarGanadorActualizarEdicion"></span>
+                <input-component
+                        label="Nombre"
+                        id="inputNombreGanadorActualizarEdicion"
+                        required
+                        required-message="El nombre no puede estar vacío"
+                ></input-component>
+                <div class="d-flex flex-column flex-md-row gap-16px">
+                    <input-component
+                            label="Categoría"
+                            id="inputCategoriaGanadorActualizarEdicion"
+                            required
+                            required-message="La categoría no puede estar vacía"
+                    ></input-component>
+                    <input-component
+                            label="Puesto"
+                            id="inputPuestoGanadorActualizarEdicion"
+                            required
+                            required-message="El puesto no puede estar vacío"
+                    ></input-component>
+                </div>
+                <file-component
+                        label="Cortometraje o traíler del ganador"
+                        id="inputVideoGanadorActualizarEdicion"
+                        primary-text="Arrastra tu imagen o vídeo o haz clic para seleccionar"
+                        accept=".mp4,.mov,.avi"
+                        required
+                        error-type="Formato no válido. Los formatos permitidos son MP4, MOV y AVI"
+                        error-required="Debes subir un vídeo"
+                ></file-component>
+
+                <div class="primary-button-02 w-100" id="btnAgregarGanadorActualizarEdicion">Agregar ganador</div>
+            </div>
 
             <div class="d-flex-two-columns-responsive gap-24px">
-                <div class="secondary-button-02 text-center close-modal">Cerrar</div>
+                <div class="secondary-button-02 text-center close-modal">Volver</div>
+                <button class="primary-button-01 text-center" id="btnConfirmarActualizarEdicion">Actualizar edición</button>
             </div>
         </div>
     </modal-component>
