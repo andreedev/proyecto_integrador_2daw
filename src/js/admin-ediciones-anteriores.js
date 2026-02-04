@@ -161,6 +161,16 @@ async function handleCrearEdicionAnterior() {
     const descripcionValid = descripcionInputCrearEdicion.validate().valid;
     const archivoValid = fileInputCrearEdicion.validate();
 
+    if (!anioEdicionValid){
+        scrollToElement(inputYearCrearEdicion);
+    } else if (!nroParticipantesValid){
+        scrollToElement(inputNumParticipantesCrearEdicion);
+    } else if (!descripcionValid){
+        scrollToElement(descripcionInputCrearEdicion);
+    } else if (!archivoValid){
+        scrollToElement(fileInputCrearEdicion);
+    }
+
     if (!anioEdicionValid || !nroParticipantesValid || !descripcionValid || !archivoValid) {
         return;
     }
