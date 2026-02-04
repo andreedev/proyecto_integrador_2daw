@@ -257,6 +257,7 @@
   border: none;
   padding: 0;
   margin: 0;
+  transition: all 300ms ease;
 }
 
 .close:hover {
@@ -264,7 +265,7 @@
 }
 
 .modal-body {
-  margin: 24px 36px;
+  margin: 0px 36px 24px 36px;
 }
 
 
@@ -335,7 +336,6 @@
 }
 
 .btn-cancelar{
-  padding: 8px;
   width: 100%;
   background-color: var(--neutral-09);
   border: solid 1px var(--neutral-01);
@@ -365,3 +365,18 @@
   color: var(--error-02);
 }
 
+.inputs-btn-agregar{
+  align-items: end;
+}
+
+.close-crear{
+  cursor: pointer;
+}
+
+.premios-text{
+  padding-top: 22px;
+}
+
+.text-premios{
+  padding-bottom: 22px;
+}

@@ -5,9 +5,9 @@ const editCategoryModal = document.getElementById('editCategoryModal');
 // const addPrizeBtn = document.getElementById('addPrizeBtn');
 // const editCategoryForm = document.getElementById('editCategoryForm');
 const cancelBtn = document.getElementById('cancelBtn');
-const closeBtn = document.querySelector('#editCategoryModal .close');
+const closeBtn = document.querySelector('.close');
 
-// const createCategoryModal = document.getElementById('createCategoryModal');
+const createCategoryModal = document.getElementById('createCategoryModal');
 // const newCategoryNameInput = document.getElementById('newCategoryName');
 // const newPrizesContainer = document.getElementById('newPrizesContainer');
 const addNewPrizeBtn = document.getElementById('addNewPrizeBtn');
@@ -26,6 +26,12 @@ const closeDeleteBtn = document.querySelector('#confirmDeleteModal .close');
 
 const notification = document.getElementById("notification");
 
+const closeModalCrear = document.querySelector(".close-crear");
+
+closeModalCrear.addEventListener( "click", () => {
+    createCategoryModal.close();
+});
+
 
 let currentCategoryId = null;
 let categoriaAEliminar = null;
@@ -40,12 +46,12 @@ let categoriaAEliminar = null;
 // -------------------- FUNCIONES MODAL EDICIÓN --------------------
 function openEditModal(categoryId, categoryName, prizes) {
     currentCategoryId = categoryId;
-    categoryNameInput.value = categoryName;
-    prizesContainer.innerHTML = '';
+    // categoryNameInput.value = categoryName;
+    // prizesContainer.innerHTML = '';
 
-    prizes.forEach((prize, index) => {
-        addPrizeToModal(prize.nombre, prize.cantidad_dinero, index + 1, prize.id_premio);
-    });
+    // prizes.forEach((prize, index) => {
+    //     addPrizeToModal(prize.nombre, prize.cantidad_dinero, index + 1, prize.id_premio);
+    // });
 
     editCategoryModal.open();
 }
@@ -95,8 +101,9 @@ window.addEventListener('click', (e) => {
 
 function resetEditModal() {
     currentCategoryId = null;
-    categoryNameInput.value = '';
-    prizesContainer.innerHTML = '';
+    // categoryNameInput.value = '';
+    // prizesContainer.innerHTML = '';
+    createCategoryModal.close();
 }
 
 // -------------------- GUARDAR CAMBIOS --------------------
@@ -136,9 +143,9 @@ editCategoryForm.addEventListener('submit', async (e) => {
 function openCreateModal() {
 
     createCategoryModal.open();
-    newCategoryNameInput.value = '';
-    newPrizesContainer.innerHTML = '';
-    addNewPrizeToModal('Nuevo premio', 100, 1);
+    // newCategoryNameInput.value = '';
+    // newPrizesContainer.innerHTML = '';
+    // addNewPrizeToModal('Nuevo premio', 100, 1);
 }
 //
 // function addNewPrizeToModal(label = 'Nuevo premio', value = '', number = 1) {
@@ -169,10 +176,10 @@ function openCreateModal() {
 //     addNewPrizeToModal(`Premio ${newPrizesContainer.children.length + 1}`, '', newPrizesContainer.children.length + 1);
 // });
 //
-cancelCreateBtn.addEventListener('click', () => {
-    createCategoryModal.style.display = 'none';
-    resetCreateModal();
-});
+// cancelCreateBtn.addEventListener('click', () => {
+//     createCategoryModal.style.display = 'none';
+//     resetCreateModal();
+// });
 //
 // document.querySelectorAll('#createCategoryModal .close').forEach(btn => {
 //     btn.addEventListener('click', () => {
@@ -185,10 +192,11 @@ cancelCreateBtn.addEventListener('click', () => {
 //     if (e.target === createCategoryModal) resetCreateModal();
 // });
 //
-// function resetCreateModal() {
-//     newCategoryNameInput.value = '';
-//     newPrizesContainer.innerHTML = '';
-// }
+function resetCreateModal() {
+    newCategoryNameInput.value = '';
+    newPrizesContainer.innerHTML = '';
+
+}
 //
 // // -------------------- CREAR CATEGORÍA --------------------
 // createCategoryForm.addEventListener('submit', async (e) => {
