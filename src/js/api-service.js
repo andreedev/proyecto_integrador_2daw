@@ -176,16 +176,15 @@ async function actualizarDatosPostEvento(resumenPostEvento, archivos){
 /**
  * Actualiza una edición
  */
-async function actualizarEdicion(idEdicion, nombreEdicion, anioEdicion, resumenEvento, nroParticipantes, fechaEnvioEmailInformativo, fechaBorradoDatos){
+async function actualizarEdicion(idEdicion, anioEdicion, nroParticipantes, descripcion, idsArchivosGaleria, listaGanadores){
     const data = new FormData();
     data.append('action', 'actualizarEdicion');
     data.append('idEdicion', idEdicion);
-    data.append('nombreEdicion', nombreEdicion);
     data.append('anioEdicion', anioEdicion);
-    data.append('resumenEvento', resumenEvento);
     data.append('nroParticipantes', nroParticipantes);
-    data.append('fechaEnvioEmailInformativo', fechaEnvioEmailInformativo);
-    data.append('fechaBorradoDatos', fechaBorradoDatos);
+    data.append('descripcion', descripcion);
+    data.append('idsArchivosGaleria', JSON.stringify(idsArchivosGaleria));
+    data.append('listaGanadores', JSON.stringify(listaGanadores));
 
     return await fetchAPI(data);
 }

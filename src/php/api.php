@@ -198,9 +198,6 @@ if (isset($_POST['action'])) {
         case 'crearEdicion':
             crearEdicion();
             break;
-        case 'editarEdicion':
-            editarEdicion();
-            break;
         case 'eliminarEdicion':
             eliminarEdicion();
             break;
@@ -1006,29 +1003,6 @@ function eliminarCategoria() {
     } catch (Exception $e) {
         $conexion->rollback();
         echo json_encode(["status" => "error", "message" => $e->getMessage()]);
-    }
-}
-
-/**
- * Actualizar una edición
- */
-function actualizarEdicion() {
-    global $conexion;
-
-    $idEdicion = (int)$_POST['idEdicion'];
-    $anioEdicion = (int)$_POST['anioEdicion'];
-    $resumenEvento = $_POST['resumenEvento'];
-    $nroParticipantes = (int)$_POST['nroParticipantes'];
-    $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
-    $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
-
-    $stmt = $conexion->prepare("UPDATE edicion SET anio_edicion = ?, resumen_evento = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE id_edicion = ?");
-    $stmt->bind_param("isisss", $anioEdicion, $resumenEvento, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos, $idEdicion);
-
-    if ($stmt->execute()) {
-        echo json_encode(["status" => "success", "message" => "Edición actualizada correctamente"]);
-    } else {
-        echo json_encode(["status" => "error", "message" => "Error al actualizar la edición"]);
     }
 }
 
@@ -2385,7 +2359,8 @@ function obtenerGanadoresEdicion($idEdicion){
                 ge.categoria,
                 ge.nombre,
                 ge.premio,
-                a.ruta as rutaArchivoVideo
+                a.ruta as rutaArchivoVideo,
+                a.id_archivo as idArchivoVideo
               FROM ganadores_edicion ge
               LEFT JOIN archivo a ON ge.id_archivo_video = a.id_archivo
               WHERE ge.id_edicion = ?";
@@ -2436,6 +2411,46 @@ function crearEdicion(){
 }
 
 /**
+ * Actualizar una edición
+ */
+function actualizarEdicion() {
+    global $conexion;
+
+    $idEdicion = (int)$_POST['idEdicion'];
+    $anioEdicion = (int)$_POST['anioEdicion'];
+    $nroParticipantes = (int)$_POST['nroParticipantes'];
+    $descripcion = $_POST['descripcion'];
+    $idsArchivosGaleria = json_decode($_POST['idsArchivosGaleria'], true);
+    $listaGanadores = json_decode($_POST['listaGanadores'], true);
+
+    $stmtUpdateEdicion = $conexion->prepare("UPDATE edicion SET anio_edicion = ?, nro_participantes = ?, resumen_evento = ? WHERE id_edicion = ?");
+    $stmtUpdateEdicion->bind_param("iisi", $anioEdicion, $nroParticipantes, $descripcion, $idEdicion);
+    $stmtUpdateEdicion->execute();
+    $stmtUpdateEdicion->close();
+
+    // actualizar galería
+    $stmtDelGaleria = $conexion->prepare("DELETE FROM edicion_archivos WHERE id_edicion = ?");
+    $stmtDelGaleria->bind_param("i", $idEdicion);
+    $stmtDelGaleria->execute();
+    $stmtDelGaleria->close();
+
+    insertarEdicionArchivosMasivo($idEdicion, $idsArchivosGaleria);
+
+    // actualizar ganadores
+    $stmtDelGanadores = $conexion->prepare("DELETE FROM ganadores_edicion WHERE id_edicion = ?");
+    $stmtDelGanadores->bind_param("i", $idEdicion);
+    $stmtDelGanadores->execute();
+    $stmtDelGanadores->close();
+
+    insertarGanadoresEdicionMasivo($idEdicion, $listaGanadores);
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Edición actualizada correctamente"
+    ]);
+}
+
+/**
  * Insertar archivos de galeria de edición masivo
  */
 function insertarGanadoresEdicionMasivo($idEdicion, $ganadores){
@@ -2454,9 +2469,6 @@ function insertarGanadoresEdicionMasivo($idEdicion, $ganadores){
     $sqlInsertGanador->close();
 }
 
-function editarEdicion(){
-
-}
 
 /**
  * Elimina una edición y todos sus datos relacionados

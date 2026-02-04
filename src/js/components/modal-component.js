@@ -51,7 +51,7 @@ class ModalComponent extends HTMLElement {
 
         await window.injectExternalStyles('../css/modal-component.css', 'solid-modal-styles');
 
-        this.style.visibility = 'visible';
+        this.style.removeProperty('visibility');
         this._initialized = true;
 
         if (this.hasAttribute('auto-open')) {
