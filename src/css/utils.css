@@ -1698,6 +1698,7 @@
     mask-size: contain;
     mask-position: center;
     transition: all 300ms ease;
+    cursor: pointer;
 }
 
 .icon-star{

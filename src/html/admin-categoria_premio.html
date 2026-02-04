@@ -26,7 +26,7 @@
                     <span class="admin-module-description">Administra las categorías y premios del festival de cortometraje</span>
                 </div>
                 <div class="admin-header-module-actions-container">
-                    <div class="primary-button-01 btn-create">
+                    <div class="primary-button-01" id="btnCreate">
                         <span>Crear categoría</span>
                     </div>
                 </div>
@@ -40,73 +40,81 @@
     </div>
 
     <!-- MODAL DE EDICIÓN DE CATEGORÍA -->
-    <div id="editCategoryModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Editar Categoría</h2>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="editCategoryForm">
-                    <div class="form-group">
-                        <label for="categoryName">Nombre de la categoría:</label>
-                        <input type="text" id="categoryName" name="categoryName" required />
-                    </div>
+    <modal-component id="editCategoryModal" container-class="w-70 w-md-70 w-lg-80 w-xl-70">
+        <div class="modal-header-edit">
+            <h2>Editar Categoría</h2>
+            <span class="icon-close close w-24px h-32px bg-neutral-01"></span>
+        </div>
+        <div class="modal-body">
+            <div id="editCategoryForm" class="d-flex flex-column gap-20px">
+<!--                aqui tienes que eliminar el antiguo input y dejar el nuevo-->
+                <input-component
+                        label="Nombre de la categoría"
+                        type="text"
+                        id="categoryNameInput"
+                        name="categoryNameInput"
+                        required
+                ></input-component>
 
-                    <div class="form-group">
-                        <div class="label-plus-button-add">
-                            <label>Premios:</label>
-                            <button type="button" id="addPrizeBtn" class="btn-add">+ Añadir</button>
+
+                <div class="agregar-premio-container d-flex flex-column ">
+                    <span class="fw-600 fs-16px">Premios</span>
+
+                    <div class="inputs-btn-agregar d-flex flex-row align-items-center justify-space-between gap-24px">
+                        <input-component
+                                label="Nombre"
+                                type="text"
+                                id="prizeNameInput"
+                                name="prizeNameInput"
+                                required
+                        ></input-component>
+                        <input-component
+                                label="Recompensa"
+                                type="text"
+                                id="prizeDescriptionInput"
+                                name="prizeDescriptionInput"
+                                required
+                        ></input-component>
+                        <div class="btn-agregar-premio primary-button-02 d-flex justify-center align-center" id="addPrizeBtn">
+                            <span class="fs-14px">Agregar</span>
                         </div>
-                        <div id="prizesContainer"></div>
                     </div>
+                </div>
 
-                    <div class="modal-actions">
-                        <button type="button" id="cancelBtn" class="btn-cancel">Cancelar</button>
-                        <button type="submit" id="saveBtn" class="btn-save">Guardar cambios</button>
-                    </div>
-                </form>
+                </div>
+
+                <div class="modal-actions d-flex justify-space-between gap-24px align-items-center">
+                    <button type="button" id="cancelBtn" class="secondary-button-01 btn-cancel">Cancelar</button>
+                    <button type="submit" id="saveBtn" class="primary-button-01 btn-save w-100">Guardar cambios</button>
+                </div>
             </div>
         </div>
-    </div>
+    </modal-component>
 
     <!-- MODAL DE CREACIÓN DE CATEGORÍA -->
-    <div id="createCategoryModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Nueva Categoría</h2>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="createCategoryForm">
-                    <div class="form-group">
-                        <label for="newCategoryName">Nombre de la categoría:</label>
-                        <input type="text" id="newCategoryName" name="newCategoryName" />
-                        <span class="error-message"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Premios:</label>
-                        <button type="button" id="addNewPrizeBtn" class="btn-add">+ Añadir</button>
-                        <div id="newPrizesContainer">
-                            <div class="prize-item">
-                                <span class="prize-number">1</span>
-                                <input type="text" class="nombreDelPremio" placeholder="Nuevo premio" value="Nuevo premio"/>
-                                <input type="number" placeholder="Valor €" value="100" min="0" step="10" />
-                                <button class="delete-btn">Eliminar</button>
-                                <span class="error-message"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-actions">
-                        <button type="button" id="cancelCreateBtn" class="btn-cancel">Cancelar</button>
-                        <button type="submit" id="createBtn" class="btn-save">Crear Categoría</button>
-                    </div>
-                </form>
-            </div>
+    <modal-component id="createCategoryModal" >
+        <div class="modal-header">
+            <h2>Nueva Categoría</h2>
+            <span class="close">&times;</span>
         </div>
-    </div>
+        <div class="modal-body">
+            <form id="createCategoryForm">
+<!--                aqui tienes que eliminar el antiguo input y dejar el nuevo-->
+                <input-component
+                        label="Nombre de la categoría:"
+                        type="text"
+                        id="newCategoryName"
+                        name="newCategoryNameInput"
+                        required
+                ></input-component>
+
+                <div class="modal-actions">
+                    <button type="button" id="cancelCreateBtn" class="btn-cancel">Cancelar</button>
+                    <button type="submit" id="createBtn" class="btn-save">Crear Categoría</button>
+                </div>
+            </form>
+        </div>
+    </modal-component>
 
     <div class="modal-confirmar-delete hidden-force" id="confirmDeleteModal">
         <div class="modal-content">
@@ -124,8 +132,18 @@
         </div>
     </div>
 
+    <notification-component id="notification"></notification-component>
+
     <script src="../js/menu-admin.js"></script>
     <script src="../js/admin-categoria_premio.js"></script>
+    <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
+    <script src="../js/components/select-component.js"></script>
+    <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/notification-component.js"></script>
 </body>
 
 </html>
