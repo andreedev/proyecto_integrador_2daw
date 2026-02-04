@@ -25,53 +25,21 @@
                     <p class="admin-module-name">Eventos</p>
                     <span class="admin-module-description">Gestiona el itinerario de eventos</span>
                 </div>
-                <div class="primary-button-01" id="btnAgregarEvento">
-                    <span>Crear evento</span>
-                </div>
+                <div class="primary-button-01 px-24px px-md-32px" id="btnOpenModalCrear">Crear evento</div>
             </div>
             <div class="admin-content">
 
                 <div class="box-shadow-01">
                     <div class="date-event border-neutral-06 border-bottom">
                         <div class="buttons-and-calendar h-100">
-                            <div class="primary-button-02 h-100" id="todayBtn">Hoy</div>
-                            <div class="date-container">
-                                <label class="generic-input-wrapper">
-                                    <input id="filtroFechaInput" class="generic-input">
-                                    <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="big-date">
-                            <span class="date" id="fechaHumana"></span>
+                            <div class="primary-button-02 h-100" id="hoyBtn">Hoy</div>
+                            <date-component
+                                    id="filtroFecha" label="Filtrar por fecha"
+                            ></date-component>
                         </div>
                     </div>
                     <div id="eventsContainer">
-                        <div class="event-row">
-                            <div class="event-start-duration">
-                                <span class="event-start-time fw-500">10:00</span>
-                                <span class="event-duration">2h</span>
-                            </div>
-                            <div class="img-event">
-                                <img class="img" src="../img/red-white-photo-white-black-camera.jpg" alt="Imagen del evento">
-                            </div>
-                            <div class="event-info">
-                                <span class="event-name">Nombre del evento</span>
-                                <div class="event-hour">
-                                    <span class="icono-hora"></span>
-                                    <span class="event-time-info">10:00 - 12:00</span>
-                                </div>
-                                <div class="event-location">
-                                    <span class="icono-ubicacion"></span>
-                                    <span class="event-location-info">Ubicación del evento</span>
-                                </div>
-                            </div>
-                            <span class="vertical-line"></span>
-                        </div>
-                        <div class="event-free-time">
-                            <span class="icon-time"></span>
-                            <span class="free-time-text">30min libre</span>
-                        </div>
+
                     </div>
                 </div>
                 
@@ -79,140 +47,189 @@
         </div>
     </div>
 
-    <!-- Modal ver detalle evento -->
-    <dialog class="modal-ver-detalle-container" id="modalVerDetalleEvento">
-        <button autofocus class="ghost">Ghost focus</button>
-
-        <div class="modal-ver-detalle-content">
-            <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
-                <h2 class="modal-ver-detalle-title">Detalle de evento</h2>
-                <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
-            </div>
-
-            <div class="modal-ver-detalle-body">
-                <div class="modal-ver-detalle-img">
-                    <img class="img-modal-detalle-evento" src="../img/Foto_corto.png" alt="Imagen del evento" id="imgDetalleEvento">
-                </div>
-                <p class="modal-ver-detalle-event-name" id="nombreDetalleEvento">Nombre del evento</p>
-                <div class="modal-ver-detalle-event-fecha">
-                    <div class="icono-calendario-background">
-                        <span class="icono-calendario-ver-detalle"></span>
-                    </div>
-                    <div class="event-fecha">
-                        <span class="fecha">Fecha</span>
-                        <span class="date" id="fechaDetalleEvento">25/12/2024</span>
-                    </div>
-                </div>
-                <div class="modal-ver-detalle-event-time">
-                    <div class="icono-hora-background">
-                        <span class="icono-hora-ver-detalle"></span>
-                    </div>
-                    <div class="event-time">
-                        <span class="hora">Hora</span>
-                        <div class="time"><span id="horaInicioDetalleEvento">10:00</span> - <span id="horaFinDetalleEvento">12:00</span></div>
-                    </div>
-                </div>
-                <div class="modal-ver-detalle-event-location">
-                    <div class="icono-ubicacion-background">
-                        <span class="icono-ubicacion-ver-detalle"></span>
-                    </div>
-                    <div class="event-location-info">
-                        <span class="ubicacion">Ubicación</span>
-                        <span class="location" id="ubicacionDetalleEvento">Ubicación del evento</span>
-                    </div>
-                </div>
-                <div class="modal-ver-detalle-descripcion">
-                    <h2 class="modal-ver-detalle-event-description-title">Descripción</h2>
-                    <div class="descripcion-background">
-                        <p class="modal-ver-detalle-event-description-info" id="descripcionDetalleEvento">Descripción del evento. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </div>
-                </div>
-                <div class="divider-line"></div>
-                <div class="ver-detalle-acciones d-flex-two-columns-responsive">
-                    <div class="secondary-button-02 text-center" id="btnEliminarEvento">Eliminar</div>
-                    <div class="primary-button-01 text-center" id="btnEditarEvento">Editar</div>
-                </div>
-            </div>
-
+    <modal-component id="modalVerDetalleEvento">
+        <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
+            <h2 class="modal-ver-detalle-title">Detalle del evento</h2>
+            <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
         </div>
-    </dialog>
 
-
-    <!-- Modal agregar/editar evento -->
-    <dialog class="modal-agregar-evento w-100" id="modalAgregarEvento">
-        <button autofocus class="ghost">Ghost focus</button>
-
-        <div class="modal-ver-detalle-content">
-            <div class="modal-agregar-evento-header">
-                <p class="modal-agregar-evento-title" id="modalTitle">Agregar nuevo evento</p>
-                <span class="close-modal-agregar-evento close-modal"fin></span>
+        <div class="d-flex flex-column p-24px gap-16px ">
+            <input-component
+                    id="nombreEventoInputView" label="Nombre" disabled
+            ></input-component>
+            <date-component
+                    id="fechaEventoInputView"
+                    label="Fecha"
+                    disabled
+            ></date-component>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <date-component
+                        id="horaInicioEventoInputView"
+                        label="Hora de inicio"
+                        type="time"
+                        disabled
+                ></date-component>
+                <date-component
+                        id="horaFinEventoInputView"
+                        label="Hora de fin"
+                        type="time"
+                        disabled
+                ></date-component>
             </div>
-            <div class="modal-agregar-evento-body">
-    
-                <div class="nombre-evento-agregar-input">
-                    <label class="modal-agregar-evento-label">Nombre del evento</label>
-                    <input type="text" id="eventNameAgregar" class="modal-agregar-evento-input" placeholder="Ingrese el nombre del evento">
-                    <span class="nombre-error-message-agregar-evento fs-12px text-error-01"></span>
-                </div>
-    
-                <div class="fecha-evento-agregar-input">
-                    <label class="modal-agregar-evento-label">Fecha</label>
-                    <label class="generic-input-wrapper">
-                        <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
-                        <input id="fechaEventoAgregar" class="generic-input" placeholder="DD/MM/AAAA">
-                    </label>
-                    <span id="msgErrorFechaAgregarEvento" class="fs-12px text-error-01"></span>
-                </div>
-    
-                <div class="hora-evento-agregar-input">
-                    <div class="hora-inicio-evento-agregar">
-                        <label class="modal-agregar-evento-label">Hora de inicio</label>
-                        <label class="generic-input-wrapper">
-                            <span class="icon-clock w-20px h-20px bg-neutral-03"></span>
-                            <input class="generic-input" type="text" id="horaInicioEventoAgregar" placeholder="HH:MM">
-                        </label>
-                        <span id="msgErrorHoraInicioAgregar" class="fs-12px text-error-01"></span>
-                    </div>
-                    <div class="hora-fin-evento-agregar">
-                        <label class="modal-agregar-evento-label">Hora de finalización</label>
-                        <label class="generic-input-wrapper">
-                            <span class="icon-clock w-20px h-20px bg-neutral-03"></span>
-                            <input class="generic-input" type="text" id="horaFinEventoAgregar" placeholder="HH:MM">
-                        </label>
-                        <span id="msgErrorHoraFinAgregar" class="fs-12px text-error-01"></span>
-                    </div>
-                </div>
-    
-                <div class="ubicacion-evento-agregar-input">
-                    <label class="modal-agregar-evento-label">Ubicación</label>
-                    <div class="input-e-icono-location-agregar-evento">
-                        <span class="icono-ubicacion-agregar-evento"></span>
-                        <input type="text" id="ubicacionEventoAgregar" class="modal-agregar-evento-input-ubicacion" placeholder="Ingrese la ubicación del evento">
-                    </div>
-                    <span class="ubicacion-error-message-agregar-evento"></span>
-                </div>
-    
-                <div class="descripcion-evento-agregar-input">
-                    <label class="modal-agregar-evento-label">Descripción</label>
-                    <textarea id="descripcionEventoAgregar" class="modal-agregar-evento-textarea" placeholder="Ingrese la descripción del evento"></textarea>
-                    <span class="descripcion-error-message-agregar-evento"></span>
-                </div>
-    
-                <div class="img-evento-agregar-container">
-                    <label class="modal-agregar-evento-label">Imagen del evento</label>
-                    <div id="imagenEventoAgregar"></div>
-                </div>
-                
-                <div class="acciones-agregar-evento">
-                    <span class="icono-boton-agregar-evento"></span>
-                    <span class="primary-button-01 cursor-pointer" id="btnConfirmarAgregarEvento">Agregar evento</span>
-                </div>
+            <input-component
+                    id="ubicacionEventoInputView"
+                    label="Ubicación"
+                    disabled
+            ></input-component>
+            <input-component
+                    id="descripcionEventoInputView"
+                    label="Descripción"
+                    disabled
+            ></input-component>
+            <file-component
+                    id="imagenEventoInputView"
+                    label="Imagen"
+                    disabled
+            ></file-component>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-01 text-center" id="btnEliminar">Eliminar</div>
+                <div class="primary-button-02 text-center" id="btnOpenModalActualizar">Actualizar</div>
             </div>
         </div>
-    </dialog>
+    </modal-component>
+
+    <modal-component id="modalActualizarEvento" static>
+        <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
+            <h2 class="modal-ver-detalle-title">Actualizar evento</h2>
+            <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
+        </div>
+
+        <div class="d-flex flex-column p-24px gap-16px ">
+            <input-component
+                    id="nombreEventoInputEdit"
+                    label="Nombre"
+                    required
+            ></input-component>
+            <date-component
+                    id="fechaEventoInputEdit"
+                    label="Fecha"
+                    required
+            ></date-component>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <date-component
+                        id="horaInicioEventoInputEdit"
+                        label="Hora de inicio"
+                        type="time"
+                        required
+                ></date-component>
+                <date-component
+                        id="horaFinEventoInputEdit"
+                        label="Hora de fin"
+                        type="time"
+                        required
+                ></date-component>
+            </div>
+            <input-component
+                    id="ubicacionEventoInputEdit"
+                    label="Ubicación"
+                    required
+            ></input-component>
+            <input-component
+                    id="descripcionEventoInputEdit"
+                    label="Descripción"
+                    required
+            ></input-component>
+            <file-component
+                    id="imagenEventoInputEdit"
+                    label="Imagen"
+                    primary-text="Arrastra y suelta tu imagen aquí o haz clic para seleccionar"
+                    secondary-text="JPG, PNG, WEBP or AVIF (Max. 10MB)"
+                    accept=".jpg,.jpeg,.png,.webp,.avif"
+                    max-size="10485760"
+                    required
+                    error-type="Formato no válido. Usa JPG, PNG, WEBP o AVIF"
+                    error-size="La imagen es muy pesada. El máximo permitido son 10MB"
+                    error-required="Debes subir una imagen"
+            ></file-component>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
+                <div class="primary-button-01 text-center" id="btnActualizar">Guardar cambios</div>
+            </div>
+        </div>
+    </modal-component>
+
+    <modal-component id="modalCrearEvento">
+        <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
+            <h2 class="modal-ver-detalle-title">Crear evento</h2>
+            <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
+        </div>
+
+        <div class="d-flex flex-column p-24px gap-16px ">
+            <input-component
+                    id="nombreEventoInputCreate"
+                    label="Nombre"
+                    required
+            ></input-component>
+            <date-component
+                    id="fechaEventoInputCreate"
+                    label="Fecha"
+                    required
+            ></date-component>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <date-component
+                        id="horaInicioEventoInputCreate"
+                        label="Hora de inicio"
+                        type="time"
+                        required
+                ></date-component>
+                <date-component
+                        id="horaFinEventoInputCreate"
+                        label="Hora de fin"
+                        type="time"
+                        required
+                ></date-component>
+            </div>
+            <input-component
+                    id="ubicacionEventoInputCreate"
+                    label="Ubicación"
+                    required
+            ></input-component>
+            <input-component
+                    id="descripcionEventoInputCreate"
+                    label="Descripción"
+                    required
+            ></input-component>
+            <file-component
+                    id="imagenEventoInputCreate"
+                    label="Imagen"
+                    primary-text="Arrastra y suelta tu imagen aquí o haz clic para seleccionar"
+                    secondary-text="JPG, PNG, WEBP or AVIF (Max. 10MB)"
+                    accept=".jpg,.jpeg,.png,.webp,.avif"
+                    max-size="10485760"
+                    required
+                    error-type="Formato no válido. Usa JPG, PNG, WEBP o AVIF"
+                    error-size="La imagen es muy pesada. El máximo permitido son 10MB"
+                    error-required="Debes subir una imagen"
+            ></file-component>
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Volver</div>
+                <div class="primary-button-01 text-center" id="btnCrear">Crear evento</div>
+            </div>
+        </div>
+    </modal-component>
+
+    <notification-component id="notification"></notification-component>
+
 
     <script src="../js/menu-admin.js"></script>
     <script src="../js/libraries/air-datepicker.min.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
+    <script src="../js/components/select-component.js"></script>
+    <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/input-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/notification-component.js"></script>
     <script src="../js/admin-eventos.js"></script>
 </body>
 </html>

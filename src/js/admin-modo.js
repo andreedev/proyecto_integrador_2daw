@@ -52,6 +52,8 @@ const fechaBorradoDatosInputErrorMessage = document.getElementById('fechaBorrado
 const confirmarEnviarEdicionesAnterioresBtn = document.getElementById('confirmarEnviarEdicionesAnterioresBtn');
 const modalEdicionCreadaExito = document.getElementById('modalEdicionCreadaExito');
 
+const manageEventsButton = document.getElementById('manageEventsButton');
+
 
 let modo = 'pre-evento';
 let configuracionActual = null;
@@ -910,5 +912,11 @@ function createGalleryItem(url, tipo, id=null) {
 
     return mediaElement;
 }
+
+manageEventsButton.addEventListener('click', () => {
+    const selectedDate = fechaEventoDateTimePicker.selectedDates[0];
+    const formattedFecha = convertDateToISOString(selectedDate || new Date());
+    window.location.href = `admin-eventos.html?fecha=${formattedFecha}`;
+});
 
 loadConfig();

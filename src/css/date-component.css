@@ -50,6 +50,7 @@
 
 .solid-date-field:disabled {
     color: var(--neutral-02);
+    cursor: default;
 }
 
 .solid-date-inline-wrapper {

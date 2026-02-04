@@ -146,7 +146,7 @@ if (isset($_POST['action'])) {
             obtenerEventoPorId();
             break;
         case 'crearEvento':
-            validarRol(['organizador', 'participante']);
+            validarRol(['organizador']);
             crearEvento();
             break;
         case 'actualizarEvento':

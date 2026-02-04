@@ -131,6 +131,9 @@ class ModalComponent extends HTMLElement {
         }
 
         this._isOpen = true;
+
+        this.resetScroll();
+
         overlay.classList.add('is-active');
         document.body.style.overflow = 'hidden';
 
@@ -158,6 +161,13 @@ class ModalComponent extends HTMLElement {
 
     toggle() {
         this._isOpen ? this.close() : this.open();
+    }
+
+    resetScroll() {
+        const container = this.querySelector('.solid-modal-container');
+        if (container) {
+            container.scrollTop = 0;
+        }
     }
 }
 

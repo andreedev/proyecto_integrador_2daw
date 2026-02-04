@@ -35,7 +35,6 @@ class DateComponent extends HTMLElement {
         this._datepicker = null;
         this._onSelectCallback = null;
         this._eventDates = new Set();
-        this.style.visibility = 'hidden';
     }
 
     static get observedAttributes() {
@@ -43,6 +42,7 @@ class DateComponent extends HTMLElement {
     }
 
     async connectedCallback() {
+        this.style.visibility = 'hidden';
         await window.injectExternalStyles('../css/date-component.css', 'date-component-styles');
         this.render();
         this._initPicker();

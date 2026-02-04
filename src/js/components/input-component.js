@@ -60,10 +60,22 @@ class InputComponent extends HTMLElement {
         if (oldValue !== newValue && this.querySelector('.solid-input-container')) {
             if (name === 'value') {
                 this.value = newValue;
+            } else if (name === 'disabled') {
+                this._updateDisabledState(newValue !== null);
             } else {
                 this.render();
                 this._setupEventListeners();
             }
+        }
+    }
+
+    _updateDisabledState(isDisabled) {
+        const container = this.querySelector('.solid-input-container');
+        const field = this.querySelector('.solid-input-field');
+
+        if (container) container.classList.toggle('is-disabled', isDisabled);
+        if (field) {
+            isDisabled ? field.setAttribute('disabled', '') : field.removeAttribute('disabled');
         }
     }
 

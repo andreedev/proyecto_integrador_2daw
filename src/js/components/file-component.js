@@ -45,7 +45,11 @@
  *   En modo simple: filePath es String, fileId es String
  *   En modo múltiple: filePath es Array de Strings, fileId es Array de Strings
  * - uploadIfNeeded(): Sube archivo(s) al servidor si hubo cambios.
- * Retorna ID único (String) en modo simple o Array de IDs en modo múltiple.
+ * - setRawFile(file, editable): Configura el componente con un File local.
+ * - isMultiple(): Retorna true si el componente está en modo múltiple.
+ *   Retorna ID único (String) en modo simple o Array de IDs en modo múltiple.
+ * - setPreviewMode(path): Activa modo "Solo Preview" con la imagen dada.
+ * - resetPreviewMode(): Restaura el componente a modo Input desde Preview.
  * - clear(): Limpia todos los archivos seleccionados y resetea la UI.
  */
 class FileComponent extends HTMLElement {
@@ -76,6 +80,21 @@ class FileComponent extends HTMLElement {
         this._initialized = true;
     }
 
+    set disabled(val) {
+        if (val) {
+            this.setAttribute('disabled', '');
+            this._isEditable = false;
+        } else {
+            this.removeAttribute('disabled');
+            this._isEditable = true;
+        }
+        this._updateEditableState(!val);
+    }
+
+    get disabled() {
+        return this.hasAttribute('disabled');
+    }
+
     isMultiple() {
         return this.hasAttribute('multiple');
     }
@@ -104,6 +123,54 @@ class FileComponent extends HTMLElement {
 
         errorSpan.textContent = "";
         return true;
+    }
+
+    /**
+     * Activa el modo "Solo Preview"
+     * Oculta el dropzone, labels y controles, y muestra solo la imagen
+     * @param {string} path - URL completa de la imagen
+     */
+    setPreviewMode(path) {
+        const inputContainer = this.querySelector('.input-mode-container');
+        const previewContainer = this.querySelector('.preview-mode-container');
+        const previewImage = this.querySelector('.preview-mode-image');
+
+        if (!path) {
+            this.clear();
+            return;
+        }
+
+        // Ocultamos toda la interfaz de carga (labels, dropzone, galería)
+        if(inputContainer) inputContainer.classList.add('hidden-force');
+
+        // Configuramos la imagen
+        if(previewImage) {
+            previewImage.src = path;
+            previewImage.onerror = () => {
+                // Fallback simple si la imagen no carga
+                previewImage.style.display = 'none';
+                this.querySelector('.preview-error-text').classList.remove('hidden-force');
+            };
+        }
+
+        // el contenedor de preview
+        if(previewContainer) previewContainer.classList.remove('hidden-force');
+
+        // Deshabilitamos edición lógica
+        this._isEditable = false;
+    }
+
+    /**
+     * Método para restaurar el componente a modo Input (salir de preview)
+     */
+    resetPreviewMode() {
+        const inputContainer = this.querySelector('.input-mode-container');
+        const previewContainer = this.querySelector('.preview-mode-container');
+
+        if(inputContainer) inputContainer.classList.remove('hidden-force');
+        if(previewContainer) previewContainer.classList.add('hidden-force');
+
+        this.clear();
     }
 
     setAttachedMode(filePath, fileId, editable = true) {
@@ -226,7 +293,13 @@ class FileComponent extends HTMLElement {
             this.querySelector('.imageDropZone').classList.remove('hidden-force');
             this.querySelector('.archivo-aceptado').classList.add('hidden-force');
         }
-        this.querySelector('.mensajeError').textContent = '';
+        const err = this.querySelector('.mensajeError');
+        if(err) err.textContent = '';
+
+        const inputContainer = this.querySelector('.input-mode-container');
+        const previewContainer = this.querySelector('.preview-mode-container');
+        if(inputContainer) inputContainer.classList.remove('hidden-force');
+        if(previewContainer) previewContainer.classList.add('hidden-force');
     }
 
     _updateEditableState(editable) {
@@ -427,42 +500,53 @@ class FileComponent extends HTMLElement {
 
         this.innerHTML = `
             <div class="solid-file-container" style="width: ${width};">
-                <label class="text-neutral-04 fs-14px d-block mb-8px">
-                    ${label} ${this.hasAttribute('required') ? '*' : ''}
-                </label>
                 
-                <div class="drop-zone-wrapper">
-                    <div class="imageDropZone min-h-120px py-24px d-flex flex-column align-items-center justify-content-center cursor-pointer border border-dashed border-neutral-03 transition-all">
-                        <input type="file" accept="${accept}" ${isMultiple ? 'multiple' : ''} hidden>
-                        <div class="d-flex flex-column align-items-center text-center px-16px">
-                            <span class="icon-upload d-block w-32px h-32px bg-neutral-01"></span>
-                            <span class="d-block mt-12px text-neutral-01 font-weight-bold fs-16px">${primaryText}</span>
-                            ${secondaryText ? `<span class="d-block mt-4px text-neutral-03 fs-14px">${secondaryText}</span>` : ''}
-                        </div>
-                    </div>
-
-                    ${!isMultiple ? `
-                    <div class="archivo-aceptado hidden-force">
-                        <div class="d-flex align-items-center px-16px py-16px bg-success-04 gap-12px border-radius-4">
-                            <div class="bg-success-03 p-8px d-flex justify-center align-items-center border-radius-50 d-inline-block">
-                                <span class="icon-small-check w-20px h-20px bg-neutral-02 d-block"></span>
-                            </div>
-                            <div class="d-flex flex-column flex-grow-1 min-w-0">
-                                <div class="archivo-nombre fs-14px text-truncate font-weight-bold"></div>
-                                <div class="archivo-tamanio fs-12px text-neutral-02"></div>
-                            </div>
-                            <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer btnEliminarArchivo"></span>
-                        </div>
-                    </div>
-                    ` : `
-                    <div class="gallery-wrapper mt-16px">
-                        <p class="gallery-count-text fs-14px fw-600 text-neutral-02 mb-12px"></p>
-                        <div class="gallery-container d-grid grid-template-columns-4 gap-12px"></div>
-                    </div>
-                    `}
+                <div class="input-mode-container">
+                    <label class="text-neutral-04 fs-14px d-block mb-8px">
+                        ${label} ${this.hasAttribute('required') ? '*' : ''}
+                    </label>
                     
-                    <div class="mensajeError text-error-02 fs-12px mt-8px"></div>
+                    <div class="drop-zone-wrapper">
+                        <div class="imageDropZone min-h-120px py-24px d-flex flex-column align-items-center justify-content-center cursor-pointer border border-dashed border-neutral-03 transition-all">
+                            <input type="file" accept="${accept}" ${isMultiple ? 'multiple' : ''} hidden>
+                            <div class="d-flex flex-column align-items-center text-center px-16px">
+                                <span class="icon-upload d-block w-32px h-32px bg-neutral-01"></span>
+                                <span class="d-block mt-12px text-neutral-01 font-weight-bold fs-16px">${primaryText}</span>
+                                ${secondaryText ? `<span class="d-block mt-4px text-neutral-03 fs-14px">${secondaryText}</span>` : ''}
+                            </div>
+                        </div>
+
+                        ${!isMultiple ? `
+                        <div class="archivo-aceptado hidden-force">
+                            <div class="d-flex align-items-center px-16px py-16px bg-success-04 gap-12px border-radius-4">
+                                <div class="bg-success-03 p-8px d-flex justify-center align-items-center border-radius-50 d-inline-block">
+                                    <span class="icon-small-check w-20px h-20px bg-neutral-02 d-block"></span>
+                                </div>
+                                <div class="d-flex flex-column flex-grow-1 min-w-0">
+                                    <div class="archivo-nombre fs-14px text-truncate font-weight-bold"></div>
+                                    <div class="archivo-tamanio fs-12px text-neutral-02"></div>
+                                </div>
+                                <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer btnEliminarArchivo"></span>
+                            </div>
+                        </div>
+                        ` : `
+                        <div class="gallery-wrapper mt-16px">
+                            <p class="gallery-count-text fs-14px fw-600 text-neutral-02 mb-12px"></p>
+                            <div class="gallery-container d-grid grid-template-columns-4 gap-12px"></div>
+                        </div>
+                        `}
+                        
+                        <div class="mensajeError text-error-02 fs-12px mt-8px"></div>
+                    </div>
                 </div>
+
+                <div class="preview-mode-container hidden-force position-relative w-100 overflow-hidden border-radius-4 bg-neutral-08">
+                    <img src="" class="preview-mode-image w-100 h-100 object-fit-contain d-block" style="max-height: 300px;" alt="Vista previa">
+                    <div class="preview-error-text hidden-force p-24px text-center text-neutral-03">
+                        No se pudo cargar la imagen
+                    </div>
+                </div>
+
             </div>
         `;
     }
