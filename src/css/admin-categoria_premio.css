@@ -31,7 +31,6 @@
   background: var(--neutral-09);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   overflow: hidden;
-  cursor: pointer;
 }
 
 .category-card-animacion{
@@ -44,7 +43,7 @@
   display: flex;
   align-items: center;
   padding: 14px;
-  background: var(--neutral-06);
+  background: var(--neutral-09);
   border-bottom: 1px solid var(--neutral-05);
   flex-wrap: wrap;
   gap: 8px;
@@ -88,13 +87,13 @@
 }
 
 .delete-icono{
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   mask-image: url("../img/icon/icon-trash.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
   cursor: pointer;
-  background-color: var(--primary-03);
+  background-color: var(--neutral-01);
 }
 
 .confirmation-delete-card-container {
@@ -152,6 +151,8 @@
 
 .prizes-list {
   padding: 14px;
+  overflow: scroll;
+  scrollbar-width: none;
 }
 
 .prize-item {
@@ -159,7 +160,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background: var(--neutral-07);
+  background: var(--neutral-09);
   border: 1px solid var(--neutral-05);
   margin-bottom: 8px;
   transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -167,35 +168,20 @@
   gap: 8px;
 }
 
-.prize-item:hover {
-  background-color: var(--error-04);
-  border-color: var(--error-02);
-}
-
-.prize-item:hover .prize-label,
-.prize-item:hover .prize-value {
-  color: var(--error-02);
-}
-
-.prize-item:hover .prize-value {
-  background: var(--error-03);
-}
-
 .prize-label {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: var(--neutral-03);
+  color: var(--neutral-01);
   flex: 1;
   min-width: 120px;
 }
 
 .prize-value {
-  background: var(--neutral-06);
   padding: 4px 8px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 400;
   color: var(--neutral-01);
   white-space: nowrap;
 }
@@ -250,20 +236,17 @@
 }
 
 .modal-header {
-  /* ✅ CAMBIADO A ROJO DE LA PALETA */
-  background-color: var(--primary-03);
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
-  font-weight: bold;
+  border-bottom: 1px solid var(--neutral-05);
 }
 
 .modal-header h2 {
-  margin: 0;
-  font-size: 1.2em;
-  word-break: break-word;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--neutral-01);
 }
 
 .close {
@@ -281,120 +264,9 @@
 }
 
 .modal-body {
-  padding: 16px;
+  margin: 24px 36px;
 }
 
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: var(--neutral-01);
-}
-
-.form-group input[type="text"],
-.form-group input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--neutral-05);
-  font-size: 14px;
-  box-sizing: border-box;
-  background: var(--neutral-09);
-  color: var(--neutral-01);
-}
-
-.label-plus-button-add {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.btn-add {
-  background-color: var(--neutral-05);
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: var(--neutral-01);
-}
-
-.btn-add:hover {
-  background: var(--neutral-06);
-}
-
-#prizesContainer .prize-item,
-#newPrizesContainer .prize-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px;
-  background: var(--neutral-07);
-  border: 1px solid var(--neutral-05);
-  margin-bottom: 8px;
-  position: relative;
-  flex-wrap: wrap;
-}
-
-#prizesContainer .prize-item .prize-number,
-#newPrizesContainer .prize-item .prize-number {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--neutral-06);
-  font-weight: bold;
-  font-size: 14px;
-  color: var(--neutral-01);
-  flex-shrink: 0;
-}
-
-#prizesContainer .prize-item input[type="text"],
-#newPrizesContainer .prize-item input[type="text"] {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid var(--neutral-05);
-  font-size: 14px;
-  min-width: 120px;
-  background: var(--neutral-09);
-  color: var(--neutral-01);
-}
-
-#prizesContainer .prize-item input[type="number"],
-#newPrizesContainer .prize-item input[type="number"] {
-  width: 70px;
-  padding: 8px;
-  border: 1px solid var(--neutral-05);
-  font-size: 14px;
-  text-align: center;
-  min-width: 60px;
-  background: var(--neutral-09);
-  color: var(--neutral-01);
-}
-
-#prizesContainer .prize-item .delete-btn,
-#newPrizesContainer .prize-item .delete-btn {
-  background: none;
-  border: none;
-  color: var(--error-02);
-  cursor: pointer;
-  font-size: 16px;
-  padding: 4px;
-  margin-left: 5px;
-  flex-shrink: 0;
-}
-
-#prizesContainer .prize-item .delete-btn:hover,
-#newPrizesContainer .prize-item .delete-btn:hover {
-  background: var(--error-04);
-  color: var(--error-01);
-}
 
 .modal-actions {
   display: flex;
@@ -404,87 +276,9 @@
   margin-top: 24px;
 }
 
-.btn-cancel,
-.btn-save {
-  padding: 10px 20px;
-  border: 1px solid var(--primary-03);
-  width:100%;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
-  min-width: 100px;
-  text-align: center;
-}
-
-.btn-cancel {
-  background-color: var(--neutral-09);
-  color: var(--primary-03);
-}
-
-.btn-cancel:hover {
-  background: var(--primary-05);
-}
-
-.btn-save {
-  background-color: var(--primary-03);
-  color: var(--neutral-09);
-}
-
-.btn-save:hover {
-  background-color: var(--neutral-09);
-  color:var(--primary-03);
-}
-
 #newPrizesContainer {
   margin-top: 10px;
 }
-
-/* === Media Queries para Móvil Pequeño (< 480px) === */
-@media (max-width: 480px) {
-  body {
-    padding: 12px;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .btn-create {
-    align-self: stretch;
-    justify-content: center;
-  }
-
-  .categories-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .modal-content {
-    margin: 24px 0;
-  }
-
-  .modal-body {
-    padding: 12px;
-  }
-
-  .form-group input[type="text"],
-  .form-group input[type="number"] {
-    font-size: 16px;
-  }
-
-  .modal-actions {
-    justify-content: center;
-  }
-
-  .btn-cancel,
-  .btn-save {
-    flex: 1;
-    min-width: auto;
-  }
-}
-
 
 .error-message {
   color: var(--error-02);
@@ -515,21 +309,13 @@
   overflow: hidden;
 }
 
-.modal-header{
-  background-color: var(--primary-03);
+.modal-header-edit{
+  border-bottom: 1px solid var(--neutral-05);
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
   font-weight: bold;
-}
-
-.modal-body{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .confirmar-delete-message{
@@ -578,3 +364,4 @@
   background: var(--neutral-09);
   color: var(--error-02);
 }
+
