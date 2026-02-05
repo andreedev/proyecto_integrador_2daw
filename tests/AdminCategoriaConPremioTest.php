@@ -83,18 +83,27 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase
      */
     public function testAgregarCategoriaConPremios()
     {
-        $_POST['nombreCategoria'] = 'Categoría de Prueba';
+        $_POST['nombreCategoria'] = 'Categoría de Prueba ' . uniqid();
         $_POST['premios'] = json_encode([
-            ['nombre' => 'Premio 1', 'incluye_dinero' => true, 'cantidad_dinero' => 100],
-            ['nombre' => 'Premio 2', 'incluye_dinero' => false]
+            [
+                'nombre' => 'Premio 1',
+                'incluyeDinero' => true,
+                'cantidadDinero' => 100,
+                'incluyeObjetoAdicional' => false,
+                'objetoAdicional' => ''
+            ],
+            [
+                'nombre' => 'Premio 2',
+                'incluyeDinero' => false,
+                'incluyeObjetoAdicional' => true,
+                'objetoAdicional' => 'Trofeo de cristal'
+            ]
         ]);
 
         $response = $this->capturarRespuestaAPI('agregarCategoriaConPremios');
 
-        $this->assertEquals('success', $response['status']);
-        $this->assertEquals('Categoría de Prueba', $response['data']['nombre']);
-        $this->assertCount(2, $response['data']['premios']);
-        $this->assertNotNull($response['data']['id_categoria']);
+        $this->assertEquals('success', $response['status'], "La respuesta debería ser success");
+        $this->assertEquals('Categoría y premios registrado correctamente', $response['message']);
     }
 
     /**
@@ -110,13 +119,19 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase
         $_POST['idCategoria'] = $idInsertado;
         $_POST['nombreCategoria'] = 'Nombre Editado';
         $_POST['premios'] = json_encode([
-            ['nombre' => 'Premio Nuevo', 'incluye_dinero' => true, 'cantidad_dinero' => 50]
+            [
+                'nombre' => 'Premio Editado',
+                'incluyeDinero' => true,
+                'cantidadDinero' => 75,
+                'incluyeObjetoAdicional' => false,
+                'objetoAdicional' => ''
+            ]
         ]);
 
         $response = $this->capturarRespuestaAPI('editarCategoriaConPremios');
 
         $this->assertEquals('success', $response['status']);
-        $this->assertEquals('Nombre Editado', $response['data']['nombre']);
+        $this->assertEquals('Categoria actualizada correctamente', $response['message']);
     }
 
     /**

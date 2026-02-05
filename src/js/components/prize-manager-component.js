@@ -16,6 +16,7 @@
 class PrizeManagerComponent extends HTMLElement {
     constructor() {
         super();
+        this._prizeList = [];
     }
 
     connectedCallback() {
@@ -24,25 +25,12 @@ class PrizeManagerComponent extends HTMLElement {
     }
 
     /**
-     * Inyecta los datos en el componente y sincroniza con el DOM
-     * @param {object} data - Objeto con la estructura del premio
+     * Carga una lista de premios en el componente, renderizando cada uno como un prize-component
+     * @param {Array<Object>} _prizeList - Array de objetos con la estructura de cada premio
      */
-    setData(data) {
-        if (!data) return;
-
-        this._data = { ...this._data, ...data };
-
-        if (data.idPremio !== undefined) this.setAttribute('id-premio', data.idPremio);
-        if (data.nombre !== undefined) this.setAttribute('nombre', data.nombre);
-
-        this.setAttribute('incluye-dinero', String(this._data.incluyeDinero));
-        this.setAttribute('cantidad-dinero', String(this._data.cantidadDinero));
-        this.setAttribute('incluye-objeto-adicional', String(this._data.incluyeObjetoAdicional));
-        this.setAttribute('objeto-adicional', this._data.objetoAdicional || '');
-
-        if (data.removable !== undefined) this.setAttribute('removable', String(data.removable));
-
-        // 3. Renderizamos
+    setData(_prizeList) {
+        if (!_prizeList) return;
+        this._prizeList = _prizeList;
         this.render();
     }
 
@@ -60,9 +48,13 @@ class PrizeManagerComponent extends HTMLElement {
         if (btnAgregar) {
             btnAgregar.addEventListener('click', () => this._handleAddPrize());
         }
+        this.addEventListener('prize-remove', (e) => {
+            const id = e.detail.idPremio;
+            this._prizeList = this._prizeList.filter(p => p.idPremio !== id);
+        });
     }
 
-    async _handleAddPrize() {
+    _handleAddPrize() {
         const nameInput = this.querySelector('#prizeNameInput');
         const rewardInput = this.querySelector('#prizeDescriptionInput');
         const extraInput = this.querySelector('#objetoAdicionalInput');
@@ -70,9 +62,8 @@ class PrizeManagerComponent extends HTMLElement {
         if (nameInput.validate().valid) {
             const rewardVal = rewardInput.value.trim();
             const extraVal = extraInput.value.trim();
-
+            const hasMoney = rewardVal.length > 0;
             const amount = parseFloat(rewardVal);
-            const hasMoney = !isNaN(amount) && amount > 0;
 
             const prizeData = {
                 idPremio: Date.now().toString(),
@@ -84,11 +75,13 @@ class PrizeManagerComponent extends HTMLElement {
                 removable: true
             };
 
+            this._prizeList.push(prizeData);
+
             this._createNewPrizeElement(prizeData);
 
-            if (nameInput.clear) nameInput.clear();
-            if (rewardInput.clear) rewardInput.clear();
-            if (extraInput.clear) extraInput.clear();
+            nameInput.clear();
+            rewardInput.clear();
+            extraInput.clear();
         }
     }
 
@@ -98,54 +91,62 @@ class PrizeManagerComponent extends HTMLElement {
     _createNewPrizeElement(data) {
         const container = this.querySelector('#premiosContainer');
         const prizeEl = document.createElement('prize-component');
-
-        container.appendChild(prizeEl);
         prizeEl.setData(data);
+        container.appendChild(prizeEl);
     }
 
-    _clearInputs(inputs) {
-        inputs.forEach(input => {
-            if (input.clear) input.clear();
-            else input.value = '';
-        });
+    /**
+     * Elimina todos los premios del contenedor y limpia la lista interna de premios, también limpia los campos de entrada.
+     */
+    clear() {
+        const container = this.querySelector('#premiosContainer');
+        container.replaceChildren();
+        this._prizeList = [];
+        const nameInput = this.querySelector('#prizeNameInput');
+        const rewardInput = this.querySelector('#prizeDescriptionInput');
+        const extraInput = this.querySelector('#objetoAdicionalInput');
+        nameInput.clear();
+        rewardInput.clear();
+        extraInput.clear();
     }
 
     render() {
         this.innerHTML = `
-        <div class="d-flex flex-column gap-16px">
-            <div class="d-flex align-items-center justify-space-between">
-                <span class="fw-600 fs-18px premios-text text-neutral-01">Premios</span>
-                <button class="primary-button-02 fs-14px cursor-pointer" id="agregarCardPremio">Agregar</button>
-            </div>
-
-            <div class="d-flex flex-row justify-space-between align-items-center gap-24px">
-                <input-component
-                        label="Nombre"
-                        type="text"
-                        id="prizeNameInput"
-                        required
-                        class="w-100"
-                ></input-component>
-                <input-component
-                        label="Recompensa (dinero)"
-                        type="text"
-                        id="prizeDescriptionInput"
-                        type="number"
-                        class="w-100"
-                ></input-component>
-            </div>
-
-            <input-component
-                    label="Objeto adicional (opcional)"
-                    type="text"
-                    id="objetoAdicionalInput"
-                    class="w-100"
-            ></input-component>
-
-            <div id="premiosContainer" class="d-flex flex-column gap-8px">
+            <div class="d-flex flex-column gap-16px">
+                <div class="d-flex align-items-center justify-space-between">
+                    <span class="fw-600 fs-18px premios-text text-neutral-01">Premios</span>
+                    <button class="primary-button-02 fs-14px cursor-pointer" id="agregarCardPremio">Agregar</button>
                 </div>
-        </div>
+    
+                <div class="d-flex flex-row justify-space-between align-items-center gap-24px">
+                    <input-component
+                            label="Nombre"
+                            id="prizeNameInput"
+                            required
+                            class="w-100"
+                    ></input-component>
+                    <input-component
+                            label="Recompensa (dinero)"
+                            type="number"
+                            id="prizeDescriptionInput"
+                            type="number"
+                            class="w-100"
+                    ></input-component>
+                </div>
+    
+                <input-component
+                        label="Objeto adicional (opcional)"
+                        id="objetoAdicionalInput"
+                        class="w-100"
+                ></input-component>
+    
+                <div id="premiosContainer" class="d-flex flex-column gap-8px"></div>
+            </div>
         `;
+
+        this._setupEventListeners();
+
+        this._prizeList.forEach(prize => this._createNewPrizeElement(prize));
     }
 }
 

@@ -60,41 +60,17 @@ class PrizeComponent extends HTMLElement {
         };
     }
 
-    static get observedAttributes() {
-        return [
-            'id-premio',
-            'nombre',
-            'incluye-dinero',
-            'cantidad-dinero',
-            'incluye-objeto-adicional',
-            'objeto-adicional',
-            'removable'
-        ];
-    }
-
+    /**
+     * Llamado cuando uno de los atributos observados cambia
+     */
     attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue !== newValue) {
-            this._updateDataFromAttributes();
-            this.render();
-        }
-    }
-
-    connectedCallback() {
-        this._updateDataFromAttributes();
-        this.render();
     }
 
     /**
-     * Sincroniza los atributos del tag HTML con el objeto interno _data
+     * Evento llamado cuando el componente es añadido al DOM
      */
-    _updateDataFromAttributes() {
-        this._data.idPremio = this.getAttribute('id-premio');
-        this._data.nombre = this.getAttribute('nombre') || '';
-        this._data.incluyeDinero = this.hasAttribute('incluye-dinero') && this.getAttribute('incluye-dinero') !== 'false';
-        this._data.cantidadDinero = parseFloat(this.getAttribute('cantidad-dinero')) || 0;
-        this._data.incluyeObjetoAdicional = this.hasAttribute('incluye-objeto-adicional') && this.getAttribute('incluye-objeto-adicional') !== 'false';
-        this._data.objetoAdicional = this.getAttribute('objeto-adicional') || '';
-        this._data.removable = this.getAttribute('removable') !== 'false';
+    connectedCallback() {
+        this.render();
     }
 
     /**
@@ -102,16 +78,8 @@ class PrizeComponent extends HTMLElement {
      * @param {object} data - Objeto con la estructura del premio
      */
     setData(data) {
-        debugger;
         if (!data) return;
-        this._data = { ...this._data, ...data };
-
-        // Reflejamos los datos en los atributos para mantener coherencia
-        if (data.idPremio !== undefined) this.setAttribute('id-premio', data.idPremio);
-        if (data.nombre !== undefined) this.setAttribute('nombre', data.nombre);
-        if (data.removable !== undefined) this.setAttribute('removable', String(data.removable));
-
-        this.render();
+        this._data = data;
     }
 
     /**
@@ -122,6 +90,9 @@ class PrizeComponent extends HTMLElement {
         return this._data;
     }
 
+    /**
+     * Elimina el componente del DOM y dispara el evento de borrado.
+     */
     _setupEventListeners() {
         const deleteBtn = this.querySelector('.js-delete-btn');
         if (deleteBtn && this._data.removable) {
@@ -150,7 +121,7 @@ class PrizeComponent extends HTMLElement {
             <div class="d-flex flex-column gap-8px">
                 <div class="d-flex align-items-center gap-12px">
                     <span class="icon-trophy w-24px h-24px bg-neutral-01"></span>
-                    <span class="fw-500 line-height-120 text-neutral-01">${this._data.nombre || 'Sin nombre'}</span>
+                    <span class="fw-500 line-height-120 text-neutral-01">${this._data.nombre}</span>
                 </div>
                 
                 <div class="${extraClass} align-items-center gap-12px fs-12px text-neutral-03">

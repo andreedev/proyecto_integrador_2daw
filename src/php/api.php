@@ -864,7 +864,10 @@ function obtenerCategoriasConPremios(): void {
     while ($categoria = $resultCategorias->fetch_assoc()) {
         $idCategoria = (int)$categoria['idCategoria'];
         $queryPremios = "
-            SELECT id_premio as idPremio, nombre, incluye_dinero as incluyeDinero, cantidad_dinero as cantidadDinero
+            SELECT id_premio as idPremio, nombre, incluye_dinero as incluyeDinero,
+                   cantidad_dinero as cantidadDinero,
+                   incluye_objeto_adicional as incluyeObjetoAdicional,
+                   objeto_adicional as objetoAdicional
             FROM premio
             WHERE id_categoria = ?
         ";
@@ -878,6 +881,7 @@ function obtenerCategoriasConPremios(): void {
             $premio['idPremio'] = (int)$premio['idPremio'];
             $premio['incluyeDinero'] = (bool)$premio['incluyeDinero'];
             $premio['cantidadDinero'] = (float)$premio['cantidadDinero'];
+            $premio['incluyeObjetoAdicional'] = (bool)$premio['incluyeObjetoAdicional'];
             $premios[] = $premio;
         }
 
@@ -911,31 +915,43 @@ function agregarCategoriaConPremios() {
     $conexion->begin_transaction();
 
     try {
+        $smtCheck = $conexion->prepare("SELECT id_categoria FROM categoria WHERE UPPER(nombre) = ?");
+        $upperNombre = strtoupper($nombreCategoria);
+        $smtCheck->bind_param("s", $upperNombre);
+        $smtCheck->execute();
+        $resultCheck = $smtCheck->get_result();
+        if ($resultCheck && $resultCheck->num_rows > 0) {
+            echo json_encode(["status" => "error", "message" => "Ya existe una categoría con ese nombre"]);
+            return;
+        }
+
         $queryCategoria = "INSERT INTO categoria (nombre) VALUES (?)";
         $stmtCategoria = $conexion->prepare($queryCategoria);
         $stmtCategoria->bind_param("s", $nombreCategoria);
         if (!$stmtCategoria->execute()) throw new Exception("No se pudo agregar categoría");
 
         $idCategoria = $conexion->insert_id;
-        $premiosInsertados = [];
 
-        $queryPremio = "INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES (?, ?, ?, ?)";
+        $queryPremio = "INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria, incluye_objeto_adicional, objeto_adicional) VALUES (?, ?, ?, ?, ?, ?)";
         $stmtPremio = $conexion->prepare($queryPremio);
 
         foreach ($premios as $premio) {
             $nombre = $premio['nombre'];
-            $incluye = isset($premio['incluye_dinero']) ? 1 : 0;
-            $cantidad = $premio['cantidad_dinero'] ?? 0;
+            $incluye = isset($premio['incluyeDinero']) && $premio['incluyeDinero'] ? 1 : 0;
+            $cantidad = $premio['cantidadDinero'] ?? null;
+            $incluyeObjeto = isset($premio['incluyeObjetoAdicional']) && $premio['incluyeObjetoAdicional'] ? 1 : 0;
+            $objetoAdicional = $premio['objetoAdicional'] ?? null;
 
-            $stmtPremio->bind_param("sidi", $nombre, $incluye, $cantidad, $idCategoria);
+            $stmtPremio->bind_param("sidiis", $nombre, $incluye, $cantidad, $idCategoria, $incluyeObjeto, $objetoAdicional);
             if (!$stmtPremio->execute()) throw new Exception("No se pudo agregar premio: $nombre");
-
-            $premiosInsertados[] = ["id_premio" => $conexion->insert_id, "nombre" => $nombre, "incluye_dinero" => (bool)$incluye, "cantidad_dinero" => $cantidad];
         }
 
         $conexion->commit();
 
-        echo json_encode(["status" => "success", "data" => ["id_categoria" => $idCategoria, "nombre" => $nombreCategoria, "premios" => $premiosInsertados]]);
+        echo json_encode([
+            "status" => "success",
+            "message" => "Categoría y premios registrado correctamente",
+        ]);
     } catch (Exception $e) {
         $conexion->rollback();
         echo json_encode(["status" => "error", "message" => $e->getMessage()]);
@@ -944,6 +960,7 @@ function agregarCategoriaConPremios() {
 
 /**
  * Editar categoría con premios
+ * Maneja la lógica de agregar, actualizar y eliminar premios según los datos recibidos
  */
 function editarCategoriaConPremios() {
     global $conexion;
@@ -960,38 +977,96 @@ function editarCategoriaConPremios() {
     $conexion->begin_transaction();
 
     try {
+        // Validar nombre único (excluyendo la categoría actual)
+        $stmtCheck = $conexion->prepare("SELECT id_categoria FROM categoria WHERE UPPER(nombre) = ? AND id_categoria != ?");
+        $upperNombre = strtoupper($nombreCategoria);
+        $stmtCheck->bind_param("si", $upperNombre, $idCategoria);
+        $stmtCheck->execute();
+        $resultCheck = $stmtCheck->get_result();
+        if ($resultCheck && $resultCheck->num_rows > 0) {
+            echo json_encode(["status" => "error", "message" => "Ya existe otra categoría con ese nombre"]);
+            return;
+        }
+
+        // Actualizar nombre de la categoría
         $queryCategoria = "UPDATE categoria SET nombre = ? WHERE id_categoria = ?";
         $stmtCategoria = $conexion->prepare($queryCategoria);
         $stmtCategoria->bind_param("si", $nombreCategoria, $idCategoria);
         if (!$stmtCategoria->execute()) throw new Exception("Error al actualizar categoría");
 
-        // Actualizar o insertar premios
+        // Mapear premios existentes para decidir si INSERT, UPDATE o DELETE
+        $premiosExistentes = obtenerPremiosPorIdCategoria($idCategoria);
+        $premiosExistentesMap = [];
+        foreach ($premiosExistentes as $premio) {
+            $premiosExistentesMap[$premio['idPremio']] = $premio;
+        }
+
+        // Preparar sentencias seguras fuera de los bucles
+        $stmtInsert = $conexion->prepare("INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria, incluye_objeto_adicional, objeto_adicional) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmtUpdate = $conexion->prepare("UPDATE premio SET nombre = ?, incluye_dinero = ?, cantidad_dinero = ?, incluye_objeto_adicional = ?, objeto_adicional = ? WHERE id_premio = ?");
+        $stmtDelete = $conexion->prepare("DELETE FROM premio WHERE id_premio = ?");
+
         foreach ($premios as $premio) {
             $nombre = $premio['nombre'];
-            $incluye = isset($premio['incluye_dinero']) ? 1 : 0;
-            $cantidad = $premio['cantidad_dinero'] ?? 0;
+            $incluyeDinero = (isset($premio['incluyeDinero']) && $premio['incluyeDinero']) ? 1 : 0;
+            $cantidad = $incluyeDinero ? ($premio['cantidadDinero'] ?? 0) : null;
+            $incluyeObjeto = (isset($premio['incluyeObjetoAdicional']) && $premio['incluyeObjetoAdicional']) ? 1 : 0;
+            $objetoAdicional = $premio['objetoAdicional'] ?? null;
 
-            if (isset($premio['id_premio'])) {
-                $idPremio = $premio['id_premio'];
-                $queryUpdate = "UPDATE premio SET nombre = ?, incluye_dinero = ?, cantidad_dinero = ? WHERE id_premio = ? AND id_categoria = ?";
-                $stmtUpdate = $conexion->prepare($queryUpdate);
-                $stmtUpdate->bind_param("sidii", $nombre, $incluye, $cantidad, $idPremio, $idCategoria);
+            // Si tiene idPremio y existe en el mapa, es una actualización
+            if (isset($premio['idPremio']) && isset($premiosExistentesMap[$premio['idPremio']])) {
+                $idPremio = (int)$premio['idPremio'];
+                $stmtUpdate->bind_param("sidisi", $nombre, $incluyeDinero, $cantidad, $incluyeObjeto, $objetoAdicional, $idPremio);
                 if (!$stmtUpdate->execute()) throw new Exception("Error al actualizar premio: $nombre");
+                unset($premiosExistentesMap[$idPremio]); // Quitar del mapa para que no se borre
             } else {
-                $queryInsert = "INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES (?, ?, ?, ?)";
-                $stmtInsert = $conexion->prepare($queryInsert);
-                $stmtInsert->bind_param("sidi", $nombre, $incluye, $cantidad, $idCategoria);
-                if (!$stmtInsert->execute()) throw new Exception("Error al agregar premio: $nombre");
+                // Sino, es un nuevo premio
+                $stmtInsert->bind_param("sidiis", $nombre, $incluyeDinero, $cantidad, $idCategoria, $incluyeObjeto, $objetoAdicional);
+                if (!$stmtInsert->execute()) throw new Exception("Error al insertar premio: $nombre");
             }
+        }
+
+        // Los premios que queden en el mapa son los que se eliminarán
+        foreach ($premiosExistentesMap as $idElim => $datosElim) {
+            $stmtDelete->bind_param("i", $idElim);
+            if (!$stmtDelete->execute()) throw new Exception("Error al eliminar premio: " . $datosElim['nombre']);
         }
 
         $conexion->commit();
 
-        echo json_encode(["status" => "success", "data" => ["id_categoria" => $idCategoria, "nombre" => $nombreCategoria, "premios" => $premios]]);
+        echo json_encode([
+            "status" => "success",
+            "message" => "Categoria actualizada correctamente"
+        ]);
     } catch (Exception $e) {
         $conexion->rollback();
         echo json_encode(["status" => "error", "message" => $e->getMessage()]);
     }
+}
+
+function obtenerPremiosPorIdCategoria($idCategoria){
+    global $conexion;
+
+    $queryPremios = "SELECT id_premio as idPremio, nombre, incluye_dinero as incluyeDinero,
+                   cantidad_dinero as cantidadDinero,
+                   incluye_objeto_adicional as incluyeObjetoAdicional,
+                   objeto_adicional as objetoAdicional
+            FROM premio
+            WHERE id_categoria = ?";
+        $stmt = $conexion->prepare($queryPremios);
+        $stmt->bind_param("i", $idCategoria);
+        $stmt->execute();
+        $resultPremios = $stmt->get_result();
+
+        $premios = [];
+        while ($premio = $resultPremios->fetch_assoc()) {
+            $premio['idPremio'] = (int)$premio['idPremio'];
+            $premio['incluyeDinero'] = (bool)$premio['incluyeDinero'];
+            $premio['cantidadDinero'] = (float)$premio['cantidadDinero'];
+            $premio['incluyeObjetoAdicional'] = (bool)$premio['incluyeObjetoAdicional'];
+            $premios[] = $premio;
+        }
+    return $premios;
 }
 
 /**

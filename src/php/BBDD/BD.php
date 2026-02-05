@@ -32,6 +32,8 @@ function crearBaseDatosSiNoExiste(): void {
                     incluye_dinero BOOLEAN DEFAULT TRUE,
                     cantidad_dinero DECIMAL(10,2),
                     id_categoria INT NOT NULL,
+                    incluye_objeto_adicional BOOLEAN DEFAULT FALSE,
+                    objeto_adicional VARCHAR(255),
                     FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
                 );
                 
@@ -232,13 +234,13 @@ function crearBaseDatosSiNoExiste(): void {
                 (4,'Raíces y Ramas','Julia decide dejar el hospital apresuradamente...',4,23,9,NULL,'alumno'),
                 (5,'Formas del Vacío','En 1945, bajo la sombra de la dictadura franquista...',5,24,10,NULL,'alumni');
                 
-                INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria) VALUES
-                ('Primer premio', true, 600.00, 1),
-                ('Segundo premio', true, 300.00, 1),
-                ('Tercer premio', true, 100.00, 1),
-                ('Primer premio', true, 700.00, 2),
-                ('Segundo premio', true, 300.00, 2),
-                ('Reconocimiento Honorífico', false, NULL, 3);
+                INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria, incluye_objeto_adicional, objeto_adicional) VALUES
+                ('Primer premio', true, 600.00, 1, true, 'Cámara de vídeo de Canon'),
+                ('Segundo premio', true, 300.00, 1, false, NULL),
+                ('Tercer premio', true, 100.00, 1, false, NULL),
+                ('Primer premio', true, 700.00, 2, false, NULL),
+                ('Segundo premio', true, 300.00, 2, false, NULL),
+                ('Reconocimiento Honorífico', false, NULL, 3, false, NULL);
                 
                 INSERT INTO organizador (nro_empresa, nombre, correo, contrasena, dni) VALUES
                 ('EMP-001', 'Organizador Madrid', 'admin@gmail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999999Z');

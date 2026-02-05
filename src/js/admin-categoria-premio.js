@@ -1,40 +1,34 @@
-const editCategoryModal = document.getElementById('editCategoryModal');
-const createCategoryModal = document.getElementById('createCategoryModal');
+const modalActualizarCategoria = document.getElementById('modalActualizarCategoria');
+const modalCrearCategoria = document.getElementById('modalCrearCategoria');
 const categoriesGrid = document.getElementById('categoriesGrid');
 const notification = document.getElementById("notification");
 const pagination = document.getElementById("pagination");
 const btnOpenCreateCategoryModal = document.getElementById("btnOpenCreateCategoryModal");
 const btnCrear = document.getElementById("btnCrear");
-const agregarCardPremio = document.getElementById("agregarCardPremio");
+const prizeManagerCrear = document.getElementById("prizeManagerCrear");
+const prizeManagerActualizar = document.getElementById("prizeManagerActualizar");
+const nombreCategoriaInputCrear = document.getElementById("nombreCategoriaInputCrear");
+const nombreCategoriaActualizar = document.getElementById("nombreCategoriaActualizar");
+const btnActualizar = document.getElementById("btnActualizar");
 
-
-let currentCategoryId = null;
-let pageSize = 6;
+let pageSize = 4;
+let categoriaSeleccionada = null;
 
 btnOpenCreateCategoryModal.addEventListener('click', () => {
-    createCategoryModal.open();
+    modalCrearCategoria.open();
 });
 
 btnCrear.addEventListener('click', () => {
-    createCategoryModal.open();
+    handleCrearCategoria();
 });
 
-agregarCardPremio.addEventListener('click', () => {
-
+btnActualizar.addEventListener('click', () => {
+    handleActualizarCategoria();
 });
-
 
 pagination.addEventListener('page-change', async (e) => {
     await cargarCategorias();
 });
-
-
-//     try {
-//         await agregarCategoriaConPremios(categoryName, premios);
-//         createCategoryModal.style.display = 'none';
-//         resetCreateModal();
-//         cargarCategorias();
-
 
 /**
  * Carga las categorías
@@ -81,9 +75,9 @@ function renderizarCategorias(categorias) {
         editBtn.dataset.id = categoria.idCategoria;
         editBtn.dataset.nombre = categoria.nombre;
         editBtn.addEventListener('click', (e) => {
+            categoriaSeleccionada = categoria;
             e.stopPropagation()
-            editCategoryModal.open();
-            openEditModal(categoria.idCategoria, categoria.nombre, categoria.premios);
+            renderizarModalActualizarCategoria(categoria);
         })
 
         const deleteBtn = document.createElement('span');
@@ -111,7 +105,7 @@ function renderizarCategorias(categorias) {
         categoria.premios.forEach(premio => {
             const nuevoPremio = document.createElement('prize-component');
 
-            nuevoPremio.setData({
+            const data = {
                 idPremio: premio.idPremio,
                 nombre: premio.nombre,
                 incluyeDinero: premio.incluyeDinero,
@@ -119,7 +113,8 @@ function renderizarCategorias(categorias) {
                 incluyeObjetoAdicional: premio.incluyeObjetoAdicional,
                 objetoAdicional: premio.objetoAdicional,
                 removable: false
-            });
+            };
+            nuevoPremio.setData(data);
 
             prizesList.appendChild(nuevoPremio);
         });
@@ -130,6 +125,71 @@ function renderizarCategorias(categorias) {
     });
 }
 
+
+async function handleCrearCategoria() {
+    const validateName = nombreCategoriaInputCrear.validate().valid;
+    const premios = prizeManagerCrear.getData();
+
+    if (!validateName) {
+        return;
+    }
+    if (premios.length === 0) {
+        notification.show("La categoría debe tener al menos un premio.");
+        return;
+    }
+
+    const nombre = nombreCategoriaInputCrear.value.trim();
+
+    const response = await agregarCategoriaConPremios(nombre, premios);
+    if (response.status === 'success'){
+        notification.show("Categoría creada correctamente");
+        modalCrearCategoria.close();
+        nombreCategoriaInputCrear.clear();
+        prizeManagerCrear.clear();
+    } else {
+        notification.show(response.message);
+    }
+    await cargarCategorias();
+}
+
+function renderizarModalActualizarCategoria(categoria) {
+    nombreCategoriaActualizar.setValue(categoria.nombre, true);
+    categoria.premios.forEach(premio => {
+        premio.removable = true;
+    });
+    prizeManagerActualizar.setData(categoria.premios);
+    modalActualizarCategoria.open();
+}
+
+async function handleActualizarCategoria() {
+    const validateName = nombreCategoriaActualizar.validate().valid;
+    const premios = prizeManagerActualizar.getData();
+    if (!validateName) {
+        return;
+    }
+    if (premios.length === 0) {
+        notification.show("La categoría debe tener al menos un premio.");
+        return;
+    }
+
+    const nombre = nombreCategoriaActualizar.value.trim();
+
+    btnActualizar.disabled = true;
+
+    const response = await editarCategoriaConPremios(categoriaSeleccionada.idCategoria, nombre, premios)
+    ç
+    btnActualizar.disabled = false;
+
+    if (response.status === 'success'){
+        notification.show("Categoría actualizada correctamente");
+        nombreCategoriaActualizar.clear();
+        prizeManagerActualizar.clear();
+        modalActualizarCategoria.close();
+    } else {
+        notification.show(response.message);
+    }
+    await cargarCategorias();
+}
 
 async function handleEliminarCategoria(categoryId) {
     const response = await eliminarCategoria(categoryId);
