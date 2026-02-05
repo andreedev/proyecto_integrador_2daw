@@ -1,6 +1,5 @@
 <?php
 
-namespace model;
 class EstadosCandidatura
 {
     const EN_REVISION = 'En revisión';

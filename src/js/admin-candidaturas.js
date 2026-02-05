@@ -139,10 +139,10 @@ async function cargarCandidaturas() {
             showNotification('Error al cargar candidaturas');
             return;
         }
-        const candidaturas = response.data;
-        const paginaActual = response.currentPage;
-        const totalPaginas = response.totalPages;
-        const totalRecords = response.totalRecords;
+        const candidaturas = response.data.list;
+        const paginaActual = response.data.currentPage;
+        const totalPaginas = response.data.totalPages;
+        const totalRecords = response.data.totalRecords;
 
         renderizarCandidaturas(candidaturas, paginaActual, totalPaginas, totalRecords);
     } catch (e) {

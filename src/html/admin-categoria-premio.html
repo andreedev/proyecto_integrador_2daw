@@ -26,7 +26,7 @@
                     <span class="admin-module-description">Administra las categorías y premios del festival de cortometraje</span>
                 </div>
                 <div class="admin-header-module-actions-container">
-                    <div class="primary-button-01" id="btnCreate">
+                    <div class="primary-button-01" id="btnOpenCreateCategoryModal">
                         <span>Crear categoría</span>
                     </div>
                 </div>
@@ -61,34 +61,6 @@
                 ></input-component>
 
                 <div class="premios">
-                    <span class="fw-600 fs-16px text-premios">Premios</span>
-                    <div id="prizesList" class="d-flex flex-column gap-12px">
-                        <!-- Aquí se pintan los premios desde JS -->
-                        <div class="prize-item">
-                            <div class="prize-label d-flex justify-content-start align-items-center gap-10px">
-                                <span class="icon-trophy w-24px h-24px bg-neutral-01"></span>
-                                Primer premio
-                                <div class="prize-value d-flex justify-content-end align-items-center gap-10px">
-                                <span class="icon-money w-24px h-24px bg-neutral-01"></span>
-                                600.00€
-
-                            </div>
-                        </div>
-
-                    </div>
-                        <div class="prize-item">
-                            <div class="prize-label d-flex justify-content-start align-items-center gap-10px">
-                                <span class="icon-trophy w-24px h-24px bg-neutral-01"></span>
-                                Primer premio
-                                <div class="prize-value d-flex justify-content-end align-items-center gap-10px">
-                                    <span class="icon-money w-24px h-24px bg-neutral-01"></span>
-                                    600.00€
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                 </div>
 
 
@@ -116,49 +88,32 @@
     </modal-component>
 
     <!-- Modal de creación de categoría -->
-    <modal-component id="createCategoryModal" container-class="w-70 w-md-70 w-lg-80 w-xl-70" >
-        <div class="modal-header">
-            <h2>Nueva Categoría</h2>
-            <span class="icon-close close-crear w-24px h-32px bg-neutral-01"></span>
+    <modal-component id="createCategoryModal" mobile-full-screen >
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
+            <div class="d-flex flex-column gap-4px">
+                <span class="fs-20px fw-600">Nueva Categoría</span>
+                <span class="fs-12px text-neutral-04"></span>
+
+            </div>
+            <div class="d-flex align-items-center gap-8px">
+                <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+            </div>
         </div>
-        <div class="modal-body">
-            <div id="createCategoryForm">
-                <input-component
-                        label="Nombre de la categoría:"
-                        type="text"
-                        id="newCategoryName"
-                        name="newCategoryNameInput"
-                        required
-                ></input-component>
+        <div class="d-flex flex-column p-24px gap-24px flex-grow-1 overflow-y-auto">
+            <input-component
+                    label="Nombre de la categoría:"
+                    type="text"
+                    id="newCategoryName"
+                    name="newCategoryNameInput"
+                    required
+            ></input-component>
 
-                <div class="agregar-premio-container d-flex flex-column ">
-                    <span class="fw-600 fs-16px premios-text">Premios</span>
-
-                    <div class="inputs-btn-agregar d-flex flex-row justify-space-between gap-24px">
-                        <input-component
-                                label="Nombre"
-                                type="text"
-                                id="prizeNameInput"
-                                name="prizeNameInput"
-                                required
-                        ></input-component>
-                        <input-component
-                                label="Recompensa"
-                                type="text"
-                                id="prizeDescriptionInput"
-                                name="prizeDescriptionInput"
-                                required
-                        ></input-component>
-                        <div class="btn-agregar-premio primary-button-02 d-flex justify-center align-center" id="addPrizeBtn">
-                            <span class="fs-14px">Agregar</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-actions d-flex justify-space-between gap-24px align-items-center">
-                    <button type="button" id="cancelBtn" class="secondary-button-02 btn-cancel w-100">Cancelar</button>
-                    <button type="submit" id="saveBtn" class="primary-button-01 btn-save w-100">Guardar cambios</button>
-                </div>
+            <prize-manager-component id="prizeManagerCrear"></prize-manager-component>
+        </div>
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
+                <button class="primary-button-01 text-center" id="btnCrear">Crear</button>
             </div>
         </div>
     </modal-component>
@@ -183,7 +138,6 @@
     <notification-component id="notification"></notification-component>
 
     <script src="../js/menu-admin.js"></script>
-    <script src="../js/admin-categoria-premio.js"></script>
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/pagination-component.js"></script>
     <script src="../js/components/select-component.js"></script>
@@ -191,7 +145,10 @@
     <script src="../js/components/input-component.js"></script>
     <script src="../js/components/date-component.js"></script>
     <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/prize-component.js"></script>
+    <script src="../js/components/prize-manager-component.js"></script>
     <script src="../js/components/notification-component.js"></script>
+    <script src="../js/admin-categoria-premio.js"></script>
 </body>
 
 </html>

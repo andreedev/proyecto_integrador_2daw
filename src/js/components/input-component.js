@@ -1,45 +1,45 @@
 /**
- * Input Component
- * Input reutilizable con estados: Default, Hover, Focused, Error, Disabled
- * Soporta validación estándar y validación personalizada vía callback
+ * @class InputComponent
+ * @extends HTMLElement
+ * * Un Web Component de entrada de texto versátil y reutilizable con validación robusta
+ * * @description
+ * Soporta múltiples estados visuales: Default, Hover, Focused, Error y Disabled.
+ * Incluye lógica para campos de texto normales y áreas de texto (textarea),
+ * con validación nativa, por conteo de palabras o lógica personalizada.
+ * *
+ * @attr {string}  label             - Texto de la etiqueta flotante
+ * @attr {string}  type              - Tipo de input (text, email, password, etc.). Por defecto 'text'.
+ * @attr {string}  width             - Ancho del componente (ej: "300px", "100%").
+ * @attr {string}  value             - Valor inicial del campo.
+ * @attr {boolean} disabled          - Si está presente, deshabilita el componente.
+ * @attr {boolean} required          - Si está presente, marca el campo como obligatorio.
+ * @attr {boolean} textarea          - Si está presente, renderiza un <textarea> en lugar de un <input>.
+ * @attr {boolean} validate-on-load  - Si está presente, ejecuta la validación nada más renderizarse.
+ * @attr {boolean} no-validation     - Desactiva por completo la lógica de validación visual.
+ * @attr {number}  min-length        - Cantidad mínima de caracteres permitidos.
+ * @attr {number}  max-length        - Cantidad máxima de caracteres permitidos.
+ * @attr {number}  max-words         - Cantidad máxima de palabras permitidas (útil para textareas).
+ * @attr {string}  required-message  - Mensaje mostrado cuando el campo obligatorio está vacío.
+ * @attr {string}  error-message     - Mensaje mostrado para errores de longitud (min/max).
+ * @attr {string}  invalid-message   - Mensaje mostrado cuando el formato (ej. email) es incorrecto.
  *
- * Ejemplo de uso:
+ * @example
+ * // Uso básico (Email con validación)
  * <input-component
- *     label="Correo Electrónico"
- *     type="email"
- *     width="300px"
- *     required
- *     min-length="5"
- *     max-length="50"
- *     error-message="El correo debe tener entre 5 y 50 caracteres"
- *     required-message="El correo es obligatorio"
- *     invalid-message="Por favor ingresa un correo válido"
- *     validate-on-load
- *     ></input-component>
- *
+ *      label="Correo Electrónico"
+ *      type="email"
+ *      required
+ *      invalid-message="El formato del correo no es válido"
+ *      error-message="Mínimo 5 caracteres"
+ *      min-length="5">
+ * </input-component>
+ * * @example
+ * // Área de texto con límite de palabras
  * <input-component
- *    label="Descripción"
- *    textarea
- *    width="400px"
- *    max-words="100"
- *    ></input-component>
- *
- * <input-component
- *   label="Nombre"
- *   type="text"
- *   width="250px"
- *   disabled
- *   value="Juan Pérez"
- *   ></input-component>
- *
- *
- * Métodos públicos:
- * - setCustomValidation(callback: function): Establece una función de validación personalizada
- * - validate(showUI: boolean): Valida el input y opcionalmente actualiza la UI
- * - setValue(value: string, validate: boolean): Establece el valor del input y opcionalmente valida
- *
- * Eventos:
- * - solid-input-change: Disparado cuando el valor del input cambia
+ *      label="Biografía"
+ *      textarea
+ *      max-words="50">
+ * </input-component>
  */
 class InputComponent extends HTMLElement {
     constructor() {

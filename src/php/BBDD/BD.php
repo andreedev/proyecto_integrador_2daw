@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . "/connection.php";
 
-function crearBaseDatosSiNoExiste()
-{
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'connection.php';
+
+function crearBaseDatosSiNoExiste(): void {
     global $conexion;
 
     $db = $_ENV['DB_NAME'];

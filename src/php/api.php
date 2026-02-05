@@ -1,8 +1,6 @@
 <?php
 
 // cargar variables de entorno provenientes de .env
-use model\EstadosCandidatura;
-
 function loadEnv($path) {
     if (!file_exists($path)) return;
     $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -28,6 +26,7 @@ if (php_sapi_name() !== 'cli') {
 
 require_once "./BBDD/BD.php";
 require_once "./BBDD/connection.php";
+require_once "./model/PageContext.php";
 require_once "./model/EstadosCandidatura.php";
 
 if (php_sapi_name() !== 'cli' || isset($_POST['action'])) {
@@ -839,14 +838,21 @@ function desasignarGanador() {
 /**
  * Obtener todas las categorías con sus premios
  */
-function obtenerCategoriasConPremios() {
+function obtenerCategoriasConPremios(): void {
     global $conexion;
 
-    $page = $_POST['page'] ?? 1;
-    $pageSize = $_POST['pageSize'] ?? 4;
+    $page = (int) $_POST['page'] ?? 1;
+    $pageSize = (int) $_POST['pageSize'] ?? 4;
     $offset = ($page - 1) * $pageSize;
 
-    $queryCategorias = "SELECT * FROM categoria LIMIT ?, ?";
+    $queryCount = "SELECT COUNT(*) as total FROM categoria";
+    $resultCount = $conexion->query($queryCount);
+    $totalCategorias = 0;
+    if ($resultCount && $row = $resultCount->fetch_assoc()) {
+        $totalCategorias = (int)$row['total'];
+    }
+
+    $queryCategorias = "SELECT id_categoria as idCategoria, nombre FROM categoria LIMIT ?, ?";
     $stmtCategorias = $conexion->prepare($queryCategorias);
     $stmtCategorias->bind_param("ii", $offset, $pageSize);
     $stmtCategorias->execute();
@@ -855,9 +861,9 @@ function obtenerCategoriasConPremios() {
     $categorias = [];
 
     while ($categoria = $resultCategorias->fetch_assoc()) {
-        $idCategoria = $categoria['id_categoria'];
+        $idCategoria = (int)$categoria['idCategoria'];
         $queryPremios = "
-            SELECT id_premio, nombre, incluye_dinero, cantidad_dinero
+            SELECT id_premio as idPremio, nombre, incluye_dinero as incluyeDinero, cantidad_dinero as cantidadDinero
             FROM premio
             WHERE id_categoria = ?
         ";
@@ -868,7 +874,9 @@ function obtenerCategoriasConPremios() {
 
         $premios = [];
         while ($premio = $resultPremios->fetch_assoc()) {
-            $premio['incluye_dinero'] = (bool)$premio['incluye_dinero'];
+            $premio['idPremio'] = (int)$premio['idPremio'];
+            $premio['incluyeDinero'] = (bool)$premio['incluyeDinero'];
+            $premio['cantidadDinero'] = (float)$premio['cantidadDinero'];
             $premios[] = $premio;
         }
 
@@ -876,19 +884,12 @@ function obtenerCategoriasConPremios() {
         $categorias[] = $categoria;
     }
 
-    $pageContext = [
-        "currentPage" => (int)$page,
-        "pageSize" => (int)$pageSize,
-        "totalItems" => obtenerTotalCategorias(),
-        "totalPages" => ceil(obtenerTotalCategorias() / $pageSize)
-    ];
+
+    $pageContext = PageContext::create($totalCategorias, $page, $pageSize, $categorias);
 
     echo json_encode([
         "status" => "success",
-        "data" => [
-            "categorias" => $categorias,
-            "pagination" => $pageContext
-        ]
+        "data" => $pageContext
     ]);
 }
 
@@ -999,14 +1000,19 @@ function eliminarCategoria() {
     global $conexion;
 
     $idCategoria = $_POST['id_categoria'] ?? null;
-    if (!$idCategoria) {
-        echo json_encode(["status" => "error", "message" => "No se recibió id_categoria"]);
-        return;
-    }
-
     $conexion->begin_transaction();
 
     try {
+        $stmtCheck = $conexion->prepare("SELECT COUNT(*) as total FROM premio_candidatura pc INNER JOIN premio p ON pc.id_premio = p.id_premio WHERE p.id_categoria = ?");
+        $stmtCheck->bind_param("i", $idCategoria);
+        $stmtCheck->execute();
+        $totalReferencias = $stmtCheck->get_result()->fetch_assoc()['total'] ?? 0;
+
+        if ($totalReferencias > 0) {
+            echo json_encode(["status" => "error", "message" => "No se puede eliminar la categoría porque hay premios asignados a candidaturas"]);
+            return;
+        }
+
         $queryPremios = "DELETE FROM premio WHERE id_categoria = ?";
         $stmtPremios = $conexion->prepare($queryPremios);
         $stmtPremios->bind_param("i", $idCategoria);
@@ -1441,7 +1447,7 @@ function actualizarEvento() {
 /**
  * Eliminar evento
  */
-function eliminarEvento() {
+function eliminarEvento(): void {
     global $conexion;
     $idEvento = (int)$_POST['idEvento'];
 
@@ -1467,12 +1473,12 @@ function eliminarEvento() {
 /**
  * Listar candidaturas con filtros y paginación
  */
-function listarCandidaturasAdmin() {
+function listarCandidaturasAdmin(): void {
     global $conexion;
 
-    $limit  = 10;
-    $pagina = (isset($_POST['pagina']) && is_numeric($_POST['pagina'])) ? (int)$_POST['pagina'] : 1;
-    $offset = ($pagina - 1) * $limit;
+    $pageSize  = 10;
+    $page = $_POST['pagina'] ?? 1;
+    $offset = ($page - 1) * $pageSize;
 
     $filtroTexto  = $_POST['filtroTexto'] ?? '';
     $filtroTipo   = $_POST['filtroTipo'] ?? '';
@@ -1536,7 +1542,7 @@ function listarCandidaturasAdmin() {
     $stmtData = $conexion->prepare($dataSql);
 
     $finalTypes = $types . "ii";
-    $finalParams = array_merge($params, [$limit, $offset]);
+    $finalParams = array_merge($params, [$pageSize, $offset]);
 
     $stmtData->bind_param($finalTypes, ...$finalParams);
     $stmtData->execute();
@@ -1562,14 +1568,11 @@ function listarCandidaturasAdmin() {
         $candidaturas[] = $row;
     }
 
-    $totalPaginas = ceil($totalRecords / $limit);
+    $pageContext = PageContext::create($totalRecords, $page, $pageSize, $candidaturas);
 
     echo json_encode([
         "status"       => "success",
-        "totalRecords"        => (int)$totalRecords,
-        "totalPages"        => $totalPaginas,
-        "currentPage" => $pagina,
-        "data"         => $candidaturas
+        "data"         => $pageContext
     ]);
 }
 
@@ -1697,14 +1700,14 @@ function guardarCandidatura() {
 /**
  * Listar candidaturas de un participante
  */
-function listarCandidaturasParticipante() {
+function listarCandidaturasParticipante(): void {
     global $conexion;
 
     $idParticipante = (int)$_SESSION['id'];
-    $pagina = (isset($_POST['page']) && is_numeric($_POST['page'])) ? (int)$_POST['page'] : 1;
-    $limit  = (isset($_POST['pageSize']) && is_numeric($_POST['pageSize'])) ? (int)$_POST['pageSize'] : 3;
+    $page = $_POST['page'] ?? 1;
+    $pageSize  = $_POST['pageSize'] ?? 3;
 
-    $offset = ($pagina - 1) * $limit;
+    $offset = ($page - 1) * $pageSize;
 
     $countSql = "SELECT COUNT(*) as total FROM candidatura WHERE id_participante = ?";
     $stmtCount = $conexion->prepare($countSql);
@@ -1742,7 +1745,7 @@ function listarCandidaturasParticipante() {
 
     $stmt = $conexion->prepare($query);
 
-    $stmt->bind_param("iii", $idParticipante, $limit, $offset);
+    $stmt->bind_param("iii", $idParticipante, $pageSize, $offset);
 
     $stmt->execute();
     $result = $stmt->get_result();
@@ -1766,15 +1769,12 @@ function listarCandidaturasParticipante() {
         $candidaturas[] = $row;
     }
 
-    $totalPages = ceil($totalRecords / $limit);
-
-    $pageContext = [
-        "totalRecords"   => (int)$totalRecords,
-        "totalPages"     => (int)$totalPages,
-        "currentPage"    => $pagina,
-        "pageSize"       => $limit,
-        "list"           => $candidaturas
-    ];
+    $pageContext = PageContext::create(
+        $totalRecords,
+        $page,
+        $pageSize,
+        $candidaturas
+    );
 
     echo json_encode([
         "status"  => "success",
