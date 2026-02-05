@@ -4,19 +4,14 @@ require_once __DIR__ . '/../src/php/api.php';
 
 class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
 {
-    /**
-     * Se ejecuta una sola vez antes de lanzar el primer test de la clase.
-     * Ideal para inicializar la conexión y preparar la estructura.
-     */
+    // Se ejecuta UNA VEZ al inicio de la clase
     public static function setUpBeforeClass(): void
     {
         abrirConexion();
         crearBaseDatosSiNoExiste();
     }
 
-    /**
-     * Se ejecuta una sola vez al finalizar todos los tests de la clase.
-     */
+    // Se ejecuta UNA VEZ al finalizar todos los tests de la clase
     public static function tearDownAfterClass(): void
     {
         global $conexion;
@@ -25,39 +20,50 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
         }
     }
 
+    /**
+     * Se ejecuta ANTES de CADA test individual.
+     * Aquí iniciamos una transacción para que cada test trabaje en un entorno aislado.
+     */
     protected function setUp(): void
     {
         global $conexion;
-        // Iniciamos transacción para que los cambios de cada test no sean permanentes
         $conexion->begin_transaction();
         $_POST = [];
     }
 
+    /**
+     * Se ejecuta DESPUÉS de CADA test individual.
+     * Aplicamos un rollback para deshacer cualquier cambio en la BD y dejarla limpia.
+     */
     protected function tearDown(): void
     {
         global $conexion;
         if ($conexion) {
-            // Revertimos los cambios realizados en el test individual
             $conexion->rollback();
         }
         unset($_POST);
     }
 
     /**
-     * Lo usamos para no ver SQL dentro de los tests.
+     * Mejora: Usamos un DNI aleatorio para que no falle por clave duplicada 
+     * si ejecutas el test varias veces.
      */
     private function prepararEscenario($nombre = "User Test", $sinopsis = "Sinopsis")
     {
         global $conexion;
-        $conexion->query("INSERT INTO participante (nombre, dni) VALUES ('$nombre', '12345678Z')");
+        $dniAleatorio = rand(1000, 9999) . "X"; 
+        
+        $conexion->query("INSERT INTO participante (nombre, dni) VALUES ('$nombre', '$dniAleatorio')");
         $idParticipante = $conexion->insert_id;
 
-        $conexion->query("INSERT INTO candidatura (id_participante, sinopsis, estado) VALUES ($idParticipante, '$sinopsis', 'pendiente')");
+        $conexion->query("INSERT INTO candidatura (id_participante, sinopsis, estado) VALUES ($idParticipante, '$sinopsis', 'En revision')");
         return $conexion->insert_id;
     }
 
-    // ========== TESTS ==========
 
+    /**
+     * Test de las candidaturas sin aplicar los filtros
+     */
     public function testSinFiltros()
     {
         $this->prepararEscenario("Juan", "Test de película");
@@ -66,26 +72,35 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
 
         ob_start();
         listarCandidaturasAdmin();
-        $result = json_decode(ob_get_clean(), true);
+        $output = ob_get_clean();
+        $result = json_decode($output, true);
 
+        $this->assertNotNull($result, "La respuesta de listarCandidaturasAdmin no es un JSON válido: " . $output);
         $this->assertEquals('success', $result['status']);
         $this->assertGreaterThanOrEqual(1, count($result['data']));
     }
 
+
+    /**
+     * Test de cuando la candidatura ha sido exitosa.
+     */
     public function testEditarCandidaturaExitoso()
     {
         $id = $this->prepararEscenario();
 
+    
         $_POST = [
             'idCandidatura' => $id,
-            'nuevoEstadoCandidatura' => 'aprobado',
+            'nuevoEstadoCandidatura' => 'aceptado', 
             'motivoCambioEstado' => 'Ok'
         ];
 
         ob_start();
         actualizarCandidatura();
-        $result = json_decode(ob_get_clean(), true);
+        $output = ob_get_clean();
+        $result = json_decode($output, true);
 
+        $this->assertNotNull($result, "La respuesta de actualizarCandidatura no es un JSON válido: " . $output);
         $this->assertEquals('success', $result['status']);
     }
 }
