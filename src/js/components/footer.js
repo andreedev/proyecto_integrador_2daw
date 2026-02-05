@@ -34,13 +34,12 @@ class HomeFooter extends HTMLElement {
                         <a class="footer-secondary-text" href="./bases-legales.html">Bases legales</a>
                     </div>
                     <div class="footer-container-4">
-                        <p class="footer-secondary-text">Redes sociales</p>
                         <div class="social-media-container">
-                            <span class="social-media-icon icon-facebook"></span>
-                            <span class="social-media-icon icon-instagram"></span>
-                            <span class="social-media-icon icon-youtube"></span>
-                            <span class="social-media-icon icon-linkedin"></span>
-                            <span class="social-media-icon icon-twitter"></span>
+                            <span class="w-24px h-24px bg-neutral-09 icon-facebook"></span>
+                            <span class="w-24px h-24px bg-neutral-09 icon-instagram"></span>
+                            <span class="w-24px h-24px bg-neutral-09 icon-youtube"></span>
+                            <span class="w-24px h-24px bg-neutral-09 icon-linkedin"></span>
+                            <span class="w-24px h-24px bg-neutral-09 icon-twitter"></span>
                         </div>
                     </div>
                 </div>
