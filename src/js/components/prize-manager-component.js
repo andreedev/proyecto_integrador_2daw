@@ -118,7 +118,7 @@ class PrizeManagerComponent extends HTMLElement {
                     <button class="primary-button-02 fs-14px cursor-pointer" id="agregarCardPremio">Agregar</button>
                 </div>
     
-                <div class="d-flex flex-row justify-space-between align-items-center gap-24px">
+                <div class="d-flex flex-column flex-md-row justify-space-between align-items-center gap-24px">
                     <input-component
                             label="Nombre"
                             id="prizeNameInput"
