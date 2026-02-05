@@ -102,6 +102,7 @@ class PrizeComponent extends HTMLElement {
      * @param {object} data - Objeto con la estructura del premio
      */
     setData(data) {
+        debugger;
         if (!data) return;
         this._data = { ...this._data, ...data };
 

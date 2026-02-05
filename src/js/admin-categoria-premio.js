@@ -47,7 +47,6 @@ async function cargarCategorias() {
     const categorias = response.data.list;
     renderizarCategorias(categorias);
 
-    pagination.setAttribute('current-page', response.data.page);
     pagination.setAttribute('total-pages', response.data.totalPages);
 }
 

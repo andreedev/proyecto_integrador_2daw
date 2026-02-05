@@ -6,3 +6,6 @@
 /node_modules/*
 .idea/*
 .idea/
+.phpunit.result.cache
+composer.lock
+proyecto_integrador_2daw.iml
