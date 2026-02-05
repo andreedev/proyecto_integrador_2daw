@@ -251,7 +251,7 @@ function crearBaseDatosSiNoExiste(): void {
                     ('maxCandidaturas', '5', 1),
                     ('galaProximaFecha', '18/12/2027', 1),
                     ('galaPreEventoTitulo', 'Festival de Cine 2026', 1),
-                    ('galaPreEventoFecha', DATE_FORMAT(NOW(), '%d/%m/%Y'), 1),
+                    ('galaPreEventoFecha', '09/11/2026', 1),
                     ('galaPreEventoHora', '15:00', 1),
                     ('galaPreEventoUbicacion', 'Auditorio Principal', 1),
                     ('galaPreEventoDescripcion', '¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni', 1),

@@ -27,7 +27,7 @@ class HomeFooter extends HTMLElement {
                     </div>
                     <div class="d-flex flex-column justify-content-center align-items-center gap-16px order-3 order-md-2">
                         <span class="fw-500 text-neutral-09">C/Tajo, s/n, 28670</span>
-                        <span class="fw-500 text-neutral-09">dpo@universidadeuropea.es</span>
+                        <span class="fw-500 text-neutral-09">festivalcortosuen@universidadeuropea.es</span>
                     </div>
                     <div class="d-flex flex-column justify-content-center align-items-center gap-16px order-4 order-md-3">
                         <a class="fw-500 text-neutral-09" href="#">Política de privacidad</a>
