@@ -91,7 +91,7 @@ class ConfiguracionTest extends PHPUnit\Framework\TestCase {
     public function testObtenerConfiguracionSinEdicionActual() {
         global $conexion;
         
-        $conexion->query("UPDATE edicion SET tipo = 'pasada' WHERE tipo = 'actual'");
+        $conexion->query("UPDATE edicion SET tipo = 'anterior' WHERE tipo = 'actual'");
 
         $resultado = $this->capturarSalida('obtenerConfiguracion');
 

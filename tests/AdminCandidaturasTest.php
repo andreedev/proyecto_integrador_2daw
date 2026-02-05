@@ -65,7 +65,7 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
         $_POST = ['pagina' => 1, 'filtroTexto' => ''];
 
         ob_start();
-        mostrarCandidaturas();
+        listarCandidaturasAdmin();
         $result = json_decode(ob_get_clean(), true);
 
         $this->assertEquals('success', $result['status']);
@@ -83,7 +83,7 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
         ];
 
         ob_start();
-        editarCandidatura();
+        actualizarCandidatura();
         $result = json_decode(ob_get_clean(), true);
 
         $this->assertEquals('success', $result['status']);

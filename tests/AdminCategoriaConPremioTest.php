@@ -70,6 +70,8 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase
      */
     public function testObtenerCategoriasConPremios()
     {
+        $_POST['pageSize'] = 4;
+        $_POST['page'] = 1;
         $response = $this->capturarRespuestaAPI('obtenerCategoriasConPremios');
 
         $this->assertEquals('success', $response['status']);

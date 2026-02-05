@@ -28,9 +28,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "BBDD". DIRECTORY_SEPARATOR  ."BD.p
 require_once __DIR__ . DIRECTORY_SEPARATOR . "BBDD". DIRECTORY_SEPARATOR  ."connection.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "model". DIRECTORY_SEPARATOR  ."PageContext.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "model". DIRECTORY_SEPARATOR  ."EstadosCandidatura.php";
-//require_once "./BBDD/connection.php";
-//require_once "./model/PageContext.php";
-//require_once "./model/EstadosCandidatura.php";
+
 
 if (php_sapi_name() !== 'cli' || isset($_POST['action'])) {
 
@@ -1933,7 +1931,7 @@ function obtenerEdicionActual() {
         return $result;
 
     } else {
-        throw new Exception("No se encontró la edición actual");
+        return null;
     }
 }
 

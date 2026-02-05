@@ -22,6 +22,10 @@ readonly class PageContext{
         int $pageSize,
         array $list
     ): self {
+        if ($totalRecords == 0) {
+            return new self(0, 0, $currentPage, $pageSize, []);
+        }
+
         $totalPages = (int) ceil($totalRecords / $pageSize);
 
         return new self(
