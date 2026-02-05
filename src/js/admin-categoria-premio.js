@@ -177,7 +177,7 @@ async function handleActualizarCategoria() {
     btnActualizar.disabled = true;
 
     const response = await editarCategoriaConPremios(categoriaSeleccionada.idCategoria, nombre, premios)
-    ç
+
     btnActualizar.disabled = false;
 
     if (response.status === 'success'){

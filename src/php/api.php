@@ -984,8 +984,7 @@ function editarCategoriaConPremios() {
         $stmtCheck->execute();
         $resultCheck = $stmtCheck->get_result();
         if ($resultCheck && $resultCheck->num_rows > 0) {
-            echo json_encode(["status" => "error", "message" => "Ya existe otra categoría con ese nombre"]);
-            return;
+            throw new Exception("Ya existe otra categoría con ese nombre");
         }
 
         // Actualizar nombre de la categoría
@@ -1028,6 +1027,13 @@ function editarCategoriaConPremios() {
 
         // Los premios que queden en el mapa son los que se eliminarán
         foreach ($premiosExistentesMap as $idElim => $datosElim) {
+            $stmtCheckDelete = $conexion->prepare("SELECT COUNT(*) as total FROM premio_candidatura WHERE id_premio = ?");
+            $stmtCheckDelete->bind_param("i", $idElim);
+            $stmtCheckDelete->execute();
+            $totalReferencias = $stmtCheckDelete->get_result()->fetch_assoc()['total'] ?? 0;
+            if ($totalReferencias > 0) {
+                throw new Exception("No se puede eliminar el premio '" . $datosElim['nombre'] . "' porque está asignado a una candidatura");
+            }
             $stmtDelete->bind_param("i", $idElim);
             if (!$stmtDelete->execute()) throw new Exception("Error al eliminar premio: " . $datosElim['nombre']);
         }
