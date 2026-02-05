@@ -113,24 +113,32 @@ class AdminCategoriaConPremioTest extends PHPUnit\Framework\TestCase
     {
         global $conexion;
 
-        $conexion->query("INSERT INTO categoria (nombre) VALUES ('Original')");
+        // 1. Insertamos la categoría con un nombre único para evitar conflictos previos
+        $nombreOriginal = 'Original ' . uniqid();
+        $conexion->query("INSERT INTO categoria (nombre) VALUES ('$nombreOriginal')");
         $idInsertado = $conexion->insert_id;
 
+        // 2. Preparamos los datos de edición con otro nombre único
+        $nombreNuevo = 'Editado ' . uniqid();
+        
         $_POST['idCategoria'] = $idInsertado;
-        $_POST['nombreCategoria'] = 'Nombre Editado';
+        $_POST['nombreCategoria'] = $nombreNuevo;
+        
         $_POST['premios'] = json_encode([
             [
                 'nombre' => 'Premio Editado',
-                'incluyeDinero' => true,
+                'incluyeDinero' => 1, 
                 'cantidadDinero' => 75,
-                'incluyeObjetoAdicional' => false,
+                'incluyeObjetoAdicional' => 0,
                 'objetoAdicional' => ''
             ]
         ]);
 
         $response = $this->capturarRespuestaAPI('editarCategoriaConPremios');
 
-        $this->assertEquals('success', $response['status']);
+        $mensajeError = isset($response['message']) ? $response['message'] : 'No se recibió mensaje de error';
+        
+        $this->assertEquals('success', $response['status'], "La API devolvió un error: " . $mensajeError);
         $this->assertEquals('Categoria actualizada correctamente', $response['message']);
     }
 
