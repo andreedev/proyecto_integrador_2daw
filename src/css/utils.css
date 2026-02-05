@@ -3025,6 +3025,10 @@ ps-0{
     overflow: hidden;
 }
 
+.overflow-y-auto{
+    overflow-y: auto;
+}
+
 .aspect-ratio-1-1{
     aspect-ratio: 1 / 1;
 }

@@ -105,3 +105,15 @@ modal-component:has(.is-active) {
     background: var(--neutral-04);
     border-radius: 10px;
 }
+
+@media (max-width: 768px) {
+    .solid-modal-container.is-mobile-full-screen {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        transform: none !important;
+    }
+}

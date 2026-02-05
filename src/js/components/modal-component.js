@@ -39,7 +39,7 @@ class ModalComponent extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['z-index', 'full-screen', 'duration', 'auto-open', 'size'];
+        return ['z-index', 'full-screen', 'duration', 'auto-open', 'size', 'mobile-full-screen'];
     }
 
     async connectedCallback() {
@@ -61,12 +61,17 @@ class ModalComponent extends HTMLElement {
         }
     }
 
+    /**
+     * Renderiza la estructura del modal y aplica las clases según los atributos
+     */
     render() {
         const zIndex = this.getAttribute('z-index') || '1000';
         const duration = this.getAttribute('duration') || '300';
         const isFullScreen = this.hasAttribute('full-screen') ? 'is-full-screen' : '';
         const sizeAttr = this.getAttribute('size');
         const containerClass = this.getAttribute('container-class') || '';
+        const isScrollable = this.hasAttribute('scrollable');
+        const isMobileFullScreen = this.hasAttribute('mobile-full-screen') ? 'is-mobile-full-screen' : '';
 
         let sizeClass = '';
         if (sizeAttr === 'full') sizeClass = 'is-size-full';
@@ -79,17 +84,24 @@ class ModalComponent extends HTMLElement {
 
         const container = document.createElement('div');
         // container-class se añade al final para que tenga prioridad sobre size
-        container.className = `solid-modal-container ${isFullScreen} ${sizeClass} ${containerClass ? 'has-custom-width' : ''} ${containerClass}`.trim();
+        container.className = `solid-modal-container ${isFullScreen} ${isMobileFullScreen} ${sizeClass} ${containerClass ? 'has-custom-width' : ''} ${containerClass}`.trim();
 
 
-        const content = document.createElement('div');
-        content.className = 'solid-modal-content';
-
-        while (this.firstChild) {
-            content.appendChild(this.firstChild);
+        if (isScrollable) {
+            // Esta opción permite que el contenido del modal sea scrollable
+            // Permite tener un header y footer fijo, y contenido scrollable
+            while (this.firstChild) {
+                container.appendChild(this.firstChild);
+            }
+        } else {
+            const content = document.createElement('div');
+            content.className = 'solid-modal-content';
+            while (this.firstChild) {
+                content.appendChild(this.firstChild);
+            }
+            container.appendChild(content);
         }
 
-        container.appendChild(content);
         overlay.appendChild(container);
         this.appendChild(overlay);
     }
