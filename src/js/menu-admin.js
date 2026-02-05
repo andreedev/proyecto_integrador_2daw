@@ -74,7 +74,7 @@ class MenuAdmin extends HTMLElement {
         });
 
         document.querySelector('#categoriasMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-categoria_premio.html';
+            window.location.href = 'admin-categoria-premio.html';
         }); 
         document.querySelector('#patrocinadoresMenuLateral').addEventListener('click', () => {
             window.location.href = 'admin-patrocinadores.html';
@@ -127,7 +127,7 @@ class MenuAdmin extends HTMLElement {
             case 'admin-noticias.html':
                 document.querySelector('#noticiasMenuLateral').classList.add('active');
                 break;
-            case 'admin-categoria_premio.html':
+            case 'admin-categoria-premio.html':
                 document.querySelector('#categoriasMenuLateral').classList.add('active');
                 break;
             case 'admin-patrocinadores.html':

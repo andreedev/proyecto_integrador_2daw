@@ -17,13 +17,6 @@ const cancelCreateBtn = document.getElementById('cancelCreateBtn');
 const categoriesGrid = document.getElementById('categoriesGrid');
 const errorMessage = document.querySelector(".error-message");
 
-// Modal confirmar eliminación
-const confirmDeleteModal = document.getElementById("confirmDeleteModal");
-const confirmDeleteMessage = document.getElementById("confirmDeleteMessage");
-const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-const closeDeleteBtn = document.querySelector('#confirmDeleteModal .close');
-
 const notification = document.getElementById("notification");
 
 const closeModalCrear = document.querySelector(".close-crear");
@@ -35,13 +28,10 @@ closeModalCrear.addEventListener( "click", () => {
 
 let currentCategoryId = null;
 let categoriaAEliminar = null;
+let page = 1;
+let pageSize = 6;
 
-// -------------------- VALIDACIONES --------------------
-// newCategoryNameInput.addEventListener("blur", () => {
-//     errorMessage.textContent = newCategoryNameInput.value.trim() === ""
-//         ? "El nombre de la categoría es obligatorio."
-//         : "";
-// });
+
 
 // -------------------- FUNCIONES MODAL EDICIÓN --------------------
 function openEditModal(categoryId, categoryName, prizes) {
@@ -232,21 +222,19 @@ document.getElementById('btnCreate').addEventListener('click', e => {
     openCreateModal();
 });
 
-// -------------------- CARGAR CATEGORÍAS --------------------
+/**
+ * Carga las categorías
+ */
 async function cargarCategorias() {
     try {
-        const response = await obtenerCategoriasConPremios();
-        if (response.status !== 'success') {
-            console.error("Error al obtener categorías:", response);
-            return;
-        }
-        pintarCategorias(response.data);
+        const response = await obtenerCategoriasConPremios(page, pageSize);
+        renderizarCategorias(response.data);
     } catch (err) {
-        console.error(err);
+        notification.show("Error al cargar categorías");
     }
 }
 
-function pintarCategorias(categorias) {
+function renderizarCategorias(categorias) {
     categoriesGrid.replaceChildren()
 
     categorias.forEach(categoria => {

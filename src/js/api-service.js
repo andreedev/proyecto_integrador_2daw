@@ -74,9 +74,12 @@ async function listarCategorias(){
 /**
  * Obtener categorías con premios
  */
-async function obtenerCategoriasConPremios() {
+async function obtenerCategoriasConPremios(page, pageSize) {
     const data = new FormData();
     data.append('action', 'obtenerCategoriasConPremios');
+    data.append('page', page);
+    data.append('pageSize', pageSize);
+
     return await fetchAPI(data);
 }
 

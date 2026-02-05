@@ -455,7 +455,7 @@ function insertarEdicionArchivosMasivo($idEdicion, $idsArchivos) {
 /**
  * Obtener el id de la edición actual
  */
-function obtenerIdEdicionActual() {
+function obtenerIdEdicionActual(): ?int {
     global $conexion;
 
     $sql = "SELECT id_edicion FROM edicion WHERE tipo = ? LIMIT 1";
@@ -473,7 +473,7 @@ function obtenerIdEdicionActual() {
 /**
  * Sanitiza un nombre de archivo para eliminar caracteres especiales
  */
-function sanitizarNombreArchivo($string) {
+function sanitizarNombreArchivo($string): string {
     // Reemplazar caracteres con acentos/tildes por versiones planas
     $search  = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', '`', '´'];
     $replace = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N', '', ''];
@@ -540,7 +540,7 @@ function subirArchivo() {
  * Omite la eliminación del archivo físico si hay otras referencias
  *
  */
-function eliminarArchivoPorId($idArchivo) {
+function eliminarArchivoPorId($idArchivo): bool {
     global $conexion;
 
     $stmt = $conexion->prepare("SELECT ruta FROM archivo WHERE id_archivo = ?");
@@ -841,9 +841,16 @@ function desasignarGanador() {
  */
 function obtenerCategoriasConPremios() {
     global $conexion;
-    $queryCategorias = "SELECT * FROM categoria";
-    $conexion->query($queryCategorias);
-    $resultCategorias = $conexion->query($queryCategorias);
+
+    $page = $_POST['page'] ?? 1;
+    $pageSize = $_POST['pageSize'] ?? 4;
+    $offset = ($page - 1) * $pageSize;
+
+    $queryCategorias = "SELECT * FROM categoria LIMIT ?, ?";
+    $stmtCategorias = $conexion->prepare($queryCategorias);
+    $stmtCategorias->bind_param("ii", $offset, $pageSize);
+    $stmtCategorias->execute();
+    $resultCategorias = $stmtCategorias->get_result();
 
     $categorias = [];
 
@@ -869,7 +876,20 @@ function obtenerCategoriasConPremios() {
         $categorias[] = $categoria;
     }
 
-    echo json_encode(["status" => "success", "data" => $categorias]);
+    $pageContext = [
+        "currentPage" => (int)$page,
+        "pageSize" => (int)$pageSize,
+        "totalItems" => obtenerTotalCategorias(),
+        "totalPages" => ceil(obtenerTotalCategorias() / $pageSize)
+    ];
+
+    echo json_encode([
+        "status" => "success",
+        "data" => [
+            "categorias" => $categorias,
+            "pagination" => $pageContext
+        ]
+    ]);
 }
 
 /**
@@ -1114,7 +1134,7 @@ function enviarEdicionAAnteriores() {
 function listarNoticias() {
     global $conexion;
 
-    $filtroNombre = isset($_POST['filtroNombre']) && !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
+    $filtroNombre = !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
     $filtrosSql = "";
     if ($filtroNombre) {
         $filtrosSql .= " AND n.nombre LIKE '%" . $conexion->real_escape_string($filtroNombre) . "%' ";
@@ -1278,7 +1298,7 @@ function eliminarNoticia() {
 function listarEventos() {
     global $conexion;
 
-    $filtroFecha = isset($_POST['filtroFecha']) && !empty($_POST['filtroFecha']) ? $_POST['filtroFecha'] : null;
+    $filtroFecha = !empty($_POST['filtroFecha']) ? $_POST['filtroFecha'] : null;
     $filtrosSql = "";
     if ($filtroFecha) {
         $filtrosSql .= " AND e.fecha = '" . $conexion->real_escape_string($filtroFecha) . "' ";
@@ -1629,17 +1649,17 @@ function obtenerBasesLegales() {
 function guardarCandidatura() {
     global $conexion;
 
-    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : null;
-    $correo = isset($_POST['correo']) ? $_POST['correo'] : null;
-    $password = isset($_POST['password']) ? $_POST['password'] : null;
-    $dni = isset($_POST['dni']) ? $_POST['dni'] : null;
+    $nombre = $_POST['nombre'] ?? null;
+    $correo = $_POST['correo'] ?? null;
+    $password = $_POST['password'] ?? null;
+    $dni = $_POST['dni'] ?? null;
     $nroExpediente = $_POST['nroExpediente'];
     $idVideo = isset($_POST['idVideo']) ? (int)$_POST['idVideo'] : null;
     $idPoster = isset($_POST['idPoster']) ? (int)$_POST['idPoster'] : null;
-    $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : null;
-    $sinopsis = isset($_POST['sinopsis']) ? $_POST['sinopsis'] : null;
+    $titulo = $_POST['titulo'] ?? null;
+    $sinopsis = $_POST['sinopsis'] ?? null;
     $idFichaTecnica = isset($_POST['idFichaTecnica']) ? (int)$_POST['idFichaTecnica'] : null;
-    $tipoCandidatura = isset($_POST['tipoCandidatura']) ? $_POST['tipoCandidatura'] : null;
+    $tipoCandidatura = $_POST['tipoCandidatura'] ?? null;
 
     // si hay sesion, usar el id de la sesion, sino crear participante nuevo
     $idParticipante = null;
@@ -1724,11 +1744,6 @@ function listarCandidaturasParticipante() {
 
     $stmt->bind_param("iii", $idParticipante, $limit, $offset);
 
-    if (!$stmt) {
-        echo json_encode(["status" => "error", "message" => "Error al preparar la consulta: " . $conexion->error]);
-        return;
-    }
-
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -1770,6 +1785,7 @@ function listarCandidaturasParticipante() {
 
 /**
  * Obtener datos de la gala
+ * @throws Exception
  */
 function obtenerDatosGala() {
     global $conexion;
@@ -1782,8 +1798,6 @@ function obtenerDatosGala() {
 
     $datos=[];
     $datos['modo'] = $modo;
-
-    $baseUrl = obtenerBaseUrl();
 
     if ($modo == 'pre-evento'){
         $queryTitulo =  "SELECT valor FROM configuracion WHERE nombre = 'galaPreEventoTitulo' LIMIT 1";
@@ -1852,7 +1866,7 @@ function obtenerDatosGala() {
 /**
  * Obtener eventos del día de la gala
  */
-function obtenerEventosDiaGala($fechaGala) {
+function obtenerEventosDiaGala($fechaGala): array {
     global $conexion;
 
     $fechaGala = formatToSqlDate($fechaGala);
@@ -1921,7 +1935,7 @@ function obtenerEdicionActual() {
 }
 
 
-function obtenerGaleriaEdicion($idEdicion){
+function obtenerGaleriaEdicion($idEdicion): array {
     global $conexion;
 
     $queryGaleria = "SELECT a.id_archivo as idArchivo, a.ruta as rutaArchivo
@@ -1948,7 +1962,7 @@ function obtenerGaleriaEdicion($idEdicion){
 /**
  * Función auxiliar para obtener el tipo de archivo (imagen o video) según su extensión
  */
-function obtenerTipoArchivoPorExtension($rutaArchivo) {
+function obtenerTipoArchivoPorExtension($rutaArchivo): string {
     $extension = pathinfo($rutaArchivo, PATHINFO_EXTENSION);
     $extension = strtolower($extension);
 
@@ -1967,7 +1981,7 @@ function obtenerTipoArchivoPorExtension($rutaArchivo) {
 /**
  * Obtener candidaturas ganadoras
  */
-function obtenerCandidaturasGanadorasEdicionActual() {
+function obtenerCandidaturasGanadorasEdicionActual(): array {
     global $conexion;
 
     $query = "SELECT 
@@ -2166,7 +2180,7 @@ function obtenerEdicionPorId($idEdicion){
  * Por cada edición:
  * Sus datos básicos, una imagen representativa de cada una, el total de ganandores
  */
-function obtenerEdicionesAnteriores(){
+function obtenerEdicionesAnteriores(): array {
     global $conexion;
 
     $query = "SELECT 
@@ -2207,7 +2221,7 @@ function obtenerEdicionesAnteriores(){
 /**
  * Obtener noticias destacadas
  */
-function obtenerNoticiasDestacadas(){
+function obtenerNoticiasDestacadas(): array {
     global $conexion;
     $query = "SELECT 
                 n.id_noticia as idNoticia,
@@ -2238,7 +2252,7 @@ function obtenerNoticiasDestacadas(){
 /**
  * Obtener premios y su categoria como campo adicional
  */
-function obtenerPremios(){
+function obtenerPremios(): array {
     global $conexion;
     $query = "SELECT 
                 p.id_premio as idPremio,
@@ -2292,7 +2306,7 @@ function obtenerFechasEventoPorMesAnio(){
 function listarEdiciones(){
     global $conexion;
 
-    $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : null;
+    $tipo = $_POST['tipo'] ?? null;
     $filtroTipoSql = "";
     if ($tipo){
         $filtroTipoSql = " AND tipo = ? ";
@@ -2301,7 +2315,7 @@ function listarEdiciones(){
     $limit = 4;
     $offset = ($page - 1) * $limit;
 
-    $queryCount = "SELECT COUNT(*) as total FROM edicion";;
+    $queryCount = "SELECT COUNT(*) as total FROM edicion";
     $stmtCount = $conexion->prepare($queryCount);
     $stmtCount->execute();
     $totalRecords = $stmtCount->get_result()->fetch_assoc()['total'] ?? 0;
@@ -2351,7 +2365,7 @@ function listarEdiciones(){
 /**
  * Obtener ganadores de una edición, incluyendo la ruta completa del video si existe
  */
-function obtenerGanadoresEdicion($idEdicion){
+function obtenerGanadoresEdicion($idEdicion): array {
     global $conexion;
 
     $query = "SELECT

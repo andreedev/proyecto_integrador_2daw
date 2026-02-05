@@ -8,7 +8,7 @@
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/general-styles.css">
     <link rel="stylesheet" href="../css/menu-admin.css">
-    <link rel="stylesheet" href="../css/admin-categoria_premio.css">
+    <link rel="stylesheet" href="../css/admin-categoria-premio.css">
     <link rel="stylesheet" href="../css/utils.css">
 
     <script src="../js/common.js"></script>
@@ -31,15 +31,20 @@
                     </div>
                 </div>
             </div>
-            <div class="admin-content">
+            <div class="container-xl p-16px-force p-md-24px-force">
                 <div class="categories-grid" id="categoriesGrid">
                     <!-- Aquí se pintan las categorías desde JS -->
+                </div>
+                <div class="d-flex justify-content-center align-items-center p-16px">
+                    <pagination-component
+                            id="pagination">
+                    </pagination-component>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE EDICIÓN DE CATEGORÍA -->
+    <!-- Modal de edición de categoría -->
     <modal-component id="editCategoryModal" container-class="w-70 w-md-70 w-lg-80 w-xl-70">
         <div class="modal-header-edit">
             <h2>Editar Categoría</h2>
@@ -110,7 +115,7 @@
         </div>
     </modal-component>
 
-    <!-- MODAL DE CREACIÓN DE CATEGORÍA -->
+    <!-- Modal de creación de categoría -->
     <modal-component id="createCategoryModal" container-class="w-70 w-md-70 w-lg-80 w-xl-70" >
         <div class="modal-header">
             <h2>Nueva Categoría</h2>
@@ -158,7 +163,7 @@
         </div>
     </modal-component>
 
-    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+    <!-- Modal de confirmación de eliminación -->
     <div class="modal-confirmar-delete hidden-force" id="confirmDeleteModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -178,7 +183,7 @@
     <notification-component id="notification"></notification-component>
 
     <script src="../js/menu-admin.js"></script>
-    <script src="../js/admin-categoria_premio.js"></script>
+    <script src="../js/admin-categoria-premio.js"></script>
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/pagination-component.js"></script>
     <script src="../js/components/select-component.js"></script>
