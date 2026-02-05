@@ -325,7 +325,7 @@ function renderizarPatrocinadores(patrocinadores) {
 }
 
 function cargarPatrocinadores() {
-    listarPatrocinadores()
+    listarPatrocinadoresAdmin()
         .then(data => {
             if (data.status === 'success') {
                 renderizarPatrocinadores(data.data);

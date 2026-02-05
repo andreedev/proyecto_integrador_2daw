@@ -240,7 +240,7 @@ function crearBaseDatosSiNoExiste(): void {
                 ('Tercer premio', true, 100.00, 1, false, NULL),
                 ('Primer premio', true, 700.00, 2, false, NULL),
                 ('Segundo premio', true, 300.00, 2, false, NULL),
-                ('Reconocimiento Honorífico', false, NULL, 3, false, NULL);
+                ('Reconocimiento Honorífico', false, NULL, 3, true, 'A uno de los profesionales del sector');
                 
                 INSERT INTO organizador (nro_empresa, nombre, correo, contrasena, dni) VALUES
                 ('EMP-001', 'Organizador Madrid', 'admin@gmail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999999Z');

@@ -55,8 +55,9 @@ class PatrocinadoresTest extends PHPUnit\Framework\TestCase
         // Creamos el primero
         $_POST['nombre'] = 'ADOBE';
         $_POST['idArchivoLogo'] = 3;
+        ob_start();
         agregarPatrocinador();
-        ob_clean(); // Limpiamos el buffer anterior
+        ob_end_clean(); // Descartamos cualquier salida previa
 
         // Intentamos crear el segundo con el mismo nombre
         ob_start();
@@ -79,7 +80,7 @@ class PatrocinadoresTest extends PHPUnit\Framework\TestCase
         
         // 2. Obtenemos el ID asignado
         ob_start();
-        listarPatrocinadores();
+        listarPatrocinadoresAdmin();
         $lista = json_decode(ob_get_clean(), true);
         $idParaEditar = $lista['data'][0]['idPatrocinador'];
 
@@ -95,7 +96,7 @@ class PatrocinadoresTest extends PHPUnit\Framework\TestCase
 
         // 4. Verificamos cambio
         ob_start();
-        listarPatrocinadores();
+        listarPatrocinadoresAdmin();
         $jsonFinal = ob_get_clean();
         $this->assertStringContainsString('MARCA EDITADA', $jsonFinal);
     }
@@ -112,7 +113,7 @@ class PatrocinadoresTest extends PHPUnit\Framework\TestCase
 
         // 2. Obtenemos ID
         ob_start();
-        listarPatrocinadores();
+        listarPatrocinadoresAdmin();
         $lista = json_decode(ob_get_clean(), true);
         $idParaEliminar = null;
         foreach($lista['data'] as $p) {

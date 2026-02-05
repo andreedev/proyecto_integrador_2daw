@@ -112,7 +112,7 @@ function renderizarNoticiasDestacadas(noticias) {
         const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
 
         return `
-            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column cursor-pointer box-shadow-01 m-1px" 
+            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column cursor-pointer box-shadow-01 h-100 m-1px" 
                  onclick="window.location.href='detalle_noticia.html?id=${idNoticia}'">
                 <div class="w-100">
                     <img class="w-100" src="${rutaImagenNoticia}" alt="Noticia ${idNoticia}">
@@ -137,22 +137,40 @@ function renderizarNoticiasDestacadas(noticias) {
 
 function renderizarPremios(premios) {
     const slides = premios.map(premio => {
-        const { nombrePremio, incluyeDinero, cantidadDinero, nombreCategoria } = premio;
+        const { nombre, incluyeDinero, cantidadDinero, nombreCategoria, incluyeObjetoAdicional, objetoAdicional } = premio;
 
-        cantidadDineroFormatted = parseFloat(cantidadDinero).toFixed(0);
+        const cantidadDineroFormatted = incluyeDinero
+            ? Number.parseFloat(cantidadDinero).toFixed(0)
+            : '';
+
+        const htmlDinero = incluyeDinero ? `
+            <div class="d-flex flex-row align-center gap-8px">
+                <span class="icon-money w-24px h-24px bg-neutral-01"></span>
+                <span class="numero">${cantidadDineroFormatted}€</span>
+            </div>
+        ` : '';
+
+        const separador = (incluyeDinero && incluyeObjetoAdicional) ? '<span class="fs-18px fw-400">+</span>' : '';
+
+        const htmlObjeto = incluyeObjetoAdicional ? `
+            <div class="d-flex flex-row align-center gap-8px">
+                ${separador}
+                <span class="objeto-texto">${objetoAdicional}</span>
+            </div>
+        ` : '';
 
         return `
             <div class="premio d-flex flex-column cursor-pointer box-shadow-01 p-16px h-auto">
                 <span class="fs-20px fw-600 text-center">${nombreCategoria}</span>
-                <span class="icon-premio w-120px h-120px"></span>
-                <span class="puesto">${nombrePremio}</span>
-                ${incluyeDinero ? `
-                <div class="premio-cantidad d-flex flex-row align-center gap-8px mt-8px">
-                    <div class="cantidad d-flex flex-row gap-8px align-center">
-                        <span class="icon-money w-24px h-24px bg-neutral-01"></span>
-                        <span class="numero">${cantidadDineroFormatted}€</span>
-                    </div>
-                </div>` : ''}
+                <div class="d-flex justify-content-center w-100">
+                    <span class="icon-premio w-120px h-120px"></span>
+                </div>
+                <span class="puesto text-center">${nombre}</span>
+                
+                <div class="premio-recompensas d-flex flex-row flex-wrap justify-center align-center gap-8px mt-8px">
+                    ${htmlDinero}
+                    ${htmlObjeto}
+                </div>
             </div>
         `;
     });

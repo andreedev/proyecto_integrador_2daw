@@ -65,9 +65,9 @@ if (isset($_POST['action'])) {
         case 'subirArchivo':
             subirArchivo();
             break;
-        case 'listarPatrocinadores':
+        case 'listarPatrocinadoresAdmin':
             validarRol(['organizador', 'participante']);
-            listarPatrocinadores();
+            listarPatrocinadoresAdmin();
             break;
         case 'agregarPatrocinador':
             validarRol(['organizador']);
@@ -222,6 +222,9 @@ function revisarSesion() {
     echo json_encode(["status" => "active", "rol" => $_SESSION['rol'] ?? '', "id" => $_SESSION['id'] ?? '']);
 }
 
+/**
+ * Cierra la sesión actual, eliminando todas las variables de sesión y destruyendo la sesión
+ */
 function cerrarSesion() {
     session_unset();
     session_destroy();
@@ -287,14 +290,14 @@ function login() {
 /**
  * Valida que el rol sea uno de los permitidos
  */
-function validarRol($rolesPermitidos) {
+function validarRol($rolesPermitidos): void {
     if (!isset($_SESSION['iniciada']) || $_SESSION['iniciada'] !== true) {
         echo json_encode(["status" => "error", "message" => "Sesion no iniciada"]);
 
     } else if (!in_array($_SESSION['rol'], $rolesPermitidos)) {
         echo json_encode(["status" => "error", "message" => "Acceso denegado para el rol actual"]);
-
     }
+    return;
 }
 
 /**
@@ -582,7 +585,7 @@ function eliminarArchivoPorId($idArchivo): bool {
  * Listar patrocinadores con su logo
  * Agrega la URL base de archivos a la ruta del logo
  */
-function listarPatrocinadores() {
+function listarPatrocinadoresAdmin() {
     global $conexion;
 
     $query = "SELECT p.id_patrocinador as idPatrocinador, p.nombre as nombrePatrocinador, a.ruta as rutaArchivoLogo, a.id_archivo as idArchivoLogo FROM patrocinador p LEFT JOIN archivo a ON p.id_archivo_logo = a.id_archivo";
@@ -994,7 +997,7 @@ function editarCategoriaConPremios() {
         if (!$stmtCategoria->execute()) throw new Exception("Error al actualizar categoría");
 
         // Mapear premios existentes para decidir si INSERT, UPDATE o DELETE
-        $premiosExistentes = obtenerPremiosPorIdCategoria($idCategoria);
+        $premiosExistentes = obtenerPremios($idCategoria);
         $premiosExistentesMap = [];
         foreach ($premiosExistentes as $premio) {
             $premiosExistentesMap[$premio['idPremio']] = $premio;
@@ -1050,28 +1053,42 @@ function editarCategoriaConPremios() {
     }
 }
 
-function obtenerPremiosPorIdCategoria($idCategoria){
+function obtenerPremios($idCategoria=null){
     global $conexion;
 
-    $queryPremios = "SELECT id_premio as idPremio, nombre, incluye_dinero as incluyeDinero,
-                   cantidad_dinero as cantidadDinero,
-                   incluye_objeto_adicional as incluyeObjetoAdicional,
-                   objeto_adicional as objetoAdicional
-            FROM premio
-            WHERE id_categoria = ?";
-        $stmt = $conexion->prepare($queryPremios);
-        $stmt->bind_param("i", $idCategoria);
-        $stmt->execute();
-        $resultPremios = $stmt->get_result();
+    $filtroSqlCategoria = "";
+    if ($idCategoria !== null) {
+        $filtroSqlCategoria = " AND p.id_categoria = ?";
+    }
 
-        $premios = [];
-        while ($premio = $resultPremios->fetch_assoc()) {
-            $premio['idPremio'] = (int)$premio['idPremio'];
-            $premio['incluyeDinero'] = (bool)$premio['incluyeDinero'];
-            $premio['cantidadDinero'] = (float)$premio['cantidadDinero'];
-            $premio['incluyeObjetoAdicional'] = (bool)$premio['incluyeObjetoAdicional'];
-            $premios[] = $premio;
-        }
+    $queryPremios = "SELECT 
+        p.id_premio as idPremio,
+        p.nombre,
+        p.incluye_dinero as incluyeDinero,
+        p.cantidad_dinero as cantidadDinero,
+        p.incluye_objeto_adicional as incluyeObjetoAdicional,
+        p.objeto_adicional as objetoAdicional,
+        c.nombre as nombreCategoria
+      FROM premio p
+      INNER JOIN categoria c ON p.id_categoria = c.id_categoria
+      WHERE TRUE $filtroSqlCategoria
+      ORDER BY c.nombre, p.nombre";
+
+    $stmt = $conexion->prepare($queryPremios);
+    if ($idCategoria !== null) {
+        $stmt->bind_param("i", $idCategoria);
+    }
+    $stmt->execute();
+    $resultPremios = $stmt->get_result();
+
+    $premios = [];
+    while ($premio = $resultPremios->fetch_assoc()) {
+        $premio['idPremio'] = (int)$premio['idPremio'];
+        $premio['incluyeDinero'] = (bool)$premio['incluyeDinero'];
+        $premio['cantidadDinero'] = (float)$premio['cantidadDinero'];
+        $premio['incluyeObjetoAdicional'] = (bool)$premio['incluyeObjetoAdicional'];
+        $premios[] = $premio;
+    }
     return $premios;
 }
 
@@ -2016,7 +2033,9 @@ function obtenerEdicionActual() {
     }
 }
 
-
+/**
+ * Obtener galería de una edición
+ */
 function obtenerGaleriaEdicion($idEdicion): array {
     global $conexion;
 
@@ -2219,7 +2238,7 @@ function limpiarDatoInput($valor, $esNumero = false) {
 function obtenerDatosHome(){
     $edicionesAnteriores = obtenerEdicionesAnteriores();
     $noticiasDestacadas = obtenerNoticiasDestacadas();
-    $premios = obtenerPremios();
+    $premios = obtenerPremios(null);
 
     echo json_encode([
         "status" => "success",
@@ -2329,30 +2348,6 @@ function obtenerNoticiasDestacadas(): array {
         $noticias[] = $row;
     }
     return $noticias;
-}
-
-/**
- * Obtener premios y su categoria como campo adicional
- */
-function obtenerPremios(): array {
-    global $conexion;
-    $query = "SELECT 
-                p.id_premio as idPremio,
-                p.nombre as nombrePremio,
-                p.incluye_dinero as incluyeDinero,
-                p.cantidad_dinero as cantidadDinero,
-                c.nombre as nombreCategoria
-              FROM premio p
-              INNER JOIN categoria c ON p.id_categoria = c.id_categoria
-              ORDER BY c.nombre, p.nombre";
-    $stmt = $conexion->prepare($query);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $premios = [];
-    while ($row = $result->fetch_assoc()) {
-        $premios[] = $row;
-    }
-    return $premios;
 }
 
 /**
@@ -2565,11 +2560,10 @@ function insertarGanadoresEdicionMasivo($idEdicion, $ganadores){
     $sqlInsertGanador->close();
 }
 
-
 /**
  * Elimina una edición y todos sus datos relacionados
  */
-function eliminarEdicion(){
+function eliminarEdicion(): void {
     global $conexion;
 
     $idEdicion = limpiarDatoInput($_POST['idEdicion'], true);
@@ -2595,7 +2589,10 @@ function eliminarEdicion(){
     echo json_encode(["status" => "success", "message" => "Edición eliminada correctamente"]);
 }
 
-function obtenerDatosParticipante(){
+/**
+ * Obtener datos del participante logueado
+ */
+function obtenerDatosParticipante(): void {
     global $conexion;
 
     $idParticipante = (int)$_SESSION['id'];

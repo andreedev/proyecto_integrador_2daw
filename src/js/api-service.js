@@ -1,9 +1,9 @@
 /**
  * Listar patrocinadores
  */
-async function listarPatrocinadores() {
+async function listarPatrocinadoresAdmin() {
     const data = new FormData();
-    data.append('action', 'listarPatrocinadores');
+    data.append('action', 'listarPatrocinadoresAdmin');
 
     return await fetchAPI(data);
 }
