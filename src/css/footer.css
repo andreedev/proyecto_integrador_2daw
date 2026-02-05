@@ -1,28 +1,20 @@
+.footer-container{
+    padding-top: 36px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    padding-bottom: 80px !important;
+}
+
 @media (min-width: 768px) {
-    .footer-content{
-        flex-direction: row;
-        width: 720px;
-        flex-wrap: wrap;
-    }
-}
-
-@media (min-width: 992px) {
-    .footer-content{
-        width: 960px;
-        flex-wrap: nowrap;
-    }
-}
-
-@media (min-width: 1200px) {
-    .footer-content {
-        width: 1133px;
+    .footer-container {
+        padding-top: 64px !important;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+        padding-bottom: 64px !important;
     }
 }
 
 .footer-container-1{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     gap: 64px;
     max-width: 350px;
 }
@@ -40,66 +32,18 @@
     }
 }
 
-.footer-image{
-    width: 120px;
-}
-
 .ue-logo{
     width: 67.7px;
     height: 67.7px;
 }
 
 @media (min-width: 1200px) {
-    .footer-image{
-        width: 160px;
-    }
     .ue-logo{
         width: 90.3px;
         height: 90.3px;
     }
 }
 
-.footer-container-2{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.footer-text{
-    color: var(--neutral-09);
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.footer-container-3{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.footer-secondary-text{
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--neutral-03);
-}
-
-.footer-container-4{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-@media (min-width: 480px) {
-    .footer-container-4{
-        flex-direction: row;
-    }
-}
-
-@media (min-width: 768px) {
-    .footer-container-4{
-        flex-direction: column;
-    }
-}
 
 
 .social-media-container{
@@ -110,35 +54,30 @@
     align-items: center;
 }
 
-.icon-facebook{
-    width:32px;
-    height:32px;
-    mask-image: url("../img/icon/icon-facebookinverse.svg");
-    mask-size: cover;
+
+
+.super-placed-logo{
+    bottom: 68px;
+    right: 24px;
 }
 
-.icon-instagram{
-    width:32px;
-    height:32px;
-    mask-image: url("../img/icon/icon-instagraminverse.svg");
-    mask-size: cover;
+@media (min-width: 490px) {
+    .super-placed-logo{
+        bottom: 55px;
+        right: 24px;
+    }
 }
-.icon-youtube{
-    width:42px;
-    height:38px;
-    mask-image: url("../img/icon/icon-youtube.svg");
-    mask-size: cover;
-    mask-position: center;
+
+@media (min-width: 768px) {
+    .super-placed-logo{
+        bottom: calc(5% + 32px);
+        right: calc(5% + 32px);
+    }
 }
-.icon-linkedin{
-    width:32px;
-    height:32px;
-    mask-image: url("../img/icon/icon-linkedlninverse.svg");
-    mask-size: cover;
-}
-.icon-twitter{
-    width:32px;
-    height:32px;
-    mask-image: url("../img/icon/icon-x.svg");
-    mask-size: cover;
+
+@media (min-width: 1200px) {
+    .super-placed-logo{
+        bottom: calc(5% + 32px);
+        right: calc(15% + 32px);
+    }
 }
