@@ -43,7 +43,7 @@ class ModalComponent extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['z-index', 'full-screen', 'duration', 'auto-open', 'size', 'mobile-full-screen'];
+        return ['z-index', 'full-screen', 'duration', 'auto-open', 'size', 'mobile-full-screen', 'position'];
     }
 
     async connectedCallback() {
@@ -76,6 +76,7 @@ class ModalComponent extends HTMLElement {
         const containerClass = this.getAttribute('container-class') || '';
         const isScrollable = this.hasAttribute('scrollable');
         const isMobileFullScreen = this.hasAttribute('mobile-full-screen') ? 'is-mobile-full-screen' : '';
+        const position = this.getAttribute('position') || 'center';
 
         let sizeClass = '';
         if (sizeAttr === 'full') sizeClass = 'is-size-full';
@@ -83,6 +84,7 @@ class ModalComponent extends HTMLElement {
 
         const overlay = document.createElement('div');
         overlay.className = 'solid-modal-overlay';
+        overlay.classList.add(`is-position-${position}`);
         overlay.style.zIndex = zIndex;
         overlay.style.setProperty('--modal-duration', `${duration}ms`);
 

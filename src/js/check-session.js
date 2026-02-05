@@ -23,6 +23,37 @@ const createSplash = () => {
     return splashDiv;
 };
 
+const createCookieConsentModal = () => {
+    if (document.getElementById('cookie-consent-modal')) return;
+    customElements.whenDefined('modal-component').then(() => {
+        const modal = document.createElement('modal-component');
+        modal.id = 'cookie-consent-modal';
+        modal.setAttribute('static', '');
+        modal.setAttribute('position', 'bottom-left');
+        modal.setAttribute('container-class', 'cookie-modal');
+        modal.innerHTML = `
+            <div class="d-flex flex-column flex-md-row gap-20px p-24px">
+                <div class="fs-14px">Esta Web utiliza cookies propias y de terceros necesarias para su funcionamiento, para analizar tus hábitos de navegación y para servir publicidad personalizada. Asimismo, algunas cookies guardan relación con funcionalidades ofrecidas en la Web. <a class="text-primary-03" href="#">Política de Cookies</a></div>
+                <div class="d-flex flex-column gap-8px w-auto">
+                    <button class="primary-button-01 fs-14px" id="accept-cookies">Aceptar todas</button>
+                    <button class="primary-button-02 fs-14px" id="decline-cookies">Rechazar todas</button>
+                </div>
+           
+            </div>
+        `;
+        document.body.appendChild(modal);
+        requestAnimationFrame(() => modal.open());
+        document.getElementById('accept-cookies').addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            modal.close();
+        });
+        document.getElementById('decline-cookies').addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'false');
+            modal.close();
+        });
+    });
+}
+
 
 /** Promesa global que se resuelve cuando se determina el estado de la sesión */
 window.sessionState = {};
@@ -117,7 +148,15 @@ const checkSessionStatus = async () => {
     }
 };
 
+const checkCookieConsent = () => {
+    const consent = localStorage.getItem('cookiesAccepted');
+    if (consent === null) {
+        createCookieConsentModal();
+    }
+}
+
 checkSessionStatus();
+checkCookieConsent();
 
 window.addEventListener('pageshow', (event) => {
     if (event.persisted) {

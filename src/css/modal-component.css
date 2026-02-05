@@ -40,6 +40,18 @@ modal-component:has(.is-active) {
     pointer-events: auto;
 }
 
+.solid-modal-overlay.is-position-bottom-left {
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding: 2rem;
+}
+
+.solid-modal-overlay.is-position-bottom-center {
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0;
+}
+
 .solid-modal-container {
     background: #ffffff;
     width: 90%;
@@ -115,5 +127,31 @@ modal-component:has(.is-active) {
         border-radius: 0 !important;
         margin: 0 !important;
         transform: none !important;
+    }
+}
+
+.cookie-modal {
+    width: 50%;
+    max-height: 150px;
+    margin: 0;
+}
+
+@media (max-width: 992px) {
+    .cookie-modal {
+        width: 75%;
+    }
+}
+
+@media (max-width: 768px) {
+    .solid-modal-overlay.is-position-bottom-left {
+        padding: 0;
+        justify-content: center;
+    }
+
+    .cookie-modal {
+        width: 100% !important;
+        max-width: 100%;
+        max-height: none;
+        border-bottom: none;
     }
 }
