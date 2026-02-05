@@ -1,6 +1,7 @@
 #/uploads/private/*
 #/uploads/public/*
 /vendor/*
+/vendor
 !/vendor/autoload.php
 /node_modules/*
 .idea/*

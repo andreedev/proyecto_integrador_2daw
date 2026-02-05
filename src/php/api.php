@@ -24,10 +24,13 @@ if (php_sapi_name() !== 'cli') {
     }
 }
 
-require_once "./BBDD/BD.php";
-require_once "./BBDD/connection.php";
-require_once "./model/PageContext.php";
-require_once "./model/EstadosCandidatura.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "BBDD". DIRECTORY_SEPARATOR  ."BD.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "BBDD". DIRECTORY_SEPARATOR  ."connection.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "model". DIRECTORY_SEPARATOR  ."PageContext.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "model". DIRECTORY_SEPARATOR  ."EstadosCandidatura.php";
+//require_once "./BBDD/connection.php";
+//require_once "./model/PageContext.php";
+//require_once "./model/EstadosCandidatura.php";
 
 if (php_sapi_name() !== 'cli' || isset($_POST['action'])) {
 
