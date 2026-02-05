@@ -141,7 +141,7 @@ function renderizarEventos(eventos) {
         eventInfo.classList.add('event-info');
 
         const eventName = document.createElement('span');
-        eventName.classList.add('event-name');
+        eventName.classList.add('event-name', 'text-truncate');
         eventName.textContent = evento.nombreEvento;
 
         const eventHour = document.createElement('div');

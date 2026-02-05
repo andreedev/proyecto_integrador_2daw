@@ -272,7 +272,7 @@ function validarImagenRegistrar(elementoError){
 
 function renderizarPatrocinadores(patrocinadores) {
     const contenedorPatrocinadores = document.getElementById('contenedorPatrocinadores');
-    contenedorPatrocinadores.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+    contenedorPatrocinadores.replaceChildren();
 
     patrocinadores.forEach(patrocinador => {
         const card = document.createElement('div');
@@ -284,10 +284,10 @@ function renderizarPatrocinadores(patrocinadores) {
                 </div>
                 <div class="iconosPatrocinador">
                     <div class="iconoEditar">
-                        <div class="iconoEditarPatrocinador cursor-pointer d-inline-block w-20px h-20px icon-pencil position-relative bg-neutral-02"></div>
+                        <div class="iconoEditarPatrocinador cursor-pointer d-inline-block w-20px h-20px icon-pencil bg-neutral-01"></div>
                     </div>
                     <div class="iconoBorrar">
-                        <span class="iconoBorrarPatrocinador"></span>
+                        <span class="iconoBorrarPatrocinador cursor-pointer d-inline-block w-20px h-20px icon-trash bg-neutral-01"></span>
                     </div>
                 </div>
             </div>

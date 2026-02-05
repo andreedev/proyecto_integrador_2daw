@@ -344,7 +344,7 @@ btnConfimarCambioEstado.addEventListener('click', async () => {
 function renderizarDetalleCandidatura(candidatura) {
     estadoCandidaturaBadge.textContent = candidatura.estado;
     estadoCandidaturaBadge.className = `badge ${getBadgeClass(candidatura.estado)}`;
-    nombreCortoInput.value= candidatura.nombre_cortometraje || '-';
+    nombreCortoInput.value= candidatura.titulo || '-';
     nombreParticipante2.value = candidatura.participante || '-';
     nroExpedienteInput2.value = candidatura.nroExpediente || '-';
     nroDocumentoInput.value = candidatura.dni || '-';

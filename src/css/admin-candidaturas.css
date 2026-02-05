@@ -400,13 +400,6 @@ th {
     margin-top: -16px;
 }
 
-/* Botón abajo a la derecha */
-.footer-actions {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-top: 24px;
-}
 
 
 .info-item {
@@ -836,6 +829,7 @@ th {
         width: calc(50% - 6px);
         min-width: 280px;
         box-sizing: border-box;
+        gap: 12px;
     }
 
     td {

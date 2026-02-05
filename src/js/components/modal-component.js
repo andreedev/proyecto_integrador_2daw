@@ -1,35 +1,39 @@
 /**
  * Componente de modal personalizado
  *
- * Ejemplo de uso:
- * <modal-component z-index="2000" full-screen duration="500" auto-open size="auto">
- *     <h2>Título del Modal</h2>
- *     <p>Contenido del modal aquí.</p>
- *     <button class="close-modal">Cerrar</button>
+ * Ejemplo de uso básico:
+ * <modal-component z-index="2000" duration="500" size="auto">
+ *      <h2>Título del Modal</h2>
+ *      <p>Contenido del modal aquí.</p>
+ *      <button class="close-modal">Cerrar</button>
  * </modal-component>
  *
- * Ejemplo con ancho responsive custom:
- * <modal-component container-class="w-90 w-md-70 w-lg-50">
- *     ...
- * </modal-component>
+ *   Ejemplo con Header/Footer fijos y contenido scrollable:
+ *  <modal-component scrollable mobile-full-screen container-class="w-80">
+ *      <div class="header">Título Fijo</div>
+ *      <div class="flex-grow-1 overflow-y-auto">Contenido que hace scroll...</div>
+ *      <div class="footer">Botones Fijos</div>
+ *  </modal-component>
  *
  * Atributos:
  * - z-index: Define el z-index del modal (por defecto 1000).
- * - full-screen: Si está presente, el modal ocupará toda la pantalla.
- * - duration: Duración de la animación en milisegundos (por defecto 300).
+ * - full-screen: Si está presente, el modal ocupará toda la pantalla en todos los dispositivos.
+ * - mobile-full-screen: Si está presente, el modal será pantalla completa solo en dispositivos móviles (<= 768px).
+ * - scrollable: Si está presente, permite inyectar contenido directamente al contenedor sin el wrapper 'solid-modal-content'.
+ *   Ideal para estructuras con Header/Footer fijos usando 'd-flex flex-column'
+ * - duration: Duración de la animación en milisegundos (por defecto 300)
  * - auto-open: Si está presente, el modal se abrirá automáticamente al cargar.
- * - static: Si está presente, el modal no se cerrará al hacer clic fuera de él o al presionar Esc.
+ * - static: Si está presente, el modal no se cerrará al hacer clic fuera o presionar Esc (hace efecto rebote).
  * - size: Define el tamaño del modal. Valores posibles:
- *      "full" (ocupa todo el espacio disponible)
- *      "auto" (ajusta su tamaño al contenido)
- *      (ningún valor, tamaño predeterminado max-width 600px)
- * - container-class: Clases CSS adicionales aplicadas al contenedor del modal.
- *      Se aplican DESPUÉS de las clases de tamaño, por lo que tienen prioridad.
- *      Ejemplo: "w-90 w-md-70" para ancho responsive.
+ *   "full" (ocupa todo el espacio disponible)
+ *   "auto" (ajusta su tamaño al contenido)
+ *   (ningún valor: tamaño predeterminado max-width 600px)
+ * - container-class: Clases CSS adicionales (ej. utilidades de ancho como "w-90 w-md-70").
+ *   Tienen prioridad sobre el atributo 'size'.
  *
  * Eventos:
- * - modal-opened: Se dispara cuando el modal se abre
- * - modal-closed: Se dispara cuando el modal se cierra
+ * - modal-opened: Se dispara cuando el modal termina de abrirse
+ * - modal-closed: Se dispara cuando el modal termina de cerrarse
  */
 class ModalComponent extends HTMLElement {
     constructor() {
