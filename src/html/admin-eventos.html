@@ -47,13 +47,13 @@
         </div>
     </div>
 
-    <modal-component id="modalVerDetalleEvento" scrollable mobile-full-screen>
+    <modal-component id="modalVerDetalleEvento" static scrollable mobile-full-screen>
         <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
             <h2 class="modal-ver-detalle-title">Detalle del evento</h2>
             <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
         </div>
 
-        <div class="d-flex flex-column p-24px gap-16px ">
+        <div class="d-flex flex-column p-24px gap-16px flex-grow-1 overflow-y-auto ">
             <input-component
                     id="nombreEventoInputView" label="Nombre" disabled
             ></input-component>
@@ -84,6 +84,7 @@
             <input-component
                     id="descripcionEventoInputView"
                     label="Descripción"
+                    textarea
                     disabled
             ></input-component>
             <file-component
@@ -91,20 +92,23 @@
                     label="Imagen"
                     disabled
             ></file-component>
+
+        </div>
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
             <div class="d-flex-two-columns-responsive gap-24px">
                 <div class="secondary-button-01 text-center" id="btnEliminar">Eliminar</div>
-                <div class="primary-button-02 text-center" id="btnOpenModalActualizar">Actualizar</div>
+                <div class="primary-button-01 text-center" id="btnOpenModalActualizar">Actualizar</div>
             </div>
         </div>
     </modal-component>
 
-    <modal-component id="modalActualizarEvento" static>
+    <modal-component id="modalActualizarEvento" static scrollable mobile-full-screen>
         <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
             <h2 class="modal-ver-detalle-title">Actualizar evento</h2>
             <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
         </div>
 
-        <div class="d-flex flex-column p-24px gap-16px ">
+        <div class="d-flex flex-column p-24px gap-16px flex-grow-1 overflow-y-auto">
             <input-component
                     id="nombreEventoInputEdit"
                     label="Nombre"
@@ -138,6 +142,7 @@
                     id="descripcionEventoInputEdit"
                     label="Descripción"
                     required
+                    textarea
             ></input-component>
             <file-component
                     id="imagenEventoInputEdit"
@@ -151,20 +156,23 @@
                     error-size="La imagen es muy pesada. El máximo permitido son 10MB"
                     error-required="Debes subir una imagen"
             ></file-component>
+        </div>
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
             <div class="d-flex-two-columns-responsive gap-24px">
                 <div class="secondary-button-02 text-center close-modal">Cancelar</div>
                 <div class="primary-button-01 text-center" id="btnActualizar">Guardar cambios</div>
             </div>
         </div>
+
     </modal-component>
 
-    <modal-component id="modalCrearEvento">
+    <modal-component id="modalCrearEvento" static scrollable mobile-full-screen>
         <div class="p-16px d-flex justify-space-between align-items-center modal-ver-detalle-header">
             <h2 class="modal-ver-detalle-title">Crear evento</h2>
             <span class="icon-close d-block w-24px h-24px bg-neutral-01 cursor-pointer close-modal"></span>
         </div>
 
-        <div class="d-flex flex-column p-24px gap-16px ">
+        <div class="d-flex flex-column p-24px gap-16px flex-grow-1 overflow-y-auto">
             <input-component
                     id="nombreEventoInputCreate"
                     label="Nombre"
@@ -211,6 +219,9 @@
                     error-size="La imagen es muy pesada. El máximo permitido son 10MB"
                     error-required="Debes subir una imagen"
             ></file-component>
+        </div>
+
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
             <div class="d-flex-two-columns-responsive gap-24px">
                 <div class="secondary-button-02 text-center close-modal">Volver</div>
                 <div class="primary-button-01 text-center" id="btnCrear">Crear evento</div>

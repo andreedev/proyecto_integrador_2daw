@@ -131,7 +131,7 @@ function renderizarEventos(eventos) {
         imgEvent.classList.add('img-event');
 
         const img = document.createElement('img');
-        img.classList.add('img');
+        img.className = 'img aspect-ratio-4-3 object-fit-cover';
         img.src = evento.rutaImagenEvento;
         img.alt = 'Imagen del evento';
 
