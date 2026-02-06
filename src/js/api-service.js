@@ -1,4 +1,14 @@
 /**
+ * Cerrar sesión
+ */
+async function cerrarSesion() {
+    const formData = new FormData();
+    formData.append('action', 'cerrarSesion');
+
+    return await fetchAPI(formData);
+}
+
+/**
  * Listar patrocinadores
  */
 async function listarPatrocinadoresAdmin() {

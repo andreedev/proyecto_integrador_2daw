@@ -4,10 +4,10 @@
 class HomeHeader extends HTMLElement {
     constructor() {
         super();
-        this.style.visibility = 'hidden';
     }
 
     async connectedCallback() {
+        this.style.visibility = 'hidden';
         await Promise.all([
             window.sessionReady,
             injectExternalStyles('../css/header.css', 'home-header-styles')

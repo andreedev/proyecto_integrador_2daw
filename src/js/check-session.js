@@ -33,10 +33,12 @@ const createCookieConsentModal = () => {
         modal.setAttribute('container-class', 'cookie-modal');
         modal.innerHTML = `
             <div class="d-flex flex-column flex-md-row gap-20px p-24px">
-                <div class="fs-14px">Esta Web utiliza cookies propias y de terceros necesarias para su funcionamiento, para analizar tus hábitos de navegación y para servir publicidad personalizada. Asimismo, algunas cookies guardan relación con funcionalidades ofrecidas en la Web. <a class="text-primary-03" href="#">Política de Cookies</a></div>
-                <div class="d-flex flex-column gap-8px w-auto">
-                    <button class="primary-button-01 fs-14px" id="accept-cookies">Aceptar todas</button>
-                    <button class="primary-button-02 fs-14px" id="decline-cookies">Rechazar todas</button>
+                <div class="fs-14px">Esta Web utiliza cookies propias y de terceros necesarias para su funcionamiento, para analizar tus hábitos de navegación y para servir publicidad personalizada. Asimismo, algunas cookies guardan relación con funcionalidades ofrecidas en la Web. 
+<!--                <a class="text-primary-03" href="#">Política de Cookies</a>-->
+                </div>
+                <div class="d-flex flex-column gap-16px w-auto">
+                    <button class="primary-button-01 fs-14px text-nowrap" id="accept-cookies">Aceptar todas</button>
+                    <button class="primary-button-02 fs-14px text-nowrap" id="decline-cookies">Rechazar todas</button>
                 </div>
            
             </div>
@@ -44,11 +46,11 @@ const createCookieConsentModal = () => {
         document.body.appendChild(modal);
         requestAnimationFrame(() => modal.open());
         document.getElementById('accept-cookies').addEventListener('click', () => {
-            sessionStorage.setItem('cookiesAccepted', 'true');
+            localStorage.setItem('cookiesAccepted', 'true');
             modal.close();
         });
         document.getElementById('decline-cookies').addEventListener('click', () => {
-            sessionStorage.setItem('cookiesAccepted', 'false');
+            localStorage.setItem('cookiesAccepted', 'false');
             modal.close();
         });
     });
@@ -149,7 +151,7 @@ const checkSessionStatus = async () => {
 };
 
 const checkCookieConsent = () => {
-    const consent = sessionStorage.getItem('cookiesAccepted');
+    const consent = localStorage.getItem('cookiesAccepted');
     if (consent === null) {
         createCookieConsentModal();
     }

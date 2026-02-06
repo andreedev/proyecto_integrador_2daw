@@ -1,12 +1,22 @@
 /**
  * Menú lateral para el panel de admin
  */
-
 class MenuAdmin extends HTMLElement {
     constructor() {
         super();
     }
-    connectedCallback() {
+    async connectedCallback() {
+        this.style.visibility = 'hidden';
+        await Promise.all([
+            injectExternalStyles('../css/menu-admin.css', 'menu-admin-styles')
+        ]);
+        this.render();
+        this._setActivePage();
+        this._setupListeners();
+        this.style.visibility = 'visible';
+    }
+
+    render() {
         this.innerHTML = `
             <input type="checkbox" id="checkMenu">
             <div class="responsiveMenuAdmin">
@@ -27,28 +37,28 @@ class MenuAdmin extends HTMLElement {
                 </div>
 
                 <div class="d-flex flex-column gap-16px">
-                    <div class="textoIcono secondary-button-03 py-16px" id="candidaturasMenuLateral">
+                    <div class="textoIcono secondary-button-03 py-16px" id="candidaturasMenuLateral" data-url="admin-candidaturas.html">
                         <span>Candidaturas</span>
                     </div>
-                    <div class="textoIcono secondary-button-03 py-16px" id="finalistasMenuLateral">
+                    <div class="textoIcono secondary-button-03 py-16px" id="finalistasMenuLateral" data-url="admin-ganadores.html">
                         <span>Ganadores</span>
                     </div>
-                    <div class="textoIcono secondary-button-03 py-16px" id="noticiasMenuLateral">
+                    <div class="textoIcono secondary-button-03 py-16px" id="noticiasMenuLateral" data-url="admin-noticias.html">
                         <span>Noticias</span>
                     </div>
-                     <div class="textoIcono secondary-button-03 py-16px" id="eventoMenuLateral">
+                     <div class="textoIcono secondary-button-03 py-16px" id="eventoMenuLateral" data-url="admin-eventos.html">
                         <span>Eventos</span>
                     </div>
-                    <div class="textoIcono secondary-button-03 py-16px" id="categoriasMenuLateral">
+                    <div class="textoIcono secondary-button-03 py-16px" id="categoriasMenuLateral" data-url="admin-categoria-premio.html">
                         <span>Categorías y Premios</span>
                     </div>
-                    <div class="textoIcono secondary-button-03 py-16px" id="patrocinadoresMenuLateral">
+                    <div class="textoIcono secondary-button-03 py-16px" id="patrocinadoresMenuLateral" data-url="admin-patrocinadores.html">
                         <span>Patrocinadores</span>
                     </div>
-                     <div class="textoIcono secondary-button-03 py-16px" id="edicionesAnterioresMenuLateral">
+                     <div class="textoIcono secondary-button-03 py-16px" id="edicionesAnterioresMenuLateral" data-url="admin-ediciones-anteriores.html">
                         <span>Ediciones Anteriores</span>
                     </div>
-                    <div class="textoIcono secondary-button-03 py-16px" id="configuracionWebMenuLateral">
+                    <div class="textoIcono secondary-button-03 py-16px" id="configuracionWebMenuLateral" data-url="admin-modo.html">
                         <span>Modo pre/post evento</span>
                     </div>
                     <div class="primary-button-02 py-16px" id="botonCerrarSesionAdmin">
@@ -57,95 +67,55 @@ class MenuAdmin extends HTMLElement {
                 </div>
             </div>
         `;
+    }
 
-        document.querySelector('#configuracionWebMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-modo.html';
-        });
+    async _cerrarSesion() {
+        const formData = new FormData();
+        formData.append('action', 'cerrarSesion');
 
-        document.querySelector('#finalistasMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-ganadores.html';
-        });
-
-        document.querySelector('#candidaturasMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-candidaturas.html';
-        });
-        document.querySelector('#noticiasMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-noticias.html';
-        });
-
-        document.querySelector('#categoriasMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-categoria-premio.html';
-        }); 
-        document.querySelector('#patrocinadoresMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-patrocinadores.html';
-        });
-
-        document.querySelector('#eventoMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-eventos.html';
-        });
-
-        document.querySelector('#edicionesAnterioresMenuLateral').addEventListener('click', () => {
-            window.location.href = 'admin-ediciones-anteriores.html';
-        });
-
-        const botonCerrarSesionAdmin = this.querySelector('#botonCerrarSesionAdmin');
-
-        botonCerrarSesionAdmin.addEventListener('click', (e) => {
-            e.preventDefault();
-            cerrarSesion();
-        });
-
-        async function cerrarSesion() {
-            const formData = new FormData();
-            formData.append('action', 'cerrarSesion');
-
-            try {
-                const response = await fetch(URL_API, {
-                    method: 'POST',
-                    body: formData
-                });
-            }catch (error) {
-                console.error('Error al cerrar sesión:', error);
-            } finally {
-                window.location.href = 'index.html';
-            }
+        try {
+            await fetch(URL_API, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        } finally {
+            window.location.href = 'index.html';
         }
+    }
 
+
+    _setActivePage() {
         const currentPage = window.location.pathname.split('/').pop();
         const buttons = this.querySelectorAll('.textoIcono');
-        buttons.forEach((element) => {
-            element.classList.remove('active');
+
+        buttons.forEach((btn) => {
+            btn.classList.remove('active');
+            // Si el data-url coincide con la página actual, añadimos 'active'
+            if (btn.getAttribute('data-url') === currentPage) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    _setupListeners() {
+        const navButtons = this.querySelectorAll('.textoIcono');
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-url');
+                if (url) window.location.href = url;
+            });
         });
 
-        switch (currentPage) {
-            case 'admin-candidaturas.html':
-                document.querySelector('#candidaturasMenuLateral').classList.add('active');
-                break;
-            case 'admin-ganadores.html':
-                document.querySelector('#finalistasMenuLateral').classList.add('active');
-                break;
-            case 'admin-noticias.html':
-                document.querySelector('#noticiasMenuLateral').classList.add('active');
-                break;
-            case 'admin-categoria-premio.html':
-                document.querySelector('#categoriasMenuLateral').classList.add('active');
-                break;
-            case 'admin-patrocinadores.html':
-                document.querySelector('#patrocinadoresMenuLateral').classList.add('active');
-                break;
-            case 'admin-eventos.html':
-                document.querySelector('#eventoMenuLateral').classList.add('active');
-                break;
-            case 'admin-ediciones-anteriores.html':
-                document.querySelector('#edicionesAnterioresMenuLateral').classList.add('active');
-                break;
-            case 'admin-modo.html':
-                document.querySelector('#configuracionWebMenuLateral').classList.add('active');
-                break;
-            default:
-                break;
+        // Botón cerrar sesión
+        const btnLogout = this.querySelector('#botonCerrarSesionAdmin');
+        if (btnLogout) {
+            btnLogout.addEventListener('click', (e) => {
+                e.preventDefault();
+                this._cerrarSesion();
+            });
         }
-        
     }
 }
 

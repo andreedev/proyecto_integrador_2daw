@@ -132,7 +132,7 @@ modal-component:has(.is-active) {
 
 .cookie-modal {
     width: 50%;
-    max-height: 150px;
+    max-height: 168px;
     margin: 0;
 }
 
