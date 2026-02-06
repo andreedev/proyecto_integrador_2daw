@@ -10,6 +10,7 @@ const tituloInput = document.getElementById('tituloInput');
 const descripcionInput = document.getElementById('descripcionInput');
 const fechaPublicacion = document.getElementById('fechaPublicacion');
 const imagenInput = document.getElementById('imagenInput');
+const tituloModal = document.getElementById('tituloModal');
 
 let modoModal = 'agregar'; // 'agregar' o 'editar'
 let idNoticiaActual = null;
@@ -24,6 +25,7 @@ searchInput.addEventListener('keyup', (event) => {
 btnAgregarNoticia.addEventListener('click', () => {
     abrirModal('agregar');
     modoModal = 'agregar';
+    tituloModal.textContent = 'Agregar noticia';
 });
 
 primaryModalActionBtn.addEventListener('click', async () => {
@@ -69,13 +71,14 @@ primaryModalActionBtn.addEventListener('click', async () => {
 });
 
 function abrirModal(tipo, noticia = null) {
-    modalNoticia.showModal();
+    modalNoticia.open();
     if (tipo === 'editar' && noticia) {
         tituloInput.setValue(noticia.nombreNoticia, true);
         descripcionInput.setValue(noticia.descripcionNoticia, true);
         fechaPublicacion.setDate(noticia.fechaNoticia);
         imagenInput.setAttachedMode(noticia.rutaImagenNoticia, noticia.idArchivoImagenNoticia);
         primaryModalActionBtn.textContent = 'Guardar cambios';
+        tituloModal.textContent = 'Editar noticia';
     } else {
         tituloInput.clear();
         descripcionInput.clear();

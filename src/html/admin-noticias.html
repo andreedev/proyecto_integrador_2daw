@@ -41,17 +41,17 @@
         </div>
     </div>
 
-    <dialog id="modalNoticia" class="bg-neutral-09">
-        <button autofocus class="ghost">Ghost focus</button>
+
+    <modal-component id="modalNoticia">
         <div class="modal-header d-flex justify-space-between align-center">
             <div class="modal-header-left-side">
-                <span class="modal-header-title">Añadir Noticia</span>
+                <span class="modal-header-title" id="tituloModal">Añadir Noticia</span>
             </div>
             <div class="modal-header-right-side">
                 <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer close-modal"></span>
             </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body flex-grow-1 overflow-y-auto">
             <input-component
                     label="Título"
                     id="tituloInput"
@@ -89,19 +89,25 @@
                     error-size="La imagen es muy pesada. El máximo permitido son 10MB"
                     error-required="Debes subir una foto para continuar"
             ></file-component>
-
+        </div>
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
             <div class="d-flex-two-columns-responsive gap-24px">
                 <div class="secondary-button-02 text-center close-modal">Cancelar</div>
                 <div class="primary-button-02 text-center" id="primaryModalActionBtn">Agregar noticia</div>
             </div>
         </div>
-    </dialog>
+    </modal-component>
 
 
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/input-component.js"></script>
-    <script src="../js/components/date-component.js"></script>
     <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/date-component.js"></script>
+    <script src="../js/components/notification-component.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
+    <script src="../js/components/video-player-component.js"></script>
+    <script src="../js/components/carousel-component.js"></script>
     <script src="../js/menu-admin.js"></script>
     <script src="../js/admin-noticias.js"></script>
 </body>
