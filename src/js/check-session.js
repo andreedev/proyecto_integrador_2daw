@@ -44,11 +44,11 @@ const createCookieConsentModal = () => {
         document.body.appendChild(modal);
         requestAnimationFrame(() => modal.open());
         document.getElementById('accept-cookies').addEventListener('click', () => {
-            localStorage.setItem('cookiesAccepted', 'true');
+            sessionStorage.setItem('cookiesAccepted', 'true');
             modal.close();
         });
         document.getElementById('decline-cookies').addEventListener('click', () => {
-            localStorage.setItem('cookiesAccepted', 'false');
+            sessionStorage.setItem('cookiesAccepted', 'false');
             modal.close();
         });
     });
@@ -149,7 +149,7 @@ const checkSessionStatus = async () => {
 };
 
 const checkCookieConsent = () => {
-    const consent = localStorage.getItem('cookiesAccepted');
+    const consent = sessionStorage.getItem('cookiesAccepted');
     if (consent === null) {
         createCookieConsentModal();
     }
