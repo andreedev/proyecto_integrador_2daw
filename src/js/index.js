@@ -160,7 +160,7 @@ function renderizarPremios(premios) {
         ` : '';
 
         return `
-            <div class="premio d-flex flex-column cursor-pointer box-shadow-01 p-16px h-auto">
+            <div class="premio d-flex flex-column cursor-pointer box-shadow-01 p-16px h-auto m-1px">
                 <span class="fs-20px fw-600 text-center">${nombreCategoria}</span>
                 <div class="d-flex justify-content-center w-100">
                     <span class="icon-premio w-120px h-120px"></span>

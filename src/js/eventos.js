@@ -19,7 +19,7 @@ function renderizarEventos(eventos) {
         eventoElemento.classList.add('event-post');
 
         const imagenEvento = document.createElement('img');
-        imagenEvento.classList.add('img-evento');
+        imagenEvento.className = 'img-evento aspect-ratio-4-3 object-fit-cover';
         imagenEvento.src = evento.rutaImagenEvento;
         imagenEvento.alt = 'Imagen evento';
 

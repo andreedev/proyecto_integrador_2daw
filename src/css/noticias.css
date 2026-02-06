@@ -1,5 +1,5 @@
 .header-noticias{
-    min-height:296px;
+    min-height:360px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,7 +28,7 @@
     height: auto;
     color:var(--neutral-09);
     position: absolute;
-    top:352px;
+    bottom: 16px;
 }
 .icon-home{
     width:16px;
@@ -49,7 +49,6 @@
 /*Listado de noticias*/
 
 .news-post{
-    padding:8px; 
     box-shadow: var(--shadow-01);
 }
 
@@ -62,7 +61,6 @@
 @media (min-width: 1000px) {
     .news-post{
         position:relative;
-        padding: 12px;
         transition: .2s ease-in-out;
     }
 }

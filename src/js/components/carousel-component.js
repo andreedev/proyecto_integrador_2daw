@@ -49,7 +49,7 @@ class CarouselComponent extends HTMLElement {
                     <span class="icon-left-chevron w-20px h-20px bg-primary-03 d-block"></span>
                 </button>
                 <div class="carousel-viewport">
-                    <div class="carousel-track">
+                    <div class="carousel-track p-2px">
                         ${this._slidesData.map(html => `<div class="carousel-slide">${html}</div>`).join('')}
                     </div>
                 </div>

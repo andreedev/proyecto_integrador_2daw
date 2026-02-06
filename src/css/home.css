@@ -422,7 +422,7 @@
     color: var(--neutral-09);
 }
 
-.premio:hover > .icon-premio,
+.premio:hover .icon-premio,
 .premio:hover .icon-money {
     background-color: var(--neutral-09);
 }

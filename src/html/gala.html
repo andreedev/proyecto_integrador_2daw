@@ -17,41 +17,44 @@
     <home-header></home-header>
 
     <div class="pre-evento" id="contenidoPreEvento">
-        <div class="position-relative overflow-hidden">
-            <div class="pre-evento-header container d-grid grid-template-columns-1 grid-md-template-columns-2 gap-32px align-items-center py-48px">
+        <div class="position-relative">
+            <div class="position-relative overflow-hidden">
                 <span class="bloque1"></span>
-                <div class="pre-evento-info position-relative">
-                    <h1 class="pre-evento-title" id="preEventoTitulo">El gran estreno: Gala de Premios</h1>
-                    <p class="pre-evento-subtitle" id="preEventoDescripcion">Luces, cámara y reconocimiento. Acompáñanos en la gala oficial del Festival de Cortos UE para celebrar el talento de nuestra comunidad y descubrir quiénes se llevarán los premios de esta edición. Una cita con la creatividad que no querrás perderte.</p>
-                    <div class="icon-text-calendario">
-                        <span class="icon-calendario"></span>
-                        <span class="text-calendario" id="preEventoFecha">23 de enero de 2026</span>
-                    </div>
+                <div class="pre-evento-header container d-grid grid-template-columns-1 grid-md-template-columns-2 gap-32px align-items-center py-48px position-relative">
+                    <div class="pre-evento-info position-relative">
+                        <h1 class="pre-evento-title" id="preEventoTitulo">El gran estreno: Gala de Premios</h1>
+                        <p class="pre-evento-subtitle" id="preEventoDescripcion">Luces, cámara y reconocimiento. Acompáñanos en la gala oficial del Festival de Cortos UE para celebrar el talento de nuestra comunidad y descubrir quiénes se llevarán los premios de esta edición. Una cita con la creatividad que no querrás perderte.</p>
+                        <div class="icon-text-calendario">
+                            <span class="icon-calendario"></span>
+                            <span class="text-calendario" id="preEventoFecha">23 de enero de 2026</span>
+                        </div>
 
-                    <div class="icon-text-ubicacion">
-                        <span class="icon-ubicacion"></span>
-                        <span class="text-ubicacion" id="preEventoUbicacion">Auditorio Principal</span>
+                        <div class="icon-text-ubicacion">
+                            <span class="icon-ubicacion"></span>
+                            <span class="text-ubicacion" id="preEventoUbicacion">Auditorio Principal</span>
+                        </div>
+                        <span class="secondary-button-01 w-auto btn-calendario" id="btnCalendario">Añadir a mi calendario</span>
                     </div>
-                    <span class="secondary-button-01 w-auto btn-calendario" id="btnCalendario">Añadir a mi calendario</span>
-                    <span class="bloque2"></span>
-                </div>
-                <div class="pre-evento-video align-items-center justify-content-center position-relative">
-                    <span class="bloque3"></span>
-                    <span class="bloque4"></span>
-                    <span class="pre-evento-video-text" id="textoTransmision">Transmisión en directo</span>
-                    <video-player-component
-                            id="streamingEventoVideoPlayer"
-                            class="max-w-600px h-300px"
-                    ></video-player-component>
+                    <div class="pre-evento-video align-items-center justify-content-center position-relative">
+                        <span class="bloque3"></span>
+                        <span class="bloque4"></span>
+                        <span class="pre-evento-video-text" id="textoTransmision">Transmisión en directo</span>
+                        <video-player-component
+                                id="streamingEventoVideoPlayer"
+                                class="max-w-600px h-300px"
+                        ></video-player-component>
+                    </div>
                 </div>
             </div>
+            <span class="bloque2"></span>
         </div>
+        <div class="bg-neutral-08">
+            <div class="agenda-container d-flex container gap-32px px-24px position-relative">
+                <h1 class="agenda-container-text">Agenda</h1>
 
-        <div class="agenda-container d-flex container gap-32px px-24px position-relative">
-            <h1 class="agenda-container-text">Agenda</h1>
+                <div class="d-flex gap-64px flex-column position-relative mb-80px" id="contenedorEventos">
 
-            <div class="d-flex gap-64px flex-column position-relative mb-80px" id="contenedorEventos">
-
+                </div>
             </div>
         </div>
     </div>

@@ -13,7 +13,7 @@ function renderizarNoticias(noticias) {
         noticiaElemento.classList.add('news-post');
 
         const imagenNoticia = document.createElement('img');
-        imagenNoticia.classList.add('img-noticia');
+        imagenNoticia.className = 'img-noticia aspect-ratio-4-3 object-fit-cover';
         imagenNoticia.src = noticia.rutaImagenNoticia;
         imagenNoticia.alt = 'Imagen noticia';
 

@@ -92,8 +92,6 @@
     width:100%;
     height: auto;
     position: relative;
-    overflow: hidden;
-    object-fit: cover;
 }
 
 .event-post-content{
