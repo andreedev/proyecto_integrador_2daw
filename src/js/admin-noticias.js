@@ -11,6 +11,7 @@ const descripcionInput = document.getElementById('descripcionInput');
 const fechaPublicacion = document.getElementById('fechaPublicacion');
 const imagenInput = document.getElementById('imagenInput');
 const tituloModal = document.getElementById('tituloModal');
+const notification = document.getElementById('notification');
 
 let modoModal = 'agregar'; // 'agregar' o 'editar'
 let idNoticiaActual = null;
@@ -132,9 +133,15 @@ function renderizarNoticias(noticias) {
         const btnEliminar = document.createElement('span');
         btnEliminar.className = 'position-absolute icon-trash w-24px h-24px bg-primary-03 top-12px right-14px cursor-pointer hover-scale-1-10';
         btnEliminar.addEventListener('click', async () => {
-            const response = await eliminarNoticia(noticia.idNoticia);
-            if (response.status === 'success') cargarNoticias();
-
+            notification.show("¿Estás segur@ de eliminar la noticia?", {
+                confirm: true,
+                confirmText: "Eliminar",
+                onConfirm: async () => {
+                    const response = await eliminarNoticia(noticia.idNoticia);
+                    if (response.status === 'success') cargarNoticias();
+                    if (response.status === 'error') notification.show("Error al eliminar la noticia: " + response.message);
+                }
+            });
         });
 
         infoContent.innerHTML = `
