@@ -1382,6 +1382,30 @@
     font-size: 64px;
 }
 
+@media (min-width: 480px) {
+    .fs-xs-64px{
+        font-size: 64px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fs-md-64px{
+        font-size: 64px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fs-lg-64px{
+        font-size: 64px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fs-xl-64px{
+        font-size: 64px;
+    }
+}
+
 .fs-72px{
     font-size: 72px;
 }

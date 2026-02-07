@@ -1,5 +1,5 @@
 .header-eventos{
-    min-height:296px;
+    min-height:360px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,13 +10,13 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    position: relative;
 }
 .bg-color{
     position: absolute;
     width: 100%;
-    height: 296px;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
-    top: 84;
     z-index: 1;
 }
 
@@ -37,7 +37,7 @@
     height: auto;
     color:var(--neutral-09);
     position: absolute;
-    top:352px;
+    bottom: 16px;
 }
 .icon-home{
     width:16px;
@@ -73,7 +73,6 @@
 }
 
 .event-post{
-    padding:8px;
     box-shadow: var(--shadow-01);
 }
 
@@ -98,7 +97,7 @@
     display: flex;
     flex-direction: column;
     gap:8px;
-    margin:4px;
+    padding: 16px;
 }
 
 .event-icon-hora-fecha{
