@@ -1589,7 +1589,7 @@ function listarCandidaturasAdmin(): void {
     $filtroEstado = $_POST['filtroEstado'] ?? '';
     $filtroFecha  = $_POST['filtroFecha'] ?? '';
 
-    $whereSql = " WHERE true ";
+    $whereSql = " WHERE true and pc.id_candidatura IS NULL ";
     $params = [];
     $types = "";
 
@@ -1620,8 +1620,11 @@ function listarCandidaturasAdmin(): void {
         $types .= "s";
     }
 
+
+
     $countSql = "SELECT COUNT(*) as total FROM candidatura c 
                  INNER JOIN participante p ON c.id_participante = p.id_participante 
+                 LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
                  $whereSql";
 
     $stmtCount = $conexion->prepare($countSql);
@@ -1648,6 +1651,7 @@ function listarCandidaturasAdmin(): void {
                     a3.ruta AS cartel, a4.ruta AS trailer
                 FROM candidatura c
                 INNER JOIN participante p ON c.id_participante = p.id_participante
+                LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
                 LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
                 LEFT JOIN archivo a2 ON c.id_archivo_ficha = a2.id_archivo
                 LEFT JOIN archivo a3 ON c.id_archivo_cartel = a3.id_archivo
