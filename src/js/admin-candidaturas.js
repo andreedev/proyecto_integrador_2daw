@@ -181,7 +181,7 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
         const tdSinopsis = document.createElement('td');
         tdSinopsis.className = 'text-neutral-04 fs-12px max-w-200px';
         const divSinopsis = document.createElement('div');
-        divSinopsis.className = ' text-truncate-multiline';
+        divSinopsis.className = ' text-truncate-multiline-3';
         divSinopsis.textContent = c.sinopsis;
         tdSinopsis.appendChild(divSinopsis);
 

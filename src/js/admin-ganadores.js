@@ -9,16 +9,10 @@ const ganador = document.querySelector('.ganador');
 
 const modalDesasignar = document.getElementById('modalDesasignar');
 const btnDesasignarGanador = document.getElementById('btnDesasignarGanador');
-const btnCancelarModalDesasignar = document.getElementById('btnCancelModalDesasignar');
 
 //Cuando el botón esté en asignar ganador
-const modalAsignar = document.getElementById('modalAsignarGanador'); 
-const cerrarModalAsignar = document.getElementById('cerrarModalAsignar');
-const infoCardGanador = document.getElementById('infoCardGanador');
-const btnGanadorElegido = document.getElementById('btnGanadorElegido');
-const iconCheck = document.getElementById('iconCheck');
+const modalAsignarGanador = document.getElementById('modalAsignarGanador');
 const btnAceptarGanador = document.getElementById('btnAceptarGanador');
-const btnCerrarModalGanador = document.getElementById('btnCerrarModalGanador');
 
 
 let idPremioSeleccionado;
@@ -121,7 +115,7 @@ function renderizarCategorias(categorias){
                         renderizarFinalistasEnModal(finalistas);
                         idPremioSeleccionado = premio.idPremio;
                     }
-                    modalAsignar.showModal();
+                    modalAsignarGanador.open();
                 } else {
                     modalDesasignar.showModal();
                 }
@@ -186,7 +180,7 @@ function renderizarFinalistasEnModal(finalistas) {
             <div class="info-ganador d-flex flex-column gap-4px min-w-1px flex-shrink-1">
                 <span class="name-ganador">${finalista.nombreParticipante}</span>
                 <span class="gmail-ganador">${finalista.correoParticipante}</span>
-                <span class="descripcion-corto-ganador text-truncate">${finalista.sinopsis}</span>
+                <span class="descripcion-corto-ganador text-truncate-multiline-3">${finalista.sinopsis}</span>
             </div>
             <div class="fecha-presentacion">
                 <span class="presentacion">Presentacion</span>
@@ -208,7 +202,7 @@ function renderizarFinalistasEnModal(finalistas) {
             btnAceptarGanador.onclick = async () => {
                 const response = await asignarGanador(idPremioSeleccionado, finalista.idCandidatura);
                 if (response.status === 'success') {
-                    modalAsignar.close();
+                    modalAsignarGanador.close();
                     await cargarCategorias();
                 } else {
                     console.error('Error al asignar el ganador:', response.message);

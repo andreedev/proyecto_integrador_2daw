@@ -43,8 +43,7 @@
         </div>
     </dialog>
 
-    <dialog id="modalAsignarGanador" class="generic-modal">
-        <button autofocus class="ghost">Ghost focus</button>
+    <modal-component id="modalAsignarGanador">
 
         <div class="modal-asignar-header d-flex justify-space-between align-center px-24px py-16px">
             <span class="modal-header-title fs-20px fw-600">Asignar Ganador</span>
@@ -55,13 +54,15 @@
 
             </div>
             <div class="d-flex-two-columns-responsive gap-24px">
-                <div class="secondary-button-02 text-center close-modal" id="btnCerrarModalGanador">Cancelar</div>
+                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
                 <button class="primary-button-02 text-center" id="btnAceptarGanador">Aceptar</button>
             </div>
         </div>
-    </dialog>
+    </modal-component>
 
     <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/notification-component.js"></script>
+    <script src="../js/components/pagination-component.js"></script>
     <script src="../js/menu-admin.js"></script>
     <script src="../js/admin-ganadores.js"></script>
 </body>
