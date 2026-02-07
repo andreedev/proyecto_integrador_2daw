@@ -205,6 +205,9 @@ if (isset($_POST['action'])) {
             validarRol(['participante']);
             obtenerDatosParticipante();
             break;
+        case 'obtenerEdicionAnteriorById':
+            obtenerEdicionAnteriorById();
+            break;
         default:
             break;
     }
@@ -2437,6 +2440,29 @@ function listarEdiciones(){
         "data"    => $pageContext,
         "message" => "ok"
     ]);
+}
+
+function obtenerEdicionAnteriorById(){
+    global $conexion;
+
+    $idEdicion = (int)$_POST['idEdicion'];
+
+    $query = "SELECT id_edicion as idEdicion, anio_edicion as anioEdicion, resumen_evento as resumenEvento, nro_participantes as nroParticipantes FROM edicion WHERE id_edicion = ? AND tipo = 'anterior' LIMIT 1";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idEdicion);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $row['archivos'] = obtenerGaleriaEdicion($idEdicion);
+        $row['ganadores'] = obtenerGanadoresEdicion($idEdicion);
+        echo json_encode([
+                "status" => "success",
+                "data" => $row
+        ]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "No se encontró la edición anterior"]);
+    }
 }
 
 /**

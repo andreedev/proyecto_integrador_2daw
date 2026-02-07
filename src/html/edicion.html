@@ -16,13 +16,61 @@
 <body>
     <home-header></home-header>
 
-    <div class="post-evento" id="contenidoPostEvento">
-        edicion X
+    <div class="post-evento-header position-relative">
+        <div class="post-evento-header-text container-md-to-lg">
+            <h1 class="fs-32px fs-md-48px text-neutral-09 z-index-2">Revive lo mejor de la Edición <span id="year">2025</span></h1>
+            <span class="text-neutral-09 z-index-2 fs-16px fs-md-20px px-sm-32px px-md-64px" id="resumen">Una noche llena de emoción, talento y nuevas miradas. Revive los mejores momentos de la edición, desde la alfombra roja hasta el anuncio de los cortometrajes que marcaron la diferencia este año. ¡Gracias por formar parte de nuestra historia!</span>
+            <div class="d-flex flex-row align-items-center gap-16px z-index-2">
+                <span class="icon-users w-22px h-24px bg-neutral-09 d-inline-block"></span>
+                <span class="fw-500 text-neutral-09"><span id="nroParticipantes">50</span> mentes creativas participaron</span>
+            </div>
+        </div>
+        <span class="bg-img position-absolute w-100 h-100 z-index-1"></span>
+    </div>
+
+    <div class="container py-48px d-flex flex-column gap-24px">
+
+        <!-- ganadores -->
+        <div class="post-evento-video-ganadores d-flex flex-column gap-16px justify-content-center align-items-center">
+
+            <h2 class="fs-24px fs-md-40px">Cortometrajes ganadores</h2>
+            <span class="fw-500">Conoce las obras que cautivaron al jurado en esta edición del Festival de Cortos UE</span>
+
+            <div class="container-lg-to-xl w-100 overflow-hidden">
+
+                <carousel-component
+                        id="ganadoresCortosCarousel"
+                        gap="24"
+                        responsive='{"0": 1, "576": 1, "768": 2, "992": 2, "1200": 2, "1400": 2}'
+                ></carousel-component>
+
+            </div>
+        </div>
+
+        <!-- galeria -->
+        <div class="d-flex flex-column justify-content-center gap-32px position-relative">
+
+            <div class="galeria-fotos-header">
+                <h1 class="galeria-fotos-title">Galería fotográfica</h1>
+                <span class="galeria-fotos-subtitle">Revive cada momento, desde los nervios en la alfombra roja hasta la alegría de los premiados.</span>
+            </div>
+
+            <carousel-component
+                    id="galeriaFotograficaCarousel"
+                    show-arrows="true"
+                    gap="24"
+                    responsive='{"0": 1, "576": 1, "768": 2, "992": 2, "1200": 3, "1400": 3}'
+            ></carousel-component>
+
+        </div>
+
     </div>
 
     <home-footer></home-footer>
 
     <script src="../js/components/modal-component.js"></script>
+    <script src="../js/components/video-player-component.js"></script>
+    <script src="../js/components/carousel-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/edicion.js"></script>

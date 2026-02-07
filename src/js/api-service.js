@@ -529,3 +529,14 @@ async function obtenerDatosParticipante(){
 
     return await fetchAPI(data);
 }
+
+/**
+ * Obtener datos de una edición anterior por ID
+ */
+async function obtenerEdicionAnteriorById(idEdicion) {
+    const data = new FormData();
+    data.append('action', 'obtenerEdicionAnteriorById');
+    data.append('idEdicion', idEdicion);
+
+    return await fetchAPI(data);
+}

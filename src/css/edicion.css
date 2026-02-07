@@ -1,6 +1,267 @@
+.pre-evento{
+    display:flex;
+    flex-direction: column;
+
+    gap:40px;
+}
+
+.btn-calendario{
+    z-index:2;
+}
+
+.pre-evento-header{
+    justify-content: center;
+    gap: 24px;
+}
+
+.pre-evento-info{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap:24px;
+}
+
+.bloque1{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 245px;
+    height: 164px;
+    background-color: var(--primary-03);
+    position: absolute;
+    left: -162px;
+    top: 0px;
+}
+
+.pre-evento-title{
+    font-weight: 600;
+    font-size: 49px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.pre-evento-subtitle{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.icon-text-calendario{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-calendario{
+    width:24px;
+    height:24px;
+    mask-image: url("../img/icon/icon-calendar.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.text-calendario{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.icon-text-ubicacion{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-ubicacion{
+    width:24px;
+    height:24px;
+    mask-image: url("../img/icon/icon-location.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-01);
+}
+
+.text-ubicacion{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.bloque2{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 245px;
+    height: 164px;
+    background-color: var(--primary-03);
+    position: absolute;
+    left: 30%;
+    bottom: -13%;
+    rotate: 180deg;
+    z-index:1;
+}
+
+@media (min-width: 768px){
+    .bloque2{
+        bottom: -20%;
+    }
+}
+
+.pre-evento-video{
+    display:flex;
+    flex-direction: column;
+    gap:24px;
+    position:relative;
+    z-index:2;
+}
+
+.video-play-container{
+    width: 48px;
+    height: 48px;
+    background-color: var(--primary-03);
+    position: absolute;
+    z-index:2;
+    cursor: pointer;
+}
+
+.video-play{
+    width: 24px;
+    height: 24px;
+    mask-image: url("../img/icon/icon-play.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-09);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pre-evento-video-text{
+    font-size: 31px;
+    font-weight: 600;
+    line-height: 120%;
+    display: flex;
+    justify-content: flex-end;
+    color: var(--neutral-01);
+    z-index:2;
+}
+
+.bloque3{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 245px;
+    height: 164px;
+    background-color: var(--primary-03);
+    position: absolute;
+    left:23px;
+    top: 26px;
+    transform: rotateX(180deg);
+}
+
+.bloque4{
+    mask-image: url("../img/icon/icon-griddecorationthin.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    width: 245px;
+    height: 164px;
+    background-color: var(--primary-03);
+    position: absolute;
+    left:489px;
+    bottom: 59px;
+    transform:rotateZ(90deg) rotateX(180deg);
+    z-index:0;
+}
+
+.agenda-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.agenda-container-text{
+    font-size: 39px;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.evento-nombre-ubicacion{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+}
+
+@media (min-width: 768px){
+    .evento-nombre-ubicacion{
+        gap:48px;
+    }
+}
+
+.linea-puntos{
+    transform: rotateZ(90deg);
+    margin-bottom:40px;
+}
+
+.hora-evento{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--neutral-01);
+    width:100%;
+    padding-bottom:88px;
+}
+
+.nombre-evento{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--neutral-01);
+}
+
+.descripcion-evento{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 120%;
+    color: var(--neutral-01);
+    white-space: normal;
+}
+
+.icon-text{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-ubicacion{
+    width:16px;
+    height:16px;
+    mask-image: url("../img/icon/icon-location.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background-color: var(--neutral-02);
+}
+
+.ubicacion-text{
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 120%;
+    color: var(--neutral-02);
+}
+
 .post-evento-header{
-    background-image: url("../img/festi-2_1.png");
-    height: 463px;
+    background-image: url("../img/Entrega-de-premios.jpg");
+    height: calc(100vh - 84px);
+    min-height: 350px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -22,12 +283,7 @@
 }
 
 .bg-img{
-    position: absolute;
     background-color: rgba(0, 0, 0, 0.4);
-    width: 100%;
-    height: 463px;
-    top: 0;
-    z-index: 1;
 }
 
 .header-title{
@@ -44,19 +300,8 @@
     font-size: 18px;
     font-weight: 500;
     line-height: 120%;
-    width:50%
 }
 
-
-
-/*Carrusel con las portadas de los cortos*/
-
-.carousel-info-corto {
-    width: 100%;
-    max-width:792px;
-    overflow: hidden;
-    margin: 0 auto;
-}
 
 .carousel-track-info-corto {
     display: flex;
@@ -65,8 +310,6 @@
 }
 
 .slide-info-corto {
-    min-width: 240px;
-    height: 470px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,6 +319,7 @@
     flex-direction: column;
     gap:16px;
 }
+
 
 .text-info-corto{
     display: flex;
@@ -138,20 +382,12 @@
     background: var(--primary-03);
 }
 
-.galeria-fotos-container{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 .galeria-fotos-header{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap:8px;
-    padding: 24px 98px;
 }
 
 .galeria-fotos-title{
