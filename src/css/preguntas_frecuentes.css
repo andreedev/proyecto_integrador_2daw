@@ -84,35 +84,39 @@
 }
 
 .faq-question {
-    font-size: 25px;
-    font-weight: 600;
-    color: var(--neutral-01);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    line-height: 120%;
-    user-select: none;
+    flex-direction: row;
 }
 
 .faq-question::after {
     content: "";
+}
+
+.icon{
     display: inline-block;
     width: 18px;
     height: 18px;
-    background: url('../img/icon/icon-downarrow.svg') no-repeat center;
-    background-size: contain;
+    mask-image: url('../img/icon/icon-downarrow.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
     transition: transform 0.25s ease;
-    margin-left: 8px;
+    background-color: var(--neutral-01);
+}
+
+.pregunta{
+    font-size: 25px;
+    font-weight: 600;
+    color: var(--neutral-01);
+    line-height: 120%;
+    user-select: none;
+    width:100%;
 }
 
 @media (min-width: 340px) and (max-width: 768px) {
     .faq-question {
         font-size: 20px;
-    }
-
-    .faq-question::after {
-        width: 32px;
-        height: 32px;
     }
 }
 

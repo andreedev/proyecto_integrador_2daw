@@ -37,7 +37,10 @@ function renderFAQ() {
         const faqItem = document.createElement('div');
         faqItem.className = 'faq-item';
         faqItem.innerHTML = `
-                    <div class="faq-question">${item.question}</div>
+                    <div class="faq-question">
+                        <span class="pregunta">${item.question}</span>
+                        <span class="icon"></span>
+                    </div>
                     <div class="faq-answer">${item.answer}</div>
                 `;
         faqItem.addEventListener('click', () => {
