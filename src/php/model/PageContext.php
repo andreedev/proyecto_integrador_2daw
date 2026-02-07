@@ -1,6 +1,6 @@
 <?php
 
-readonly class PageContext{
+class PageContext{
     public function __construct(
         public int $totalRecords,
         public int $totalPages,
