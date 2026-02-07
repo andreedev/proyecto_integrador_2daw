@@ -22,53 +22,32 @@
             <div class="admin-header">
                 <div class="admin-header-module-info-container">
                     <p class="admin-module-name">Modo pre/post evento</p>
-                    <span class="admin-module-description">Gestiona el contenido público de la Gala para el sitio web</span>
+                    <span class="text-neutral-03 mt-4px d-none d-md-block">Gestiona el contenido público de la Gala para el sitio web</span>
                 </div>
             </div>
 
-            <div class="admin-content">
-                <div class="generic-cards-container">
+            <div class="d-flex flex-column gap-16px responsive-mode-cards-container p-0 p-md-24px-force">
 
-                    <div class="generic-card">
-                        <div class="mode-info-internal-card">
-                            <div class="mode-info-container">
-                               <span class="mode-info-text">Modo:</span>
-                               <div class="mode-buttons-container">
-                                    <div class="mode-button active" id="preEventoButton">Pre-evento</div>
-                                    <div class="mode-button" id="postEventoButton">Post-evento</div>
-                                </div>
-                            </div>
-                            <div class="last-updated-info-container">
-                                <div class="published-text-container fs-14px" id="publishedText">
-                                    <span class="icon-check w-20px h-20px bg-success-01"></span>
-                                    <span>Publicado</span>
-                                </div>
-                                <span class="text-warning-01 fs-14px fw-500 hidden-force" id="unsavedChangesWarning">
-                                    ● Hay cambios sin publicar
-                                </span>
-                                <div class="last-modified-text-container">
-                                    <span class="last-modified-label">
-                                        <span class="icon-clock w-20px h-20px bg-neutral-02"></span>
-                                        Última modificación:
-                                    </span>
-                                    <span class="last-modified-date" id="fechaUltimaModificacionText">01/09/2025 14:30</span>
-                                </div>
+                <div class="order-2 order-md-1 generic-card">
+                    <div class="d-flex flex-column flex-md-row gap-16px justify-space-between">
+                        <div class="mode-info-container">
+                            <span class="mode-info-text">Modo:</span>
+                            <div class="d-flex flex-row gap-12px align-items-center w-100">
+                                <div class="mode-button active" id="preEventoButton">Pre-evento</div>
+                                <div class="mode-button" id="postEventoButton">Post-evento</div>
                             </div>
                         </div>
-                        <div class="d-flex justify-space-between main-action-buttons-container">
-                            <div class="main-action-left-side">
-                                <div class="primary-button-01 fs-14px" id="publishChangesButton">Publicar cambios</div>
-                            </div>
-                            <div class="main-action-right-side">
-                                <div class="secondary-button-01 text-center" id="sendToPreviousEditionsButton">
-                                    <span>Enviar a Ediciones Anteriores</span>
-                                </div>
+                        <div class="d-flex flex-column flex-md-row align-items-center gap-12px">
+                            <span class="text-warning-01 fs-14px fw-500 hidden-force text-nowrap" id="unsavedChangesWarning">● Hay cambios sin publicar</span>
+                            <div class="d-flex flex-row w-100 align-items-center">
+                                <button class="primary-button-02 fs-14px w-100" id="publishChangesButton">Publicar cambios</button>
                             </div>
                         </div>
-
-                        <span id="generalMessage" class="fs-14px fw-500"></span>
                     </div>
+                    <span id="generalMessage" class="fs-14px fw-500"></span>
+                </div>
 
+                <div class="order-1 order-md-2 generic-cards-container flex-grow-1 overflow-y-auto h-auto">
 
                     <!-- Cards Pre-evento -->
                     <div class="generic-card preEventoCard hidden-force">
@@ -272,25 +251,31 @@
                         </div>
                     </div>
 
+                    <div class="generic-card postEventoCard hidden-force">
+                        <div class="main-action-right-side">
+                            <div class="secondary-button-01 text-center" id="sendToPreviousEditionsButton">
+                                <span>Enviar a Ediciones Anteriores</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 
 
-    <dialog id="modalEnviarEdicionesAnteriores" class="generic-modal bg-neutral-08">
-        <button autofocus class="ghost">Ghost focus</button>
-
-        <div class="modal-header d-flex justify-space-between align-center">
-            <div class="modal-header-left-side">
-                <span class="modal-header-title">Enviar a Ediciones Anteriores</span>
-                <span class="modal-header-subtitle">Crea una nueva entrada en el histórico de ediciones</span>
+    <modal-component id="modalEnviarEdicionesAnteriores" static scrollable mobile-full-screen>
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
+            <div class="d-flex flex-column gap-4px">
+                <span class="fs-20px fw-600">Enviar a Ediciones Anteriores</span>
+                <span class="fs-12px text-neutral-04">Crea una nueva entrada en el histórico de ediciones</span>
             </div>
-            <div class="modal-header-right-side">
-                <span class="icon-close w-24px h-24px bg-neutral-03 modal-close-button cursor-pointer closeEnviarEdicionesAnterioresModal"></span>
+            <div class="d-flex align-items-center gap-8px">
+                <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
             </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body flex-grow-1 overflow-y-auto">
             <p class="fw-600">Información básica de la Edición</p>
             <div class="generic-input-groups-row">
                 <div class="generic-input-group">
@@ -368,12 +353,14 @@
                 </div>
             </div>
             <span class="divider-line"></span>
+        </div>
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
             <div class="d-flex-two-columns-responsive">
-                <div class="secondary-button-02 text-center modal-close-button closeEnviarEdicionesAnterioresModal">Cancelar</div>
+                <div class="secondary-button-02 text-center modal-close-button close-modal">Cancelar</div>
                 <div class="primary-button-01" id="confirmarEnviarEdicionesAnterioresBtn">Continuar</div>
             </div>
         </div>
-    </dialog>
+    </modal-component>
 
     <dialog id="modalEdicionCreadaExito" class="generic-modal bg-neutral-09">
         <div class="d-flex flex-column gap-24px p-24px justify-content-center align-items-center">

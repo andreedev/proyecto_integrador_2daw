@@ -16,11 +16,9 @@ const descripcionInput = document.getElementById('descripcionInput');
 const descripcionErrorMessage = document.getElementById('descripcionErrorMessage');
 const urlStreamingInput = document.getElementById('urlStreamingInput');
 const urlStreamingErrorMessage = document.getElementById('urlStreamingErrorMessage');
-const fechaUltimaModificacionText = document.getElementById('fechaUltimaModificacionText');
 
 const publishChangesButton = document.getElementById('publishChangesButton');
 const unsavedChangesWarning = document.getElementById('unsavedChangesWarning');
-const publishedText = document.getElementById('publishedText');
 
 const streamingToggleContainer = document.getElementById('streamingToggleContainer');
 const streamingToggleButton = document.getElementById('streamingToggleButton');
@@ -30,7 +28,6 @@ const urlStreamingContainer = document.getElementById('urlStreamingContainer');
 
 const sendToPreviousEditionsButton = document.getElementById('sendToPreviousEditionsButton');
 const modalEnviarEdicionesAnteriores = document.getElementById('modalEnviarEdicionesAnteriores');
-const closeEnviarEdicionesAnterioresModalButtons = document.querySelectorAll('.closeEnviarEdicionesAnterioresModal');
 
 const filesDropZone = document.getElementById('fileDropZone');
 const fileInput = document.getElementById('fileInput');
@@ -327,32 +324,32 @@ galleryContainer.addEventListener('click', (e) => {
 });
 
 sendToPreviousEditionsButton.addEventListener('click', () => {
-    modalEnviarEdicionesAnteriores.showModal();
-});
-
-closeEnviarEdicionesAnterioresModalButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        modalEnviarEdicionesAnteriores.close();
-    });
+    modalEnviarEdicionesAnteriores.open();
 });
 
 confirmarEnviarEdicionesAnterioresBtn.addEventListener('click', async () => {
     if (!validarDatosEnvioEdicionesAnteriores()) return;
 
-    const fechaEnvioEmailFormatoISO = convertToISODate(fechaEnvioEmailInformativoInput.value);
-    const fechaBorradoDatosFormatoISO = convertToISODate(fechaBorradoDatosInput.value);
-    const response = await enviarEdicionAAnteriores(parseInt(yearEdicionInput.value), fechaEnvioEmailFormatoISO, fechaBorradoDatosFormatoISO);
-    if (response.status === 'success') {
-        updateGeneralMessage('Edición enviada a ediciones anteriores exitosamente', 'text-success-02', true);
-        modalEnviarEdicionesAnteriores.close();
-        modalEdicionCreadaExito.showModal();
-        setTimeout(() => {
-            modalEdicionCreadaExito.close();
-            loadConfig();
-        }, 4000);
-    } else {
-        updateGeneralMessage('Error enviando edición a ediciones anteriores', 'text-error-01');
-    }
+    notification.show('¿Estás completamente segur@ de enviar esta edición a Ediciones Anteriores?',{
+        confirm: true,
+        confirmText: "Continuar",
+        onConfirm: async () => {
+            const fechaEnvioEmailFormatoISO = convertToISODate(fechaEnvioEmailInformativoInput.value);
+            const fechaBorradoDatosFormatoISO = convertToISODate(fechaBorradoDatosInput.value);
+            const response = await enviarEdicionAAnteriores(parseInt(yearEdicionInput.value), fechaEnvioEmailFormatoISO, fechaBorradoDatosFormatoISO);
+            if (response.status === 'success') {
+                updateGeneralMessage('Edición enviada a ediciones anteriores exitosamente', 'text-success-02', true);
+                modalEnviarEdicionesAnteriores.close();
+                modalEdicionCreadaExito.showModal();
+                setTimeout(() => {
+                    modalEdicionCreadaExito.close();
+                    loadConfig();
+                }, 4000);
+            } else {
+                updateGeneralMessage('Error enviando edición a ediciones anteriores', 'text-error-01');
+            }
+        }
+    });
 });
 
 function validarDatosEnvioEdicionesAnteriores() {
@@ -492,7 +489,7 @@ async function publicarCambios() {
         }
 
 
-        updateGeneralMessage('Guardando cambios...', 'text-information-02', true);
+        updateGeneralMessage('Guardando cambios...', 'a', true);
 
         const updatePreEventDataResponse = await actualizarDatosPreEvento(tituloEventoInput.value, fechaEventoInput.value, horaEventoInput.value, ubicacionEventoInput.value, descripcionInput.value, streamingToggleContainer.classList.contains('enabled') ? 'true' : 'false', urlStreamingInput.value);
         if (updatePreEventDataResponse.status !== 'success') {
@@ -502,7 +499,7 @@ async function publicarCambios() {
     } else if (modo === 'post-evento') {
         const isResumenValid = validatePostEventoResumen(true);
 
-        updateGeneralMessage('Guardando cambios...', 'text-information-02', true);
+        updateGeneralMessage('Guardando cambios...', 'a', true);
 
 
         const idArchivoList = [];
@@ -577,7 +574,6 @@ function renderizarUI(data) {
         cambiarModo('post-evento');
     }
 
-    fechaUltimaModificacionText.textContent = config.fechaUltimaModificacionConfiguracion;
     tituloEventoInput.value = config.galaPreEventoTitulo || '';
 
     if (config.galaPreEventoFecha) {
@@ -814,13 +810,10 @@ async function loadConfig() {
  * published
  */
 function updateConfigStatus(status){
-    publishedText.classList.add('hidden-force');
     unsavedChangesWarning.classList.add('hidden-force');
 
     if (status === 'pendingChanges') {
         unsavedChangesWarning.classList.remove('hidden-force');
-    } else if (status === 'published') {
-        publishedText.classList.remove('hidden-force');
     }
 }
 

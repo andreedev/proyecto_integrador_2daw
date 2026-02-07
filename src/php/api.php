@@ -1141,60 +1141,63 @@ function contarParticipantesEdicionActual() {
 function enviarEdicionAAnteriores() {
     global $conexion;
 
-    $idEdicionActual = obtenerIdEdicionActual();
+    $conexion->begin_transaction();
+    try{
 
-    $anioEdicion = (int)$_POST['anioEdicion'];
-    $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
-    $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
-    $nroParticipantes = contarParticipantesEdicionActual();
+        $idEdicionActual = obtenerIdEdicionActual();
 
+        $anioEdicion = (int)$_POST['anioEdicion'];
+        $fechaEnvioEmailInformativo = $_POST['fechaEnvioEmailInformativo'];
+        $fechaBorradoDatos = $_POST['fechaBorradoDatos'];
+        $nroParticipantes = contarParticipantesEdicionActual();
 
-    $stmtTipo = $conexion->prepare("UPDATE edicion SET tipo = 'anterior', anio_edicion = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE tipo = 'actual'");
-    $stmtTipo->bind_param("iiss", $anioEdicion, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos);
+        // Actualizar tipo de edición actual a 'anterior'
+        $stmtTipo = $conexion->prepare("UPDATE edicion SET tipo = 'anterior', anio_edicion = ?, nro_participantes = ?, fecha_envio_email_informativo = ?, fecha_borrado_datos = ? WHERE tipo = 'actual'");
+        $stmtTipo->bind_param("iiss", $anioEdicion, $nroParticipantes, $fechaEnvioEmailInformativo, $fechaBorradoDatos);
+        $stmtTipo->execute();
+        $stmtTipo->close();
 
-    if ($stmtTipo->execute()) {
+        // Obtener ganadores para mover a tabla ganadores_edicion
+        $stmtGanadores = $conexion->prepare("SELECT c.id_candidatura, part.nombre AS nombreParticipante, cat.nombre AS categoria, p.nombre AS premio, c.id_archivo_video 
+                                             FROM premio_candidatura pc
+                                             INNER JOIN premio p ON pc.id_premio = p.id_premio
+                                             INNER JOIN categoria cat ON p.id_categoria = cat.id_categoria
+                                             INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
+                                             INNER JOIN participante part ON c.id_participante = part.id_participante");
+        $stmtGanadores->execute();
+        $resultGanadores = $stmtGanadores->get_result();
 
-        // mover de tabla premio_candidatura a tabla ganadores_edicion
-        $queryGanadores = "SELECT c.id_candidatura, part.nombre AS nombreParticipante, cat.nombre AS categoria, p.nombre AS premio, c.id_archivo_video FROM premio_candidatura pc
-                           INNER JOIN premio p ON pc.id_premio = p.id_premio
-                           INNER JOIN categoria cat ON p.id_categoria = cat.id_categoria
-                           INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
-                           INNER JOIN participante part ON c.id_participante = part.id_participante";
-
-        $conexion->prepare($queryGanadores);
-        $resultGanadores = $conexion->query($queryGanadores);
-        $resultGanadores = $resultGanadores->get_result();
-
+        // Preparar statement para insertar ganadores
         $stmtInsertGanador = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
 
-        // insertar cada ganador
+        // Insertar cada ganador
         while ($ganador = $resultGanadores->fetch_assoc()) {
             $stmtInsertGanador->bind_param("isssi", $idEdicionActual, $ganador['categoria'], $ganador['nombreParticipante'], $ganador['premio'], $ganador['id_archivo_video']);
             $stmtInsertGanador->execute();
         }
+        $stmtInsertGanador->close();
+        $stmtGanadores->close();
 
         // eliminar historial_candidatura y candidaturas no ganadores
-        $eliminarHistorialSql = "DELETE hc FROM historial_candidatura hc
-                             INNER JOIN candidatura c ON hc.id_candidatura = c.id_candidatura
-                             LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
-                             WHERE pc.id_candidatura IS NULL";
+        $stmtEliminarHistorial = $conexion->prepare("DELETE hc FROM historial_candidatura hc
+                                                     INNER JOIN candidatura c ON hc.id_candidatura = c.id_candidatura
+                                                     LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
+                                                     WHERE pc.id_candidatura IS NULL");
+        $stmtEliminarHistorial->execute();
+        $stmtEliminarHistorial->close();
 
-        $conexion->prepare($eliminarHistorialSql);
-        $conexion->query($eliminarHistorialSql);
-
-        // eliminar candidaturas no ganadores
-        $eliminarCandidaturasSql = "DELETE c FROM candidatura c
-                                    LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
-                                    WHERE pc.id_candidatura IS NULL";
-        $conexion->prepare($eliminarCandidaturasSql);
-        $conexion->query($eliminarCandidaturasSql);
+        // Eliminar candidaturas no ganadoras
+        $stmtEliminarCandidaturas = $conexion->prepare("DELETE c FROM candidatura c
+                                                        LEFT JOIN premio_candidatura pc ON c.id_candidatura = pc.id_candidatura
+                                                        WHERE pc.id_candidatura IS NULL");
+        $stmtEliminarCandidaturas->execute();
+        $stmtEliminarCandidaturas->close();
 
         // eliminar premios asociados a candidaturas
-        $eliminarPremiosSql = "DELETE pc FROM premio_candidatura pc
-                              INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura";
-        $conexion->prepare($eliminarPremiosSql);
-        $conexion->query($eliminarPremiosSql);
-
+        $stmtEliminarPremios = $conexion->prepare("DELETE pc FROM premio_candidatura pc
+                          INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura");
+        $stmtEliminarPremios->execute();
+        $stmtEliminarPremios->close();
 
         // crear nueva edicion actual del proximo año
         $nuevoAnioEdicion = $anioEdicion + 1;
@@ -1202,14 +1205,18 @@ function enviarEdicionAAnteriores() {
         $stmtNuevaEdicion = $conexion->prepare("INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, fecha_envio_email_informativo, fecha_borrado_datos, tipo, id_organizador) VALUES (?, ?, 0, CURDATE(), CURDATE(), 'actual', 1)");
         $stmtNuevaEdicion->bind_param("is", $nuevoAnioEdicion, $nuevoResumen);
         $stmtNuevaEdicion->execute();
+        $stmtNuevaEdicion->close();
 
-        // actualizar modo a pre-evento
+        // Actualizar modo a pre-evento
         $stmtModo = $conexion->prepare("UPDATE configuracion SET valor = 'pre-evento' WHERE nombre = 'modo'");
         $stmtModo->execute();
+        $stmtModo->close();
 
+        $conexion->commit();
         echo json_encode(["status" => "success", "message" => "Edición enviada a anteriores correctamente"]);
-    } else {
-        echo json_encode(["status" => "error", "message" => "Error al enviar la edición a anteriores"]);
+    } catch (Exception $e) {
+        $conexion->rollback();
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
     }
 }
 

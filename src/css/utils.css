@@ -49,7 +49,7 @@
         display: flex;
     }
     .d-md-block{
-        display: block;
+        display: block !important;
     }
     .d-md-none{
         display: none;
@@ -1011,8 +1011,20 @@
     max-width: 1300px;
 }
 
+.h-auto{
+    height: auto;
+}
+
 .h-100{
     height: 100%;
+}
+
+.h-90vh{
+    height: 90vh;
+}
+
+.h-100vh{
+    height: 100vh;
 }
 
 .h-8px{
