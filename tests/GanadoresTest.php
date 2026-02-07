@@ -62,11 +62,14 @@ class GanadoresTest extends PHPUnit\Framework\TestCase
         $this->assertIsArray($data['data'], "El campo data debería ser un array");
     }
 
+    /**
+     * Test para asignar a un ganador. 
+     */
     public function testAsignarGanador()
     {
         global $conexion;
 
-        // 1. Desactivamos llaves foráneas para que nos deje insertar IDs 999 
+        // 1. Desactivamos las claves foráneas para que nos deje insertar IDs 999 
         // sin que existan realmente en las otras tablas (evita el error de Foreign Key)
         $conexion->query("SET FOREIGN_KEY_CHECKS = 0");
 
@@ -83,7 +86,6 @@ class GanadoresTest extends PHPUnit\Framework\TestCase
             if (ob_get_level() > 0) ob_end_clean();
             $this->fail("Error de base de datos: " . $e->getMessage());
         } finally {
-            // MUY IMPORTANTE: Volver a activar las llaves foráneas
             $conexion->query("SET FOREIGN_KEY_CHECKS = 1");
         }
 
@@ -93,6 +95,9 @@ class GanadoresTest extends PHPUnit\Framework\TestCase
         $this->assertEquals('Ganador asignado correctamente', $data['message']);
     }
 
+    /**
+     * Tets paar cuando deasignan a un ganador.
+     */
     public function testDesasignarGanador()
     {
         $_POST['idPremio'] = 999;

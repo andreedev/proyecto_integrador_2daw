@@ -26,7 +26,6 @@ class AdminModoEventoTest extends PHPUnit\Framework\TestCase {
         global $conexion;
         $conexion->begin_transaction();
 
-        // IMPORTANTE: Para que los UPDATE funcionen, las filas deben existir.
         // Insertamos las claves necesarias en la tabla configuración.
         $claves = [
             'modo', 'galaPreEventoTitulo', 'galaPreEventoFecha', 'galaPreEventoHora',
