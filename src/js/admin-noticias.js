@@ -12,9 +12,11 @@ const fechaPublicacion = document.getElementById('fechaPublicacion');
 const imagenInput = document.getElementById('imagenInput');
 const tituloModal = document.getElementById('tituloModal');
 const notification = document.getElementById('notification');
+const pagination = document.getElementById('pagination');
 
 let modoModal = 'agregar'; // 'agregar' o 'editar'
 let idNoticiaActual = null;
+let pageSize = 5;
 
 // Event Listeners
 searchInput.addEventListener('keyup', (event) => {
@@ -28,6 +30,11 @@ btnAgregarNoticia.addEventListener('click', () => {
     modoModal = 'agregar';
     tituloModal.textContent = 'Agregar noticia';
 });
+
+pagination.addEventListener('page-change', async (event) => {
+    await cargarNoticias();
+});
+
 
 primaryModalActionBtn.addEventListener('click', async () => {
     if (modoModal === 'agregar') {
@@ -97,11 +104,9 @@ function renderizarNoticias(noticias) {
 
     noticias.forEach(noticia => {
         const noticiaDate = convertISOStringToDate(noticia.fechaNoticia);
-        const publicada = noticiaDate > new Date();
 
-        const estado = !publicada ? 'Programada' : 'Publicado';
-        const statusClass = !publicada ? 'text-neutral-02' : 'text-success';
-        const iconStatusClass = !publicada ? 'icon-sand-clock' : 'icon-small-check';
+        const statusClass = noticia.estadoNoticia=='Publicada' ? 'text-neutral-02' : 'text-success';
+        const iconStatusClass = noticia.estadoNoticia=='Programada' ? 'icon-sand-clock' : 'icon-small-check';
         const fechaFormateada = humanizeDate(noticiaDate);
 
         const noticiaElement = document.createElement('div');
@@ -155,7 +160,7 @@ function renderizarNoticias(noticias) {
                 </div>
                 <div class="d-flex align-items-center gap-12px">
                     <span class="${iconStatusClass} bg-neutral-03 w-20px h-20px"></span>
-                    <div class="${statusClass}">${estado}</div>
+                    <div class="${statusClass}">${noticia.estadoNoticia}</div>
                 </div>
             </div>
             <p class="news-paragraph">${noticia.descripcionNoticia}</p>
@@ -174,9 +179,13 @@ function renderizarNoticias(noticias) {
 
 async function cargarNoticias() {
     const filtroNombre = searchInput.value.trim();
-    const response = await listarNoticias(filtroNombre);
+    const response = await listarNoticias(filtroNombre, pagination.currentPage, pageSize);
     if (response.status !== 'success') throw new Error('Error al cargar las noticias');
-    renderizarNoticias(response.data);
+    const list = response.data.list;
+    const totalRecords = response.data.totalRecords;
+    const totalPages = response.data.totalPages;
+    pagination.setAttribute('total-pages',totalPages);
+    renderizarNoticias(list);
 }
 
 

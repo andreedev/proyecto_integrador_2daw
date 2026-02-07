@@ -228,10 +228,12 @@ async function cargarConfiguracion() {
 /**
  * Guardar configuración
  */
-async function listarNoticias(filtroNombre) {
+async function listarNoticias(filtroNombre, page, pageSize) {
     const formData = new FormData();
     formData.append('action', 'listarNoticias');
     formData.append('filtroNombre', filtroNombre);
+    formData.append('page', page);
+    formData.append('pageSize', pageSize);
 
     return await fetchAPI(formData);
 }

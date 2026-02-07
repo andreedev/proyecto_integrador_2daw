@@ -1223,8 +1223,12 @@ function enviarEdicionAAnteriores() {
 /**
  * Listar noticias
  */
-function listarNoticias() {
+function listarNoticias(): void {
     global $conexion;
+
+    $page = (int) $_POST['page'] ?? 1;
+    $pageSize = (int) $_POST['pageSize'] ?? 5;
+    $offset = ($page - 1) * $pageSize;
 
     $filtroNombre = !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
     $filtrosSql = "";
@@ -1232,17 +1236,26 @@ function listarNoticias() {
         $filtrosSql .= " AND n.nombre LIKE '%" . $conexion->real_escape_string($filtroNombre) . "%' ";
     }
 
-    $baseUrl = obtenerBaseUrl();
+    $countQuery = "SELECT COUNT(*) as total FROM noticia n WHERE true " . $filtrosSql;
+    $resultCount = $conexion->query($countQuery);
+    $totalNoticias = 0;
+    if ($resultCount && $row = $resultCount->fetch_assoc()) {
+        $totalNoticias = (int)$row['total'];
+    }
+
     $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
-                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia, a.id_archivo as idArchivoImagenNoticia
+                n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia, a.id_archivo as idArchivoImagenNoticia,
+                IF(n.fecha > CURDATE(), 'Programada', 'Publicada') as estadoNoticia
               FROM noticia n
-              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . " ORDER BY n.fecha DESC";
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . " ORDER BY n.fecha DESC LIMIT ? OFFSET ?";
 
     $stmt = $conexion->prepare($query);
+    $stmt->bind_param("ii", $pageSize, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
 
     $noticias = [];
+    $baseUrl = obtenerBaseUrl();
     while ($row = $result->fetch_assoc()) {
         if ($row['rutaImagenNoticia']) {
             $row['rutaImagenNoticia'] = $baseUrl . $row['rutaImagenNoticia'];
@@ -1250,7 +1263,12 @@ function listarNoticias() {
         $noticias[] = $row;
     }
 
-    echo json_encode(["status" => "success", "data" => $noticias]);
+    $pageContext = PageContext::create($totalNoticias, $page, $pageSize, $noticias);
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $pageContext
+    ]);
 }
 
 /**
