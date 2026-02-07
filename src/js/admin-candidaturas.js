@@ -31,6 +31,7 @@ const fechaActualizacionInput = document.getElementById('fechaActualizacionInput
 const btnVerDocumentos = document.getElementById('btnVerDocumentos');
 
 let candidaturaSeleccionada = null;
+let pageSize=5;
 
 filtroEstado.setOptions([
     {value: '', label: 'Todos los estados', default: true},
@@ -133,8 +134,8 @@ async function cargarCandidaturas() {
         const estado = filtroEstado.value;
         const tipo = filtroTipo.value;
         const fecha = filtroFecha.getISOValue();
-        const pagina = paginacionCandidaturas.currentPage;
-        const response = await listarCandidaturasAdmin(texto, tipo, estado, fecha, pagina);
+        const page = paginacionCandidaturas.currentPage;
+        const response = await listarCandidaturasAdmin(texto, tipo, estado, fecha, page, pageSize);
         if (!response || response.status !== 'success') {
             showNotification('Error al cargar candidaturas');
             return;
@@ -164,8 +165,8 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
 
         const estadoKey = getEstadoKey(c.estado);
         const estadoTexto = statusLabels[estadoKey] || c.estado;
-        const fPresentacion = formatDateTimeToSpanish(c.fecha_presentacion);
-        const fModificacion = formatDateTimeToSpanish(c.fecha_ultima_modificacion);
+        const fPresentacion = formatDateTimeToSpanish(c.fechaPresentacion);
+        const fModificacion = formatDateTimeToSpanish(c.fechaUltimaModificacion);
 
         const tdParticipante = document.createElement('td');
         tdParticipante.innerHTML = `
@@ -179,10 +180,13 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
 
         const tdSinopsis = document.createElement('td');
         tdSinopsis.className = 'text-neutral-04 fs-12px max-w-200px';
-        tdSinopsis.textContent = c.sinopsis;
+        const divSinopsis = document.createElement('div');
+        divSinopsis.className = ' text-truncate-multiline';
+        divSinopsis.textContent = c.sinopsis;
+        tdSinopsis.appendChild(divSinopsis);
 
         const tdTipoCandidatura = document.createElement('td');
-        tdTipoCandidatura.textContent = capitalize(c.tipo_candidatura);
+        tdTipoCandidatura.textContent = capitalize(c.tipoCandidatura);
 
         const tdEstado = document.createElement('td');
         const badge = document.createElement('span');
@@ -210,7 +214,7 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
             modalDocumentos.open();
         });
         const btnHistory = createBtn('Historial', 'secondary-button-02', async () => {
-            if (renderizarHistorial(await cargarHistorialCandidatura(c.id_candidatura))){
+            if (renderizarHistorial(await cargarHistorialCandidatura(c.idCandidatura))){
                 modalHistorialEstado.open();
             }
         });
@@ -280,23 +284,15 @@ function createBtn(text, className, onClick) {
 }
 
 function renderizarDocumentos(c) {
-    const videoContainer = document.getElementById('videoCorto');
+    const videoCorto = document.getElementById('videoCorto');
     const cartelImg = document.getElementById('cartel');
     const fichaTecnicaContainer = document.getElementById('fichaTecnica');
-    const trailerContainer = document.getElementById('trailerCorto');
+    const trailerCorto = document.getElementById('trailerCorto');
 
     const tabVideo = document.querySelector('[data-tab="video"]');
     if (tabVideo) tabVideo.click();
 
-    videoContainer.innerHTML = `
-            <video 
-                id="playerCandidatura"
-                controls 
-                preload="metadata" 
-                class="w-100 h-100 bg-neutral-09 object-fit-contain"
-            >
-                <source src="${c.rutaVideo}" type="video/mp4">
-            </video>`;
+    videoCorto.setSource(c.rutaVideo);
 
     cartelImg.src = c.rutaCartel;
 
@@ -317,21 +313,16 @@ function renderizarDocumentos(c) {
                 />
             </div>`;
 
-    trailerContainer.innerHTML = `
-            <video 
-                id="playerTrailerCandidatura"
-                controls 
-                preload="metadata"
-                class="w-100 h-100 bg-neutral-09 object-fit-contain"
-            >
-                <source src="${c.rutaTrailer}" type="video/mp4">
-            </video>`;
+
+    if (c.rutaTrailer) {
+        trailerCorto.setSource(c.rutaTrailer);
+    }
 }
 
 btnConfimarCambioEstado.addEventListener('click', async () => {
     if (!motivoCambioEstado.validate(true).valid) return;
 
-    const response = await actualizarEstadoCandidatura(candidaturaSeleccionada.id_candidatura,  nuevoEstadoCandidatura.value, motivoCambioEstado.value.trim());
+    const response = await actualizarEstadoCandidatura(candidaturaSeleccionada.idCandidatura,  nuevoEstadoCandidatura.value, motivoCambioEstado.value.trim());
     if (!response || response.status !== 'success') {
         showNotification('Error al cambiar el estado de la candidatura');
         return;
@@ -349,8 +340,8 @@ function renderizarDetalleCandidatura(candidatura) {
     nroExpedienteInput2.value = candidatura.nroExpediente || '-';
     nroDocumentoInput.value = candidatura.dni || '-';
     sinopsisInput.value = candidatura.sinopsis || '-';
-    fechaPresentacionInput.setDate(convertISOStringToDate(candidatura.fecha_presentacion));
-    fechaActualizacionInput.setDate(convertISOStringToDate(candidatura.fecha_ultima_modificacion));
+    fechaPresentacionInput.setDate(convertISOStringToDate(candidatura.fechaPresentacion));
+    fechaActualizacionInput.setDate(convertISOStringToDate(candidatura.fechaUltimaModificacion));
 }
 
 
@@ -381,7 +372,8 @@ function renderizarHistorial(historial) {
     };
 
     historial.forEach((item, index) => {
-        const config = statusConfig[item.estado] || statusConfig[ESTADOS_CANDIDATURA.EN_REVISION];
+
+        const config = statusConfig[item.estado];
         const isRechazada = item.estado === ESTADOS_CANDIDATURA.RECHAZADA;
 
         const itemDiv = document.createElement('div');
@@ -414,7 +406,7 @@ function renderizarHistorial(historial) {
 
             <div class="d-flex flex-column flex-1 w-100">
                 <div class="d-flex align-items-center gap-16px">
-                    <span class="px-12px py-4px rounded-4px fs-8px fw-600 bg-${config.color}-04 text-${config.color}-01 border-solid  border-${config.color}-02">
+                    <span class="px-12px py-4px rounded-4px fs-8px fw-600 bg-${config.color}-04 text-${config.color}-01 border-solid border-${config.color}-02">
                         ${item.estado.toUpperCase()}
                     </span>
                     <span class="fs-12px text-neutral-04">
@@ -434,11 +426,11 @@ document.querySelectorAll('.tab-item').forEach(tab => {
     tab.addEventListener('click', () => {
         document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(p => {
-            p.classList.replace('d-block', 'd-none');
+            p.classList.replace('d-flex', 'd-none');
         });
 
         tab.classList.add('active');
         const targetPane = document.getElementById(`pane-${tab.dataset.tab}`);
-        targetPane.classList.replace('d-none', 'd-block');
+        targetPane.classList.replace('d-none', 'd-flex');
     });
 });

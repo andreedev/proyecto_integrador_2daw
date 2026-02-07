@@ -359,14 +359,15 @@ async function eliminarEvento(idEvento) {
 /**
  * Listar candidaturas para el admin
  */
-async function listarCandidaturasAdmin(filtroTexto, filtroTipo, filtroEstado, filtroFecha, pagina) {
+async function listarCandidaturasAdmin(filtroTexto, filtroTipo, filtroEstado, filtroFecha, page, pageSize) {
     const data = new FormData();
     data.append('action', 'listarCandidaturasAdmin');
     data.append('filtroTexto', filtroTexto);
     data.append('filtroTipo', filtroTipo);
     data.append('filtroEstado', filtroEstado);
     data.append('filtroFecha', filtroFecha);
-    data.append('pagina', pagina);
+    data.append('page', page);
+    data.append('pageSize', pageSize);
     return await fetchAPI(data);
 }
 

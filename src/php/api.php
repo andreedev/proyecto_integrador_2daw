@@ -1303,7 +1303,7 @@ function obtenerNoticiaPorId() {
 /**
  * Crear una nueva noticia
  */
-function crearNoticia() {
+function crearNoticia(): void {
     global $conexion;
 
     $nombre = $_POST['nombreNoticia'];
@@ -1324,7 +1324,7 @@ function crearNoticia() {
 /**
  * Actualizar una noticia
  */
-function actualizarNoticia() {
+function actualizarNoticia(): void {
     global $conexion;
 
     $idNoticia = (int)$_POST['idNoticia'];
@@ -1378,7 +1378,7 @@ function actualizarNoticia() {
 /**
  * Eliminar una noticia
  */
-function eliminarNoticia() {
+function eliminarNoticia(): void {
     global $conexion;
     $idNoticia = (int)$_POST['idNoticia'];
 
@@ -1403,7 +1403,7 @@ function eliminarNoticia() {
 /**
  * Listar eventos
  */
-function listarEventos() {
+function listarEventos(): void {
     global $conexion;
 
     $filtroFecha = !empty($_POST['filtroFecha']) ? $_POST['filtroFecha'] : null;
@@ -1438,7 +1438,7 @@ function listarEventos() {
 /**
  * Obtener un evento por id
  */
-function obtenerEventoPorId() {
+function obtenerEventoPorId(): void {
     global $conexion;
 
     $idEvento = (int)$_POST['idEvento'];
@@ -1470,7 +1470,7 @@ function obtenerEventoPorId() {
 /**
  * Crear evento
  */
-function crearEvento() {
+function crearEvento(): void {
     global $conexion;
 
     $nombre = $_POST['nombreEvento'];
@@ -1494,7 +1494,7 @@ function crearEvento() {
 /**
  *  Actualizar evento
  */
-function actualizarEvento() {
+function actualizarEvento(): void {
     global $conexion;
 
     $idEvento = (int)$_POST['idEvento'];
@@ -1578,8 +1578,8 @@ function eliminarEvento(): void {
 function listarCandidaturasAdmin(): void {
     global $conexion;
 
-    $pageSize  = 10;
-    $page = $_POST['pagina'] ?? 1;
+    $pageSize  = $_POST['pageSize'] ?? 10;
+    $page = $_POST['page'] ?? 1;
     $offset = ($page - 1) * $pageSize;
 
     $filtroTexto  = $_POST['filtroTexto'] ?? '';
@@ -1587,7 +1587,7 @@ function listarCandidaturasAdmin(): void {
     $filtroEstado = $_POST['filtroEstado'] ?? '';
     $filtroFecha  = $_POST['filtroFecha'] ?? '';
 
-    $whereSql = " WHERE 1=1 ";
+    $whereSql = " WHERE true ";
     $params = [];
     $types = "";
 
@@ -1629,8 +1629,21 @@ function listarCandidaturasAdmin(): void {
     $stmtCount->execute();
     $totalRecords = $stmtCount->get_result()->fetch_assoc()['total'] ?? 0;
 
-    $dataSql = "SELECT c.*, p.nombre AS participante, p.dni, p.nro_expediente as nroExpediente, 
-                       a1.ruta AS video, a2.ruta AS ficha, a3.ruta AS cartel, a4.ruta AS trailer
+    $dataSql = "SELECT c.id_candidatura as idCandidatura,
+                    c.id_participante,
+                    c.estado,
+                    c.tipo_candidatura as tipoCandidatura,
+                    c.fecha_presentacion as fechaPresentacion,
+                    c.fecha_ultima_modificacion as fechaUltimaModificacion,
+                    c.titulo,
+                    c.sinopsis,
+                    id_archivo_video as idArchivoVideo,
+                    id_archivo_ficha as idArchivoFicha,
+                    id_archivo_cartel as idArchivoCartel,
+                    id_archivo_trailer as idArchivoTrailer,
+                    p.nombre AS participante, p.dni, p.nro_expediente as nroExpediente, 
+                    a1.ruta AS video, a2.ruta AS ficha,
+                    a3.ruta AS cartel, a4.ruta AS trailer
                 FROM candidatura c
                 INNER JOIN participante p ON c.id_participante = p.id_participante
                 LEFT JOIN archivo a1 ON c.id_archivo_video = a1.id_archivo
@@ -1667,6 +1680,7 @@ function listarCandidaturasAdmin(): void {
         if ($row['trailer']) {
             $row['rutaTrailer'] = $baseUrl . $row['trailer'];
         }
+        unset($row['video'], $row['ficha'], $row['cartel'], $row['trailer']);
         $candidaturas[] = $row;
     }
 

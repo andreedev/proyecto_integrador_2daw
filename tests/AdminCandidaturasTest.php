@@ -68,7 +68,7 @@ class AdminCandidaturasTest extends PHPUnit\Framework\TestCase
     {
         $this->prepararEscenario("Juan", "Test de película");
 
-        $_POST = ['pagina' => 1, 'filtroTexto' => ''];
+        $_POST = ['filtroTexto' => ''];
 
         ob_start();
         listarCandidaturasAdmin();

@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center p-16px text-neutral-03">
-                            Mostrando &nbsp;<span id="totalPorPagina">999</span>&nbsp; de&nbsp;<span id="totalCandidaturas">999</span>&nbsp;candidaturas
+                            Mostrando&nbsp;<span id="totalPorPagina">999</span>&nbsp;de&nbsp;<span id="totalCandidaturas">999</span>&nbsp;candidaturas
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
         </div>
 
         <div class="d-flex flex-column p-24px gap-24px align-items-center flex-grow-1 overflow-y-auto">
-            <div class="d-flex justify-center justify-space-between border-bottom border-solid border-neutral-05 w-100">
+            <div class="d-flex justify-content-center justify-space-between border-bottom border-solid border-neutral-05 w-100">
                 <div class="tab-item cursor-pointer p-12px active" data-tab="video">
                     <span class="fs-14px text-neutral-03">Video</span>
                     <div class="tab-indicator bg-error-02 mx-auto mt-4px w-4px h-4px rounded-full"></div>
@@ -174,22 +174,20 @@
             </div>
 
             <div class="tab-content w-100 d-flex justify-space-between">
-                <div id="pane-video" class="tab-pane w-100 d-block">
-                    <div id="videoCorto" class="w-100 bg-neutral-06 overflow-hidden aspect-ratio-16-9">
+                <div id="pane-video" class="tab-pane w-100 d-flex">
+                    <video-player-component id="videoCorto"></video-player-component>
+                </div>
+                <div id="pane-cartel" class="tab-pane w-100 d-none justify-content-center align-items-center">
+                    <div class="poster-container d-flex justify-content-center">
+                        <img id="cartel" src="" alt="Cartel" class="h-100">
                     </div>
                 </div>
-                <div id="pane-cartel" class="tab-pane w-100 d-none">
-                    <div class="poster-container d-flex justify-center">
-                        <img id="cartel" src="" alt="Cartel" class="w-100 shadow-sm">
+                <div id="pane-ficha" class="tab-pane w-100 d-none justify-content-center align-items-center">
+                    <div id="fichaTecnica" class="w-100 bg-white p-16px border border-solid border-neutral-05">
                     </div>
                 </div>
-                <div id="pane-ficha" class="tab-pane w-100 d-none">
-                    <div id="fichaTecnica" class="w-100% bg-white p-16px border border-solid border-neutral-05">
-                    </div>
-                </div>
-                <div id="pane-trailer" class="tab-pane w-100 d-block">
-                    <div id="trailerCorto" class="w-100 bg-neutral-06 overflow-hidden aspect-ratio-16-9">
-                    </div>
+                <div id="pane-trailer" class="tab-pane w-100 d-none justify-content-center align-items-center">
+                    <video-player-component id="trailerCorto"></video-player-component>
                 </div>
             </div>
 
@@ -242,14 +240,14 @@
             <button class="primary-button-01 w-100" id="btnVerDocumentos">Ver documentos</button>
         </div>
     </modal-component>
-1
+
 
     <modal-component id="modalHistorialEstado" scrollable mobile-full-screen>
         <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
             <span class="fs-20px fw-600">Historial de estados</span>
             <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
         </div>
-        <div class="d-flex flex-column p-24px gap-24px align-items-center w-100">
+        <div class="d-flex flex-column p-24px gap-24px align-items-center w-100 overflow-y-auto flex-grow-1">
             <div class="w-100" id="timeline-container">
 
             </div>
@@ -266,6 +264,7 @@
     <script src="../js/components/input-component.js"></script>
     <script src="../js/components/date-component.js"></script>
     <script src="../js/components/file-component.js"></script>
+    <script src="../js/components/video-player-component.js"></script>
     <script src="../js/components/notification-component.js"></script>
     <script src="../js/admin-candidaturas.js"></script>
     <script src="../js/menu-admin.js"></script>

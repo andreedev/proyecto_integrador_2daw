@@ -10,5 +10,5 @@ uploads/public/_FESTIVAL_CORTOS_CABACERA_GENERAL_2_s3Edkcr.width-800.jpg
 # instalar PHPUnit si no está instalado
 composer require --dev phpunit/phpunit
 
-# ejecutar prueba
-./vendor/bin/phpunit tests/LoginTest.php
+# ejecutar pruebas
+./vendor/bin/phpunit tests
