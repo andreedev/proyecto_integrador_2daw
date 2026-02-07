@@ -38,7 +38,7 @@ class DateComponent extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['label', 'width', 'value', 'type', 'format', 'container', 'disabled', 'inline'];
+        return ['label', 'width', 'value', 'type', 'format', 'container', 'disabled', 'inline', 'min-date', 'max-date'];
     }
 
     async connectedCallback() {
@@ -65,6 +65,36 @@ class DateComponent extends HTMLElement {
 
         if (!anchorElement) return;
 
+        const minDateAttr = this.getAttribute('min-date');
+        const maxDateAttr = this.getAttribute('max-date');
+
+        let minDate = undefined;
+        let maxDate = undefined;
+
+        if (minDateAttr) {
+            if (minDateAttr === 'today') {
+                minDate = new Date();
+                minDate.setHours(0, 0, 0, 0);
+            } else {
+                const parsedMin = new Date(minDateAttr);
+                if (!isNaN(parsedMin.getTime())) {
+                    minDate = parsedMin;
+                }
+            }
+        }
+
+        if (maxDateAttr) {
+            if (maxDateAttr === 'today') {
+                maxDate = new Date();
+                maxDate.setHours(23, 59, 59, 999);
+            } else {
+                const parsedMax = new Date(maxDateAttr);
+                if (!isNaN(parsedMax.getTime())) {
+                    maxDate = parsedMax;
+                }
+            }
+        }
+
         const config = {
             container: containerElement,
             inline: isInline,
@@ -76,6 +106,8 @@ class DateComponent extends HTMLElement {
             minutesStep: 15,
             locale: this._getSpanishLocale(),
             buttons: this._getButtons(type),
+            ...(minDate !== undefined && { minDate }),
+            ...(maxDate !== undefined && { maxDate }),
             onShow: (isFinished) => {
                 if (isDisabled && isFinished) {
                     this._datepicker.hide();
@@ -241,7 +273,7 @@ class DateComponent extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'disabled' && oldValue !== newValue) {
+        if ((name === 'disabled' || name === 'min-date' || name === 'max-date') && oldValue !== newValue) {
             this.render();
             this._initPicker();
         }
