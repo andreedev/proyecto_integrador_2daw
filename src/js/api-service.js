@@ -74,9 +74,9 @@ async function subirArchivo(file) {
 /**
  * Listar categorías
  */
-async function listarCategorias(){
+async function listarCategoriasAdmin(){
     const data = new FormData();
-    data.append('action', 'obtenerCategorias');
+    data.append('action', 'listarCategoriasAdmin');
 
     return await fetchAPI(data);
 }

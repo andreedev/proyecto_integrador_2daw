@@ -1,23 +1,15 @@
 const categoriesContainer = document.getElementById('categoriesContainer');
-
-const puestoContainer = document.getElementById('puestoContainer');
-const puestoPremio = document.getElementById('puestoPremio');
 const puesto = document.querySelector('.puesto');
 const premio = document.querySelector('.premio');
-
 const ganador = document.querySelector('.ganador');
-
-const modalDesasignar = document.getElementById('modalDesasignar');
-const btnDesasignarGanador = document.getElementById('btnDesasignarGanador');
 
 //Cuando el botón esté en asignar ganador
 const modalAsignarGanador = document.getElementById('modalAsignarGanador');
 const btnAceptarGanador = document.getElementById('btnAceptarGanador');
-
+const notification = document.getElementById('notification');
 
 let idPremioSeleccionado;
 let idCandidaturaSeleccionada;
-
 
 /**
  * Renderiza las categorías
@@ -61,8 +53,6 @@ function renderizarCategorias(categorias){
             }
 
         });
-
-
 
         headerBloque.appendChild(nombreCategoria);
         headerBloque.appendChild(checkBoxInput);
@@ -117,7 +107,19 @@ function renderizarCategorias(categorias){
                     }
                     modalAsignarGanador.open();
                 } else {
-                    modalDesasignar.showModal();
+                    notification.show('¿Estás seguro de que deseas desasignar al ganador?', {
+                        confirm: true,
+                        confirmText: "Desasignar",
+                        onConfirm: async () => {
+                            const response = await desasignarGanador(premio.idPremio, premio.idCandidaturaGanador);
+                            if (response.status === 'success') {
+                                await cargarCategorias();
+                                notification.show('Ganador desasignado correctamente');
+                            } else {
+                                console.error('Error al desasignar el ganador:', response.message);
+                            }
+                        }
+                    });
                 }
                 if (btnAsignarDiv.textContent === 'Desasignar') {
                     idPremioSeleccionado = premio.idPremio;
@@ -145,14 +147,12 @@ function renderizarCategorias(categorias){
 
         categoriesContainer.appendChild(categoriaSuperContainer)
 
-
-
     });
 
 }
 
 async function cargarCategorias() {
-    const response = await listarCategorias();
+    const response = await listarCategoriasAdmin();
     renderizarCategorias(response.data);
 }
 
@@ -172,19 +172,19 @@ function renderizarFinalistasEnModal(finalistas) {
 
     finalistas.forEach(finalista => {
         const finalistaDiv = document.createElement('div');
-        finalistaDiv.classList.add('info-card-ganador', 'p-16px', 'd-flex', 'align-center', 'gap-24px', 'box-shadow-02');
+        finalistaDiv.classList.add('flex-row', 'p-16px', 'd-flex', 'align-center', 'gap-24px', 'box-shadow-02');
         finalistaDiv.innerHTML = `
-            <div class="seleccionar-ganador cursor-pointer">
+            <div class="seleccionar-ganador d-flex justify-content-center align-items-center border border-neutral-02 w-24px h-24px cursor-pointer">
                 <span class="icon-small-check w-24px h-24px bg-neutral-01 hidden-force"></span>
             </div>
-            <div class="info-ganador d-flex flex-column gap-4px min-w-1px flex-shrink-1">
-                <span class="name-ganador">${finalista.nombreParticipante}</span>
-                <span class="gmail-ganador">${finalista.correoParticipante}</span>
-                <span class="descripcion-corto-ganador text-truncate-multiline-3">${finalista.sinopsis}</span>
+            <div class="d-flex flex-column gap-4px min-w-1px flex-shrink-1">
+                <span>${finalista.nombreParticipante}</span>
+                <span class="fs-12px text-neutral-03 ">${finalista.correoParticipante}</span>
+                <span class="fs-12px text-neutral-03 text-truncate-multiline-3">${finalista.sinopsis}</span>
             </div>
-            <div class="fecha-presentacion">
-                <span class="presentacion">Presentacion</span>
-                <span class="fecha">${new Date(finalista.fechaPresentacion).toLocaleDateString()}</span>
+            <div>
+                <span class="fs-12px text-neutral-03">Presentacion</span>
+                <span class="fs-12px text-neutral-01">${new Date(finalista.fechaPresentacion).toLocaleDateString()}</span>
             </div>
         `;
 
@@ -213,16 +213,6 @@ function renderizarFinalistasEnModal(finalistas) {
         finalistasContainer.appendChild(finalistaDiv);
     });
 }
-
-btnDesasignarGanador.addEventListener('click', async () => {
-    const response = await desasignarGanador(idPremioSeleccionado, idCandidaturaSeleccionada);
-    if (response.status === 'success') {
-        modalDesasignar.close();
-        await cargarCategorias();
-    } else {
-        console.error('Error al desasignar el ganador:', response.message);
-    }
-});
 
 
 cargarCategorias();

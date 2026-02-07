@@ -81,9 +81,9 @@ if (isset($_POST['action'])) {
             validarRol(['organizador']);
             eliminarPatrocinador();
             break;
-        case 'obtenerCategorias':
+        case 'listarCategoriasAdmin':
             validarRol(['organizador']);
-            obtenerCategoriasYSusPremios();
+            listarCategoriasAdmin();
             break;
         case 'listarFinalistasNoGanadores':
             validarRol(['organizador']);
@@ -718,7 +718,7 @@ function obtenerBaseUrl() {
 /**
  * Obtener categorías y sus premios asociados
  */
-function obtenerCategoriasYSusPremios() {
+function listarCategoriasAdmin(): void {
     global $conexion;
 
     $queryCategorias = "SELECT * FROM categoria";
@@ -729,7 +729,7 @@ function obtenerCategoriasYSusPremios() {
     while ($categoria = $resultCategorias->fetch_assoc()) {
         $idCategoria = $categoria['id_categoria'];
 
-        $queryPremios = "SELECT c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador 
+        $queryPremios = "SELECT c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador
             FROM categoria c 
             RIGHT JOIN premio p on p.id_categoria = c.id_categoria
             LEFT JOIN premio_candidatura pm on pm.id_premio = p.id_premio
@@ -762,7 +762,7 @@ function obtenerCategoriasYSusPremios() {
 function listarFinalistasNoGanadores() {
     global $conexion;
 
-    $query = "SELECT c.id_candidatura as idCandidatura, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, pc.nombre AS nombreParticipante, pc.correo as correoParticipante
+    $query = "SELECT c.id_candidatura as idCandidatura, c.titulo, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, pc.nombre AS nombreParticipante, pc.correo as correoParticipante
               FROM candidatura c
               INNER JOIN participante pc ON c.id_participante = pc.id_participante
               INNER JOIN archivo a ON c.id_archivo_video = a.id_archivo
