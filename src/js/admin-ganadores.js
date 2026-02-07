@@ -11,6 +11,14 @@ const notification = document.getElementById('notification');
 let idPremioSeleccionado;
 let idCandidaturaSeleccionada;
 
+btnAceptarGanador.addEventListener('click', async () => {
+    if (!idCandidaturaSeleccionada) {
+        notification.show('Por favor, selecciona un finalista para asignar como ganador.');
+        return;
+    }
+    await handleAsignarGanador(idCandidaturaSeleccionada);
+});
+
 /**
  * Renderiza las categorías
  */
@@ -164,6 +172,8 @@ function renderizarFinalistasEnModal(finalistas) {
     const finalistasContainer = document.getElementById('finalistasContainer');
     finalistasContainer.replaceChildren();
 
+    btnAceptarGanador.disabled = false;
+
     if (finalistas.length === 0) {
         finalistasContainer.innerHTML = '<p>No hay finalistas disponibles para asignar como ganador.</p>';
         btnAceptarGanador.disabled = true;
@@ -171,47 +181,41 @@ function renderizarFinalistasEnModal(finalistas) {
     }
 
     finalistas.forEach(finalista => {
-        const finalistaDiv = document.createElement('div');
-        finalistaDiv.classList.add('flex-row', 'p-16px', 'd-flex', 'align-center', 'gap-24px', 'box-shadow-02');
-        finalistaDiv.innerHTML = `
-            <div class="seleccionar-ganador d-flex justify-content-center align-items-center border border-neutral-02 w-24px h-24px cursor-pointer">
-                <span class="icon-small-check w-24px h-24px bg-neutral-01 hidden-force"></span>
-            </div>
-            <div class="d-flex flex-column gap-4px min-w-1px flex-shrink-1">
-                <span>${finalista.nombreParticipante}</span>
-                <span class="fs-12px text-neutral-03 ">${finalista.correoParticipante}</span>
-                <span class="fs-12px text-neutral-03 text-truncate-multiline-3">${finalista.sinopsis}</span>
-            </div>
-            <div>
-                <span class="fs-12px text-neutral-03">Presentacion</span>
-                <span class="fs-12px text-neutral-01">${new Date(finalista.fechaPresentacion).toLocaleDateString()}</span>
-            </div>
-        `;
-
-        finalistaDiv.addEventListener('click', () => {
-            const seleccionarGanadorElements = finalistasContainer.querySelectorAll('.seleccionar-ganador');
-            seleccionarGanadorElements.forEach(element => {
-                element.firstElementChild.classList.add('hidden-force');
-            });
-
-            const seleccionarGanador = finalistaDiv.querySelector('.seleccionar-ganador');
-            seleccionarGanador.firstElementChild.classList.remove('hidden-force');
-
-            btnAceptarGanador.disabled = false;
-
-            btnAceptarGanador.onclick = async () => {
-                const response = await asignarGanador(idPremioSeleccionado, finalista.idCandidatura);
-                if (response.status === 'success') {
-                    modalAsignarGanador.close();
-                    await cargarCategorias();
-                } else {
-                    console.error('Error al asignar el ganador:', response.message);
-                }
-            };
+        const finalist = document.createElement('finalist-card-component');
+        finalist.setData({
+            idCandidatura: finalista.idCandidatura,
+            nombreParticipante: finalista.nombreParticipante,
+            titulo: finalista.titulo,
+            correoParticipante: finalista.correoParticipante,
+            sinopsis: finalista.sinopsis,
+            fechaPresentacion: finalista.fechaPresentacion
         });
-
-        finalistasContainer.appendChild(finalistaDiv);
+        finalist.addEventListener('finalist-select', (e) => {
+            idCandidaturaSeleccionada = e.detail.data.idCandidatura;
+            document.querySelectorAll('finalist-card-component').forEach(card => {
+                if (card !== finalist) {
+                    card.unselect();
+                }
+            });
+        });
+        finalist.addEventListener('finalist-unselect', (e) => {
+            if (idCandidaturaSeleccionada === e.detail.data.idCandidatura) {
+                idCandidaturaSeleccionada = null;
+            }
+        });
+        finalistasContainer.appendChild(finalist);
     });
+}
+
+async function handleAsignarGanador(idCandidatura) {
+    const response = await asignarGanador(idPremioSeleccionado, idCandidatura);
+    if (response.status === 'success') {
+        modalAsignarGanador.close();
+        notification.show(response.message);
+        await cargarCategorias();
+    } else {
+        notification.show('Error al asignar el ganador: ' + response.message);
+    }
 }
 
 

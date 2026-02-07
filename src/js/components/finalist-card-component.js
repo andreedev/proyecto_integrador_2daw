@@ -144,12 +144,12 @@ class FinalistCardComponent extends HTMLElement {
 
         if (this._selected) {
             container.classList.add('is-selected');
-            circle.classList.add('border-primary-01');
+            circle.classList.add('border-neutral-01');
             circle.classList.remove('border-neutral-02');
             innerDot.classList.remove('d-none');
         } else {
             container.classList.remove('is-selected');
-            circle.classList.remove('border-primary-01');
+            circle.classList.remove('border-neutral-01');
             circle.classList.add('border-neutral-02');
             innerDot.classList.add('d-none');
         }
@@ -189,7 +189,7 @@ class FinalistCardComponent extends HTMLElement {
             <div class="finalist-card-container d-flex flex-row p-16px align-items-start gap-24px box-shadow-02 bg-neutral-09 cursor-pointer transition-all-300ms">
                 <div class="finalist-selection-wrapper d-flex justify-content-center align-items-center">
                     <div class="finalist-selection-circle d-flex justify-content-center align-items-center border border-neutral-02 w-24px h-24px min-w-24px border-radius-50">
-                        <div class="finalist-selection-dot w-12px h-12px bg-primary-01 border-radius-50 d-none"></div>
+                        <div class="finalist-selection-dot w-12px h-12px bg-neutral-01 border-radius-50 d-none"></div>
                     </div>
                 </div>
                 
@@ -209,10 +209,10 @@ class FinalistCardComponent extends HTMLElement {
         const style = document.createElement('style');
         style.textContent = `
             finalist-card-component .finalist-card-container.is-hover {
-                background-color: var(--neutral-08, #f5f5f5);
+                background-color: var(--neutral-06);
             }
             finalist-card-component .finalist-card-container.is-selected {
-                background-color: var(--neutral-08, #f5f5f5);
+                background-color: var(--neutral-06);
             }
         `;
 
