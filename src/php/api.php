@@ -591,7 +591,13 @@ function eliminarArchivoPorId($idArchivo): bool {
 function listarPatrocinadoresAdmin() {
     global $conexion;
 
-    $query = "SELECT p.id_patrocinador as idPatrocinador, p.nombre as nombrePatrocinador, a.ruta as rutaArchivoLogo, a.id_archivo as idArchivoLogo FROM patrocinador p LEFT JOIN archivo a ON p.id_archivo_logo = a.id_archivo";
+    $query = "SELECT 
+                p.id_patrocinador as idPatrocinador,
+                p.nombre as nombrePatrocinador,
+                a.id_archivo as idArchivoLogo,
+                a.ruta as rutaArchivoLogo,
+                a.id_archivo as idArchivoLogo 
+            FROM patrocinador p LEFT JOIN archivo a ON p.id_archivo_logo = a.id_archivo";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();
@@ -650,45 +656,16 @@ function actualizarPatrocinador() {
 
     $idPatrocinador = (int)$_POST['idPatrocinador'];
     $nombre = $_POST['nombre'];
-    $idArchivoNuevo = (int)$_POST['idArchivoLogo'];
-
-    $idLogoAnterior = null;
-    $stmtLogo = $conexion->prepare("SELECT id_archivo_logo FROM patrocinador WHERE id_patrocinador = ?");
-    $stmtLogo->bind_param("i", $idPatrocinador);
-    $stmtLogo->execute();
-    $res = $stmtLogo->get_result();
-    if ($row = $res->fetch_assoc()) {
-        $idLogoAnterior = (int)$row['id_archivo_logo'];
-    }
-
-    if ($idLogoAnterior !== null && $idLogoAnterior !== $idArchivoNuevo) {
-        $stmtRutas = $conexion->prepare("
-            SELECT 
-                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaVieja,
-                (SELECT ruta FROM archivo WHERE id_archivo = ?) as rutaNueva
-        ");
-        $stmtRutas->bind_param("ii", $idLogoAnterior, $idArchivoNuevo);
-        $stmtRutas->execute();
-        $rutas = $stmtRutas->get_result()->fetch_assoc();
-
-        if ($rutas['rutaVieja'] === $rutas['rutaNueva']) {
-            $conexion->prepare("DELETE FROM archivo WHERE id_archivo = ?")
-                ->bind_param("i", $idArchivoNuevo)
-                ->execute();
-            $idArchivoNuevo = $idLogoAnterior;
-            $idLogoAnterior = null;
-        }
-    }
+    $idArchivoLogo = (int)$_POST['idArchivoLogo'];
 
     $stmt = $conexion->prepare("UPDATE patrocinador SET nombre = ?, id_archivo_logo = ? WHERE id_patrocinador = ?");
-    $stmt->bind_param("sii", $nombre, $idArchivoNuevo, $idPatrocinador);
+    $stmt->bind_param("sii", $nombre, $idArchivoLogo, $idPatrocinador);
 
     if ($stmt->execute()) {
-        // Solo eliminamos el anterior si realmente es un archivo distinto
-        if ($idLogoAnterior !== null && $idLogoAnterior !== $idArchivoNuevo) {
-            eliminarArchivoPorId($idLogoAnterior);
-        }
-        echo json_encode(["status" => "success"]);
+        echo json_encode([
+            "status" => "success",
+            "message" => "Patrocinador actualizado correctamente"
+        ]);
     } else {
         echo json_encode(["status" => "error", "message" => "Error al actualizar"]);
     }
