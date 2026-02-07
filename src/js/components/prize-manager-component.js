@@ -59,7 +59,7 @@ class PrizeManagerComponent extends HTMLElement {
         const rewardInput = this.querySelector('#prizeDescriptionInput');
         const extraInput = this.querySelector('#objetoAdicionalInput');
 
-        if (nameInput.validate().valid) {
+        if (nameInput.validate(false).valid) {
             const rewardVal = rewardInput.value.trim();
             const extraVal = extraInput.value.trim();
             const hasMoney = rewardVal.length > 0;
