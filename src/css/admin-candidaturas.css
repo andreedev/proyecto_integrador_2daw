@@ -20,7 +20,7 @@ h1 {
 .table-wrapper {
     background: var(--neutral-09);
     border: 1px solid var(--neutral-05);
-    overflow: hidden;
+    overflow-x: auto;
 }
 
 table {
