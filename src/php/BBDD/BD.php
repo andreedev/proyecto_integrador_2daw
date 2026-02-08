@@ -174,31 +174,73 @@ function crearBaseDatosSiNoExiste(): void {
                 -- =========================
                 -- INSERTS
                 
-                INSERT INTO archivo (id_archivo, ruta) VALUES
-                (1, 'uploads/public/corto_blava_terra.mp4'),
-                (2, 'uploads/public/corto_la_otra_orilla.mp4'),
-                (3, 'uploads/public/corto_si_no_fuera_por_mi.mp4'),
-                (4, 'uploads/public/corto_un_dia_perfecto.mp4'),
-                (5, 'uploads/public/corto_violetas.mp4'),
-                (6,  'uploads/public/cartel_BLAVA-TERRA.jpg'),
-                (7,  'uploads/public/cartel_LA-OTRA-ORILLA.jpg'),
-                (8,  'uploads/public/cartel_SI-NO-FUERA-POR-MI.jpg'),
-                (9,  'uploads/public/cartel_UN-DIA-PERFECTO.jpg'),
-                (10, 'uploads/public/cartel_VIOLETAS.jpg'),
-                (11, 'uploads/public/evento1.jpg'),
-                (12, 'uploads/public/evento2.jpg'),
-                (13, 'uploads/public/evento3.jpg'),
-                (14, 'uploads/public/evento4.jpg'),
-                (15, 'uploads/public/evento5.jpg'),
-                (16, 'uploads/public/festival1.jpg'),
-                (17, 'uploads/public/festival2.jpg'),
-                (18, 'uploads/public/festival3.jpg'),
-                (19, 'uploads/public/patrocinador_canon.jpg'),
-                (20, 'uploads/public/ficha_tecnica_blava_terra.pdf'),
-                (21, 'uploads/public/ficha_tecnica_la_otra_orilla.pdf'),
-                (22, 'uploads/public/ficha_tecnica_si_no_fuera_por_mi.pdf'),
-                (23, 'uploads/public/ficha_tecnica_un_dia_perfecto.pdf'),
-                (24, 'uploads/public/ficha_tecnica_violetas.pdf');
+               INSERT INTO archivo (id_archivo, ruta) VALUES
+                -- --- VIDEOS PRINCIPALES (Gala y Premios) ---
+                (1, 'uploads/public/01_CABECERA_GALA_ESTEREO.mp4'),
+                (2, 'uploads/public/02_RESUMEN_VID_GALA.mp4'),
+                (3, 'uploads/public/03_TRAILER_ALUMNI_ESTEREO.mp4'),
+                (4, 'uploads/public/04_TRAILER_ALUMNO_ESTEREO.mp4'),
+                (5, 'uploads/public/05_premio_trayectoria_profesional_MIGUEL_ANGEL_ESTEREO.mp4'),
+                (6, 'uploads/public/06_TRAILER_ALUMNI_TORMENTO_ESTEREO_2DO_PREMIO.mp4'),
+                (7, 'uploads/public/07_TRAILER_ALUMNI_ZOE_ESTEREO_1ER_PREMIO.mp4'),
+                (8, 'uploads/public/08_TRAILER_ALUMNO_ESPERANDO_ESTEREO_3ER_PREMIO.mp4'),
+                (9, 'uploads/public/09_TRAILER_ALUMNO_DE_POCO_UN_TODO_ESTEREO_2DO_PREMIO.mp4'),
+                (10, 'uploads/public/10_TRAILER_ALUMNO_UMBRA_ESTEREO_1ER_PREMIO.mp4'),
+                
+                -- --- CORTOMETRAJES ---
+                (11, 'uploads/public/corto_blava_terra.mp4'),
+                (12, 'uploads/public/corto_la_otra_orilla.mp4'),
+                (13, 'uploads/public/corto_si_no_fuera_por_mi.mp4'),
+                (14, 'uploads/public/corto_un_dia_perfecto.mp4'),
+                (15, 'uploads/public/corto_violetas.mp4'),
+                
+                -- --- CARTELES ---
+                (16, 'uploads/public/cartel_BLAVA-TERRA.jpg'),
+                (17, 'uploads/public/cartel_LA-OTRA-ORILLA.jpg'),
+                (18, 'uploads/public/cartel_SI-NO-FUERA-POR-MI.jpg'),
+                (19, 'uploads/public/cartel_UN-DIA-PERFECTO.jpg'),
+                (20, 'uploads/public/cartel_VIOLETAS.jpg'),
+                
+                -- --- FOTOS DE EVENTOS ---
+                (21, 'uploads/public/evento1.jpg'),
+                (22, 'uploads/public/evento2.jpg'),
+                (23, 'uploads/public/evento3.jpg'),
+                (24, 'uploads/public/evento4.jpg'),
+                (25, 'uploads/public/evento5.jpg'),
+                
+                -- --- GALERÍA DEL FESTIVAL ---
+                (26, 'uploads/public/festival1.jpg'),
+                (27, 'uploads/public/festival2.jpg'),
+                (28, 'uploads/public/festival3.jpg'),
+                (29, 'uploads/public/festival4.jpg'),
+                (30, 'uploads/public/festival5.jpg'),
+                (31, 'uploads/public/festival6.jpg'),
+                (32, 'uploads/public/festival7.jpg'),
+                (33, 'uploads/public/festival8.jpg'),
+                (34, 'uploads/public/festival9.jpg'),
+                (35, 'uploads/public/festival10.jpg'),
+                (36, 'uploads/public/festival11.jpg'),
+                (37, 'uploads/public/festival12.jpg'),
+                (38, 'uploads/public/festival13.png'),
+                (39, 'uploads/public/festival14.jpg'),
+                (40, 'uploads/public/festival15.jpg'),
+                (41, 'uploads/public/festival16.png'),
+                
+                -- --- NOTICIAS Y PATROCINADORES ---
+                (42, 'uploads/public/noticia1.png'),
+                (43, 'uploads/public/noticia2.png'),
+                (44, 'uploads/public/noticia3.jpg'),
+                (45, 'uploads/public/noticia4.jpg'),
+                (46, 'uploads/public/noticia5.jpg'),
+                (47, 'uploads/public/patrocinador_canon.jpg'),
+                
+                -- --- DOCUMENTOS Y FICHAS TÉCNICAS ---
+                (48, 'uploads/public/Bases Legales Concurso Festival de Cine UE_ 2025.pdf'),
+                (49, 'uploads/public/ficha_tecnica_blava_terra.pdf'),
+                (50, 'uploads/public/ficha_tecnica_la_otra_orilla.pdf'),
+                (51, 'uploads/public/ficha_tecnica_si_no_fuera_por_mi.pdf'),
+                (52, 'uploads/public/ficha_tecnica_un_dia_perfecto.pdf'),
+                (53, 'uploads/public/ficha_tecnica_violetas.pdf');
                 
                 INSERT INTO categoria (nombre) VALUES
                 ('Mejor cortometraje UE (alumno)'),
@@ -213,37 +255,57 @@ function crearBaseDatosSiNoExiste(): void {
                 ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
                 
                 INSERT INTO candidatura (id_participante, titulo, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer, tipo_candidatura) VALUES
-                (1,'Ritmo de Asfalto','Elionor descubre los entresijos de la adultez en la Mallorca de 1940. Vive en una remota finca, de la cual los habitantes jamás han salido. Todo cambiará con la llegada de una película.',1,20,6,NULL,'alumno'),
-                (2,'Latido Salvaje','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña, mostrando que es una parte natural de la vida. María, una niña con una rara enfermedad, aprende a enfrentar sus miedos con música, esperanza y amor por la vida. Conoce a Marisol, una musicoterapeuta, y a Soledad, una anciana que repara instrumentos. Sus vidas se entrelazarán inesperadamente.',2,21,7,NULL,'alumno'),
-                (3,'Pequeños Sabios','Javier va casi todos los días a comer a casa de su madre. Se hace mayor y así la tiene contenta. Pero esa rutina de aparente normalidad, esconde un profundo secreto. Hay veces en las que el fin justifica los medios.',3,22,8,NULL,'alumni'),
-                (4,'Entre Bloques','Julia decide dejar el hospital apresuradamente para pasar el fin de semana con sus amigos de toda la vida, en una casa llena de recuerdos compartidos, se disponen a celebrar como si un hubiese un mañana. Mientras julia tiene que tomar una decisión importante.',4,23,9,NULL,'alumno'),
-                (5,'Sombras Estáticas','En 1945, bajo la sombra de la dictadura franquista, Juan, un ayudante universitario, conoce a Manuel tras un encuentro fortuito durante la noche en el Parque del Retiro.',5,24,10,NULL,'alumni'),
-                (1,'Crónicas del Campus','Elionor descubre los entresijos de la adultez en la Mallorca de 1940. Vive en una remota finca, de la cual los habitantes jamás han salido. Todo cambiará con la llegada de una película.',1,20,6,NULL,'alumno'),
-                (2,'Laberinto Mental','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña...',2,21,7,NULL,'alumno'),
-                (3,'Reinos de Cartón','Javier va casi todos los días a comer a casa de su madre...',3,22,8,NULL,'alumni'),
-                (4,'Código de Barras','Julia decide dejar el hospital apresuradamente...',4,23,9,NULL,'alumno'),
-                (5,'Voz de Calle','En 1945, bajo la sombra de la dictadura franquista...',5,24,10,NULL,'alumni'),
-                (1,'Ecos de 1900','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',1,20,6,NULL,'alumno'),
-                (2,'Neón y Acero','La Otra Orilla es más que una historia...',2,21,7,NULL,'alumno'),
-                (3,'Claustro','Javier va casi todos los días a comer a casa de su madre...',3,22,8,NULL,'alumni'),
-                (4,'Contra la Corriente','Julia decide dejar el hospital apresuradamente...',4,23,9,NULL,'alumno'),
-                (5,'Acordes Locales','En 1945, bajo la sombra de la dictadura franquista...',5,24,10,NULL,'alumni'),
-                (1,'A un Click de Ti','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',1,20,6,NULL,'alumno'),
-                (2,'Ciclo Infinito','La Otra Orilla es más que una historia...',2,21,7,NULL,'alumno'),
-                (3,'Manos de Barro','Javier va casi todos los días a comer a casa de su madre...',3,22,8,NULL,'alumni'),
-                (4,'Raíces y Ramas','Julia decide dejar el hospital apresuradamente...',4,23,9,NULL,'alumno'),
-                (5,'Formas del Vacío','En 1945, bajo la sombra de la dictadura franquista...',5,24,10,NULL,'alumni');
+                -- Participante 1
+                (1,'Ritmo de Asfalto','Elionor descubre los entresijos de la adultez en la Mallorca de 1940. Vive en una remota finca, de la cual los habitantes jamás han salido. Todo cambiará con la llegada de una película.',11,49,16,NULL,'alumno'),
+                -- Participante 2
+                (2,'Latido Salvaje','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña, mostrando que es una parte natural de la vida. María, una niña con una rara enfermedad, aprende a enfrentar sus miedos con música, esperanza y amor por la vida. Conoce a Marisol, una musicoterapeuta, y a Soledad, una anciana que repara instrumentos. Sus vidas se entrelazarán inesperadamente.',15,53,20,NULL,'alumno'),
+                -- Participante 3
+                (3,'Pequeños Sabios','Javier va casi todos los días a comer a casa de su madre. Se hace mayor y así la tiene contenta. Pero esa rutina de aparente normalidad, esconde un profundo secreto. Hay veces en las que el fin justifica los medios.',14,52,19,NULL,'alumni'),
+                -- Participante 4
+                (4,'Entre Bloques','Julia decide dejar el hospital apresuradamente para pasar el fin de semana con sus amigos de toda la vida, en una casa llena de recuerdos compartidos, se disponen a celebrar como si un hubiese un mañana. Mientras julia tiene que tomar una decisión importante.',13,51,18,NULL,'alumno'),
+                -- Participante 5
+                (5,'Sombras Estáticas','En 1945, bajo la sombra de la dictadura franquista, Juan, un ayudante universitario, conoce a Manuel tras un encuentro fortuito durante la noche en el Parque del Retiro.',12,50,17,NULL,'alumni'),
+                -- Participante 1 - Candidatura 6
+                (1,'Crónicas del Campus','Elionor descubre los entresijos de la adultez en la Mallorca de 1940. Vive en una remota finca, de la cual los habitantes jamás han salido. Todo cambiará con la llegada de una película.',12,50,17,NULL,'alumno'),
+                -- Participante 2 - Candidatura 7
+                (2,'Laberinto Mental','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña...',11,49,16,NULL,'alumno'),
+                -- Participante 3 - Candidatura 8
+                (3,'Reinos de Cartón','Javier va casi todos los días a comer a casa de su madre...',15,53,20,NULL,'alumni'),
+                -- Participante 4 - Candidatura 9
+                (4,'Código de Barras','Julia decide dejar el hospital apresuradamente...',14,52,19,NULL,'alumno'),
+                -- Participante 5 - Candidatura 10
+                (5,'Voz de Calle','En 1945, bajo la sombra de la dictadura franquista...',13,51,18,NULL,'alumni'),
+                -- Participante 1 - Candidatura 11
+                (1,'Ecos de 1900','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',13,51,18,NULL,'alumno'),
+                -- Participante 2 - Candidatura 12
+                (2,'Neón y Acero','La Otra Orilla es más que una historia...',12,50,17,NULL,'alumno'),
+                -- Participante 3 - Candidatura 13
+                (3,'Claustro','Javier va casi todos los días a comer a casa de su madre...',11,49,16,NULL,'alumni'),
+                -- Participante 4 - Candidatura 14
+                (4,'Contra la Corriente','Julia decide dejar el hospital apresuradamente...',15,53,20,NULL,'alumno'),
+                -- Participante 5 - Candidatura 15
+                (5,'Acordes Locales','En 1945, bajo la sombra de la dictadura franquista...',14,52,19,NULL,'alumni'),
+                -- Participante 1 - Candidatura 16
+                (1,'A un Click de Ti','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',14,52,19,NULL,'alumno'),
+                -- Participante 2 - Candidatura 17
+                (2,'Ciclo Infinito','La Otra Orilla es más que una historia...',13,51,18,NULL,'alumno'),
+                -- Participante 3 - Candidatura 18
+                (3,'Manos de Barro','Javier va casi todos los días a comer a casa de su madre...',12,50,17,NULL,'alumni'),
+                -- Participante 4 - Candidatura 19
+                (4,'Raíces y Ramas','Julia decide dejar el hospital apresuradamente...',11,49,16,NULL,'alumno'),
+                -- Participante 5 - Candidatura 20
+                (5,'Formas del Vacío','En 1945, bajo la sombra de la dictadura franquista...',15,53,20,NULL,'alumni');
                 
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria, incluye_objeto_adicional, objeto_adicional) VALUES
-                ('Primer premio', true, 600.00, 1, true, 'Cámara de vídeo de Canon'),
-                ('Segundo premio', true, 300.00, 1, false, NULL),
-                ('Tercer premio', true, 100.00, 1, false, NULL),
-                ('Primer premio', true, 700.00, 2, false, NULL),
-                ('Segundo premio', true, 300.00, 2, false, NULL),
-                ('Reconocimiento Honorífico', false, NULL, 3, true, 'A uno de los profesionales del sector');
+                    ('Primer premio', true, 600.00, 1, true, 'Cámara de vídeo de Canon'),
+                    ('Segundo premio', true, 300.00, 1, false, NULL),
+                    ('Tercer premio', true, 100.00, 1, false, NULL),
+                    ('Primer premio', true, 700.00, 2, false, NULL),
+                    ('Segundo premio', true, 300.00, 2, false, NULL),
+                    ('Reconocimiento Honorífico', false, NULL, 3, true, 'A uno de los profesionales del sector');
                 
                 INSERT INTO organizador (nro_empresa, nombre, correo, contrasena, dni) VALUES
-                ('EMP-001', 'Organizador Madrid', 'admin@gmail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999999Z');
+                    ('EMP-001', 'Organizador Madrid', 'admin@gmail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999999Z');
                
                 INSERT INTO configuracion (nombre, valor, id_organizador) VALUES
                     ('modo', 'pre-evento', 1),
@@ -267,49 +329,65 @@ function crearBaseDatosSiNoExiste(): void {
                     
                     (2026, 'Una noche llena de emoción, talento y nuevas miradas. Revive los mejores momentos de la edición, desde la alfombra roja hasta el anuncio de los cortometrajes que marcaron la diferencia este año. ¡Gracias por formar parte de nuestra historia!', NULL, 'actual'  , 1, CURDATE(), CURDATE());
                 
+                    -- Edición 2024 (id_edicion = 1)
                 INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
-                    (1, 'Documental', 'Juan Pérez', 'Mejor Documental', 1),
-                    (1, 'Cortometraje', 'María López', 'Mejor Cortometraje', 4),
-                    (2, 'Animación', 'Ana Gómez', 'Mejor Animación', 2),
-                    (2, 'Ficción', 'Luis Ruiz', 'Mejor Ficción', 3);
+                -- Premio Honorífico
+                (1, 'Reconocimiento Honorífico', 'Miguel Ángel Rodríguez', 'Premio Trayectoria Profesional', 5),
+                -- Alumni
+                (1, 'Mejor cortometraje alumni', 'Zoe Martínez', '1er Premio', 7),
+                (1, 'Mejor cortometraje alumni', 'Antonio Tormento García', '2do Premio', 6),
+                -- Alumno
+                (1, 'Mejor cortometraje alumno', 'Umbra Jiménez', '1er Premio', 10),
+                (1, 'Mejor cortometraje alumno', 'Carlos De Poco', '2do Premio', 9),
+                (1, 'Mejor cortometraje alumno', 'Laura Esperando Sánchez', '3er Premio', 8);
                 
-                INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES
-                (16, 1),
-                (17, 1),
-                (18, 1),
-                (19, 1),
-                (16, 2),
-                (17, 2),
-                (18, 2),
-                (19, 2),
-                (16, 3),
-                (17, 3),
-                (18, 3),
-                (19, 3);
+                -- Edición 2025 (id_edicion = 2)
+                INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
+                -- Premio Honorífico
+                (2, 'Reconocimiento Honorífico', 'Miguel Ángel Fernández', 'Premio Trayectoria Profesional', 5),
+                -- Alumni
+                (2, 'Mejor cortometraje alumni', 'Zoe López', '1er Premio', 7),
+                (2, 'Mejor cortometraje alumni', 'Diego Tormento Ruiz', '2do Premio', 6),
+                -- Alumno
+                (2, 'Mejor cortometraje alumno', 'Umbra Morales', '1er Premio', 10),
+                (2, 'Mejor cortometraje alumno', 'Javier De Poco Torres', '2do Premio', 9),
+                (2, 'Mejor cortometraje alumno', 'Ana Esperando Gómez', '3er Premio', 8);
                 
+                
+                
+                
+                -- NOTICIAS (8 noticias, 5 archivos noticia_* ids 42-46)
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador, id_archivo_imagen) VALUES
-                ('Anuncio del festival', 'Lanzamiento oficial del festival de cortometrajes.', '2024-05-01', 1, 16),
-                ('Jurado confirmado', 'Presentación del jurado para esta edición.', '2024-05-10', 1, 17),
-                ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 18),
-                ('Ganadores 2024', 'Lista de ganadores del festival de cortometrajes 2024.', '2024-12-20', 1, 16),
-                ('Convocatoria 2025', 'Apertura de inscripciones para la edición 2025.', '2024-12-31', 1, 16),
-                ('Evento especial', 'Anuncio de un evento especial durante el festival.', '2024-06-20', 1, 18),
-                ('Colaboración con escuelas', 'Nuevas colaboraciones con escuelas de cine.', '2024-07-05', 1, 18),
-                ('Talleres para participantes', 'Talleres gratuitos para los inscritos en el festival.', '2024-08-15', 1, 17);
+                ('Anuncio del festival', 'Lanzamiento oficial del festival de cortometrajes.', '2024-05-01', 1, 42),
+                ('Jurado confirmado', 'Presentación del jurado para esta edición.', '2024-05-10', 1, 43),
+                ('Programa de eventos', 'Calendario completo de eventos y proyecciones.', '2024-05-15', 1, 44),
+                ('Ganadores 2024', 'Lista de ganadores del festival de cortometrajes 2024.', '2024-12-20', 1, 45),
+                ('Convocatoria 2025', 'Apertura de inscripciones para la edición 2025.', '2024-12-31', 1, 46),
+                ('Evento especial', 'Anuncio de un evento especial durante el festival.', '2024-06-20', 1, 42),
+                ('Colaboración con escuelas', 'Nuevas colaboraciones con escuelas de cine.', '2024-07-05', 1, 43),
+                ('Talleres para participantes', 'Talleres gratuitos para los inscritos en el festival.', '2024-08-15', 1, 44);
+
                 
+                -- EVENTOS (9 eventos, 5 archivos evento_* ids 21-25)
+                -- =========================
                 INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_organizador, id_archivo_imagen) VALUES
-                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', '2026-11-09', '19:00', '21:00', 1, 11),
-                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', '2026-11-09', '10:00', '13:00', 1, 12),
-                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', '2026-11-09', '20:00', '22:00', 1, 13),
-                ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 14),
-                ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 15),
-                ('Proyección de cortos ganadores', 'Proyección de los cortometrajes ganadores de ediciones anteriores.', 'Cine Secundario', '2026-11-09', '15:00', '17:00', 1, 12),
-                ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 13),
-                ('Fiesta de clausura', 'Fiesta para celebrar el cierre del festival.', 'Club Nocturno', CURDATE(), '23:00', '02:00', 1, 14),
-                ('Proyección temática', 'Proyección de cortometrajes con temática específica.', 'Cine Temático', CURDATE(), '14:00', '16:00', 1, 12);
+                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', '2026-11-09', '19:00', '21:00', 1, 21),
+                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', '2026-11-09', '10:00', '13:00', 1, 22),
+                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', '2026-11-09', '20:00', '22:00', 1, 23),
+                ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 24),
+                ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 25),
+                ('Proyección de cortos ganadores', 'Proyección de los cortometrajes ganadores de ediciones anteriores.', 'Cine Secundario', '2026-11-09', '15:00', '17:00', 1, 21),
+                ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 22),
+                ('Fiesta de clausura', 'Fiesta para celebrar el cierre del festival.', 'Club Nocturno', CURDATE(), '23:00', '02:00', 1, 23),
+                ('Proyección temática', 'Proyección de cortometrajes con temática específica.', 'Cine Temático', CURDATE(), '14:00', '16:00', 1, 24);
+
                 
+                -- =========================
+                -- PATROCINADOR
+                -- =========================
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
-                ('Canon', 19);
+                ('Canon', 47);
+
                 
                 -- UPDATES
                 UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 16;
