@@ -320,7 +320,7 @@ function crearBaseDatosSiNoExiste(): void {
                     ('galaPreEventoStreamingActivo', 'true', 1),
                     ('galaPreEventoStreamingUrl', 'https://www.youtube.com/watch?v=OdiUGCJIAC8', 1),
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
-                    ('baseUrl', 'https://festivalcortosuem.azurewebsites.net/', 1);
+                    ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                     
                 INSERT INTO edicion (anio_edicion, resumen_evento, nro_participantes, tipo, id_organizador, fecha_envio_email_informativo, fecha_borrado_datos) VALUES
                     (2024, 'Una noche llena de emoción, talento y nuevas miradas. Revive los mejores momentos de la edición, desde la alfombra roja hasta el anuncio de los cortometrajes que marcaron la diferencia este año. ¡Gracias por formar parte de nuestra historia!', 120, 'anterior', 1, CURDATE(), CURDATE()),
