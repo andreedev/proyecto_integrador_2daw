@@ -335,18 +335,15 @@ function renderizarDetalleCandidatura(candidatura) {
 }
 
 function actualizarEstadoMotivoRechazoInput(estado){
+    textoAyudaCambioEstado.classList.add('d-none');
     if (estado === ESTADOS_CANDIDATURA.RECHAZADA) {
         textoAyudaCambioEstado.classList.remove('d-none');
         textoAyudaCambioEstado.textContent = 'Indique el motivo del rechazo (visible para el participante)';
         motivoCambioEstado.required = true;
-    } else if (estado === ESTADOS_CANDIDATURA.FINALISTA) {
-        textoAyudaCambioEstado.classList.add('d-none');
+        motivoCambioEstado.show();
+    } else {
         motivoCambioEstado.required = false;
         motivoCambioEstado.hide();
-    } else {
-        textoAyudaCambioEstado.classList.remove('d-none');
-        textoAyudaCambioEstado.textContent = 'Registre el motivo de este cambio para el historial interno';
-        motivoCambioEstado.required = false;
     }
 }
 
