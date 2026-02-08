@@ -829,6 +829,7 @@ th {
         min-width: 280px;
         box-sizing: border-box;
         gap: 12px;
+        width: 100%;
     }
 
     td {
@@ -882,7 +883,8 @@ th {
 
     .actions {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         gap: 8px;
         width: 100%;
     }
