@@ -335,7 +335,7 @@ function renderizarDetalleCandidatura(candidatura) {
         nuevoEstadoCandidatura.disabled = true;
         btnConfimarCambioEstado.disabled = true;
     }
-    actualizarEstadoMotivoRechazoInput(candidatura.estado);
+    actualizarEstadoMotivoRechazoInput('');
 }
 
 function actualizarEstadoMotivoRechazoInput(estado){
