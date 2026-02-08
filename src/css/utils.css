@@ -747,6 +747,30 @@
     width: 100%;
 }
 
+@media (min-width: 480px) {
+    .w-xs-100{
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .w-md-100{
+        width: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .w-lg-100{
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .w-xl-100{
+        width: 100%;
+    }
+}
+
 .w-90{
     width: 90%;
 }

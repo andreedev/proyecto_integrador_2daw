@@ -107,41 +107,62 @@
         </div>
     </div>
 
-
-    <modal-component id="modalCambiarEstado" static scrollable mobile-full-screen>
-        <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
-            <div class="d-flex flex-column gap-4px">
-                <span class="fs-20px fw-600">Cambiar estado de candidatura</span>
-            </div>
-            <div class="d-flex align-items-center gap-8px">
-                <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
-            </div>
+    <modal-component id="modalDetalleCandidatura" scrollable mobile-full-screen>
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
+            <span class="fs-20px fw-600">Detalle de la candidatura</span>
+            <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
         </div>
-        <div class="d-flex flex-column p-24px gap-16px flex-grow-1 overflow-y-auto">
-            <input-component id="nombreParticipanteInput" label="Nombre del participante" disabled width="100%" ></input-component>
-            <input-component id="nroExpedienteInput" label="Nro de expediente" disabled ></input-component>
-            <input-component id="estadoActualInput" label="Estado actual" disabled ></input-component>
 
-            <select-component
-                    id="nuevoEstadoCandidatura"
-                    label="Nuevo estado *"
-                    width="100%"
-            >
-            </select-component>
+        <div class="d-flex flex-column p-24px gap-24px bg-neutral-08 flex-grow-1 overflow-y-auto w-100">
 
-            <input-component
-                    id="motivoCambioEstado"
-                    label="Motivo del cambio de estado"
-                    textarea
-                    required-message=""
-            ></input-component>
+            <div class="d-flex flex-column gap-8px">
+                <select-component
+                        id="nuevoEstadoCandidatura"
+                        label="Estado"
+                        width="100%"
+                >
+                </select-component>
 
-            <span class="fs-12px text-neutral-03" id="textoAyudaCambioEstado"></span>
+                <input-component
+                        id="motivoCambioEstado"
+                        label="Motivo del cambio de estado"
+                        textarea
+                        required-message=""
+                ></input-component>
+
+                <span class="fs-12px text-neutral-03" id="textoAyudaCambioEstado"></span>
+            </div>
+
+            <div class="w-100 d-flex flex-column gap-16px">
+
+                <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>
+
+                <input-component id="nombreParticipante2" label="Nombre del participante"
+                                 disabled></input-component>
+
+                <div class="d-flex flex-column flex-md-row gap-24px">
+                    <input-component id="nroExpedienteInput2" label="Nro expediente:" disabled></input-component>
+
+                    <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>
+                </div>
+
+                <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea disabled></input-component>
+
+                <span class="fs-12px ">100/100 palabras</span>
+
+                <date-component id="fechaPresentacionInput" label="Fecha de presentación"
+                                disabled></date-component>
+
+                <date-component id="fechaActualizacionInput" label="Última actualización"
+                                disabled></date-component>
+
+            </div>
+
         </div>
-        <div class="d-flex justify-content-center align-items-center p-16px border-solid border-neutral-05">
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
             <div class="d-flex-two-columns-responsive gap-24px">
-                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
-                <div class="primary-button-01 text-center" id="btnConfimarCambioEstado">Confirmar</div>
+                <div class="primary-button-02 text-center" id="btnVerDocumentos">Ver adjuntos</div>
+                <button class="primary-button-01 text-center" id="btnConfimarCambioEstado">Confirmar cambios</button>
             </div>
         </div>
     </modal-component>
@@ -193,54 +214,9 @@
 
         </div>
         <div class="d-flex justify-content-center align-items-center p-16px border-top border-solid border-neutral-05">
-            <div class="primary-button-02 w-auto px-48px text-center close-modal w-100">Cerrar</div>
+            <div class="secondary-button-02 w-auto px-48px text-center close-modal w-50 w-md-100" id="btnVolverAModalDetalle">Volver</div>
         </div>
     </modal-component>
-
-    <modal-component id="modalDetalleCandidatura" static scrollable mobile-full-screen>
-        <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
-            <span class="fs-20px fw-600">Documentos de la candidatura</span>
-            <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
-        </div>
-
-        <div class="d-flex flex-column p-24px gap-24px bg-neutral-08 flex-grow-1 overflow-y-auto w-100">
-
-            <div class="status-header-row">
-                <span class="label-inline">Estado:</span>
-                <span id="estadoCandidaturaBadge" class="badge-status-yellow">En revisión</span>
-            </div>
-
-            <div class="w-100 d-flex flex-column gap-16px">
-
-                <input-component id="nombreCortoInput" label="Nombre del cortometraje" disabled></input-component>
-
-                <input-component id="nombreParticipante2" label="Nombre del participante"
-                                 disabled></input-component>
-
-                <div class="d-flex flex-column flex-md-row gap-24px">
-                    <input-component id="nroExpedienteInput2" label="Nro expediente:" disabled></input-component>
-
-                    <input-component id="nroDocumentoInput" label="Nro documento" disabled></input-component>
-                </div>
-
-                <input-component id="sinopsisInput" label="Sinopsis de la obra" textarea disabled></input-component>
-
-                <span class="fs-12px ">100/100 palabras</span>
-
-                <date-component id="fechaPresentacionInput" label="Fecha de presentación"
-                                 disabled></date-component>
-
-                <date-component id="fechaActualizacionInput" label="Última actualización"
-                                 disabled></date-component>
-
-            </div>
-
-        </div>
-        <div class="d-flex justify-content-center align-items-center p-16px border-top border-solid border-neutral-05">
-            <button class="primary-button-01 w-100" id="btnVerDocumentos">Ver documentos</button>
-        </div>
-    </modal-component>
-
 
     <modal-component id="modalHistorialEstado" scrollable mobile-full-screen>
         <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
@@ -253,7 +229,6 @@
             </div>
         </div>
     </modal-component>
-
 
     <notification-component id="notification"></notification-component>
 

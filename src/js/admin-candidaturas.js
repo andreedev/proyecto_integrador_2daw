@@ -7,20 +7,15 @@ const filtroFecha = document.getElementById('filtroFecha');
 const totalCandidaturasSpan = document.getElementById('totalCandidaturas');
 const paginacionCandidaturas = document.getElementById('paginacionCandidaturas');
 const totalPorPagina = document.getElementById('totalPorPagina');
-const modalCambiarEstado = document.getElementById('modalCambiarEstado');
 const modalDocumentos = document.getElementById('modalDocumentos');
 const modalDetalleCandidatura = document.getElementById('modalDetalleCandidatura');
 const modalHistorialEstado = document.getElementById('modalHistorialEstado');
 
-const nombreParticipanteInput = document.getElementById('nombreParticipanteInput');
-const nroExpedienteInput = document.getElementById('nroExpedienteInput');
-const estadoActualInput = document.getElementById('estadoActualInput');
 const nuevoEstadoCandidatura = document.getElementById('nuevoEstadoCandidatura');
 const motivoCambioEstado = document.getElementById('motivoCambioEstado');
 const btnConfimarCambioEstado = document.getElementById('btnConfimarCambioEstado');
 const textoAyudaCambioEstado = document.getElementById('textoAyudaCambioEstado');
 
-const estadoCandidaturaBadge = document.getElementById('estadoCandidaturaBadge');
 const nombreCortoInput = document.getElementById('nombreCortoInput');
 const nombreParticipante2 = document.getElementById('nombreParticipante2');
 const nroExpedienteInput2 = document.getElementById('nroExpedienteInput2');
@@ -29,6 +24,9 @@ const sinopsisInput = document.getElementById('sinopsisInput');
 const fechaPresentacionInput = document.getElementById('fechaPresentacionInput');
 const fechaActualizacionInput = document.getElementById('fechaActualizacionInput');
 const btnVerDocumentos = document.getElementById('btnVerDocumentos');
+const btnVolverAModalDetalle = document.getElementById('btnVolverAModalDetalle');
+
+const notification = document.getElementById('notification');
 
 let candidaturaSeleccionada = null;
 let pageSize=5;
@@ -88,7 +86,13 @@ nuevoEstadoCandidatura.addEventListener('change', (e) => {
 
 btnVerDocumentos.addEventListener('click', () => {
     modalDetalleCandidatura.close();
+    renderizarDocumentos(candidaturaSeleccionada);
     modalDocumentos.open();
+});
+
+btnVolverAModalDetalle.addEventListener('click', () => {
+    renderizarDetalleCandidatura(candidaturaSeleccionada);
+    modalDetalleCandidatura.open();
 });
 
 const statusLabels = {
@@ -98,10 +102,6 @@ const statusLabels = {
     finalist: 'Finalista'
 };
 
-
-function showNotification(message) {
-    document.getElementById('notification').show(message);
-}
 
 function getBadgeClass(status) {
     if (!status) return 'review';
@@ -129,27 +129,22 @@ function getEstadoKey(status) {
  * Carga y renderiza las candidaturas según los filtros y paginación
  */
 async function cargarCandidaturas() {
-    try {
-        const texto = filtroTexto.value.trim();
-        const estado = filtroEstado.value;
-        const tipo = filtroTipo.value;
-        const fecha = filtroFecha.getISOValue();
-        const page = paginacionCandidaturas.currentPage;
-        const response = await listarCandidaturasAdmin(texto, tipo, estado, fecha, page, pageSize);
-        if (!response || response.status !== 'success') {
-            showNotification('Error al cargar candidaturas');
-            return;
-        }
-        const candidaturas = response.data.list;
-        const paginaActual = response.data.currentPage;
-        const totalPaginas = response.data.totalPages;
-        const totalRecords = response.data.totalRecords;
-
-        renderizarCandidaturas(candidaturas, paginaActual, totalPaginas, totalRecords);
-    } catch (e) {
-        console.error(e);
-        showNotification('Error de comunicación con el servidor');
+    const texto = filtroTexto.value.trim();
+    const estado = filtroEstado.value;
+    const tipo = filtroTipo.value;
+    const fecha = filtroFecha.getISOValue();
+    const page = paginacionCandidaturas.currentPage;
+    const response = await listarCandidaturasAdmin(texto, tipo, estado, fecha, page, pageSize);
+    if (!response || response.status !== 'success') {
+        notification.show('Error al cargar candidaturas');
+        return;
     }
+    const candidaturas = response.data.list;
+    const paginaActual = response.data.currentPage;
+    const totalPaginas = response.data.totalPages;
+    const totalRecords = response.data.totalRecords;
+
+    renderizarCandidaturas(candidaturas, paginaActual, totalPaginas, totalRecords);
 }
 /**
  * Unifica renderizado, asignación de eventos y actualización de UI
@@ -203,51 +198,20 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'actions';
 
-        const btnDetail = createBtn('Detalle', 'secondary-button-02', () =>{
+        const btnDetail = createBtn('Detalle', 'primary-button-02', () =>{
             candidaturaSeleccionada = c;
             renderizarDetalleCandidatura(c);
             modalDetalleCandidatura.open();
         });
-        const btnDocs = createBtn('Adjuntos', 'secondary-button-02', () => {
-            candidaturaSeleccionada = c;
-            renderizarDocumentos(c);
-            modalDocumentos.open();
-        });
-        const btnHistory = createBtn('Historial', 'secondary-button-02', async () => {
+        const btnHistory = createBtn('Ver historial', 'secondary-button-02', async () => {
             if (renderizarHistorial(await cargarHistorialCandidatura(c.idCandidatura))){
                 modalHistorialEstado.open();
             }
         });
-        const btnChange = createBtn('Cambiar', 'primary-button-02', () => {
-            candidaturaSeleccionada = c;
-            modalCambiarEstado.open();
-            nombreParticipanteInput.setValue(c.participante);
-            nroExpedienteInput.setValue(c.nroExpediente);
-            estadoActualInput.setValue(estadoTexto);
-            if (c.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
-                nuevoEstadoCandidatura.setOptions([
-                    {value: ESTADOS_CANDIDATURA.ACEPTADA, label: ESTADOS_CANDIDATURA.ACEPTADA},
-                    {value: ESTADOS_CANDIDATURA.RECHAZADA, label: ESTADOS_CANDIDATURA.RECHAZADA}
-                ]);
-                actualizarEstadoMotivoRechazoInput(ESTADOS_CANDIDATURA.ACEPTADA);
-            } else if (c.estado === ESTADOS_CANDIDATURA.ACEPTADA) {
-                nuevoEstadoCandidatura.setOptions([
-                    {value: ESTADOS_CANDIDATURA.FINALISTA, label: ESTADOS_CANDIDATURA.FINALISTA}
-                ]);
-                actualizarEstadoMotivoRechazoInput(ESTADOS_CANDIDATURA.FINALISTA);
-            } else if (c.estado === ESTADOS_CANDIDATURA.RECHAZADA) {
-                nuevoEstadoCandidatura.setOptions([
-                    {value: ESTADOS_CANDIDATURA.EN_REVISION, label: ESTADOS_CANDIDATURA.EN_REVISION}
-                ]);
-                actualizarEstadoMotivoRechazoInput(ESTADOS_CANDIDATURA.EN_REVISION);
-            }
-            candidaturaSeleccionada = c;
-        });
 
-        actionsDiv.append(btnDetail, btnDocs, btnHistory);
-        if (c.estado == ESTADOS_CANDIDATURA.ACEPTADA || c.estado == ESTADOS_CANDIDATURA.EN_REVISION) {
-            actionsDiv.appendChild(btnChange);
-        }
+        actionsDiv.append(btnDetail);
+        actionsDiv.append(btnHistory);
+
         tdAcciones.appendChild(actionsDiv);
 
         tr.append(tdParticipante, tdTitulo, tdSinopsis, tdTipoCandidatura, tdEstado, tdFechaPres, tdFechaMod, tdAcciones);
@@ -262,18 +226,10 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
 }
 
 
-function actualizarEstadoMotivoRechazoInput(estado){
-    if (estado === 'Rechazada') {
-        textoAyudaCambioEstado.textContent = 'Indique el motivo del rechazo (visible para el participante)';
-        motivoCambioEstado.required = true;
-    } else {
-        textoAyudaCambioEstado.textContent = 'Registre el motivo de este cambio para el historial interno';
-        motivoCambioEstado.required = false;
-    }
-}
+
 
 /**
- * Helper para crear botones
+ * Funcion para crear botones de forma dinámica con estilos y eventos asignados
  */
 function createBtn(text, className, onClick) {
     const btn = document.createElement('button');
@@ -283,6 +239,9 @@ function createBtn(text, className, onClick) {
     return btn;
 }
 
+/**
+ * Renderiza los documentos asociados a la candidatura
+ */
 function renderizarDocumentos(c) {
     const videoCorto = document.getElementById('videoCorto');
     const cartelImg = document.getElementById('cartel');
@@ -324,17 +283,15 @@ btnConfimarCambioEstado.addEventListener('click', async () => {
 
     const response = await actualizarEstadoCandidatura(candidaturaSeleccionada.idCandidatura,  nuevoEstadoCandidatura.value, motivoCambioEstado.value.trim());
     if (!response || response.status !== 'success') {
-        showNotification('Error al cambiar el estado de la candidatura');
+        notification.show('Error al cambiar el estado de la candidatura');
         return;
     }
-    showNotification('Estado de la candidatura actualizado correctamente');
-    modalCambiarEstado.close();
+    notification.show('Estado de la candidatura actualizado correctamente');
+    modalDetalleCandidatura.close();
     await cargarCandidaturas();
 });
 
 function renderizarDetalleCandidatura(candidatura) {
-    estadoCandidaturaBadge.textContent = candidatura.estado;
-    estadoCandidaturaBadge.className = `badge ${getBadgeClass(candidatura.estado)}`;
     nombreCortoInput.value= candidatura.titulo || '-';
     nombreParticipante2.value = candidatura.participante || '-';
     nroExpedienteInput2.value = candidatura.nroExpediente || '-';
@@ -342,17 +299,66 @@ function renderizarDetalleCandidatura(candidatura) {
     sinopsisInput.value = candidatura.sinopsis || '-';
     fechaPresentacionInput.setDate(convertISOStringToDate(candidatura.fechaPresentacion));
     fechaActualizacionInput.setDate(convertISOStringToDate(candidatura.fechaUltimaModificacion));
+    if (candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
+        nuevoEstadoCandidatura.setOptions([
+            {value: ESTADOS_CANDIDATURA.EN_REVISION, label: ESTADOS_CANDIDATURA.EN_REVISION},
+            {value: ESTADOS_CANDIDATURA.ACEPTADA, label: ESTADOS_CANDIDATURA.ACEPTADA},
+            {value: ESTADOS_CANDIDATURA.RECHAZADA, label: ESTADOS_CANDIDATURA.RECHAZADA}
+        ]);
+        nuevoEstadoCandidatura.disabled = false;
+        btnConfimarCambioEstado.disabled = false;
+
+    } else if (candidatura.estado === ESTADOS_CANDIDATURA.ACEPTADA) {
+        nuevoEstadoCandidatura.setOptions([
+            {value: ESTADOS_CANDIDATURA.ACEPTADA, label: ESTADOS_CANDIDATURA.ACEPTADA},
+            {value: ESTADOS_CANDIDATURA.FINALISTA, label: ESTADOS_CANDIDATURA.FINALISTA}
+        ]);
+        nuevoEstadoCandidatura.disabled = false;
+        btnConfimarCambioEstado.disabled = false;
+
+    } else if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA) {
+        nuevoEstadoCandidatura.setOptions([
+            {value: ESTADOS_CANDIDATURA.RECHAZADA, label: ESTADOS_CANDIDATURA.RECHAZADA},
+        ]);
+        nuevoEstadoCandidatura.disabled = true
+        btnConfimarCambioEstado.disabled = true;
+
+    } else if (candidatura.estado === ESTADOS_CANDIDATURA.FINALISTA) {
+        nuevoEstadoCandidatura.setOptions([
+            {value: ESTADOS_CANDIDATURA.FINALISTA, label: ESTADOS_CANDIDATURA.FINALISTA}
+        ]);
+        nuevoEstadoCandidatura.disabled = true;
+        btnConfimarCambioEstado.disabled = true;
+    }
+    nuevoEstadoCandidatura.value = candidatura.estado;
+    actualizarEstadoMotivoRechazoInput(candidatura.estado);
+}
+
+function actualizarEstadoMotivoRechazoInput(estado){
+    if (estado === ESTADOS_CANDIDATURA.RECHAZADA) {
+        textoAyudaCambioEstado.classList.remove('d-none');
+        textoAyudaCambioEstado.textContent = 'Indique el motivo del rechazo (visible para el participante)';
+        motivoCambioEstado.required = true;
+    } else if (estado === ESTADOS_CANDIDATURA.FINALISTA) {
+        textoAyudaCambioEstado.classList.add('d-none');
+        motivoCambioEstado.required = false;
+        motivoCambioEstado.hide();
+    } else {
+        textoAyudaCambioEstado.classList.remove('d-none');
+        textoAyudaCambioEstado.textContent = 'Registre el motivo de este cambio para el historial interno';
+        motivoCambioEstado.required = false;
+    }
 }
 
 
 async function cargarHistorialCandidatura(idCandidatura) {
     const response = await obtenerHistorialCandidatura(idCandidatura);
     if (!response || response.status !== 'success') {
-        showNotification('Error al cargar el historial de la candidatura');
+        notification.show('Error al cargar el historial de la candidatura');
         return;
     }
     if (!response.data || response.data.length === 0) {
-        showNotification('No hay historial disponible para esta candidatura');
+        notification.show('No hay historial disponible para esta candidatura');
         return;
     }
     return response.data;

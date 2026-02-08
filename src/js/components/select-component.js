@@ -56,6 +56,19 @@ class SelectComponent extends HTMLElement {
         }
     }
 
+    get disabled() {
+        return this.hasAttribute('disabled');
+    }
+
+    set disabled(isDisabled) {
+        if (isDisabled) {
+            this.setAttribute('disabled', '');
+        } else {
+            this.removeAttribute('disabled');
+        }
+        this.render();
+    }
+
     validate(showUI = true) {
         const select = this.querySelector('select');
         const value = select.value;

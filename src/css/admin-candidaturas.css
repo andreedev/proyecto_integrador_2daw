@@ -101,11 +101,10 @@ th {
 
 
 
-/* ACTIONS */
 .actions {
     display: grid;
     grid-template-columns: repeat(2, max-content);
-    gap: 6px 8px;
+    gap: 12px;
     align-items: center;
 }
 
@@ -885,6 +884,7 @@ th {
         display: flex;
         flex-direction: column;
         gap: 8px;
+        width: 100%;
     }
 
     .btn {
