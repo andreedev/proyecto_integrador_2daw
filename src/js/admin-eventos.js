@@ -36,7 +36,10 @@ const horaInicioEventoInputCreate = document.getElementById('horaInicioEventoInp
 const horaFinEventoInputCreate = document.getElementById('horaFinEventoInputCreate');
 const imagenEventoInputCreate = document.getElementById('imagenEventoInputCreate');
 
+const pagination = document.getElementById('pagination');
+
 let eventoSeleccionado = null;
+let pageSize = 20;
 
 filtroFecha.addEventListener('date-change', async () => {
     await refreshEventos();
@@ -227,11 +230,18 @@ function renderizarEventos(eventos) {
     });
 }
 
+pagination.addEventListener('page-change', async () => {
+    await refreshEventos();
+})
+
 async function refreshEventos() {
     const fechaSeleccionada = filtroFecha.getISOValue();
-    const response = await listarEventos(fechaSeleccionada);
+    const response = await listarEventos(fechaSeleccionada, pagination.currentPage, pageSize);
     if (response.status === 'success') {
-        renderizarEventos(response.data);
+        const eventos = response.data.list;
+        const totalPages = response.data.totalPages;
+        pagination.setAttribute('total-pages',totalPages);
+        renderizarEventos(eventos);
     }
 }
 

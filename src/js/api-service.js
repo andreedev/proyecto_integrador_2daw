@@ -294,10 +294,12 @@ async function obtenerNoticiaPorId(idNoticia) {
 /**
  * Listar eventos
  */
-async function listarEventos(filtroFecha) {
+async function listarEventos(filtroFecha, page, pageSize) {
     const formData = new FormData();
     formData.append('action', 'listarEventos');
     formData.append('filtroFecha', filtroFecha);
+    formData.append('page', page);
+    formData.append('pageSize', pageSize);
 
     return await fetchAPI(formData);
 }

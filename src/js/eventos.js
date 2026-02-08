@@ -8,10 +8,17 @@ const horaEvento = document.getElementById('horaEvento');
 const eventTitle = document.getElementById('eventTitle');
 const eventDescription = document.getElementById('eventDescription');
 const eventsContainer = document.getElementById('eventsContainer');
+const pagination = document.getElementById('pagination');
+
+let pageSize = 8;
 
 iconHome.addEventListener('click', () => {
     window.location.href = 'index.html';
 });
+
+pagination.addEventListener('page-change', async () => {
+    await cargarContenido();
+})
 
 function renderizarEventos(eventos) {
     eventos.forEach(evento => {
@@ -83,9 +90,11 @@ function renderizarEventos(eventos) {
 
 async function cargarContenido(){
     eventsContainer.replaceChildren();
-    const httpResponse = await listarEventos('');
+    const httpResponse = await listarEventos('', pagination.currentPage, pageSize);
     if (httpResponse.status === 'success') {
-        const eventos = httpResponse.data;
+        const eventos = httpResponse.data.list;
+        const totalPages = httpResponse.data.totalPages;
+        pagination.setAttribute('total-pages',totalPages);
         renderizarEventos(eventos);
     }
 }

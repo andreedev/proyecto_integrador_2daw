@@ -1422,28 +1422,64 @@ function eliminarNoticia(): void {
         echo json_encode(["status" => "error"]);
     }
 }
-
 /**
  * Listar eventos
  */
 function listarEventos(): void {
     global $conexion;
 
-    $filtroFecha = !empty($_POST['filtroFecha']) ? $_POST['filtroFecha'] : null;
+    $pageSize = $_POST['pageSize'] ?? 10;
+    $page = $_POST['page'] ?? 1;
+    $offset = ($page - 1) * $pageSize;
+
+    $filtroFecha = limpiarDatoInput($_POST['filtroFecha'] ?? null);
+
     $filtrosSql = "";
+    $params = [];
+    $types = "";
+
     if ($filtroFecha) {
-        $filtrosSql .= " AND e.fecha = '" . $conexion->real_escape_string($filtroFecha) . "' ";
+        $filtrosSql .= " AND e.fecha = ? ";
+        $params[] = $filtroFecha;
+        $types .= "s";
     }
+
+    $countQuery = "SELECT COUNT(*) as total FROM evento e WHERE true " . $filtrosSql;
+    $stmtCount = $conexion->prepare($countQuery);
+    if (!empty($params)) {
+        $stmtCount->bind_param($types, ...$params);
+    }
+    $stmtCount->execute();
+    $resultCount = $stmtCount->get_result();
+    $totalEventos = 0;
+    if ($resultCount && $row = $resultCount->fetch_assoc()) {
+        $totalEventos = (int)$row['total'];
+    }
+    $stmtCount->close();
 
     $query = "SELECT e.id_evento as idEvento, e.nombre as nombreEvento, e.descripcion as descripcionEvento,
                 e.ubicacion as ubicacionEvento, e.fecha as fechaEvento, e.hora_inicio as horaInicioEvento,
                 e.hora_fin as horaFinEvento, a.ruta as rutaImagenEvento, a.id_archivo as idArchivoImagenEvento
               FROM evento e
-              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . "ORDER BY e.fecha DESC, e.hora_inicio ASC";
+              LEFT JOIN archivo a ON e.id_archivo_imagen = a.id_archivo 
+              WHERE true " . $filtrosSql . " 
+              ORDER BY e.fecha DESC, e.hora_inicio ASC 
+              LIMIT ? OFFSET ?";
+
+    // Agregar parámetros de paginación
+    $params[] = $pageSize;
+    $params[] = $offset;
+    $types .= "ii";
 
     $stmt = $conexion->prepare($query);
+
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
     $stmt->execute();
     $result = $stmt->get_result();
+    $stmt->close();
 
     $baseUrl = obtenerBaseUrl();
     $eventos = [];
@@ -1454,7 +1490,12 @@ function listarEventos(): void {
         $eventos[] = $row;
     }
 
-    echo json_encode(["status" => "success", "data" => $eventos]);
+    $pageContext = PageContext::create($totalEventos, $page, $pageSize, $eventos);
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $pageContext
+    ]);
 }
 
 
