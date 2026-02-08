@@ -26,7 +26,7 @@ function renderizarEdicionesAnteriores(edicionesAnteriores) {
             <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column gap-16px m-2px pb-32px" 
                  onclick="window.location.href='edicion.html?id=${idEdicion}'">
                 <div class="img-container">
-                    <img class="img-edicion-anterior" src="${rutaImagenRepresentativa}" alt="Edición ${anioEdicion}">
+                    <img class="img-edicion-anterior aspect-ratio-4-3" src="${rutaImagenRepresentativa}" alt="Edición ${anioEdicion}">
                 </div>
                 <div class="texto-edicion-anterior d-flex gap-8px flex-column">
                     <span class="num-edicion">Edición ${anioEdicion}</span>
@@ -114,8 +114,8 @@ function renderizarNoticiasDestacadas(noticias) {
         return `
             <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column cursor-pointer box-shadow-01 h-100 m-1px" 
                  onclick="window.location.href='detalle_noticia.html?id=${idNoticia}'">
-                <div class="w-100">
-                    <img class="w-100" src="${rutaImagenNoticia}" alt="Noticia ${idNoticia}">
+                <div class="img-container">
+                    <img class="img-noticia aspect-ratio-4-3" src="${rutaImagenNoticia}" alt="Noticia ${idNoticia}">
                 </div>
                 <div class="d-flex flex-column gap-8px p-16px position-relative pb-16px">
                     <div class="texto-noticia-destacada d-flex gap-4px flex-column">
