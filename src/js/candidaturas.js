@@ -288,10 +288,16 @@ async function handleGuardarCambios() {
 
     const mensajeSubsanacion = necesitaMensaje ? mensajeSubsanacionInput.value : null;
 
+    btnGuardarCambios.disabled = true;
+
     let response = await actualizarCandidatura(candidaturaSeleccionada.idCandidatura, titulo, sinopsis, idPoster, idFichaTecnica, idTrailer, mensajeSubsanacion);
+
+    btnGuardarCambios.disabled = false;
+
     if (response.status === 'success') {
         await cargarCandidaturas();
         notify('Candidatura actualizada correctamente');
+        scrollToElement(statusContainer);
     } else {
         notify('Error al actualizar la candidatura: ' + response.message);
     }

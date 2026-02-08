@@ -27,16 +27,13 @@ El proyecto incluye funcionalidades de autenticación, gestión de datos, y una 
 ### URL del proyecto en local (XAMPP)
 http://localhost/DWES/proyecto_integrador_2daw/
 
-### URL del proyecto desplegado en la nube, en un servidor Azure
-https://festivalcortosuem.azurewebsites.net/src/html
-
 ## Instrucciones para ejecutar el proyecto
 - Clonar el repositorio en tu máquina local
 - Configurar la base de datos y actualizar las credenciales en el archivo de configuración
 - Instalar las dependencias utilizando Composer
 - Ejecutar el servidor local para acceder a la aplicación
-- Si deseas probarlo localmente, el campo "baseUrl" de la tabla configuracion debe ser ``http://localhost/DWES/proyecto_integrador_2daw/``
-- Si deseas probarlo en el servidor Azure, el campo "baseUrl" de la tabla configuracion debe ser ``https://festivalcortosuem.azurewebsites.net/``
+- Si se quiere probarlo localmente, el campo "baseUrl" de la tabla configuracion debe ser ``http://localhost/DWES/proyecto_integrador_2daw/``
+- Si se quiere probarlo en un servidor, el campo "baseUrl" de la tabla configuracion cambiaria ``https://dominio.com/``
 
 ## Como ejecutar las pruebas unitarias
 
