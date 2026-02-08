@@ -353,8 +353,28 @@ function crearBaseDatosSiNoExiste(): void {
                 (2, 'Mejor cortometraje alumno', 'Javier De Poco Torres', '2do Premio', 9),
                 (2, 'Mejor cortometraje alumno', 'Ana Esperando Gómez', '3er Premio', 8);
                 
-                
-                
+                INSERT INTO edicion_archivos (id_archivo, id_edicion) VALUES
+                -- Edición 1 (2024) - archivo 2 + 8 archivos festival (26-33)
+                (2, 1),
+                (26, 1),
+                (27, 1),
+                (28, 1),
+                (29, 1),
+                (30, 1),
+                (31, 1),
+                (32, 1),
+                (33, 1),
+                -- Edición 2 (2025) - archivo 2 + 8 archivos festival (34-41)
+                (2, 2),
+                (34, 2),
+                (35, 2),
+                (36, 2),
+                (37, 2),
+                (38, 2),
+                (39, 2),
+                (40, 2),
+                (41, 2);
+                -- Edición 3 (2026 - actual) - sin archivos
                 
                 -- NOTICIAS (8 noticias, 5 archivos noticia_* ids 42-46)
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador, id_archivo_imagen) VALUES
@@ -370,12 +390,10 @@ function crearBaseDatosSiNoExiste(): void {
                 
                 -- EVENTOS (9 eventos, 5 archivos evento_* ids 21-25)
                 -- =========================
-                -- 2026-11-09 : Dia de la gala
                 INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_organizador, id_archivo_imagen) VALUES
                 ('Encuentro con profesionales del mundo audiovisual', 'Mesa redonda y conversatorio con expertos de la industria para compartir experiencias y tendencias actuales del sector.', 'Auditorio del B', '2026-11-09', '10:30', '13:00', 1, 22),
                 ('Visionado del los cortos', 'Sesión de exhibición de los cortometrajes seleccionados, incluyendo el estreno de la pieza inaugural del festival.', 'Salón de Grados', '2026-11-09', '13:30', '16:30', 1, 21),
-                ('Gala de entrega de premios', 'Evento de clausura donde se reconocerá el talento de los participantes y se premiará a las mejores obras de la edición.', 'Auditorio del B', '2026-11-09', '20:00', '22:00', 1, 23);
-                
+                ('Gala de entrega de premios', 'Evento de clausura donde se reconocerá el talento de los participantes y se premiará a las mejores obras de la edición.', 'Auditorio del B', '2026-11-09', '20:00', '22:00', 1, 23),
                 ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 24),
                 ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 25),
                 ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 22),

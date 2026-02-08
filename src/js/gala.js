@@ -7,6 +7,7 @@ const sinopsisText = document.getElementById('sinopsisText');
 const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
 const postEventoTitulo = document.getElementById('postEventoTitulo');
 const postEventoResumen = document.getElementById('postEventoResumen');
+const btnCalendario = document.getElementById('btnCalendario');
 
 cargarDatosGala();
 
@@ -34,6 +35,8 @@ function renderizarDatosGala(data) {
         preEventoFecha.textContent = formatDateToLongSpanish(data.fecha);
         preEventoUbicacion.textContent = data.ubicacion;
 
+        configurarBotonCalendario(data.titulo, data.fecha, data.ubicacion, data.descripcion);
+
         if (data.streamingActivo) {
             streamingEventoVideoPlayer.setVisible(true);
             textoTransmision.classList.remove('d-none');
@@ -54,6 +57,32 @@ function renderizarDatosGala(data) {
         renderizarCarruselCortos(data.candidaturasGanadoras);
     }
 }
+
+/**
+ * Configura el botón de calendario con los datos del evento
+ * @param {string} titulo - Título del evento
+ * @param {string} fecha - Fecha en formato DD/MM/YYYY
+ * @param {string} ubicacion - Ubicación del evento
+ * @param {string} descripcion - Descripción del evento
+ */
+function configurarBotonCalendario(titulo, fecha, ubicacion, descripcion) {
+    // Convertir fecha DD/MM/YYYY a formato Google Calendar YYYYMMDD
+    const fechaGoogleCalendar = convertSpanishDateToGoogleCalendar(fecha);
+
+    // Construir URL de Google Calendar
+    const tituloEncoded = encodeURIComponent(titulo);
+    const descripcionEncoded = encodeURIComponent(descripcion);
+    const ubicacionEncoded = encodeURIComponent(ubicacion);
+
+    // Para eventos de día completo, Google Calendar usa formato YYYYMMDD/YYYYMMDD
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${tituloEncoded}&dates=${fechaGoogleCalendar}/${fechaGoogleCalendar}&details=${descripcionEncoded}&location=${ubicacionEncoded}`;
+
+    // Actualizar el event listener del botón
+    btnCalendario.onclick = () => {
+        window.open(googleCalendarUrl, '_blank');
+    };
+}
+
 
 function renderizarCarruselGaleria(galeria) {
     const slides = [];
@@ -148,10 +177,7 @@ function abrirModalSinopsisTrailer(candidatura) {
     modalSinopsisTrailer.open();
 }
 
-const btnCalendario = document.getElementById('btnCalendario');
-btnCalendario.addEventListener('click', () => {
-    window.open('https://www.google.com/calendar/render?action=TEMPLATE&text=Festival+de+Cortometraje+2026&dates=20260123T090000Z/20260123T180000Z&details=Asistencia+al+Festival+de+Cortometraje&location=Auditorio+Principal', '_blank');
-});
+
 
 
 function renderizarEventos(eventos) {

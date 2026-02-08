@@ -276,16 +276,6 @@ window.injectExternalStyles = async function(url, id) {
 };
 
 /**
- * Extrae el nombre del archivo de una ruta completa o URL
- * @param {string} path - La ruta o URL del archivo
- * @returns {string} El nombre del archivo con su extensión
- */
-function getFileNameFromPath(path) {
-    if (!path || typeof path !== 'string') return '';
-    return path.split(/[\\/]/).pop();
-}
-
-/**
  * Valida si un string tiene un formato de email válido
  * @param {string} email
  * @returns {boolean}
@@ -365,6 +355,19 @@ function formatDateTimeToSpanish(dateSource) {
         hour12: false
     }).format(date).replace(',', '');
 }
+
+/**
+ * Convierte fecha DD/MM/YYYY a formato Google Calendar YYYYMMDD
+ * @param {string} spanishDate - Fecha en formato DD/MM/YYYY
+ * @returns {string} Fecha en formato YYYYMMDD
+ */
+function convertSpanishDateToGoogleCalendar(spanishDate) {
+    if (!spanishDate) return '';
+
+    const [dia, mes, anio] = spanishDate.split('/');
+    return `${anio}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
+}
+
 
 /**
  * Normaliza strings de fecha para compatibilidad (Sustituye espacio por T)
