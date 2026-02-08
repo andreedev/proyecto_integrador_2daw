@@ -27,6 +27,7 @@ const btnVerDocumentos = document.getElementById('btnVerDocumentos');
 const btnVolverAModalDetalle = document.getElementById('btnVolverAModalDetalle');
 
 const notification = document.getElementById('notification');
+const totalPalabras = document.getElementById('totalPalabras');
 
 let candidaturaSeleccionada = null;
 let pageSize=5;
@@ -302,8 +303,9 @@ function renderizarDetalleCandidatura(candidatura) {
     nroExpedienteInput2.value = candidatura.nroExpediente || '-';
     nroDocumentoInput.value = candidatura.dni || '-';
     sinopsisInput.value = candidatura.sinopsis || '-';
-    fechaPresentacionInput.setDate(convertISOStringToDate(candidatura.fechaPresentacion));
-    fechaActualizacionInput.setDate(convertISOStringToDate(candidatura.fechaUltimaModificacion));
+    totalPalabras.textContent = countWords(candidatura.sinopsis)
+    fechaPresentacionInput.value = formatDateTimeToSpanish(candidatura.fechaPresentacion)
+    fechaActualizacionInput.value = formatDateTimeToSpanish(candidatura.fechaUltimaModificacion);
     if (candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
         nuevoEstadoCandidatura.setOptions([
             {value: '', label: 'Seleccione un nuevo estado', default: true},
