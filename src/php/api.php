@@ -145,6 +145,9 @@ if (isset($_POST['action'])) {
         case 'obtenerEventoPorId':
             obtenerEventoPorId();
             break;
+        case 'validarExisteEventoMismaFechaHoraInicioYHoraFin':
+            validarExisteEventoMismaFechaHoraInicioYHoraFin();
+            break;
         case 'crearEvento':
             validarRol(['organizador']);
             crearEvento();
@@ -1485,6 +1488,50 @@ function obtenerEventoPorId(): void {
     }
 
     echo json_encode(["status" => "success", "data" => $evento]);
+}
+
+/**
+ * Validar si existe algún evento en la misma fecha con hora de inicio y fin que se solapen
+ * Se excluye el evento actual (en caso de edición) para permitir guardar sin cambios en fecha/hora
+ */
+function validarExisteEventoMismaFechaHoraInicioYHoraFin(): void {
+    global $conexion;
+
+    $idEvento = limpiarDatoInput($_POST['idEvento'] ?? null, true);
+    $fecha = $_POST['fechaEvento'];
+    $horaInicio = $_POST['horaInicioEvento'];
+    $horaFin = $_POST['horaFinEvento'];
+
+    $query = "SELECT COUNT(*) as total 
+              FROM evento 
+              WHERE fecha = ? 
+              AND hora_inicio < ? 
+              AND hora_fin > ?";
+
+    if ($idEvento) {
+        $query .= " AND id_evento != ?";
+    }
+
+    $stmt = $conexion->prepare($query);
+
+    if ($idEvento) {
+        $stmt->bind_param("sssi", $fecha, $horaFin, $horaInicio, $idEvento);
+    } else {
+        $stmt->bind_param("sss", $fecha, $horaFin, $horaInicio);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $existeAlgunEvento = false;
+    if ($row = $result->fetch_assoc()) {
+        $existeAlgunEvento = ((int)$row['total'] > 0);
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "existeAlgunEvento" => $existeAlgunEvento
+    ]);
 }
 
 /**

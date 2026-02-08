@@ -330,6 +330,17 @@ async function crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, ho
     return await fetchAPI(formData);
 }
 
+async function validarExisteEventoMismaFechaHoraInicioYHoraFin(idEvento, fecha, horaInicio, horaFin) {
+    const formData = new FormData();
+    formData.append('action', 'validarExisteEventoMismaFechaHoraInicioYHoraFin');
+    formData.append('idEvento', idEvento);
+    formData.append('fechaEvento', fecha);
+    formData.append('horaInicioEvento', horaInicio);
+    formData.append('horaFinEvento', horaFin);
+
+    return await fetchAPI(formData);
+}
+
 /**
  * Actualizar evento
  */

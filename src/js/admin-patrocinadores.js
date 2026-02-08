@@ -78,7 +78,7 @@ function renderizarPatrocinadores(patrocinadores) {
         iconoBorrar.className = 'iconoBorrarPatrocinador cursor-pointer d-inline-block w-20px h-20px icon-trash bg-neutral-01';
         iconoBorrar.addEventListener('click', async () => {
             patrocinadorActual = patrocinador;
-            notification.show("¿Estás seguro de eliminar este patrocinador?", {
+            notification.show("¿Estás segur@ de eliminar este patrocinador?", {
                 confirm: true,
                 confirmText: "Eliminar",
                 onConfirm: async () => {

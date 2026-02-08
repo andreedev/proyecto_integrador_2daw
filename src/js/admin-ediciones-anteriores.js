@@ -240,7 +240,7 @@ function renderizarEdicionesAnteriores(ediciones) {
         btnDelete.addEventListener('click', (e) => {
             e.stopPropagation();
             edicionSeleccionada = edicion;
-            notificador.show(`¿Estás seguro de eliminar la edición ${edicion.anioEdicion}? Esta acción no se puede deshacer`, {
+            notificador.show(`¿Estás segur@ de eliminar la edición ${edicion.anioEdicion}? Esta acción no se puede deshacer`, {
                 confirm: true,
                 confirmText: "Eliminar",
                 onConfirm: () => {

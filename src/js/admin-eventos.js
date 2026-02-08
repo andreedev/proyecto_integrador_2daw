@@ -258,7 +258,25 @@ async function handleAgregarEvento() {
     const horaFin = horaFinEventoInputCreate.getISOValue();
     const idArchivo = await imagenEventoInputCreate.uploadIfNeeded()
 
-   const response = await crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivo);
+    const response = await validarExisteEventoMismaFechaHoraInicioYHoraFin(null, fecha, horaInicio, horaFin);
+    if(response.existeAlgunEvento){
+        notification.show("Alerta: existen eventos que se solapan en fecha y hora. ¿Deseas continuar de todas formas?", {
+            confirm: true,
+            confirmText: "Continuar",
+            onConfirm: async () => {
+                await handleAgregarEventoApi(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivo);
+            }
+        });
+        return;
+    } else {
+        await handleAgregarEventoApi(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivo);
+    }
+
+
+}
+
+async function handleAgregarEventoApi(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivo) {
+    const response = await crearEvento(nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivo);
     if (response.status !== 'success') {
         notification.show('Error al crear el evento');
         return;
@@ -266,14 +284,14 @@ async function handleAgregarEvento() {
 
     modalCrearEvento.close();
     notification.show('Evento creado correctamente');
-    refreshEventos();
+    await refreshEventos();
 }
 
 /**
  * Eliminar evento
  */
 async function handleEliminarEvento() {
-    notification.show("¿Estás seguro de eliminar este evento?", {
+    notification.show("¿Estás segur@ de eliminar este evento?", {
         confirm: true,
         confirmText: "Eliminar",
         onConfirm: async () => {
@@ -312,6 +330,23 @@ async function handleActualizarEvento() {
     const horaFin = horaFinEventoInputEdit.getISOValue();
     const idArchivoImagen = await imagenEventoInputEdit.uploadIfNeeded()
 
+    const response = await validarExisteEventoMismaFechaHoraInicioYHoraFin(idEvento, fecha, horaInicio, horaFin);
+    if(response.existeAlgunEvento){
+        notification.show("Alerta: existen eventos que se solapan en fecha y hora. ¿Deseas continuar de todas formas?", {
+            confirm: true,
+            confirmText: "Continuar",
+            onConfirm: async () => {
+                await handleActualizarEventoApi(idEvento, nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen);
+            }
+        });
+        return;
+    } else {
+        await handleActualizarEventoApi(idEvento, nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen);
+    }
+
+}
+
+async function handleActualizarEventoApi(idEvento, nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen) {
     const response = await actualizarEvento(idEvento, nombre, descripcion, ubicacion, fecha, horaInicio, horaFin, idArchivoImagen);
     if (response.status !== 'success') {
         notification.show('Error al actualizar el evento');
@@ -320,8 +355,7 @@ async function handleActualizarEvento() {
 
     modalActualizarEvento.close();
     notification.show('Evento actualizado correctamente');
-    refreshEventos();
-
+    await refreshEventos();
 }
 
 (function checkPathParams(){

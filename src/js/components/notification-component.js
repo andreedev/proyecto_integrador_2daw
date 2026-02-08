@@ -4,7 +4,7 @@
  * * Ejemplo de uso (Notificación simple):
  * notifier.show("Operación exitosa");
  * * Ejemplo de uso (Confirmación):
- * notifier.show("¿Estás seguro de eliminar?", {
+ * notifier.show("¿Estás segur@ de eliminar?", {
  * confirm: true,
  * confirmText: "Eliminar",
  * onConfirm: () => deleteItem()
