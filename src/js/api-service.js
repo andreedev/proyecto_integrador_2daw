@@ -129,9 +129,10 @@ async function eliminarCategoria(idCategoria) {
 /**
  * Listar finalistas no ganadores
  */
-async function listarFinalistasNoGanadores() {
+async function listarFinalistasNoGanadores(filtroNombreFinalista) {
     const data = new FormData();
     data.append('action', 'listarFinalistasNoGanadores');
+    data.append('filtroNombreFinalista', filtroNombreFinalista);
     return await fetchAPI(data);
 }
 

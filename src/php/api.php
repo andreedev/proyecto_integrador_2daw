@@ -762,16 +762,34 @@ function listarCategoriasAdmin(): void {
 function listarFinalistasNoGanadores() {
     global $conexion;
 
-    $query = "SELECT c.id_candidatura as idCandidatura, c.titulo, c.sinopsis, c.estado, c.fecha_presentacion as fechaPresentacion, pc.nombre AS nombreParticipante, pc.correo as correoParticipante
+    $filtroNombreFinalista = limpiarDatoInput($_POST['filtroNombreFinalista'] ?? '');
+    $params = [];
+    $types = "";
+    $filtroSql = '';
+
+    // 1. Build the dynamic filter
+    if (!empty($filtroNombreFinalista)) {
+        $filtroSql = " AND pc.nombre LIKE ? ";
+        $params[] = "%" . $filtroNombreFinalista . "%";
+        $types .= "s";
+    }
+
+    $query = "SELECT c.id_candidatura as idCandidatura, c.titulo, c.sinopsis, 
+                     c.estado, c.fecha_presentacion as fechaPresentacion, 
+                     pc.nombre AS nombreParticipante, pc.correo as correoParticipante
               FROM candidatura c
               INNER JOIN participante pc ON c.id_participante = pc.id_participante
               INNER JOIN archivo a ON c.id_archivo_video = a.id_archivo
-              WHERE c.estado = 'Finalista' AND c.id_candidatura NOT IN (
+              WHERE c.estado = 'Finalista' 
+              AND c.id_candidatura NOT IN (
                   SELECT pm.id_candidatura
                   FROM premio_candidatura pm
-              )";
+              ) $filtroSql";
 
     $stmt = $conexion->prepare($query);
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
     $stmt->execute();
     $result = $stmt->get_result();
 

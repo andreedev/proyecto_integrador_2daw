@@ -7,6 +7,9 @@ const ganador = document.querySelector('.ganador');
 const modalAsignarGanador = document.getElementById('modalAsignarGanador');
 const btnAceptarGanador = document.getElementById('btnAceptarGanador');
 const notification = document.getElementById('notification');
+const finalistaSearchInput = document.getElementById('finalistaSearchInput');
+const btnBuscarFinalista = document.getElementById('btnBuscarFinalista');
+const btnLimpiarBusqueda = document.getElementById('btnLimpiarBusqueda');
 
 let idPremioSeleccionado;
 let idCandidaturaSeleccionada;
@@ -17,6 +20,23 @@ btnAceptarGanador.addEventListener('click', async () => {
         return;
     }
     await handleAsignarGanador(idCandidaturaSeleccionada);
+});
+
+btnBuscarFinalista.addEventListener('click', async () => {
+    const query = finalistaSearchInput.value.trim();
+    buscarFinalistas( query);
+});
+
+finalistaSearchInput.addEventListener('keyup', async (e) => {
+    if (e.key === 'Enter') {
+        const query = finalistaSearchInput.value.trim();
+        buscarFinalistas( query);
+    }
+});
+
+btnLimpiarBusqueda.addEventListener('click', async () => {
+    finalistaSearchInput.setValue('')
+    buscarFinalistas();
 });
 
 /**
@@ -106,13 +126,10 @@ function renderizarCategorias(categorias){
             btnAsignarDiv.classList.add('primary-button-02', 'btnAsignar', 'btn-action');
             btnAsignarDiv.textContent = premio.tieneGanador ? 'Desasignar' : 'Asignar';
             btnAsignarDiv.addEventListener('click', async () => {
+                idPremioSeleccionado = premio.idPremio;
+                idCandidaturaSeleccionada = premio.idCandidaturaGanador;
                 if (btnAsignarDiv.textContent === 'Asignar') {
-                    const listarFinalistasNoGanadoresResponse = await listarFinalistasNoGanadores();
-                    if (listarFinalistasNoGanadoresResponse.status === 'success') {
-                        const finalistas = listarFinalistasNoGanadoresResponse.data;
-                        renderizarFinalistasEnModal(finalistas);
-                        idPremioSeleccionado = premio.idPremio;
-                    }
+                    buscarFinalistas(null, '')
                     modalAsignarGanador.open();
                 } else {
                     notification.show('¿Estás seguro de que deseas desasignar al ganador?', {
@@ -128,10 +145,6 @@ function renderizarCategorias(categorias){
                             }
                         }
                     });
-                }
-                if (btnAsignarDiv.textContent === 'Desasignar') {
-                    idPremioSeleccionado = premio.idPremio;
-                    idCandidaturaSeleccionada = premio.idCandidaturaGanador;
                 }
             });
 
@@ -157,6 +170,17 @@ function renderizarCategorias(categorias){
 
     });
 
+}
+
+async function buscarFinalistas(filtroNombreFinalista = '') {
+    clearAllSelectedFinalists();
+    const response = await listarFinalistasNoGanadores(filtroNombreFinalista);
+    if (response.status === 'success') {
+        const finalistas = response.data;
+        renderizarFinalistasEnModal(finalistas);
+    } else {
+        notification.show('Error al buscar finalistas: ' + response.message);
+    }
 }
 
 async function cargarCategorias() {
@@ -205,6 +229,13 @@ function renderizarFinalistasEnModal(finalistas) {
         });
         finalistasContainer.appendChild(finalist);
     });
+}
+
+function clearAllSelectedFinalists() {
+    document.querySelectorAll('finalist-card-component').forEach(card => {
+        card.unselect();
+    });
+    idCandidaturaSeleccionada = null;
 }
 
 async function handleAsignarGanador(idCandidatura) {
