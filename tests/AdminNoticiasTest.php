@@ -39,12 +39,13 @@ class AdminNoticiasTest extends PHPUnit\Framework\TestCase {
 
     /**
      * Auxiliar para capturar el JSON de las funciones de api.php
-     * He añadido un bloque try/finally para evitar buffers abiertos si falla
+     * Acepta el nombre de la función como string y la ejecuta
      */
-    private function ejecutarFuncion($funcion) {
+    private function ejecutarFuncion($nombreFuncion) {
         ob_start();
         try {
-            $funcion();
+            // Llamar a la función por su nombre
+            call_user_func($nombreFuncion);
         } finally {
             $salida = ob_get_clean();
         }
@@ -66,15 +67,27 @@ class AdminNoticiasTest extends PHPUnit\Framework\TestCase {
     }
 
     public function testListarNoticias() {
-        // Primero creamos una noticia para asegurar que hay datos
         $this->testCrearNoticia();
 
         $_POST['filtroNombre'] = 'Noticia';
+        $_POST['page'] = 1;
+        $_POST['pageSize'] = 5;
+
+        // ejecutarFuncion YA hace ob_start/ob_get_clean y devuelve el JSON decodificado
         $res = $this->ejecutarFuncion('listarNoticias');
+
+        // Debug: ver qué se está devolviendo
+        if ($res === null) {
+            $this->fail('La respuesta es null. Puede haber un error en la función o un JSON inválido.');
+        }
 
         $this->assertEquals('success', $res['status']);
         $this->assertIsArray($res['data']);
-        $this->assertGreaterThan(0, count($res['data']));
+
+        $this->assertArrayHasKey('list', $res['data']);
+        $this->assertArrayHasKey('totalRecords', $res['data']);
+
+        $this->assertGreaterThan(0, count($res['data']['list']));
     }
 
     public function testEliminarNoticia() {
@@ -88,7 +101,7 @@ class AdminNoticiasTest extends PHPUnit\Framework\TestCase {
         $res = $this->ejecutarFuncion('eliminarNoticia');
 
         $this->assertEquals('success', $res['status']);
-        
+
         // Verificar que ya no existe en la BD
         $check = $conexion->query("SELECT id_noticia FROM noticia WHERE id_noticia = $idInsertado");
         $this->assertEquals(0, $check->num_rows);

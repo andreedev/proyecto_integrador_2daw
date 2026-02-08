@@ -370,13 +370,14 @@ function crearBaseDatosSiNoExiste(): void {
                 
                 -- EVENTOS (9 eventos, 5 archivos evento_* ids 21-25)
                 -- =========================
+                -- 2026-11-09 : Dia de la gala
                 INSERT INTO evento (nombre, descripcion, ubicacion, fecha, hora_inicio, hora_fin, id_organizador, id_archivo_imagen) VALUES
-                ('Proyección inaugural', 'Proyección del cortometraje inaugural del festival.', 'Cine Principal', '2026-11-09', '19:00', '21:00', 1, 21),
-                ('Taller de cine', 'Taller práctico sobre técnicas de filmación.', 'Sala de Talleres', '2026-11-09', '10:00', '13:00', 1, 22),
-                ('Clausura y entrega de premios', 'Ceremonia de clausura y entrega de premios a los ganadores.', 'Teatro Central', '2026-11-09', '20:00', '22:00', 1, 23),
+                ('Encuentro con profesionales del mundo audiovisual', 'Mesa redonda y conversatorio con expertos de la industria para compartir experiencias y tendencias actuales del sector.', 'Auditorio del B', '2026-11-09', '10:30', '13:00', 1, 22),
+                ('Visionado del los cortos', 'Sesión de exhibición de los cortometrajes seleccionados, incluyendo el estreno de la pieza inaugural del festival.', 'Salón de Grados', '2026-11-09', '13:30', '16:30', 1, 21),
+                ('Gala de entrega de premios', 'Evento de clausura donde se reconocerá el talento de los participantes y se premiará a las mejores obras de la edición.', 'Auditorio del B', '2026-11-09', '20:00', '22:00', 1, 23);
+                
                 ('Mesa redonda', 'Debate con directores y productores invitados.', 'Auditorio', CURDATE(), '16:00', '18:00', 1, 24),
                 ('Networking', 'Sesión de networking para participantes y profesionales.', 'Sala VIP', CURDATE(), '18:00', '20:00', 1, 25),
-                ('Proyección de cortos ganadores', 'Proyección de los cortometrajes ganadores de ediciones anteriores.', 'Cine Secundario', '2026-11-09', '15:00', '17:00', 1, 21),
                 ('Taller de guionismo', 'Taller sobre escritura de guiones para cortometrajes.', 'Sala de Guionismo', CURDATE(), '11:00', '14:00', 1, 22),
                 ('Fiesta de clausura', 'Fiesta para celebrar el cierre del festival.', 'Club Nocturno', CURDATE(), '23:00', '02:00', 1, 23),
                 ('Proyección temática', 'Proyección de cortometrajes con temática específica.', 'Cine Temático', CURDATE(), '14:00', '16:00', 1, 24);

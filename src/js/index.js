@@ -59,9 +59,9 @@ eventoDatepicker.addEventListener('view-change', async (event) => {
 });
 
 async function cargarEventosPorFecha(fechaISO) {
-    const response = await listarEventos(fechaISO);
-    renderizarEventos(response.data);
-    eventoDatepicker.setEvents(response.data);
+    const response = await listarEventos(fechaISO, 1, 100);
+    renderizarEventos(response.data.list);
+    eventoDatepicker.setEvents(response.data.list);
 }
 
 function renderizarEventos(eventos) {

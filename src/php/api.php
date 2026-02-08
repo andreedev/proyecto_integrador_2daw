@@ -1240,40 +1240,61 @@ function enviarEdicionAAnteriores() {
         echo json_encode(["status" => "error", "message" => $e->getMessage()]);
     }
 }
-
 /**
  * Listar noticias
  */
 function listarNoticias(): void {
     global $conexion;
 
-    $page = (int) $_POST['page'] ?? 1;
-    $pageSize = (int) $_POST['pageSize'] ?? 5;
+    $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+    $pageSize = isset($_POST['pageSize']) ? (int)$_POST['pageSize'] : 5;
     $offset = ($page - 1) * $pageSize;
 
     $filtroNombre = !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
+
     $filtrosSql = "";
+    $params = [];
+    $types = "";
+
     if ($filtroNombre) {
-        $filtrosSql .= " AND n.nombre LIKE '%" . $conexion->real_escape_string($filtroNombre) . "%' ";
+        $filtrosSql .= " AND n.nombre LIKE ? ";
+        $params[] = "%" . $filtroNombre . "%";
+        $types .= "s";
     }
 
     $countQuery = "SELECT COUNT(*) as total FROM noticia n WHERE true " . $filtrosSql;
-    $resultCount = $conexion->query($countQuery);
+    $stmtCount = $conexion->prepare($countQuery);
+    if (!empty($params)) {
+        $stmtCount->bind_param($types, ...$params);
+    }
+    $stmtCount->execute();
+    $resultCount = $stmtCount->get_result();
     $totalNoticias = 0;
     if ($resultCount && $row = $resultCount->fetch_assoc()) {
         $totalNoticias = (int)$row['total'];
     }
+    $stmtCount->close();
 
     $query = "SELECT n.id_noticia as idNoticia, n.nombre as nombreNoticia, n.descripcion as descripcionNoticia,
                 n.fecha as fechaNoticia, a.ruta as rutaImagenNoticia, a.id_archivo as idArchivoImagenNoticia,
                 IF(n.fecha > CURDATE(), 'Programada', 'Publicada') as estadoNoticia
               FROM noticia n
-              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo WHERE true " . $filtrosSql . " ORDER BY n.fecha DESC LIMIT ? OFFSET ?";
+              LEFT JOIN archivo a ON n.id_archivo_imagen = a.id_archivo 
+              WHERE true " . $filtrosSql . " 
+              ORDER BY n.fecha DESC 
+              LIMIT ? OFFSET ?";
+
+    $params[] = $pageSize;
+    $params[] = $offset;
+    $types .= "ii";
 
     $stmt = $conexion->prepare($query);
-    $stmt->bind_param("ii", $pageSize, $offset);
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
     $stmt->execute();
     $result = $stmt->get_result();
+    $stmt->close();
 
     $noticias = [];
     $baseUrl = obtenerBaseUrl();
@@ -1422,14 +1443,15 @@ function eliminarNoticia(): void {
         echo json_encode(["status" => "error"]);
     }
 }
+
 /**
  * Listar eventos
  */
 function listarEventos(): void {
     global $conexion;
 
-    $pageSize = $_POST['pageSize'] ?? 10;
-    $page = $_POST['page'] ?? 1;
+    $pageSize = limpiarDatoInput($_POST['pageSize'] ?? 20, true);
+    $page = limpiarDatoInput($_POST['page'] ?? 1, true);
     $offset = ($page - 1) * $pageSize;
 
     $filtroFecha = limpiarDatoInput($_POST['filtroFecha'] ?? null);
