@@ -745,3 +745,11 @@
     height: 1px;
     background-color: var(--neutral-05);
 }
+
+
+.img-edicion{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+}
