@@ -193,13 +193,13 @@ class FinalistCardComponent extends HTMLElement {
                     </div>
                 </div>
                 
-                <div class="d-flex flex-column gap-4px min-w-1px flex-1">
+                <div class="d-flex flex-column gap-4px min-w-1px flex-grow-1">
                     <span class="fw-500 text-neutral-01 line-height-120">${displayName}</span>
                     <span class="fs-12px text-neutral-03">${this._data.correoParticipante}</span>
                     <span class="fs-12px text-neutral-03 text-truncate-multiline-3 line-height-140">${this._data.sinopsis}</span>
                 </div>
                 
-                <div class="d-flex flex-column gap-4px align-items-end min-w-fit">
+                <div class="d-flex flex-column gap-4px align-items-end flex-shrink-0">
                     <span class="fs-12px text-neutral-03">Presentación</span>
                     <span class="fs-12px text-neutral-01 fw-500">${this._formatDate(this._data.fechaPresentacion)}</span>
                 </div>

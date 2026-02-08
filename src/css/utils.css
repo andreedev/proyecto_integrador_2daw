@@ -476,6 +476,14 @@
     align-items: flex-start;
 }
 
+.align-items-end{
+    align-items: flex-end;
+}
+
+.align-self-end{
+    align-self: flex-end;
+}
+
 .text-left{
     text-align: left;
 }
@@ -697,6 +705,10 @@
 
 .min-w-1px{
     min-width: 1px;
+}
+
+.min-w-fit{
+    min-width: fit-content;
 }
 
 .w-max-content{

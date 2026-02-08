@@ -86,7 +86,7 @@ function renderizarCategorias(categorias) {
         deleteBtn.dataset.nombre = categoria.nombre;
         deleteBtn.addEventListener('click', (e) => {
             e.stopPropagation(); // CLAVE para que no se abra el modal de editar
-            notification.show("¿Estás seguro de eliminar?", {
+            notification.show("¿Estás seguro de eliminar esta categoría?", {
                 confirm: true,
                 confirmText: "Eliminar",
                 onConfirm: ()  => {
