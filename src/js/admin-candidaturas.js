@@ -281,6 +281,11 @@ function renderizarDocumentos(c) {
 btnConfimarCambioEstado.addEventListener('click', async () => {
     if (!motivoCambioEstado.validate(true).valid) return;
 
+    if (!nuevoEstadoCandidatura.value) {
+        notification.show('Seleccione un nuevo estado para la candidatura');
+        return;
+    }
+
     const response = await actualizarEstadoCandidatura(candidaturaSeleccionada.idCandidatura,  nuevoEstadoCandidatura.value, motivoCambioEstado.value.trim());
     if (!response || response.status !== 'success') {
         notification.show('Error al cambiar el estado de la candidatura');
@@ -301,7 +306,7 @@ function renderizarDetalleCandidatura(candidatura) {
     fechaActualizacionInput.setDate(convertISOStringToDate(candidatura.fechaUltimaModificacion));
     if (candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
         nuevoEstadoCandidatura.setOptions([
-            {value: ESTADOS_CANDIDATURA.EN_REVISION, label: ESTADOS_CANDIDATURA.EN_REVISION},
+            {value: '', label: 'Seleccione un nuevo estado', default: true},
             {value: ESTADOS_CANDIDATURA.ACEPTADA, label: ESTADOS_CANDIDATURA.ACEPTADA},
             {value: ESTADOS_CANDIDATURA.RECHAZADA, label: ESTADOS_CANDIDATURA.RECHAZADA}
         ]);
@@ -310,7 +315,7 @@ function renderizarDetalleCandidatura(candidatura) {
 
     } else if (candidatura.estado === ESTADOS_CANDIDATURA.ACEPTADA) {
         nuevoEstadoCandidatura.setOptions([
-            {value: ESTADOS_CANDIDATURA.ACEPTADA, label: ESTADOS_CANDIDATURA.ACEPTADA},
+            {value: '', label: 'Seleccione un nuevo estado', default: true},
             {value: ESTADOS_CANDIDATURA.FINALISTA, label: ESTADOS_CANDIDATURA.FINALISTA}
         ]);
         nuevoEstadoCandidatura.disabled = false;
@@ -318,19 +323,18 @@ function renderizarDetalleCandidatura(candidatura) {
 
     } else if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA) {
         nuevoEstadoCandidatura.setOptions([
-            {value: ESTADOS_CANDIDATURA.RECHAZADA, label: ESTADOS_CANDIDATURA.RECHAZADA},
+            {value: '', label: 'Seleccione un nuevo estado', default: true},
         ]);
         nuevoEstadoCandidatura.disabled = true
         btnConfimarCambioEstado.disabled = true;
 
     } else if (candidatura.estado === ESTADOS_CANDIDATURA.FINALISTA) {
         nuevoEstadoCandidatura.setOptions([
-            {value: ESTADOS_CANDIDATURA.FINALISTA, label: ESTADOS_CANDIDATURA.FINALISTA}
+            {value: '', label: 'Seleccione un nuevo estado', default: true},
         ]);
         nuevoEstadoCandidatura.disabled = true;
         btnConfimarCambioEstado.disabled = true;
     }
-    nuevoEstadoCandidatura.value = candidatura.estado;
     actualizarEstadoMotivoRechazoInput(candidatura.estado);
 }
 
