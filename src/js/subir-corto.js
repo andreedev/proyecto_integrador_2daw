@@ -44,6 +44,7 @@ const sinopsisInput = document.getElementById('sinopsisInput');
 const contadorPalabras = document.getElementById('sinopsisTotalWords');
 const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
 
+const notification = document.getElementById('notification');
 
 const sesionIniciada = sessionStorage.getItem('sesionIniciada') === 'true';
 
@@ -185,27 +186,32 @@ function switchStep(targetStep) {
 }
 
 async function enviarCandidatura() {
-    const nombre = nombreInput.value.trim();
-    const correo = correoInput.value.trim();
-    const password = passwordInput.value.trim();
-    const dni = dniInput.value.trim();
-    const nroExpediente = nroExpedienteInput.value.trim();
-    const idVideo = await videoInput.uploadIfNeeded();
-    const idPoster = await posterInput.uploadIfNeeded();
-    const titulo = tituloInput.value.trim();
-    const sinopsis = sinopsisInput.value.trim();
-    const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
-    const tipoCandidatura = tipoCandidaturaSelect.value;
+    try{
+        const nombre = nombreInput.value.trim();
+        const correo = correoInput.value.trim();
+        const password = passwordInput.value.trim();
+        const dni = dniInput.value.trim();
+        const nroExpediente = nroExpedienteInput.value.trim();
+        const idVideo = await videoInput.uploadIfNeeded();
+        const idPoster = await posterInput.uploadIfNeeded();
+        const titulo = tituloInput.value.trim();
+        const sinopsis = sinopsisInput.value.trim();
+        const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
+        const tipoCandidatura = tipoCandidaturaSelect.value;
 
-    const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura);
+        const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura);
 
-    if (response.status === 'success') {
-        switchStep(4);
-        setTimeout(() => {
-            window.location.href = 'candidaturas.html';
-        }, 4000);
-    } else {
-        alert('Hubo un error al enviar la candidatura');
+        if (response.status === 'success') {
+            switchStep(4);
+            setTimeout(() => {
+                window.location.href = 'candidaturas.html';
+            }, 4000);
+        } else {
+            notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
+        }
+    } catch (error) {
+        console.error('Error al enviar la candidatura:', error);
+        notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
     }
 }
 
