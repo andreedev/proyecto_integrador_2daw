@@ -373,7 +373,7 @@ function renderizarHistorial(historial) {
     container.innerHTML = '';
 
     const statusConfig = {
-        'En revisión': { color: 'warning', icon: 'icon-warning' },
+        'En revisión': { color: 'information', icon: 'icon-warning' },
         'Rechazada':   { color: 'error', icon: 'icon-clock' },
         'Aceptada':    { color: 'success', icon: 'icon-check' },
         'Finalista':   { color: 'information', icon: 'icon-clock' },

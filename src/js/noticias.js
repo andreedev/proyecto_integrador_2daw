@@ -33,7 +33,7 @@ function renderizarNoticias(noticias) {
 
         const tituloNoticia = document.createElement('div');
         tituloNoticia.classList.add('news-title');
-        tituloNoticia.textContent = noticia.titulo;
+        tituloNoticia.textContent = noticia.nombreNoticia;
 
         const descripcionNoticia = document.createElement('div');
         descripcionNoticia.classList.add('news-description');

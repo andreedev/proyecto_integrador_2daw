@@ -318,7 +318,7 @@ function crearBaseDatosSiNoExiste(): void {
                     ('galaPreEventoUbicacion', 'Auditorio Principal', 1),
                     ('galaPreEventoDescripcion', '¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni', 1),
                     ('galaPreEventoStreamingActivo', 'true', 1),
-                    ('galaPreEventoStreamingUrl', 'https://www.youtube.com/watch?v=OdiUGCJIAC8', 1),
+                    ('galaPreEventoStreamingUrl', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 1),
                     ('fechaUltimaModificacionConfiguracion', CURRENT_TIMESTAMP, 1),
                     ('baseUrl', 'http://localhost/DWES/proyecto_integrador_2daw/', 1);
                     
