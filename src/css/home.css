@@ -1,30 +1,3 @@
-.video-presentacion-concurso{
-    width:100%;
-    height:auto;
-    position:relative;
-
-}
-.presentacion-concurso{
-    width:100%;
-    height:auto;
-}
-
-.space-ediciones-anteriores-text{
-    font-size: 39px;
-    line-height: 120%;
-    color: var(--neutral-01);
-    font-weight: 600;
-    margin: 0px 96px;
-}
-
-.ediciones-container{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    justify-items: center;
-    margin: 0px 96px 0px 96px;
-}
-
 .img-edicion-anterior{
     width: 100%;
     height: 100%;
@@ -81,63 +54,6 @@
     height: 24px;
 }
 
-/* Carousel eventos*/
-.carousel-ediciones-anteriores {
-    width: 100%;
-    max-width:612px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.carousel-track-edicion-anterior {
-    display: flex;
-    transition: transform 0.4s ease-in-out;
-    gap:24px;
-}
-
-.slide-edicion-anterior {
-    min-width: 612px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    cursor: pointer;
-    user-select: none;
-    flex-direction: column;
-    gap:16px;
-}
-
-.indicators-edicion-anterior-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 16px;
-    gap: 8px;
-}
-
-.indicator-edicion-anterior {
-    width: 12px;
-    height: 12px;
-    background: var(--neutral-05);
-    cursor: pointer;
-    transition: background 0.3s;
-    display: inline-block;
-}
-
-/* Estado activo y hover */
-.indicator-edicion-anterior:hover,
-.indicator-edicion-anterior.active {
-    background: var(--primary-03);
-}
-
-.calendario-evento{
-    margin: 0px 96px 0px 96px;
-}
-
-.calendario{
-    border:solid 1px var(--neutral-01);
-    width:50%;
-    height:250px;
-}
 
 .eventos{
     overflow-y: scroll;
@@ -479,4 +395,17 @@
     .calendario-eventos{
         width: 350px;
     }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: all 1.5s ease-out;
+    visibility: hidden;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
 }
