@@ -248,5 +248,3 @@ function mostrarPasosSegunAutenticacion() {
         switchStep(1, false);
     }
 }
-
-switchStep(3);
