@@ -121,12 +121,16 @@
                 </div>
 
                 <div id="cardBodyStep2" class="upload-short-film-card-body-step step-2 d-none">
-                    <select-component
-                            id="tipoCandidaturaSelect"
-                            label="Tipo de candidatura"
-                            required
-                            required-message="Debes seleccionar un tipo">
-                    </select-component>
+                    <div class="d-flex gap-12px flex-column">
+                        <select-component
+                                id="tipoCandidaturaSelect"
+                                label="Tipo de candidatura"
+                                required
+                                required-message="Debes seleccionar un tipo">
+                        </select-component>
+
+                        <span id="alumniHelperText" class="fw-500 fs-14px d-none">Recuerda que debes presentar como mínimo dos obras si participas como alumni. Podrás presentar otro corto después de subir este</span>
+                    </div>
 
                     <div>
                         <file-component
