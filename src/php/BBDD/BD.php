@@ -291,10 +291,7 @@ function crearBaseDatosSiNoExiste(): void {
                     ('EMP-001', 'Organizador Madrid', 'admin@gmail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', '99999999Z');
                
                 INSERT INTO configuracion (nombre, valor, id_organizador) VALUES
-                    ('modo', 'pre-evento', 1),
-                    ('minCandidaturas', '2', 1),
-                    ('maxCandidaturas', '5', 1),
-                    ('galaProximaFecha', '18/12/2027', 1),
+                    ('modo', 'pre-evento', 1), -- Puede ser 'pre-evento' o 'post-evento'
                     ('galaPreEventoTitulo', 'Festival de Cine 2026', 1),
                     ('galaPreEventoFecha', '09/11/2026', 1),
                     ('galaPreEventoHora', '15:00', 1),
@@ -390,16 +387,58 @@ function crearBaseDatosSiNoExiste(): void {
                 ('Canon', 47);
 
                 
-                -- UPDATES
+                -- UPDATES e INSERTS relacionados con el proceso de revisión de candidaturas, cambios de estado y asignación de premios
                 -- candidatura 1: Rechazada por duración, sin trailer
                 UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 1;
                 INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
                 (1, 'Rechazada', 'El cortometraje no cumple con los requisitos de duración.', true);
                 
+                -- candidatura 2: Rechazada por problemas técnicos, luego subsanados y pendiente de revisión
+                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 2;
+                INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
+                (2, 'Rechazada', 'El cortometraje no cumple con los requisitos de resolución 1920x1080.', true);
+                UPDATE candidatura SET estado = 'En revisión' WHERE id_candidatura = 2;
+                INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
+                (2, 'En revisión', 'He subsanado los problemas técnicos, el cortometraje ahora cumple con los requisitos.', true);
                 
+                -- candidatura 3: Aceptada sin problemas
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 3;
+                INSERT INTO historial_candidatura (id_candidatura, estado) VALUES
+                (3, 'Aceptada');
+                
+                -- candidatura 4: Rechazada por contenido inapropiado
+                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 4;
+                INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
+                (4, 'Rechazada', 'El cortometraje contiene escenas que no cumplen con las normas de contenido del festival.', true);
+                
+                -- candidatura 5: Aceptada y luego finalista, sin trailer
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 5;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (5, 'Aceptada', true);
+                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 5;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (5, 'Finalista', true);
+                
+                -- candidatura 6: Aceptada y luego finalista, con trailer
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 6;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (6, 'Aceptada', true);
+                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 6;
+                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
+                (6, 'Finalista', true);
                 UPDATE candidatura
                 SET id_archivo_trailer = id_archivo_video
-                WHERE estado = 'Finalista' AND id_archivo_trailer IS NULL;
+                WHERE id_candidatura = 6;
+                
+                -- candidatura 7: Rechazada por problemas de formato
+                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 7;
+                INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
+                (7, 'Rechazada', 'El cortometraje no cumple con los requisitos de formato de archivo (debe ser MP4).', true);
+              
+                -- candidatura 8: Aceptada sin problemas
+                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 8;
+                INSERT INTO historial_candidatura (id_candidatura, estado) VALUES
+                (8, 'Aceptada');
                 
                 INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(1, 1);
                 INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(4, 2);
