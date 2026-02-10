@@ -51,18 +51,26 @@
         </section>
 
         <div class="reveal bg-neutral-08 w-100 py-48px">
-            <div class="container-sm px-24px justify-content-center align-items-center w-100 d-flex gap-48px flex-column">
+            <div class="container-lg px-24px justify-content-center align-items-center w-100 d-flex gap-48px flex-column w-100">
                 <span class="fs-24px fs-md-40px fw-600">No te pierdas nada: Agenda de eventos</span>
 
-                <div class="d-flex flex-column flex-md-row gap-56px" >
+                <div class="d-grid grid-template-columns-1 grid-cols-md-3-7 gap-24px gap-md-56px justify-content-center w-100">
                     <date-component
                             id="eventoDatepicker"
                             inline
-                            class="calendario-eventos">
+                            class="calendario-eventos m-auto my-24px">
                     </date-component>
 
-                    <div class="eventos scrollbar-style-1 d-flex gap-16px flex-column" id="eventosLista">
-
+                    <div class="d-flex flex-column min-w-0 position-relative">
+                        <skeleton-table-component
+                                id="skeletonEventos"
+                                rows="3"
+                                columns="1"
+                                height="80px"
+                                gap="16px"
+                                style="position: absolute; inset: 0; z-index: 1;"
+                        ></skeleton-table-component>
+                        <div class="eventos scrollbar-style-1 d-flex gap-16px flex-column min-w-0" id="eventosLista"></div>
                     </div>
                 </div>
             </div>
@@ -103,6 +111,7 @@
     <script src="../js/components/modal-component.js"></script>
     <script src="../js/components/video-player-component.js"></script>
     <script src="../js/components/carousel-component.js"></script>
+    <script src="../js/components/skeleton-table-component.js"></script>
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/index.js"></script>

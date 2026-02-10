@@ -2,6 +2,8 @@ const eventoDatepicker = document.getElementById('eventoDatepicker');
 const edicionesAnterioresCarousel = document.getElementById('edicionesAnterioresCarousel');
 const noticiasDestacadasCarousel = document.getElementById('noticiasDestacadasCarousel');
 const premiosCarousel = document.getElementById('premiosCarousel');
+const skeletonEventos = document.getElementById('skeletonEventos');
+const eventosLista = document.getElementById('eventosLista');
 
 const resolvePageReady = registerPageReady();
 
@@ -62,13 +64,14 @@ eventoDatepicker.addEventListener('view-change', async (event) => {
 });
 
 async function cargarEventosPorFecha(fechaISO) {
+    skeletonEventos.show(eventosLista);
     const response = await listarEventos(fechaISO, 1, 100);
     renderizarEventos(response.data.list);
     eventoDatepicker.setEvents(response.data.list);
+    skeletonEventos.hide(eventosLista);
 }
 
 function renderizarEventos(eventos) {
-    const eventosLista = document.getElementById('eventosLista');
     eventosLista.replaceChildren();
 
     eventos.forEach(evento => {
