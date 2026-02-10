@@ -1252,7 +1252,8 @@ function listarNoticias(): void {
     $pageSize = isset($_POST['pageSize']) ? (int)$_POST['pageSize'] : 5;
     $offset = ($page - 1) * $pageSize;
 
-    $filtroNombre = !empty($_POST['filtroNombre']) ? $_POST['filtroNombre'] : null;
+    $filtroNombre = limpiarDatoInput($_POST['filtroNombre'] ?? null);
+    $filtroEstado = limpiarDatoInput($_POST['filtroEstado'] ?? null);
 
     $filtrosSql = "";
     $params = [];
@@ -1262,6 +1263,16 @@ function listarNoticias(): void {
         $filtrosSql .= " AND n.nombre LIKE ? ";
         $params[] = "%" . $filtroNombre . "%";
         $types .= "s";
+    }
+
+    // Filtro de estado: programada (fecha futura) o publicada (fecha hoy o pasada)
+    if ($filtroEstado) {
+        if (strtolower($filtroEstado) === 'programada') {
+            $filtrosSql .= " AND n.fecha > CURDATE() ";
+
+        } elseif (strtolower($filtroEstado) === 'publicada') {
+            $filtrosSql .= " AND n.fecha <= CURDATE() ";
+        }
     }
 
     $countQuery = "SELECT COUNT(*) as total FROM noticia n WHERE true " . $filtrosSql;

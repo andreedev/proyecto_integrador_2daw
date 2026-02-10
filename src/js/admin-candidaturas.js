@@ -30,6 +30,8 @@ const notification = document.getElementById('notification');
 const totalPalabras = document.getElementById('totalPalabras');
 
 const bodyTablaCandidaturas = document.getElementById('bodyTablaCandidaturas');
+const skeletonCandidaturas = document.getElementById('skeletonCandidaturas');
+const tablaWrapper = document.getElementById('tablaWrapper');
 
 let candidaturaSeleccionada = null;
 let pageSize=5;
@@ -132,6 +134,8 @@ function getEstadoKey(status) {
  * Carga y renderiza las candidaturas según los filtros y paginación
  */
 async function cargarCandidaturas() {
+    skeletonCandidaturas.show(tablaWrapper);
+
     const texto = filtroTexto.value.trim();
     const estado = filtroEstado.value;
     const tipo = filtroTipo.value;
@@ -148,6 +152,10 @@ async function cargarCandidaturas() {
     const totalRecords = response.data.totalRecords;
 
     renderizarCandidaturas(candidaturas, paginaActual, totalPaginas, totalRecords);
+
+    await sleep(100)
+
+    skeletonCandidaturas.hide(tablaWrapper);
 }
 /**
  * Unifica renderizado, asignación de eventos y actualización de UI

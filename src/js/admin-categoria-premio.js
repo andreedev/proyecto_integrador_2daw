@@ -10,6 +10,7 @@ const prizeManagerActualizar = document.getElementById("prizeManagerActualizar")
 const nombreCategoriaInputCrear = document.getElementById("nombreCategoriaInputCrear");
 const nombreCategoriaActualizar = document.getElementById("nombreCategoriaActualizar");
 const btnActualizar = document.getElementById("btnActualizar");
+const skeleton = document.getElementById('skeleton');
 
 let pageSize = 4;
 let categoriaSeleccionada = null;
@@ -34,14 +35,16 @@ pagination.addEventListener('page-change', async (e) => {
  * Carga las categorías
  */
 async function cargarCategorias() {
+    skeleton.show(categoriesGrid);
     const response = await obtenerCategoriasConPremios(pagination.currentPage, pageSize);
     if (response.status !== 'success') {
         notification.show("Error al cargar categorías");
     }
     const categorias = response.data.list;
     renderizarCategorias(categorias);
-
     pagination.setAttribute('total-pages', response.data.totalPages);
+    await sleep(200);
+    skeleton.hide(categoriesGrid);
 }
 
 function renderizarCategorias(categorias) {

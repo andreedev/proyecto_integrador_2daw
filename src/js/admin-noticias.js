@@ -179,7 +179,7 @@ function renderizarNoticias(noticias) {
 
 async function cargarNoticias() {
     const filtroNombre = searchInput.value.trim();
-    const response = await listarNoticias(filtroNombre, pagination.currentPage, pageSize);
+    const response = await listarNoticias(filtroNombre, pagination.currentPage, pageSize, 'publicada', null);
     if (response.status !== 'success') throw new Error('Error al cargar las noticias');
     const list = response.data.list;
     const totalRecords = response.data.totalRecords;

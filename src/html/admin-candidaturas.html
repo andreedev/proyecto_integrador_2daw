@@ -60,8 +60,17 @@
                         <button id="btnLimpiarFiltros" class="secondary-button-02">Limpiar filtros</button>
                     </div>
 
-                    <div class="table-wrapper">
-                        <table id="tablaCandidaturas" class="table table-striped table-hover w-100">
+                    <skeleton-table-component
+                            id="skeletonCandidaturas"
+                            rows="7"
+                            columns="8"
+                            height="36px"
+                            width="80%"
+                            gap="24px"
+                    ></skeleton-table-component>
+
+                    <div class="table-wrapper" id="tablaWrapper">
+                        <table class="table table-striped table-hover w-100">
                             <thead>
                             <tr>
                                 <!-- 140px -->
@@ -242,6 +251,7 @@
     <script src="../js/components/file-component.js"></script>
     <script src="../js/components/video-player-component.js"></script>
     <script src="../js/components/notification-component.js"></script>
+    <script src="../js/components/skeleton-table-component.js"></script>
     <script src="../js/admin-candidaturas.js"></script>
     <script src="../js/menu-admin.js"></script>
 </body>

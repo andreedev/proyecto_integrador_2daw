@@ -63,7 +63,7 @@ pagination.addEventListener('page-change', async (event) => {
 });
 
 async function cargarContenido() {
-    const listarNoticiasResponse = await listarNoticias('', pagination.currentPage, pageSize);
+    const listarNoticiasResponse = await listarNoticias('', pagination.currentPage, pageSize, 'publicada');
     if (listarNoticiasResponse.status === 'success') {
         const list = listarNoticiasResponse.data.list;
         const totalPages = listarNoticiasResponse.data.totalPages;
