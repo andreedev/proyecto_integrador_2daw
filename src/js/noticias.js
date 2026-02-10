@@ -3,6 +3,8 @@ const newsContainer = document.getElementById('newsContainer');
 const pagination = document.getElementById('pagination');
 const notification = document.getElementById('notification');
 
+const resolvePageReady = registerPageReady();
+
 let pageSize = 8;
 
 iconHome.addEventListener('click', () => {
@@ -57,10 +59,10 @@ function renderizarNoticias(noticias) {
 }
 
 pagination.addEventListener('page-change', async (event) => {
-    await cargarNoticias();
+    await cargarContenido();
 });
 
-async function cargarNoticias() {
+async function cargarContenido() {
     const listarNoticiasResponse = await listarNoticias('', pagination.currentPage, pageSize);
     if (listarNoticiasResponse.status === 'success') {
         const list = listarNoticiasResponse.data.list;
@@ -70,4 +72,7 @@ async function cargarNoticias() {
     }
 }
 
-cargarNoticias();
+(async function primeraCarga() {
+    await cargarContenido();
+    resolvePageReady();
+})();

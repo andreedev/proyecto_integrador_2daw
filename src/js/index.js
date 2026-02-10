@@ -3,9 +3,12 @@ const edicionesAnterioresCarousel = document.getElementById('edicionesAnteriores
 const noticiasDestacadasCarousel = document.getElementById('noticiasDestacadasCarousel');
 const premiosCarousel = document.getElementById('premiosCarousel');
 
+const resolvePageReady = registerPageReady();
+
 (async function cargarHome() {
     const response = await obtenerDatosHome();
     renderizarHome(response.data);
+    resolvePageReady();
 })();
 
 async function cargarFechasConEventos(mes, anio) {
@@ -23,7 +26,7 @@ function renderizarEdicionesAnteriores(edicionesAnteriores) {
     const slides = edicionesAnteriores.map(edicion => {
         const { idEdicion, anioEdicion, resumenEvento, nroParticipantes, rutaImagenRepresentativa, nroGanadores } = edicion;
         return `
-            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column gap-16px m-2px pb-32px" 
+            <div class="h-auto h-md-100 cursor-pointer position-relative box-shadow-01 d-flex flex-column gap-16px pb-32px" 
                  onclick="window.location.href='edicion.html?id=${idEdicion}'">
                 <div class="img-container">
                     <img class="img-edicion-anterior aspect-ratio-4-3" src="${rutaImagenRepresentativa}" alt="Edición ${anioEdicion}">
@@ -112,7 +115,7 @@ function renderizarNoticiasDestacadas(noticias) {
         const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
 
         return `
-            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column cursor-pointer box-shadow-01 h-100 m-1px" 
+            <div class="h-auto cursor-pointer position-relative box-shadow-01 d-flex flex-column cursor-pointer box-shadow-01 h-100" 
                  onclick="window.location.href='detalle_noticia.html?id=${idNoticia}'">
                 <div class="img-container">
                     <img class="img-noticia aspect-ratio-4-3" src="${rutaImagenNoticia}" alt="Noticia ${idNoticia}">
@@ -144,7 +147,7 @@ function renderizarPremios(premios) {
             : '';
 
         const htmlDinero = incluyeDinero ? `
-            <div class="d-flex flex-row align-center gap-8px">
+            <div class="d-flex flex-row align-items-center justify-content-center gap-8px">
                 <span class="icon-money w-24px h-24px bg-neutral-01"></span>
                 <span class="numero">${cantidadDineroFormatted}€</span>
             </div>
@@ -153,21 +156,21 @@ function renderizarPremios(premios) {
         const separador = (incluyeDinero && incluyeObjetoAdicional) ? '<span class="fs-18px fw-400">+</span>' : '';
 
         const htmlObjeto = incluyeObjetoAdicional ? `
-            <div class="d-flex flex-row align-center gap-8px">
+            <div class="d-flex flex-row align-items-center gap-8px">
                 ${separador}
                 <span class="objeto-texto">${objetoAdicional}</span>
             </div>
         ` : '';
 
         return `
-            <div class="premio d-flex flex-column cursor-pointer box-shadow-01 p-16px h-auto m-1px">
+            <div class="premio d-flex flex-column cursor-pointer box-shadow-01 p-16px h-100">
                 <span class="fs-20px fw-600 text-center">${nombreCategoria}</span>
                 <div class="d-flex justify-content-center w-100">
                     <span class="icon-premio w-120px h-120px"></span>
                 </div>
                 <span class="puesto text-center">${nombre}</span>
                 
-                <div class="premio-recompensas d-flex flex-row flex-wrap justify-center align-center gap-8px mt-8px">
+                <div class="premio-recompensas d-flex flex-row justify-center align-items-center gap-8px mt-8px">
                     ${htmlDinero}
                     ${htmlObjeto}
                 </div>
@@ -179,18 +182,3 @@ function renderizarPremios(premios) {
 }
 
 
-const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-            observer.unobserve(entry.target);
-        }
-    });
-}, {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.25
-});
-
-const revealElements = document.querySelectorAll(".reveal");
-revealElements.forEach(el => observer.observe(el));

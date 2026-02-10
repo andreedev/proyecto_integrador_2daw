@@ -107,7 +107,7 @@ const checkSessionStatus = async () => {
 
         const result = await httpResponse.json();
 
-        await new Promise(r => setTimeout(r, 400));
+        await new Promise(r => setTimeout(r, 300));
 
         // Si la sesión está activa, redirigir según el rol y la página actual
         if (result.status === 'active') {
@@ -164,6 +164,11 @@ const checkSessionStatus = async () => {
         console.error("Error revisando sesión:", error);
     } finally {
         if (!isRedirecting) {
+            // Si la página registró una promesa propia, esperarla antes de ocultar el splash
+            if (window.pageReady) {
+                await window.pageReady;
+            }
+
             if (splash) {
                 splash.classList.add('hidden');
                 setTimeout(() => splash.remove(), 300);
@@ -189,6 +194,9 @@ const checkCookieConsent = () => {
 checkSessionStatus();
 checkCookieConsent();
 
+/**
+ * Si el usuario navega usando el botón de atrás o adelante del navegador, revisar nuevamente el estado de la sesión para asegurarse de que la información esté actualizada.
+ */
 window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
         window.sessionReady = new Promise((resolve) => {

@@ -459,11 +459,31 @@ function countWords(text) {
     return words ? words.length : 0;
 }
 
+/**
+ * Desplaza suavemente la vista hasta un elemento específico o al inicio de la página si no se proporciona un elemento
+ */
 function scrollToElement(element) {
     if (element){
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
 }
+
+/**
+ * Registra una promesa global para mantener el splash visible
+ * hasta que la página termine de cargar sus datos de la API
+ * Solo usar en páginas que requieran este comportamiento.
+ * @returns {Function} resolvePageReady - Llamar cuando los datos estén renderizados
+ */
+function registerPageReady() {
+    let resolvePageReady;
+    window.pageReady = new Promise(resolve => {
+        resolvePageReady = resolve;
+    });
+    return resolvePageReady;
+}
+
+
+
+

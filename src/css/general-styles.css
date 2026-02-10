@@ -420,8 +420,26 @@ p{
     }
 }
 
-
 .default-banner-size{
-    height: calc(100vh - 84px);
-    min-height: 350px;
+    height: auto;
+}
+
+@media (min-width: 768px){
+    .default-banner-size{
+        height: calc(100vh - 96px);
+        min-height: 500px;
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: all 1s ease-out;
+    visibility: hidden;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
 }

@@ -1,14 +1,9 @@
 const iconHome = document.getElementById('iconHome');
-
-const eventPost = document.getElementById('eventPost');
-
-const imgEvento = document.getElementById('imgEvento');
 const fechaEvento = document.getElementById('fechaEvento');
-const horaEvento = document.getElementById('horaEvento');
-const eventTitle = document.getElementById('eventTitle');
-const eventDescription = document.getElementById('eventDescription');
 const eventsContainer = document.getElementById('eventsContainer');
 const pagination = document.getElementById('pagination');
+
+const resolvePageReady = registerPageReady();
 
 let pageSize = 8;
 
@@ -99,4 +94,8 @@ async function cargarContenido(){
     }
 }
 
-cargarContenido();
+
+(async function primeraCarga() {
+    await cargarContenido();
+    resolvePageReady();
+})();

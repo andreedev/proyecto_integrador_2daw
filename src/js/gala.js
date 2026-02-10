@@ -8,17 +8,20 @@ const trailerVideoPlayer = document.getElementById('trailerVideoPlayer');
 const postEventoTitulo = document.getElementById('postEventoTitulo');
 const postEventoResumen = document.getElementById('postEventoResumen');
 const btnCalendario = document.getElementById('btnCalendario');
+const contenidoPreEvento = document.getElementById('contenidoPreEvento');
+const contenidoPostEvento = document.getElementById('contenidoPostEvento');
+
+const resolvePageReady = registerPageReady();
 
 cargarDatosGala();
 
 async function cargarDatosGala() {
     const response = await obtenerDatosGala();
     renderizarDatosGala(response.data);
+    resolvePageReady();
 }
 
 function renderizarDatosGala(data) {
-    const contenidoPreEvento = document.getElementById('contenidoPreEvento');
-    const contenidoPostEvento = document.getElementById('contenidoPostEvento');
 
     contenidoPreEvento.classList.add('d-none');
     contenidoPostEvento.classList.add('d-none');

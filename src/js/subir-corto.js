@@ -82,9 +82,6 @@ step3ContinueBtn.addEventListener('click', async () => {
         return;
     }
 
-    // block UI here
-    step3ContinueBtn.disabled = true;
-
     await enviarCandidatura();
 
 
@@ -199,6 +196,8 @@ async function enviarCandidatura() {
         const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
         const tipoCandidatura = tipoCandidaturaSelect.value;
 
+        step3ContinueBtn.disabled = true;
+
         const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura);
 
         if (response.status === 'success') {
@@ -207,9 +206,11 @@ async function enviarCandidatura() {
                 window.location.href = 'candidaturas.html';
             }, 4000);
         } else {
+            step3ContinueBtn.disabled = true;
             notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
         }
     } catch (error) {
+        step3ContinueBtn.disabled = true;
         console.error('Error al enviar la candidatura:', error);
         notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
     }
