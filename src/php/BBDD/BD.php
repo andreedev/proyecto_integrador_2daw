@@ -248,11 +248,16 @@ function crearBaseDatosSiNoExiste(): void {
                 ('Premio honorífico');
                 
                 INSERT INTO participante (nombre, dni, correo, contrasena, nro_expediente) VALUES
-                ('Juan Pérez', '11111111A', 'juan@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-001'),
-                ('María López', '22222222B', 'maria@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-002'),
+                ('Juan Diego León Lamas', '11111111A', 'juan@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-001'),
+                ('María del Prado', '22222222B', 'maria@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-002'),
                 ('Carlos Ruiz', '33333333C', 'carlos@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-003'),
-                ('Laura Gómez', '44444444D', 'laura@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-004'),
-                ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005');
+                ('Laura Pausini', '44444444D', 'laura@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-004'),
+                ('Ana Torres', '55555555E', 'ana@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-005'),
+                ('Miguel Ángel Rodríguez', '66666666F', 'miguel@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-006'),
+                ('María Igualada Farcha', '77777777G', 'm.igualada@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-007'),
+                ('Paula Taboada Blanco', '88888888H', 'paula@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-008'),
+                ('Ricardo Ignacio Pérez DiGiammarco', '99999999I', 'ricardo@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-009'),
+                ('Raúl Alonso Herranz', '10101010J', 'raul@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-010');
                 
                 INSERT INTO candidatura (id_participante, titulo, sinopsis, id_archivo_video, id_archivo_ficha, id_archivo_cartel, id_archivo_trailer, tipo_candidatura) VALUES
                 -- Participante 1
@@ -260,42 +265,20 @@ function crearBaseDatosSiNoExiste(): void {
                 -- Participante 2
                 (2,'Latido Salvaje','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña, mostrando que es una parte natural de la vida. María, una niña con una rara enfermedad, aprende a enfrentar sus miedos con música, esperanza y amor por la vida. Conoce a Marisol, una musicoterapeuta, y a Soledad, una anciana que repara instrumentos. Sus vidas se entrelazarán inesperadamente.',15,53,20,NULL,'alumno'),
                 -- Participante 3
-                (3,'Pequeños Sabios','Javier va casi todos los días a comer a casa de su madre. Se hace mayor y así la tiene contenta. Pero esa rutina de aparente normalidad, esconde un profundo secreto. Hay veces en las que el fin justifica los medios.',14,52,19,NULL,'alumni'),
+                (3,'Pequeños Sabios','Javier va casi todos los días a comer a casa de su madre. Se hace mayor y así la tiene contenta. Pero esa rutina de aparente normalidad, esconde un profundo secreto. Hay veces en las que el fin justifica los medios.',14,52,19,NULL,'alumno'),
                 -- Participante 4
                 (4,'Entre Bloques','Julia decide dejar el hospital apresuradamente para pasar el fin de semana con sus amigos de toda la vida, en una casa llena de recuerdos compartidos, se disponen a celebrar como si un hubiese un mañana. Mientras julia tiene que tomar una decisión importante.',13,51,18,NULL,'alumno'),
                 -- Participante 5
-                (5,'Sombras Estáticas','En 1945, bajo la sombra de la dictadura franquista, Juan, un ayudante universitario, conoce a Manuel tras un encuentro fortuito durante la noche en el Parque del Retiro.',12,50,17,NULL,'alumni'),
-                -- Participante 1 - Candidatura 6
-                (1,'Crónicas del Campus','Elionor descubre los entresijos de la adultez en la Mallorca de 1940. Vive en una remota finca, de la cual los habitantes jamás han salido. Todo cambiará con la llegada de una película.',12,50,17,NULL,'alumno'),
-                -- Participante 2 - Candidatura 7
-                (2,'Laberinto Mental','La Otra Orilla es más que una historia: el miedo a la muerte explora la propia existencia a través de los ojos de una niña...',11,49,16,NULL,'alumno'),
-                -- Participante 3 - Candidatura 8
-                (3,'Reinos de Cartón','Javier va casi todos los días a comer a casa de su madre...',15,53,20,NULL,'alumni'),
-                -- Participante 4 - Candidatura 9
-                (4,'Código de Barras','Julia decide dejar el hospital apresuradamente...',14,52,19,NULL,'alumno'),
-                -- Participante 5 - Candidatura 10
-                (5,'Voz de Calle','En 1945, bajo la sombra de la dictadura franquista...',13,51,18,NULL,'alumni'),
-                -- Participante 1 - Candidatura 11
-                (1,'Ecos de 1900','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',13,51,18,NULL,'alumno'),
-                -- Participante 2 - Candidatura 12
-                (2,'Neón y Acero','La Otra Orilla es más que una historia...',12,50,17,NULL,'alumno'),
-                -- Participante 3 - Candidatura 13
-                (3,'Claustro','Javier va casi todos los días a comer a casa de su madre...',11,49,16,NULL,'alumni'),
-                -- Participante 4 - Candidatura 14
-                (4,'Contra la Corriente','Julia decide dejar el hospital apresuradamente...',15,53,20,NULL,'alumno'),
-                -- Participante 5 - Candidatura 15
-                (5,'Acordes Locales','En 1945, bajo la sombra de la dictadura franquista...',14,52,19,NULL,'alumni'),
-                -- Participante 1 - Candidatura 16
-                (1,'A un Click de Ti','Elionor descubre los entresijos de la adultez en la Mallorca de 1940...',14,52,19,NULL,'alumno'),
-                -- Participante 2 - Candidatura 17
-                (2,'Ciclo Infinito','La Otra Orilla es más que una historia...',13,51,18,NULL,'alumno'),
-                -- Participante 3 - Candidatura 18
-                (3,'Manos de Barro','Javier va casi todos los días a comer a casa de su madre...',12,50,17,NULL,'alumni'),
-                -- Participante 4 - Candidatura 19
-                (4,'Raíces y Ramas','Julia decide dejar el hospital apresuradamente...',11,49,16,NULL,'alumno'),
-                -- Participante 5 - Candidatura 20
-                (5,'Formas del Vacío','En 1945, bajo la sombra de la dictadura franquista...',15,53,20,NULL,'alumni');
+                (5,'Sombras Estáticas','En 1945, bajo la sombra de la dictadura franquista, Juan, un ayudante universitario, conoce a Manuel tras un encuentro fortuito durante la noche en el Parque del Retiro.',12,50,17,NULL,'alumno'),
+                -- Participante 6
+                (6,'Crónicas del Campus','Un grupo de estudiantes de cine intenta documentar la vida universitaria, pero terminan descubriendo una red de secretos académicos. Lo que comenzó como un ejercicio de clase se convierte en una obsesión por revelar la verdad detrás de las fachadas de piedra del campus antiguo.',12,50,17,NULL,'alumno'),                -- Participante 7
+                (7,'Laberinto Mental','Un viaje psicológico al interior de la mente de un joven que ha perdido la capacidad de distinguir sus recuerdos de sus sueños. Atrapado en una arquitectura mental cambiante, deberá encontrar la salida antes de que su propia conciencia lo borre por completo.',11,49,16,NULL,'alumno'),                -- Participante 8
+                (8,'Reinos de Cartón','Dos niños construyen un imperio imaginario en un callejón abandonado para escapar de la cruda realidad de la pobreza. A través de sus ojos, el cartón se convierte en castillos, pero la llegada de una excavadora municipal amenaza con destruir el único refugio que les queda.',15,53,20,NULL,'alumno'),                -- Participante 9
+                (9,'Código de Barras','En una sociedad futurista donde el valor humano se mide por su consumo, un cajero de supermercado descubre una anomalía en su propio escáner. Esta pequeña falla técnica le permite ver la realidad detrás del sistema de control social más grande jamás creado.',14,52,19,NULL,'alumno'),                -- Participante 10 (tiene 2 candidaturas alumni)
+                (10,'Voz de Calle','Un veterano locutor de radio pirata emite desde una furgoneta en movimiento para denunciar las injusticias del barrio. Mientras la policía le pisa los talones, su voz se convierte en el único hilo de esperanza para una comunidad que ha sido silenciada durante décadas.',13,51,18,NULL,'alumni'),                -- Participante 10  (tiene 2 candidaturas alumni)
+                (10,'Ecos de 1900','A principios del siglo XX, una joven sirvienta en una mansión señorial descubre un gramófono que parece reproducir voces del futuro. A través de las grabaciones, intenta cambiar el destino trágico que acecha a la familia para la que trabaja.',13,51,18,NULL,'alumni');        
                 
+                        
                 INSERT INTO premio (nombre, incluye_dinero, cantidad_dinero, id_categoria, incluye_objeto_adicional, objeto_adicional) VALUES
                     ('Primer premio', true, 600.00, 1, true, 'Cámara de vídeo de Canon'),
                     ('Segundo premio', true, 300.00, 1, false, NULL),
@@ -329,7 +312,7 @@ function crearBaseDatosSiNoExiste(): void {
                     
                     (2026, 'Una noche llena de emoción, talento y nuevas miradas. Revive los mejores momentos de la edición, desde la alfombra roja hasta el anuncio de los cortometrajes que marcaron la diferencia este año. ¡Gracias por formar parte de nuestra historia!', NULL, 'actual'  , 1, CURDATE(), CURDATE());
                 
-                    -- Edición 2024 (id_edicion = 1)
+                -- Edición 2024 (id_edicion = 1)
                 INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES
                 -- Premio Honorífico
                 (1, 'Reconocimiento Honorífico', 'Miguel Ángel Rodríguez', 'Premio Trayectoria Profesional', 5),
@@ -374,7 +357,6 @@ function crearBaseDatosSiNoExiste(): void {
                 (39, 2),
                 (40, 2),
                 (41, 2);
-                -- Edición 3 (2026 - actual) - sin archivos
                 
                 -- NOTICIAS (8 noticias, 5 archivos noticia_* ids 42-46)
                 INSERT INTO noticia (nombre, descripcion, fecha, id_organizador, id_archivo_imagen) VALUES
@@ -409,37 +391,11 @@ function crearBaseDatosSiNoExiste(): void {
 
                 
                 -- UPDATES
-                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 16;
+                -- candidatura 1: Rechazada por duración, sin trailer
+                UPDATE candidatura SET estado = 'Rechazada' WHERE id_candidatura = 1;
                 INSERT INTO historial_candidatura (id_candidatura, estado, motivo, estado_correo_enviado) VALUES
                 (1, 'Rechazada', 'El cortometraje no cumple con los requisitos de duración.', true);
-                UPDATE candidatura SET estado = 'En revisión' WHERE id_candidatura = 16;
-                INSERT INTO historial_candidatura (id_candidatura, estado, motivo) VALUES
-                (1, 'En revisión', 'He subsanado los problemas de duración.');
                 
-                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 1;
-                INSERT INTO historial_candidatura (id_candidatura, estado) VALUES
-                (3, 'Aceptada');
-                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
-                (2, 'Aceptada', true);
-                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 1;
-                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
-                (2, 'Finalista', true);
-                
-                UPDATE candidatura SET sinopsis = 'En el caótico ecosistema de la Universidad Estatal, Álex, un estudiante experto en procrastinar, se enfrenta a su mayor pesadilla: el \\'Lunes Negro\\'. Tras quedarse dormido para el examen final que define su graduación, debe cruzar un campus convertido en una carrera de obstáculos surrealista. Entre reclutadores de sectas de café y la temida \\'Hermandad del Silencio\\' en la biblioteca, la jornada se vuelve una sátira sobre la desesperación académica. \\'Crónicas del Campus\\' es una oda humorística a esos años donde el mayor drama es conseguir una fotocopia antes del cierre.' WHERE id_candidatura = 6;
-                
-                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 6;
-                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
-                (6, 'Aceptada', true);
-                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 6;
-                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
-                (6, 'Finalista', true);
-                
-                UPDATE candidatura SET estado = 'Aceptada' WHERE id_candidatura = 2;
-                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
-                (2, 'Aceptada', true);
-                UPDATE candidatura SET estado = 'Finalista' WHERE id_candidatura = 2;
-                INSERT INTO historial_candidatura (id_candidatura, estado, estado_correo_enviado) VALUES
-                (2, 'Finalista', true);
                 
                 UPDATE candidatura
                 SET id_archivo_trailer = id_archivo_video
@@ -447,6 +403,8 @@ function crearBaseDatosSiNoExiste(): void {
                 
                 INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(1, 1);
                 INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(4, 2);
+                
+    
                 
             ";
 

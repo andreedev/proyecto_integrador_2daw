@@ -1155,7 +1155,7 @@ function contarParticipantesEdicionActual() {
 /**
  * Enviar edicion actual a ediciones anteriores
  * Cambia el tipo de la edicion actual a 'anterior'
- * Mueve los ganadores a la tabla histórica ganadores_edicion
+ * Mueve los ganadores de la edición actual a la tabla histórica de ganandores de edición anteriores: ganadores_edicion
  * Elimina candidaturas no ganadoras, historial asociado y relaciones entre premios y candidaturas
  * en el orden correcto para mantener la integridad referencial
  * Crea una nueva edicion actual para el proximo año
