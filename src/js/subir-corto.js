@@ -45,8 +45,18 @@ const contadorPalabras = document.getElementById('sinopsisTotalWords');
 const fichaTecnicaInput = document.getElementById('fichaTecnicaInput');
 
 const notification = document.getElementById('notification');
+const basesLegalesLinkText = document.getElementById('basesLegalesLinkText');
+const basesLegalesModal = document.getElementById('basesLegalesModal');
 
 const sesionIniciada = sessionStorage.getItem('sesionIniciada') === 'true';
+
+basesLegalesLinkText.addEventListener('click', () => {
+    if (isMobileEnv()) {
+        window.location.href = 'bases-legales.html';
+    } else {
+        basesLegalesModal.open();
+    }
+});
 
 step1ContinueBtn.addEventListener('click', () => {
     const inputs = [nombreInput, correoInput, passwordInput, dniInput, nroExpedienteInput];
@@ -158,7 +168,7 @@ function switchStep(targetStep) {
         uploadShortFilmCardHeaderSubtext.textContent = 'Paso 3 de 3 - Último paso';
         step = 3;
 
-        scrollToElement(step1);
+        scrollToElement(document.getElementById('idAux1'));
     }
     if (targetStep === 4){
         step1.classList.add('active-step');

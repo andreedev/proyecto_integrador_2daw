@@ -46,12 +46,15 @@ const btnConfirmarActualizarEdicion = document.getElementById('btnConfirmarActua
 let tipo = 'anterior';
 let edicionSeleccionada = null;
 let ganadores = [];
+const resolvePageReady = registerPageReady();
 
 async function listarEdicionesAnteriores() {
     const response = await listarEdiciones(tipo, paginacion.currentPage);
     renderizarEdicionesAnteriores(response.data.list);
     paginacion.setAttribute('current-page', response.data.currentPage);
     paginacion.setAttribute('total-pages', response.data.totalPages);
+
+    resolvePageReady();
 }
 
 paginacion.addEventListener('page-change', async (e) => {

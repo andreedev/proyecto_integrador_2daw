@@ -484,6 +484,13 @@ function registerPageReady() {
     return resolvePageReady;
 }
 
-
-
-
+/**
+ * Detecta si el usuario está en un dispositivo móvil basándose en características como el tamaño de pantalla y la capacidad táctil.
+ * @returns {boolean} true si se detecta un entorno móvil, false en caso contrario
+ */
+const isMobileEnv = () => {
+    const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const hasNoHover = window.matchMedia("(hover: none)").matches;
+    const isSmallScreen = window.innerWidth < 768;
+    return (hasCoarsePointer || hasNoHover) && isSmallScreen;
+};

@@ -15,7 +15,7 @@
 </head>
 <body>
     <home-header></home-header>
-    <div class="d-flex flex-column justify-content-center align-items-center py-36px px-16px mx-0 container-sm-to-md">
+    <div id="idAux1" class="d-flex flex-column justify-content-center align-items-center py-36px px-16px mx-0 container-sm-to-md">
         <p class="upload-short-film-title">Subir cortometraje</p>
         <span class="upload-short-film-secondary-text">Comparte tu obra con nosotros. Completa el formulario paso a paso.</span>
         <div class="steps-container d-flex flex-row w-100">
@@ -115,7 +115,7 @@
                         <span class="divider-line"></span>
                     </div>
                     <div class="upload-short-film-input-space-between-row">
-                        <p class="upload-short-film-terms-text">Al continuar, confirmo que he leído y acepto las <a href="bases-legales.html" class="upload-short-film-link">bases legales</a> del concurso.</p>
+                        <p class="upload-short-film-terms-text">Al continuar, confirmo que he leído y acepto las <a id="basesLegalesLinkText" class="upload-short-film-link cursor-pointer">bases legales</a> del concurso.</p>
                         <button class="primary-button-01 col-12 col-md-4" id="step1ContinueBtn">Continuar</button>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                                 required-message="Debes seleccionar un tipo">
                         </select-component>
 
-                        <span id="alumniHelperText" class="fw-500 fs-14px d-none">Recuerda que debes presentar como mínimo dos obras si participas como alumni. Podrás presentar otro corto después de subir este</span>
+                        <span id="alumniHelperText" class="fw-500 fs-14px d-none">Recuerda que debes presentar como mínimo dos obras si participas como alumni. Podrás presentar otro obra después de terminar de subir ésta.</span>
                     </div>
 
                     <div>
@@ -227,6 +227,19 @@
     <home-footer></home-footer>
 
     <notification-component id="notification"></notification-component>
+
+    <modal-component id="basesLegalesModal" container-class="w-90 w-sm-80 w-md-70 h-90">
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-bottom border-solid border-neutral-05">
+            <span class="fs-20px fw-600">Bases legales</span>
+            <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+        </div>
+        <div class="d-flex flex-column p-24px gap-24px bg-neutral-08 flex-grow-1 overflow-y-auto w-100 h-100">
+            <embed src="../../uploads/public/Bases%20Legales%20Concurso%20Festival%20de%20Cine%20UE_%202025.pdf" type="application/pdf" style="width: 100%; height: 100%;">
+        </div>
+        <div class="d-flex justify-content-center align-items-center p-16px border-top border-solid border-neutral-05">
+            <div class="secondary-button-01 w-auto px-48px text-center close-modal w-50 w-md-100">Aceptar</div>
+        </div>
+    </modal-component>
 
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/modal-component.js"></script>
