@@ -11,22 +11,30 @@ const createSplash = () => {
     if (document.body) {
         document.body.prepend(splashDiv);
     } else {
+        // Si el body aún no está disponible, usar un MutationObserver para esperar a que se cargue
         const observer = new MutationObserver((mutations, obs) => {
             if (document.body) {
                 document.body.prepend(splashDiv);
                 obs.disconnect();
             }
         });
+
+        // Observar cambios en el DOM para detectar cuando el body esté disponible
         observer.observe(document.documentElement, { childList: true });
     }
 
     return splashDiv;
 };
 
+/*
+    * Crea el modal de consentimiento de cookies
+ */
 const createCookieConsentModal = () => {
     if (document.getElementById('cookie-consent-modal')) return;
     customElements.whenDefined('modal-component').then(() => {
         const modal = document.createElement('modal-component');
+
+        // Configurar el modal con el contenido y estilos específicos para el consentimiento de cookies
         modal.id = 'cookie-consent-modal';
         modal.setAttribute('static', '');
         modal.setAttribute('position', 'bottom-left');
@@ -43,6 +51,8 @@ const createCookieConsentModal = () => {
            
             </div>
         `;
+
+        // Agregar estilos específicos para el modal de cookies
         document.body.appendChild(modal);
         requestAnimationFrame(() => modal.open());
         document.getElementById('accept-cookies').addEventListener('click', () => {
@@ -57,7 +67,9 @@ const createCookieConsentModal = () => {
 }
 
 
-/** Promesa global que se resuelve cuando se determina el estado de la sesión */
+/**
+ * Promesa global que se resuelve cuando se determina el estado de la sesión
+ * */
 window.sessionState = {};
 window.sessionReady = new Promise((resolve) => {
     window.sessionState.resolve = resolve;
@@ -72,7 +84,10 @@ const checkSessionStatus = async () => {
     let isRedirecting = false;
 
     const getNormalizedPage = () => {
+
+        // Obtener el nombre del archivo actual sin la extensión
         const p = window.location.pathname.split("/").pop().toLowerCase();
+
         if (p === "" || p === "index.html") return "home";
         return p.replace(".html", "").replace(".php", "");
     };
@@ -94,16 +109,21 @@ const checkSessionStatus = async () => {
 
         await new Promise(r => setTimeout(r, 400));
 
+        // Si la sesión está activa, redirigir según el rol y la página actual
         if (result.status === 'active') {
             sessionStorage.setItem('sesionIniciada', 'true');
             const role = result.rol;
 
             if (currentPage === 'login' || previousPage.includes('login')) {
+
+                // Si el usuario es un participante y está en la página de login, redirigir a la página principal
                 if (role === 'participante' && currentPage === 'login') {
                     isRedirecting = true;
                     window.location.href = 'index.html';
                     return;
                 }
+
+                // Si el usuario es un organizador y está en la página de login, redirigir a la página de candidaturas
                 if (role === 'organizador' && currentPage === 'login') {
                     isRedirecting = true;
                     window.location.href = 'admin-candidaturas.html';
@@ -111,12 +131,14 @@ const checkSessionStatus = async () => {
                 }
             }
 
+            // Si el usuario es un participante y está en una página de admin, redirigir a la página principal
             if (role === 'participante' && window.location.pathname.includes('admin-')) {
                 window.location.href = 'index.html';
                 isRedirecting = true;
                 return;
             }
 
+            // Si el usuario es un organizador y no está en una página de admin, redirigir a la página de candidaturas
             if (role === 'organizador') {
                 const isAdminPage = window.location.pathname.includes('admin-');
                 const isLoginPage = currentPage === 'login';
@@ -127,8 +149,11 @@ const checkSessionStatus = async () => {
                 }
             }
 
+
         } else if (result.status === 'inactive') {
             sessionStorage.setItem('sesionIniciada', 'false');
+
+            // Si la sesión está inactiva y el usuario intenta acceder a una página de admin, candidaturas o perfil, redirigir a la página de login
             if (currentPage.startsWith('admin-') || currentPage === 'candidaturas' || currentPage === 'perfil') {
                 isRedirecting = true;
                 window.location.href = 'login.html';
@@ -150,6 +175,9 @@ const checkSessionStatus = async () => {
     }
 };
 
+/**
+ * Revisar si el usuario ha dado su consentimiento para las cookies. Si no, mostrar el modal de consentimiento de cookies.
+ */
 const checkCookieConsent = () => {
     const consent = localStorage.getItem('cookiesAccepted');
     if (consent === null) {
@@ -157,6 +185,7 @@ const checkCookieConsent = () => {
     }
 }
 
+// Ejecutar las funciones al cargar la página
 checkSessionStatus();
 checkCookieConsent();
 

@@ -39,6 +39,7 @@ if (php_sapi_name() !== 'cli' || isset($_POST['action'])) {
     }
 }
 
+// Verificar que se ha enviado una acción a través de POST y ejecutar la función correspondiente
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'revisarSesion':
@@ -225,6 +226,7 @@ function revisarSesion() {
         return;
     }
 
+    // Devuelve el rol y el id del usuario en sesión
     echo json_encode(["status" => "active", "rol" => $_SESSION['rol'] ?? '', "id" => $_SESSION['id'] ?? '']);
 }
 
