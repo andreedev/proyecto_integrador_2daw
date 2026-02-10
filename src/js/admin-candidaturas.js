@@ -29,6 +29,8 @@ const btnVolverAModalDetalle = document.getElementById('btnVolverAModalDetalle')
 const notification = document.getElementById('notification');
 const totalPalabras = document.getElementById('totalPalabras');
 
+const bodyTablaCandidaturas = document.getElementById('bodyTablaCandidaturas');
+
 let candidaturaSeleccionada = null;
 let pageSize=5;
 
@@ -151,10 +153,8 @@ async function cargarCandidaturas() {
  * Unifica renderizado, asignación de eventos y actualización de UI
  */
 function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidaturas) {
-    const tbody = document.querySelector('table tbody');
-    if (!tbody) return;
 
-    tbody.replaceChildren();
+    bodyTablaCandidaturas.replaceChildren();
 
     lista.forEach(c => {
         const tr = document.createElement('tr');
@@ -216,7 +216,7 @@ function renderizarCandidaturas(lista, paginaActual, totalPaginas, totalCandidat
         tdAcciones.appendChild(actionsDiv);
 
         tr.append(tdParticipante, tdTitulo, tdSinopsis, tdTipoCandidatura, tdEstado, tdFechaPres, tdFechaMod, tdAcciones);
-        tbody.appendChild(tr);
+        bodyTablaCandidaturas.appendChild(tr);
     });
 
     // Actualización de contadores y paginación
