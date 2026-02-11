@@ -18,6 +18,8 @@ let modoModal = 'agregar'; // 'agregar' o 'editar'
 let idNoticiaActual = null;
 let pageSize = 5;
 
+const resolvePageReady = registerPageReady();
+
 // Event Listeners
 searchInput.addEventListener('keyup', (event) => {
     if (event.key === 'Enter') {
@@ -186,6 +188,7 @@ async function cargarNoticias() {
     const totalPages = response.data.totalPages;
     pagination.setAttribute('total-pages',totalPages);
     renderizarNoticias(list);
+    resolvePageReady();
 }
 
 

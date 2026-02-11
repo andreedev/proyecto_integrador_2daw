@@ -57,6 +57,8 @@ let configuracionActual = null;
 let loadingConfiguracion = true;
 let idEdicion = null;
 
+const resolvePageReady = registerPageReady();
+
 const fechaEventoDateTimePicker = new AirDatepicker(fechaEventoInput, {
     minDate: new Date(),
     autoClose: true,
