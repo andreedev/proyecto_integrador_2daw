@@ -242,7 +242,7 @@ function crearBaseDatosSiNoExiste(): void {
                 (44, 'uploads/public/noticia3.jpg'),
                 (45, 'uploads/public/noticia4.jpg'),
                 (46, 'uploads/public/noticia5.jpg'),
-                (47, 'uploads/public/patrocinador_canon.jpg'),
+                (47, 'uploads/public/noticia6.jpg'),
                 
                 -- --- DOCUMENTOS Y FICHAS TÉCNICAS ---
                 (48, 'uploads/public/Bases Legales Concurso Festival de Cine UE_ 2025.pdf'),
@@ -250,7 +250,13 @@ function crearBaseDatosSiNoExiste(): void {
                 (50, 'uploads/public/ficha_tecnica_la_otra_orilla.pdf'),
                 (51, 'uploads/public/ficha_tecnica_si_no_fuera_por_mi.pdf'),
                 (52, 'uploads/public/ficha_tecnica_un_dia_perfecto.pdf'),
-                (53, 'uploads/public/ficha_tecnica_violetas.pdf');
+                (53, 'uploads/public/ficha_tecnica_violetas.pdf'),
+                
+                (54, 'uploads/public/patrocinador_adobe.jpg'),
+                (55, 'uploads/public/patrocinador_netflix.png'),
+                (56, 'uploads/public/patrocinador_canon.jpg'),
+                (57, 'uploads/public/patrocinador_google.png'),
+                (58, 'uploads/public/patrocinador_microsoft.png');
                 
                 INSERT INTO categoria (nombre, tipo_categoria) VALUES
                 ('Mejor cortometraje UE', 'alumno'),
@@ -394,8 +400,12 @@ function crearBaseDatosSiNoExiste(): void {
                 -- PATROCINADOR
                 -- =========================
                 INSERT INTO patrocinador (nombre, id_archivo_logo) VALUES
-                ('Canon', 47);
-
+                ('Canon', 54),
+                ('Adobe', 55),
+                ('Netflix', 56),
+                ('Google', 57),
+                ('Microsoft', 58);
+           
                 
                 -- UPDATES e INSERTS relacionados con el proceso de revisión de candidaturas, cambios de estado y asignación de premios
                 -- candidatura 1: Rechazada por duración, sin trailer

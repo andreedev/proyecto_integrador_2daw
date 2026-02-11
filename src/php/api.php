@@ -67,7 +67,6 @@ if (isset($_POST['action'])) {
             subirArchivo();
             break;
         case 'listarPatrocinadoresAdmin':
-            validarRol(['organizador', 'participante']);
             listarPatrocinadoresAdmin();
             break;
         case 'agregarPatrocinador':
@@ -600,7 +599,7 @@ function eliminarArchivoPorId($idArchivo): bool {
  * Listar patrocinadores con su logo
  * Agrega la URL base de archivos a la ruta del logo
  */
-function listarPatrocinadoresAdmin() {
+function listarPatrocinadoresAdmin(): void {
     global $conexion;
 
     $query = "SELECT 
@@ -713,18 +712,7 @@ function eliminarPatrocinador() {
  * Esto se usa para construir las URLs completas de los archivos
  */
 function obtenerBaseUrl() {
-    global $conexion;
-
-    $query = "SELECT valor FROM configuracion WHERE nombre = 'baseUrl' LIMIT 1";
-    $conexion->prepare($query);
-    $result = $conexion->query($query);
-
-    if ($result && $result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        return $row['valor'];
-    }
-
-    return null;
+    return $_ENV['BASE_URL'];
 }
 
 /**

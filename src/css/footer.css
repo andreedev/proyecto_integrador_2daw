@@ -14,24 +14,6 @@
     }
 }
 
-.footer-container-1{
-    gap: 64px;
-    max-width: 350px;
-}
-
-@media (min-width: 480px) {
-    .footer-container-1 {
-        gap: 48px;
-    }
-}
-
-@media (min-width: 768px) {
-    .footer-container-1 {
-        max-width: 450px;
-        gap: 32px;
-    }
-}
-
 .ue-logo{
     width: 67.7px;
     height: 67.7px;
@@ -70,14 +52,14 @@
 
 @media (min-width: 768px) {
     .super-placed-logo{
-        bottom: calc(5% + 32px);
+        bottom: calc(25% + 32px);
         right: calc(5% + 32px);
     }
 }
 
 @media (min-width: 1200px) {
     .super-placed-logo{
-        bottom: calc(5% + 32px);
+        bottom: calc(14% + 32px);
         right: calc(15% + 32px);
     }
 }

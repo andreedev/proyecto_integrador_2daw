@@ -254,16 +254,6 @@ tipoCandidaturaSelect.setOptions([
     { value :'alumni', label: 'Alumni'}
 ])
 
-tipoCandidaturaSelect.addEventListener('change', (e) => {
-    const alumniHelperText = document.getElementById('alumniHelperText');
-    const value = e.target.value;
-    if (value === 'alumni') {
-        alumniHelperText.classList.remove('d-none');
-    } else {
-        alumniHelperText.classList.add('d-none');
-    }
-});
-
 mostrarPasosSegunAutenticacion();
 
 function mostrarPasosSegunAutenticacion() {

@@ -3,7 +3,7 @@
 function abrirConexion() {
     global $conexion;
 
-    $servidor = $_ENV['DB_SERVER'] ;
+    $servidor = $_ENV['DB_SERVER'];
     $usuario  = $_ENV['DB_USER'];
     $password = $_ENV['DB_PASS'];
     $port     = $_ENV['DB_PORT'];

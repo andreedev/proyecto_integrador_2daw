@@ -7,9 +7,9 @@ class CarouselComponent extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['show-arrows', 'click-to-nav', 'gap', 'responsive'];
+        return ['show-arrows', 'click-to-nav', 'gap', 'responsive', 'center-vertically'];
     }
-
+2
     async connectedCallback() {
         if (window.injectExternalStyles) {
             await window.injectExternalStyles('../css/carousel-component.css', 'carousel-styles');
@@ -22,6 +22,7 @@ class CarouselComponent extends HTMLElement {
     attributeChangedCallback(name, oldVal, newVal) {
         if (oldVal !== newVal && this._track) {
             if (name === 'responsive') this._parseResponsiveConfig();
+            if (name === 'center-vertically') this._applyCenterVertically();
             this._updateLayout();
         }
     }
@@ -34,6 +35,13 @@ class CarouselComponent extends HTMLElement {
             } catch (e) {
                 console.error("Carousel: Invalid JSON", e);
             }
+        }
+    }
+
+    _applyCenterVertically() {
+        const shouldCenter = this.getAttribute('center-vertically') === 'true';
+        if (this._track) {
+            this._track.style.alignItems = shouldCenter ? 'center' : 'stretch';
         }
     }
 
@@ -87,6 +95,8 @@ class CarouselComponent extends HTMLElement {
         this._dotsContainer = this.querySelector('.carousel-indicators');
         this._btnPrev = this.querySelector('.carousel-arrow.prev');
         this._btnNext = this.querySelector('.carousel-arrow.next');
+
+        this._applyCenterVertically();
 
         if (this._slidesData.length > 0) {
             this._setupNavigation();
