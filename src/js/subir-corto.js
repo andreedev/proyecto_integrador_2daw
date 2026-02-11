@@ -208,23 +208,23 @@ async function enviarCandidatura() {
         const titulo = tituloInput.value.trim();
         const sinopsis = sinopsisInput.value.trim();
         const tipoCandidatura = tipoCandidaturaSelect.value;
-
-        const idVideo       = await videoInput.uploadIfNeeded((p) => loadingBar.setProgress(Math.round(p * 0.7)));
-        const idPoster      = await posterInput.uploadIfNeeded(() => loadingBar.setProgress(80));
-        const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded(() => loadingBar.setProgress(90));
+        const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
+        const idPoster = await posterInput.uploadIfNeeded();
+        const idVideo = await videoInput.uploadIfNeeded();
 
         const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura);
 
-        loadingBar.setProgress(100);
-        setTimeout(() => loadingBar.reset(), 600);
+        loadingBar.hide();
+        step3ContinueBtn.disabled = false;
 
         if (response.status === 'success') {
+            loadingBar.show();
             switchStep(4);
             setTimeout(() => {
                 window.location.href = 'candidaturas.html';
+                loadingBar.hide();
             }, 4000);
         } else {
-            step3ContinueBtn.disabled = false;
             notification.show(response.message);
             if (response.code === 'EXPEDIENTE_EXISTENTE' || response.code === 'CORREO_EXISTENTE') {
                 switchStep(1);
@@ -237,7 +237,7 @@ async function enviarCandidatura() {
         step3ContinueBtn.disabled = false;
         console.error('Error al enviar la candidatura:', error);
         notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
-        loadingBar.reset();
+        loadingBar.hide();
     }
 }
 
