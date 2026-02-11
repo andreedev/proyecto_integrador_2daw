@@ -451,7 +451,6 @@ function crearBaseDatosSiNoExiste(): void {
                 (8, 'Aceptada');
                 
                 INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(1, 1);
-                INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(4, 2);
                 
     
                 

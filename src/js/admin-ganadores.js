@@ -139,7 +139,7 @@ function renderizarCategorias(categorias){
             ganadorSpan.textContent = premio.nombreGanador ? premio.nombreGanador : 'Sin ganador asignado';
 
             const btnAccionDiv = document.createElement('div');
-            btnAccionDiv.classList.add('primary-button-02', 'btnAsignar', 'btn-action');
+            btnAccionDiv.classList.add('primary-button-02', 'btnAsignar', 'btn-action', 'flex-shrink-0');
             if (categoria.tipo_categoria === 'honorifico'){
                 let textoAccion = '';
                 btnAccionDiv.textContent = premio.tieneGanador ? 'Registrar nuevo ganador' : 'Registrar ganador';
