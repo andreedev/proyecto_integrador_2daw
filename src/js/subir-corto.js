@@ -135,7 +135,7 @@ function switchStep(targetStep) {
         uploadShortFilmCardHeaderSubtext.textContent = 'Paso 1 de 3';
         step = 1;
 
-        scrollToElement(step1);
+        scrollToElement(document.querySelector('#idAux1'));
     }
     if (targetStep === 2){
         step1.classList.add('active-step');
@@ -168,7 +168,7 @@ function switchStep(targetStep) {
         uploadShortFilmCardHeaderSubtext.textContent = 'Paso 3 de 3 - Último paso';
         step = 3;
 
-        scrollToElement(document.getElementById('idAux1'));
+        scrollToElement(step3);
     }
     if (targetStep === 4){
         step1.classList.add('active-step');
@@ -216,11 +216,17 @@ async function enviarCandidatura() {
                 window.location.href = 'candidaturas.html';
             }, 4000);
         } else {
-            step3ContinueBtn.disabled = true;
-            notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
+            step3ContinueBtn.disabled = false;
+            notification.show(response.message);
+            if (response.code === 'EXPEDIENTE_EXISTENTE' || response.code === 'CORREO_EXISTENTE') {
+                switchStep(1);
+            }
+            if (response.code === 'TITULO_EXISTENTE') {
+                switchStep(2);
+            }
         }
     } catch (error) {
-        step3ContinueBtn.disabled = true;
+        step3ContinueBtn.disabled = false;
         console.error('Error al enviar la candidatura:', error);
         notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
     }

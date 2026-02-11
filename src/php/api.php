@@ -1933,6 +1933,48 @@ function guardarCandidatura() {
         $idParticipante = (int)$_SESSION['id'];
 
     } else {
+        $checkExpedienteQuery = "SELECT COUNT(*) as total FROM participante WHERE nro_expediente = ?";
+        $stmtCheckExpediente = $conexion->prepare($checkExpedienteQuery);
+        $stmtCheckExpediente->bind_param("s", $nroExpediente);
+        $stmtCheckExpediente->execute();
+        $totalExpediente = $stmtCheckExpediente->get_result()->fetch_assoc()['total'] ?? 0;
+        if ($totalExpediente > 0) {
+            echo json_encode([
+                "status" => "error",
+                "code" => "EXPEDIENTE_EXISTENTE",
+                "message" => "Ya existe un participante registrado con ese número de expediente. Verifica tus datos o incia sesión si ya tienes una cuenta"
+            ]);
+            return;
+        }
+
+        $checkCorreoQuery = "SELECT COUNT(*) as total FROM participante WHERE correo = ?";
+        $stmtCheckCorreo = $conexion->prepare($checkCorreoQuery);
+        $stmtCheckCorreo->bind_param("s", $correo);
+        $stmtCheckCorreo->execute();
+        $totalCorreo = $stmtCheckCorreo->get_result()->fetch_assoc()['total'] ?? 0;
+        if ($totalCorreo > 0) {
+            echo json_encode([
+                "status" => "error",
+                "code" => "CORREO_EXISTENTE",
+                "message" => "Ya existe un participante registrado con ese correo electrónico. Verifica tus datos o incia sesión si ya tienes una cuenta"
+            ]);
+            return;
+        }
+
+        $checkTituloQuery = "SELECT COUNT(*) as total FROM candidatura WHERE lower(titulo) = lower(?)";
+        $stmtCheckTitulo = $conexion->prepare($checkTituloQuery);
+        $stmtCheckTitulo->bind_param("s", $titulo);
+        $stmtCheckTitulo->execute();
+        $totalTitulo = $stmtCheckTitulo->get_result()->fetch_assoc()['total'] ?? 0;
+        if ($totalTitulo > 0) {
+            echo json_encode([
+                "status" => "error",
+                "code" => "TITULO_EXISTENTE",
+                "message" => "Ya existe una candidatura registrada con ese título. Por favor, elige otro título para tu candidatura"
+            ]);
+            return;
+        }
+
         $sqlInsert = $conexion->prepare("INSERT INTO participante (nombre, correo, contrasena, dni, nro_expediente) VALUES (?, ?, ?, ?, ?)");
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         $sqlInsert->bind_param("sssss", $nombre, $correo, $hashedPassword, $dni, $nroExpediente);

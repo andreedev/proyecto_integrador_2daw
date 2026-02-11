@@ -1,19 +1,25 @@
 /**
- * @class SkeletonGridComponent
- * @extends HTMLElement
+ * Componente animado de esqueleto para representar tablas o listas de datos en carga
  *
- * @attr {number} rows       - Used to calculate total items (rows * columns)
- * @attr {number} columns    - Number of columns per row (default: 1)
- * @attr {string} height     - Height of each block (default: 100px)
- * @attr {string} width      - Width of the inner block (default: 100%)
- * @attr {string} gap        - Gap between grid items (default: 16px)
+ * @attr rows - Número de filas (default: 2)
+ * @attr columns - Número de columnas (default: 2)
+ * @attr height - Altura de cada bloque (default: 200px)
+ * @attr width - Ancho de cada bloque (default: 100%)
+ * @attr gap - Espacio entre bloques (default: 16px)
+ *
+ * @method show(targetEl) - Muestra el esqueleto y oculta el elemento objetivo
+ * @method hide(targetEl) - Oculta el esqueleto y muestra el elemento objetivo
+ *
+ * Ejemplo de uso:
+ * <skeleton-table-component rows="3" columns="4" height="150px" width="100%" gap="12px"></skeleton-table-component>
+ *
  */
 class SkeletonGridComponent extends HTMLElement {
 
     static #stylesInjected = false;
 
     static get observedAttributes() {
-        return ['rows', 'columns', 'height', 'width', 'gap'];
+        return ['rows', 'columns', 'height', 'width', 'gap', 'visible'];
     }
 
     static #injectStyles() {
@@ -50,9 +56,14 @@ class SkeletonGridComponent extends HTMLElement {
     connectedCallback() {
         SkeletonGridComponent.#injectStyles();
         this.render();
+        this.style.display = this.visible ? 'block' : 'none';
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'visible') {
+            this.style.display = newValue !== null ? 'block' : 'none';
+            return;
+        }
         if (oldValue !== null && oldValue !== newValue) this.render();
     }
 
@@ -61,13 +72,14 @@ class SkeletonGridComponent extends HTMLElement {
     get height()  { return this.getAttribute('height') || '200px'; } clarity
     get width()   { return this.getAttribute('width')  || '100%'; }
     get gap()     { return this.getAttribute('gap')    || '16px'; }
+    get visible() { return this.hasAttribute('visible'); }
 
-    show(targetEl) {
+    show(targetEl=null) {
         this.style.display = 'block';
         if(targetEl) targetEl.style.display = 'none';
     }
 
-    hide(targetEl) {
+    hide(targetEl=null) {
         this.style.display = 'none';
         if(targetEl) targetEl.style.display = '';
     }

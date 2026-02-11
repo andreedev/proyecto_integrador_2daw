@@ -26,9 +26,9 @@ sinopsisInput.addEventListener('solid-input-word-count', (e) => {
     contadorPalabras.textContent = e.detail.count;
 });
 
-btnMiPerfil.addEventListener('click', () => {
+btnMiPerfil.addEventListener('click', async () => {
+    await renderizarDatosUsuarioEnModal();
     modalMiPerfil.open();
-    renderizarDatosUsuarioEnModal();
 });
 
 
@@ -183,7 +183,10 @@ function renderStatusCard(type, candidatura) {
 /**
  * Renderiza el detalle de una candidatura seleccionada
  */
-function renderizarDetalleCandidatura(candidatura){
+async function renderizarDetalleCandidatura(candidatura) {
+    document.querySelectorAll('.right-side-skeleton').forEach(skeleton => skeleton.show());
+    document.querySelector('#right').classList.add('d-none');
+
     candidaturaSeleccionada = candidatura;
 
     console.log('Candidatura seleccionada:', candidaturaSeleccionada);
@@ -196,13 +199,13 @@ function renderizarDetalleCandidatura(candidatura){
 
     let puedeEditarArchivos = false;
 
-    if(candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
+    if (candidatura.estado === ESTADOS_CANDIDATURA.EN_REVISION) {
         tituloInput.disabled = true;
         sinopsisInput.disabled = true;
         puedeEditarArchivos = false;
     }
 
-    if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA){
+    if (candidatura.estado === ESTADOS_CANDIDATURA.RECHAZADA) {
         sinopsisInput.disabled = false;
         mensajeSubsanacionInput.classList.remove('d-none');
         btnGuardarCambios.classList.remove('d-none');
@@ -211,7 +214,7 @@ function renderizarDetalleCandidatura(candidatura){
     }
 
 
-    if (candidatura.estado === ESTADOS_CANDIDATURA.ACEPTADA){
+    if (candidatura.estado === ESTADOS_CANDIDATURA.ACEPTADA) {
         btnGuardarCambios.classList.add('d-none');
         tituloInput.disabled = true;
         sinopsisInput.disabled = true;
@@ -223,7 +226,7 @@ function renderizarDetalleCandidatura(candidatura){
         videoTrailerInput.classList.remove('d-none');
         btnGuardarCambios.textContent = 'Enviar';
         btnGuardarCambios.classList.remove('d-none');
-        if(candidatura.rutaTrailer) {
+        if (candidatura.rutaTrailer) {
             videoTrailerInput.setAttachedMode(candidatura.rutaTrailer, candidatura.idArchivoTrailer, true);
         }
     }
@@ -237,6 +240,10 @@ function renderizarDetalleCandidatura(candidatura){
 
     videoCandidatura.setSource(candidatura.rutaVideo);
 
+    await sleep(500);
+
+    document.querySelectorAll('.right-side-skeleton').forEach(skeleton => skeleton.hide());
+    document.querySelector('#right').classList.remove('d-none');
 }
 
 paginacionCandidaturas.addEventListener('page-change', async (e) => {
@@ -258,6 +265,10 @@ async function cargarCandidaturas() {
         paginacionCandidaturas.setAttribute('current-page', currentPage);
         paginacionCandidaturas.setAttribute('total-pages', totalPages);
     }
+
+    await sleep(500);
+    document.querySelectorAll('.right-side-skeleton').forEach(skeleton => skeleton.hide());
+    document.querySelector('#right').classList.remove('d-none');
 }
 
 async function handleGuardarCambios() {

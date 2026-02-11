@@ -426,7 +426,7 @@ p{
 
 @media (min-width: 768px){
     .default-banner-size{
-        height: calc(100vh - 96px);
+        height: calc(100vh - 85px);
         min-height: 500px;
     }
 }
