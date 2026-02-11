@@ -810,6 +810,7 @@ function listarFinalistasNoGanadores() {
               AND c.id_candidatura NOT IN (
                   SELECT pm.id_candidatura
                   FROM premio_candidatura pm
+                  WHERE pm.id_candidatura IS NOT NULL
               ) $filtroSql";
 
     $stmt = $conexion->prepare($query);
