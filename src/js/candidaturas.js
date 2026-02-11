@@ -17,6 +17,7 @@ const correoInput = document.getElementById('correoInput');
 const passwordInput = document.getElementById('passwordInput');
 const dniInput = document.getElementById('dniInput');
 const numExpedienteInput = document.getElementById('numExpedienteInput');
+const tipoCandidaturaInput = document.getElementById('tipoCandidaturaInput');
 
 let pageSize = 3;
 let candidaturaSeleccionada = null;
@@ -237,6 +238,7 @@ async function renderizarDetalleCandidatura(candidatura) {
     sinopsisInput.setValue(candidatura.sinopsis);
     contadorPalabras.textContent = countWords(candidatura.sinopsis);
     tituloInput.setValue(candidatura.titulo);
+    tipoCandidaturaInput.setValue(capitalize(candidatura.tipoCandidatura));
 
     videoCandidatura.setSource(candidatura.rutaVideo);
 
