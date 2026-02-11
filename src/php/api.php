@@ -2132,7 +2132,7 @@ function listarCandidaturasParticipante(): void {
  * Obtener datos de la gala
  * @throws Exception
  */
-function obtenerDatosGala() {
+function obtenerDatosGala(): void {
     global $conexion;
 
     $queryModo = "SELECT valor FROM configuracion WHERE nombre = 'modo' LIMIT 1";
@@ -2340,7 +2340,8 @@ function obtenerCandidaturasGanadorasEdicionActual(): array {
             cat.nombre as nombreCategoria,
             av.ruta as rutaVideo,
             at.ruta as rutaTrailer,
-            ac.ruta as rutaCartel
+            ac.ruta as rutaCartel,
+            FALSE as esHonorifico
         FROM premio_candidatura pc
         INNER JOIN candidatura c ON pc.id_candidatura = c.id_candidatura
         INNER JOIN participante p ON c.id_participante = p.id_participante
@@ -2349,7 +2350,29 @@ function obtenerCandidaturasGanadorasEdicionActual(): array {
         LEFT JOIN archivo av ON c.id_archivo_video = av.id_archivo
         LEFT JOIN archivo at ON c.id_archivo_trailer = at.id_archivo
         LEFT JOIN archivo ac ON c.id_archivo_cartel = ac.id_archivo
-        ORDER BY cat.nombre, pr.nombre";
+        WHERE pc.id_candidatura IS NOT NULL
+
+        UNION ALL
+
+        SELECT
+            NULL as id_candidatura,
+            NULL as titulo,
+            NULL as sinopsis,
+            gh.nombre as nombreParticipante,
+            pr.nombre as nombrePremio,
+            cat.nombre as nombreCategoria,
+            av.ruta as rutaVideo,
+            NULL as rutaTrailer,
+            NULL as rutaCartel,
+            TRUE as esHonorifico
+        FROM premio_candidatura pc
+        INNER JOIN ganador_honorifico gh ON pc.id_ganador_honorifico = gh.id_ganador_honorifico
+        INNER JOIN premio pr ON pc.id_premio = pr.id_premio
+        INNER JOIN categoria cat ON pr.id_categoria = cat.id_categoria
+        LEFT JOIN archivo av ON gh.id_archivo_video = av.id_archivo
+        WHERE pc.id_ganador_honorifico IS NOT NULL
+
+        ORDER BY nombreCategoria, nombrePremio";
 
     $stmt = $conexion->prepare($query);
     $stmt->execute();
@@ -2367,6 +2390,7 @@ function obtenerCandidaturasGanadorasEdicionActual(): array {
         if ($row['rutaCartel']) {
             $row['rutaCartel'] = $baseUrl . $row['rutaCartel'];
         }
+        $row['esHonorifico'] = (bool)$row['esHonorifico'];
         $candidaturasGanadoras[] = $row;
     }
 
@@ -2481,7 +2505,7 @@ function limpiarDatoInput($valor, $esNumero = false) {
 /**
  * Obtener datos para la home
  */
-function obtenerDatosHome(){
+function obtenerDatosHome(): void {
     $edicionesAnteriores = obtenerEdicionesAnteriores();
     $noticiasDestacadas = obtenerNoticiasDestacadas();
     $premios = obtenerPremios(null);

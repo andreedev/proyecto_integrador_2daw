@@ -101,6 +101,7 @@ function renderizarCarruselGaleria(galeria) {
     galeriaFotograficaCarousel.setSlides(slides);
 }
 
+
 function renderizarCarruselCortos(candidaturasGanadoras) {
     const ganadoresSlides = [];
 
@@ -108,10 +109,18 @@ function renderizarCarruselCortos(candidaturasGanadoras) {
         const container = document.createElement('div');
         container.className = 'd-flex flex-column gap-16px align-items-center p-16px';
 
-        const img = document.createElement('img');
-        img.src = candidatura.rutaCartel;
-        img.alt = 'Portada corto';
-        img.className = 'img-info-corto w-100';
+        if (candidatura.esHonorifico) {
+            const videoPlayer = document.createElement('video-player-component');
+            videoPlayer.setAttribute('src', candidatura.rutaVideo);
+            videoPlayer.className = 'img-info-corto w-100';
+            container.appendChild(videoPlayer);
+        } else {
+            const img = document.createElement('img');
+            img.src = candidatura.rutaCartel;
+            img.alt = 'Portada corto';
+            img.className = 'img-info-corto w-100';
+            container.appendChild(img);
+        }
 
         const textContainer = document.createElement('div');
         textContainer.className = 'text-info-corto';
@@ -128,24 +137,25 @@ function renderizarCarruselCortos(candidaturasGanadoras) {
         posicion.className = 'posicion';
         posicion.textContent = `${candidatura.nombrePremio} - ${candidatura.nombreCategoria}`;
 
-        const botonWrapper = document.createElement('span');
-        botonWrapper.className = 'ver-trailer-sinopsis';
-
-        const boton = document.createElement('u');
-        const link = document.createElement('span');
-        link.className = 'text-decoration-none text-inherit cursor-pointer';
-        link.textContent = 'Sinopsis y trailer';
-        link.setAttribute('data-candidatura-index', index);
-
-        boton.appendChild(link);
-        botonWrapper.appendChild(boton);
-
         textContainer.appendChild(title);
         textContainer.appendChild(autor);
         textContainer.appendChild(posicion);
-        textContainer.appendChild(botonWrapper);
 
-        container.appendChild(img);
+        if (!candidatura.esHonorifico) {
+            const botonWrapper = document.createElement('span');
+            botonWrapper.className = 'ver-trailer-sinopsis';
+
+            const boton = document.createElement('u');
+            const link = document.createElement('span');
+            link.className = 'text-decoration-none text-inherit cursor-pointer';
+            link.textContent = 'Sinopsis y trailer';
+            link.setAttribute('data-candidatura-index', index);
+
+            boton.appendChild(link);
+            botonWrapper.appendChild(boton);
+            textContainer.appendChild(botonWrapper);
+        }
+
         container.appendChild(textContainer);
 
         ganadoresSlides.push(container);
@@ -153,7 +163,6 @@ function renderizarCarruselCortos(candidaturasGanadoras) {
 
     ganadoresCortosCarousel.setSlides(ganadoresSlides, true);
 
-    // Agregar event listeners DESPUÉS de que el carousel renderice
     setTimeout(() => {
         const links = ganadoresCortosCarousel.querySelectorAll('.ver-trailer-sinopsis span');
         links.forEach(link => {
