@@ -1178,6 +1178,7 @@ function contarParticipantesEdicionActual() {
  * Enviar edicion actual a ediciones anteriores
  * Cambia el tipo de la edicion actual a 'anterior'
  * Mueve los ganadores de la edición actual a la tabla histórica de ganandores de edición anteriores: ganadores_edicion
+ * Mueve también los ganandores honoríficos de la edición actual a la tabla histórica de ganandores de edición anteriores: ganadores_edicion
  * Elimina candidaturas no ganadoras, historial asociado y relaciones entre premios y candidaturas
  * en el orden correcto para mantener la integridad referencial
  * Crea una nueva edicion actual para el proximo año
@@ -1212,7 +1213,14 @@ function enviarEdicionAAnteriores() {
         $stmtGanadores->execute();
         $resultGanadores = $stmtGanadores->get_result();
 
-        // Preparar statement para insertar ganadores
+        $stmtGanadoresHonorificos = $conexion->prepare("SELECT gh.nombre AS nombreParticipante, cat.nombre AS categoria, p.nombre AS premio, gh.id_archivo_video as id_archivo_video
+                                                        FROM premio_candidatura pc
+                                                        INNER JOIN premio p ON pc.id_premio = p.id_premio
+                                                        INNER JOIN categoria cat ON p.id_categoria = cat.id_categoria
+                                                        INNER JOIN ganador_honorifico gh ON pc.id_ganador_honorifico = gh.id_ganador_honorifico");
+        $stmtGanadoresHonorificos->execute();
+        $resultGanadoresHonorificos = $stmtGanadoresHonorificos->get_result();
+
         $stmtInsertGanador = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
 
         // Insertar cada ganador
@@ -1222,6 +1230,16 @@ function enviarEdicionAAnteriores() {
         }
         $stmtInsertGanador->close();
         $stmtGanadores->close();
+
+        $stmtInsertGanadorHonorifico = $conexion->prepare("INSERT INTO ganadores_edicion (id_edicion, categoria, nombre, premio, id_archivo_video) VALUES (?, ?, ?, ?, ?)");
+
+        // Insertar cada ganador honorífico
+        while ($ganadorHonorifico = $resultGanadoresHonorificos->fetch_assoc()) {
+            $stmtInsertGanadorHonorifico->bind_param("isssi", $idEdicionActual, $ganadorHonorifico['categoria'], $ganadorHonorifico['nombreParticipante'], $ganadorHonorifico['premio'], $ganadorHonorifico['id_archivo_video']);
+            $stmtInsertGanadorHonorifico->execute();
+        }
+        $stmtInsertGanadorHonorifico->close();
+        $stmtGanadoresHonorificos->close();
 
         // eliminar historial_candidatura y candidaturas no ganadores
         $stmtEliminarHistorial = $conexion->prepare("DELETE hc FROM historial_candidatura hc

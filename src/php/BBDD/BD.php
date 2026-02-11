@@ -450,9 +450,6 @@ function crearBaseDatosSiNoExiste(): void {
                 INSERT INTO historial_candidatura (id_candidatura, estado) VALUES
                 (8, 'Aceptada');
                 
-                INSERT INTO premio_candidatura (id_premio, id_candidatura) VALUES(1, 1);
-                
-    
                 
             ";
 
