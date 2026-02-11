@@ -52,23 +52,46 @@ async function eliminarPatrocinador(idPatrocinador) {
 }
 
 /**
- * Subir archivo
- */
-async function subirArchivo(file) {
-    const formData = new FormData();
-    formData.append('action', 'subirArchivo');
-    formData.append('file', file);
+* Subir archivo con progreso
+* @param {File} file
+* @param {function(number):void} [onProgress] - Callback con porcentaje 0-100
+*/
+function subirArchivo(file, onProgress = null) {
+    return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('action', 'subirArchivo');
+        formData.append('file', file);
 
-    const response = await fetch(URL_API, {
-        method: 'POST',
-        body: formData
+        const xhr = new XMLHttpRequest();
+
+        if (onProgress) {
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    onProgress(percent);
+                }
+            });
+        }
+
+        xhr.addEventListener('load', () => {
+            try {
+                const result = JSON.parse(xhr.responseText);
+                if (result.status === 'success') {
+                    resolve(result);
+                } else {
+                    reject(new Error(result.message || 'Error al subir el archivo'));
+                }
+            } catch {
+                reject(new Error('Respuesta inválida del servidor'));
+            }
+        });
+
+        xhr.addEventListener('error', () => reject(new Error('Error de red al subir el archivo')));
+        xhr.addEventListener('abort', () => reject(new Error('Subida cancelada')));
+
+        xhr.open('POST', URL_API);
+        xhr.send(formData);
     });
-
-    const result = await response.json();
-    if (result.status === 'success') {
-        return result;
-    }
-    throw new Error('Error al subir el archivo');
 }
 
 /**

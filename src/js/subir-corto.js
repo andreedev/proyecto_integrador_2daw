@@ -50,6 +50,8 @@ const basesLegalesModal = document.getElementById('basesLegalesModal');
 
 const sesionIniciada = sessionStorage.getItem('sesionIniciada') === 'true';
 
+const loadingBar = document.getElementById('loadingBar');
+
 basesLegalesLinkText.addEventListener('click', () => {
     if (isMobileEnv()) {
         window.location.href = 'bases-legales.html';
@@ -194,21 +196,27 @@ function switchStep(targetStep) {
 
 async function enviarCandidatura() {
     try{
+        loadingBar.show();
+
+        step3ContinueBtn.disabled = true;
+
         const nombre = nombreInput.value.trim();
         const correo = correoInput.value.trim();
         const password = passwordInput.value.trim();
         const dni = dniInput.value.trim();
         const nroExpediente = nroExpedienteInput.value.trim();
-        const idVideo = await videoInput.uploadIfNeeded();
-        const idPoster = await posterInput.uploadIfNeeded();
         const titulo = tituloInput.value.trim();
         const sinopsis = sinopsisInput.value.trim();
-        const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded();
         const tipoCandidatura = tipoCandidaturaSelect.value;
 
-        step3ContinueBtn.disabled = true;
+        const idVideo       = await videoInput.uploadIfNeeded((p) => loadingBar.setProgress(Math.round(p * 0.7)));
+        const idPoster      = await posterInput.uploadIfNeeded(() => loadingBar.setProgress(80));
+        const idFichaTecnica = await fichaTecnicaInput.uploadIfNeeded(() => loadingBar.setProgress(90));
 
         const response = await guardarCandidatura(nombre, correo, password, dni, nroExpediente, idVideo, idPoster, titulo, sinopsis, idFichaTecnica, tipoCandidatura);
+
+        loadingBar.setProgress(100);
+        setTimeout(() => loadingBar.reset(), 600);
 
         if (response.status === 'success') {
             switchStep(4);
@@ -229,6 +237,7 @@ async function enviarCandidatura() {
         step3ContinueBtn.disabled = false;
         console.error('Error al enviar la candidatura:', error);
         notification.show('Error al enviar la candidatura. Por favor, inténtalo de nuevo.');
+        loadingBar.reset();
     }
 }
 

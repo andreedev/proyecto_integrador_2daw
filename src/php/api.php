@@ -506,7 +506,7 @@ function sanitizarNombreArchivo($string): string {
 /**
  * Subir archivo, guardar en directorio de archivos, guardar en BD y devolver id
  */
-function subirArchivo() {
+function subirArchivo(): void {
     $folderBase = 'uploads/public/';
 
     $directorioSubida = __DIR__ . '/../../' . $folderBase;
