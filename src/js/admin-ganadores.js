@@ -10,6 +10,10 @@ const notification = document.getElementById('notification');
 const finalistaSearchInput = document.getElementById('finalistaSearchInput');
 const btnBuscarFinalista = document.getElementById('btnBuscarFinalista');
 const btnLimpiarBusqueda = document.getElementById('btnLimpiarBusqueda');
+const modalRegistrarGanadorHonorifico = document.getElementById('modalRegistrarGanadorHonorifico');
+const btnRegistrarGanadorHonorifico = document.getElementById('btnRegistrarGanadorHonorifico');
+const nombreGanadorHonorificoInput = document.getElementById('nombreGanadorHonorificoInput');
+const videoGanadorHonorificoInput = document.getElementById('videoGanadorHonorificoInput');
 
 let idPremioSeleccionado;
 let idCandidaturaSeleccionada;
@@ -24,7 +28,7 @@ btnAceptarGanador.addEventListener('click', async () => {
 
 btnBuscarFinalista.addEventListener('click', async () => {
     const query = finalistaSearchInput.value.trim();
-    buscarFinalistas( query);
+    buscarFinalistas(query);
 });
 
 finalistaSearchInput.addEventListener('keyup', async (e) => {
@@ -39,6 +43,18 @@ btnLimpiarBusqueda.addEventListener('click', async () => {
     buscarFinalistas();
 });
 
+btnRegistrarGanadorHonorifico.addEventListener('click', async () => {
+    const isValidNombre = nombreGanadorHonorificoInput.validate(true).valid;
+    const isValidVideo = videoGanadorHonorificoInput.validate();
+    if (!isValidNombre || !isValidVideo) {
+        return;
+    }
+
+    const nombreGanadorHonorifico = nombreGanadorHonorificoInput.value.trim();
+    const idVideoGanadorHonorifico = await videoGanadorHonorificoInput.uploadIfNeeded();
+
+    await handleRegistrarGanadorHonorifico(nombreGanadorHonorifico, idVideoGanadorHonorifico, idPremioSeleccionado);
+});
 /**
  * Renderiza las categorías
  */
@@ -60,7 +76,7 @@ function renderizarCategorias(categorias){
         const nombreCategoria = document.createElement('span');
         nombreCategoria.classList.add('categoria-title');
         nombreCategoria.id = 'nombreCategoria';
-        nombreCategoria.textContent = categoria.nombre;
+        nombreCategoria.textContent = categoria.nombre + " - " + categoria.tipo_categoria;
 
         const checkBoxInput = document.createElement('input');
         checkBoxInput.type = 'checkbox';
@@ -122,29 +138,39 @@ function renderizarCategorias(categorias){
             ganadorSpan.classList.add('ganador');
             ganadorSpan.textContent = premio.nombreGanador ? premio.nombreGanador : 'Sin ganador asignado';
 
-            const btnAsignarDiv = document.createElement('div');
-            btnAsignarDiv.classList.add('primary-button-02', 'btnAsignar', 'btn-action');
-            btnAsignarDiv.textContent = premio.tieneGanador ? 'Desasignar' : 'Asignar';
-            btnAsignarDiv.addEventListener('click', async () => {
+            const btnAccionDiv = document.createElement('div');
+            btnAccionDiv.classList.add('primary-button-02', 'btnAsignar', 'btn-action');
+            if (categoria.tipo_categoria === 'honorifico'){
+                let textoAccion = '';
+                btnAccionDiv.textContent = premio.tieneGanador ? 'Registrar nuevo ganador' : 'Registrar ganador';
+            } else {
+                btnAccionDiv.textContent = premio.tieneGanador ? 'Desasignar' : 'Asignar';
+            }
+            btnAccionDiv.addEventListener('click', async () => {
                 idPremioSeleccionado = premio.idPremio;
-                idCandidaturaSeleccionada = premio.idCandidaturaGanador;
-                if (btnAsignarDiv.textContent === 'Asignar') {
-                    buscarFinalistas(null, '')
-                    modalAsignarGanador.open();
+                tipoCandidaturaSeleccionada = categoria.tipo_categoria;
+                if (categoria.tipo_categoria === 'honorifico'){
+                    modalRegistrarGanadorHonorifico.open();
                 } else {
-                    notification.show('¿Estás seguro de que deseas desasignar al ganador?', {
-                        confirm: true,
-                        confirmText: "Desasignar",
-                        onConfirm: async () => {
-                            const response = await desasignarGanador(premio.idPremio, premio.idCandidaturaGanador);
-                            if (response.status === 'success') {
-                                await cargarCategorias();
-                                notification.show('Ganador desasignado correctamente');
-                            } else {
-                                console.error('Error al desasignar el ganador:', response.message);
+                    idCandidaturaSeleccionada = premio.idCandidaturaGanador;
+                    if (btnAccionDiv.textContent === 'Asignar') {
+                        buscarFinalistas(null, '')
+                        modalAsignarGanador.open();
+                    } else {
+                        notification.show('¿Estás seguro de que deseas desasignar al ganador?', {
+                            confirm: true,
+                            confirmText: "Desasignar",
+                            onConfirm: async () => {
+                                const response = await desasignarGanador(premio.idPremio, premio.idCandidaturaGanador);
+                                if (response.status === 'success') {
+                                    await cargarCategorias();
+                                    notification.show('Ganador desasignado correctamente');
+                                } else {
+                                    console.error('Error al desasignar el ganador:', response.message);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             });
 
@@ -159,7 +185,7 @@ function renderizarCategorias(categorias){
             puestoContainerDiv.appendChild(ganadorDiv);
             premioDiv.appendChild(puestoContainerDiv);
 
-            premioDiv.appendChild(btnAsignarDiv);
+            premioDiv.appendChild(btnAccionDiv);
             premiosContainerDiv.appendChild(premioDiv);
         });
 
@@ -174,7 +200,7 @@ function renderizarCategorias(categorias){
 
 async function buscarFinalistas(filtroNombreFinalista = '') {
     clearAllSelectedFinalists();
-    const response = await listarFinalistasNoGanadores(filtroNombreFinalista);
+    const response = await listarFinalistasNoGanadores(filtroNombreFinalista, tipoCandidaturaSeleccionada);
     if (response.status === 'success') {
         const finalistas = response.data;
         renderizarFinalistasEnModal(finalistas);
@@ -212,7 +238,8 @@ function renderizarFinalistasEnModal(finalistas) {
             titulo: finalista.titulo,
             correoParticipante: finalista.correoParticipante,
             sinopsis: finalista.sinopsis,
-            fechaPresentacion: finalista.fechaPresentacion
+            fechaPresentacion: finalista.fechaPresentacion,
+            tipoCandidatura: finalista.tipoCandidatura
         });
         finalist.addEventListener('finalist-select', (e) => {
             idCandidaturaSeleccionada = e.detail.data.idCandidatura;
@@ -246,6 +273,17 @@ async function handleAsignarGanador(idCandidatura) {
         await cargarCategorias();
     } else {
         notification.show('Error al asignar el ganador: ' + response.message);
+    }
+}
+
+async function handleRegistrarGanadorHonorifico(nombreGanadorHonorifico, idVideoGanadorHonorifico, idPremioSeleccionado) {
+    const response = await registrarGanadorHonorifico(nombreGanadorHonorifico, idVideoGanadorHonorifico, idPremioSeleccionado);
+    if (response.status === 'success') {
+        modalRegistrarGanadorHonorifico.close();
+        notification.show(response.message);
+        await cargarCategorias();
+    } else {
+        notification.show('Error al registrar el ganador honorífico: ' + response.message);
     }
 }
 

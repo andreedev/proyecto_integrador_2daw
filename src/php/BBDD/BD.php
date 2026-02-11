@@ -23,7 +23,8 @@ function crearBaseDatosSiNoExiste(): void {
                 
                 CREATE TABLE categoria (
                     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
-                    nombre VARCHAR(100) NOT NULL
+                    nombre VARCHAR(100) NOT NULL,
+                    tipo_categoria ENUM('alumno', 'alumni', 'honorifico') NOT NULL
                 );
                 
                 CREATE TABLE premio (
@@ -76,13 +77,22 @@ function crearBaseDatosSiNoExiste(): void {
                     FOREIGN KEY (id_candidatura) REFERENCES candidatura(id_candidatura)
                 );
                 
+                CREATE TABLE ganador_honorifico(
+                    id_ganador_honorifico INT AUTO_INCREMENT PRIMARY KEY,
+                    nombre VARCHAR(100),
+                    id_archivo_video INT comment 'Video del ganador honorífico',
+                    FOREIGN KEY (id_archivo_video) REFERENCES archivo(id_archivo)
+                );
+                
                 CREATE TABLE premio_candidatura (
+                    id_premio_candidatura INT AUTO_INCREMENT PRIMARY KEY,
                     id_premio INT NOT NULL UNIQUE,
-                    id_candidatura INT NOT NULL UNIQUE,
+                    id_candidatura INT UNIQUE,
+                    id_ganador_honorifico INT UNIQUE,
                     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    PRIMARY KEY (id_premio, id_candidatura),
                     FOREIGN KEY (id_premio) REFERENCES premio(id_premio),
-                    FOREIGN KEY (id_candidatura) REFERENCES candidatura(id_candidatura)
+                    FOREIGN KEY (id_candidatura) REFERENCES candidatura(id_candidatura),
+                    FOREIGN KEY (id_ganador_honorifico) REFERENCES ganador_honorifico(id_ganador_honorifico)
                 );
                 
                 CREATE TABLE organizador (
@@ -242,10 +252,10 @@ function crearBaseDatosSiNoExiste(): void {
                 (52, 'uploads/public/ficha_tecnica_un_dia_perfecto.pdf'),
                 (53, 'uploads/public/ficha_tecnica_violetas.pdf');
                 
-                INSERT INTO categoria (nombre) VALUES
-                ('Mejor cortometraje UE (alumno)'),
-                ('Mejor cortometraje alumni'),
-                ('Premio honorífico');
+                INSERT INTO categoria (nombre, tipo_categoria) VALUES
+                ('Mejor cortometraje UE', 'alumno'),
+                ('Mejor cortometraje', 'alumni'),
+                ('Premio honorífico', 'honorifico');
                 
                 INSERT INTO participante (nombre, dni, correo, contrasena, nro_expediente) VALUES
                 ('Juan Diego León Lamas', '11111111A', 'juan@mail.com', '$2y$10$19128ZLg8CbORHHHJ/yAa.xty0QNttbDuw/uEZRGUqKLR9zN3kiU.', 'PAR-001'),

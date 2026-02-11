@@ -59,6 +59,44 @@
         </div>
     </modal-component>
 
+    <modal-component id="modalRegistrarGanadorHonorifico" mobile-full-screen static>
+        <div class="d-flex justify-space-between align-center py-16px px-24px border-solid border-neutral-05">
+            <div class="d-flex flex-column gap-4px">
+                <span class="fs-20px fw-600">Registrar ganador honorífico</span>
+                <span class="fs-12px text-neutral-04"></span>
+            </div>
+            <div class="d-flex align-items-center gap-8px">
+                <span class="icon-close w-24px h-24px bg-neutral-03 close-modal cursor-pointer"></span>
+            </div>
+        </div>
+        <div class="d-flex flex-column p-24px gap-24px flex-grow-1 overflow-y-auto">
+            <input-component
+                    label="Nombre del ganador honorífico:"
+                    type="text"
+                    id="nombreGanadorHonorificoInput"
+                    required
+            ></input-component>
+            <file-component
+                    id="videoGanadorHonorificoInput"
+                    label="Vídeo del ganador honorífico:"
+                    primary-text="Arrastra tu vídeo o haz clic para seleccionar"
+                    secondary-text="Formatos aceptados: MP4, MOV, AVI. Tamaño máximo: 500MB"
+                    accept=".mp4,.mov,.avi"
+                    max-size="524288000"
+                    required
+                    error-type="Formato no válido. Los formatos permitidos son MP4, MOV, AVI, JPG, JPEG, PNG, WEBP y AVIF"
+                    error-size="El archivo es muy pesado. El máximo permitido son 500MB"
+                    error-required="Debes subir al menos un vídeo"
+            ></file-component>
+        </div>
+        <div class="p-24px border-top border-solid border-neutral-05 bg-white">
+            <div class="d-flex-two-columns-responsive gap-24px">
+                <div class="secondary-button-02 text-center close-modal">Cancelar</div>
+                <button class="primary-button-01 text-center" id="btnRegistrarGanadorHonorifico">Registrar</button>
+            </div>
+        </div>
+    </modal-component>
+
     <notification-component id="notification"></notification-component>
 
     <script src="../js/libraries/air-datepicker.min.js"></script>

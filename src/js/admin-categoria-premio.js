@@ -11,9 +11,16 @@ const nombreCategoriaInputCrear = document.getElementById("nombreCategoriaInputC
 const nombreCategoriaActualizar = document.getElementById("nombreCategoriaActualizar");
 const btnActualizar = document.getElementById("btnActualizar");
 const skeleton = document.getElementById('skeleton');
+const tipoCategoriaSelectCrear = document.getElementById('tipoCategoriaSelectCrear');
 
 let pageSize = 4;
 let categoriaSeleccionada = null;
+
+tipoCategoriaSelectCrear.setOptions([
+    { value: 'alumno', label: 'Alumno' },
+    { value: 'alumni', label: 'Alumni' },
+    { value: 'honorifico', label: 'Honorífico' },
+]);
 
 btnOpenCreateCategoryModal.addEventListener('click', () => {
     modalCrearCategoria.open();
@@ -66,7 +73,7 @@ function renderizarCategorias(categorias) {
 
         const categoryTitle = document.createElement('div');
         categoryTitle.className = 'category-title';
-        categoryTitle.textContent = categoria.nombre;
+        categoryTitle.textContent = categoria.nombre + " - " + capitalize(categoria.tipoCategoria);
 
         titleIconGroup.append(iconTag, categoryTitle);
 
@@ -142,8 +149,9 @@ async function handleCrearCategoria() {
     }
 
     const nombre = nombreCategoriaInputCrear.value.trim();
+    const tipoCategoria = tipoCategoriaSelectCrear.value;
 
-    const response = await agregarCategoriaConPremios(nombre, premios);
+    const response = await agregarCategoriaConPremios(nombre, tipoCategoria, premios);
     if (response.status === 'success'){
         notification.show("Categoría creada correctamente");
         modalCrearCategoria.close();

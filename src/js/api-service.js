@@ -96,10 +96,11 @@ async function obtenerCategoriasConPremios(page, pageSize) {
 /**
  * Agregar categoría con premios
  */
-async function agregarCategoriaConPremios(nombreCategoria, premios) {
+async function agregarCategoriaConPremios(nombreCategoria, tipoCategoria, premios) {
     const data = new FormData();
     data.append('action', 'agregarCategoriaConPremios');
     data.append('nombreCategoria', nombreCategoria);
+    data.append('tipoCategoria', tipoCategoria);
     data.append('premios', JSON.stringify(premios));
     return await fetchAPI(data);
 }
@@ -129,10 +130,11 @@ async function eliminarCategoria(idCategoria) {
 /**
  * Listar finalistas no ganadores
  */
-async function listarFinalistasNoGanadores(filtroNombreFinalista) {
+async function listarFinalistasNoGanadores(filtroNombreFinalista, filtroTipoCategoria) {
     const data = new FormData();
     data.append('action', 'listarFinalistasNoGanadores');
     data.append('filtroNombreFinalista', filtroNombreFinalista);
+    data.append('filtroTipoCategoria', filtroTipoCategoria)
     return await fetchAPI(data);
 }
 
@@ -555,6 +557,17 @@ async function obtenerEdicionAnteriorById(idEdicion) {
     const data = new FormData();
     data.append('action', 'obtenerEdicionAnteriorById');
     data.append('idEdicion', idEdicion);
+
+    return await fetchAPI(data);
+}
+
+
+async function registrarGanadorHonorifico(nombre, idVideoGanadorHonorifico, idPremio){
+    const data = new FormData();
+    data.append('action', 'registrarGanadorHonorifico');
+    data.append('nombre', nombre);
+    data.append('idVideoGanadorHonorifico', idVideoGanadorHonorifico);
+    data.append('idPremio', idPremio)
 
     return await fetchAPI(data);
 }

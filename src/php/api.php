@@ -212,6 +212,10 @@ if (isset($_POST['action'])) {
         case 'obtenerEdicionAnteriorById':
             obtenerEdicionAnteriorById();
             break;
+        case 'registrarGanadorHonorifico':
+            validarRol(['organizador']);
+            registrarGanadorHonorifico();
+            break;
         default:
             break;
     }
@@ -737,12 +741,20 @@ function listarCategoriasAdmin(): void {
     while ($categoria = $resultCategorias->fetch_assoc()) {
         $idCategoria = $categoria['id_categoria'];
 
-        $queryPremios = "SELECT c.id_categoria as idCategoria, p.id_premio as idPremio, p.nombre as nombrePremio, p.cantidad_dinero as cantidadDinero, IF(pm.id_candidatura IS NOT NULL, 1, 0) as tieneGanador, pa.nombre as nombreGanador, pm.id_candidatura as idCandidaturaGanador
+        $queryPremios = "SELECT 
+                c.id_categoria as idCategoria, 
+                p.id_premio as idPremio, 
+                p.nombre as nombrePremio, 
+                p.cantidad_dinero as cantidadDinero, 
+                IF(pm.id_candidatura IS NOT NULL OR pm.id_ganador_honorifico IS NOT NULL, 1, 0) as tieneGanador,
+                COALESCE(pa.nombre, gh.nombre) as nombreGanador,
+                pm.id_candidatura as idCandidaturaGanador
             FROM categoria c 
             RIGHT JOIN premio p on p.id_categoria = c.id_categoria
             LEFT JOIN premio_candidatura pm on pm.id_premio = p.id_premio
             LEFT JOIN candidatura ca on ca.id_candidatura = pm.id_candidatura
             LEFT JOIN participante pa on pa.id_participante = ca.id_participante
+            LEFT JOIN ganador_honorifico gh on gh.id_ganador_honorifico = pm.id_ganador_honorifico
             where c.id_categoria = ?";
 
         $stmtPremios = $conexion->prepare($queryPremios);
@@ -771,19 +783,25 @@ function listarFinalistasNoGanadores() {
     global $conexion;
 
     $filtroNombreFinalista = limpiarDatoInput($_POST['filtroNombreFinalista'] ?? '');
+    $filtroTipoCategoria = limpiarDatoInput($_POST['filtroTipoCategoria'] ?? '');
     $params = [];
     $types = "";
     $filtroSql = '';
 
-    // 1. Build the dynamic filter
     if (!empty($filtroNombreFinalista)) {
         $filtroSql = " AND pc.nombre LIKE ? ";
         $params[] = "%" . $filtroNombreFinalista . "%";
         $types .= "s";
     }
 
+    if (!empty($filtroTipoCategoria)) {
+        $filtroSql .= " AND c.tipo_candidatura = ? ";
+        $params[] = $filtroTipoCategoria;
+        $types .= "s";
+    }
+
     $query = "SELECT c.id_candidatura as idCandidatura, c.titulo, c.sinopsis, 
-                     c.estado, c.fecha_presentacion as fechaPresentacion, 
+                     c.estado, c.fecha_presentacion as fechaPresentacion, c.tipo_candidatura as tipoCandidatura,
                      pc.nombre AS nombreParticipante, pc.correo as correoParticipante
               FROM candidatura c
               INNER JOIN participante pc ON c.id_participante = pc.id_participante
@@ -862,7 +880,7 @@ function obtenerCategoriasConPremios(): void {
         $totalCategorias = (int)$row['total'];
     }
 
-    $queryCategorias = "SELECT id_categoria as idCategoria, nombre FROM categoria LIMIT ?, ?";
+    $queryCategorias = "SELECT id_categoria as idCategoria, nombre, tipo_categoria as tipoCategoria FROM categoria LIMIT ?, ?";
     $stmtCategorias = $conexion->prepare($queryCategorias);
     $stmtCategorias->bind_param("ii", $offset, $pageSize);
     $stmtCategorias->execute();
@@ -914,6 +932,7 @@ function agregarCategoriaConPremios() {
     global $conexion;
 
     $nombreCategoria = $_POST['nombreCategoria'] ?? null;
+    $tipoCategoria = $_POST['tipoCategoria'] ?? null;
     $premios = isset($_POST['premios']) ? json_decode($_POST['premios'], true) : [];
 
     if (!$nombreCategoria || empty($premios)) {
@@ -934,9 +953,9 @@ function agregarCategoriaConPremios() {
             return;
         }
 
-        $queryCategoria = "INSERT INTO categoria (nombre) VALUES (?)";
+        $queryCategoria = "INSERT INTO categoria (nombre, tipo_categoria) VALUES (?, ?)";
         $stmtCategoria = $conexion->prepare($queryCategoria);
-        $stmtCategoria->bind_param("s", $nombreCategoria);
+        $stmtCategoria->bind_param("ss", $nombreCategoria, $tipoCategoria);
         if (!$stmtCategoria->execute()) throw new Exception("No se pudo agregar categoría");
 
         $idCategoria = $conexion->insert_id;
@@ -2589,7 +2608,7 @@ function obtenerFechasEventoPorMesAnio(){
  * Lista ediciones con paginación y filtro por tipo,
  * por cada edición incluye su galería de archivos y sus ganadores
  */
-function listarEdiciones(){
+function listarEdiciones(): void {
     global $conexion;
 
     $tipo = $_POST['tipo'] ?? null;
@@ -2846,6 +2865,46 @@ function obtenerDatosParticipante(): void {
         echo json_encode(["status" => "success", "data" => $row]);
     } else {
         echo json_encode(["status" => "error", "message" => "No se encontraron los datos del participante"]);
+    }
+}
+
+/**
+ * Registra un ganador honorífico y lo asocia a un premio
+ */
+function registrarGanadorHonorifico(): void {
+    global $conexion;
+
+    try{
+        $nombre = limpiarDatoInput($_POST['nombre']);
+        $idVideoGanadorHonorifico = limpiarDatoInput($_POST['idVideoGanadorHonorifico'], true);
+        $idPremio = limpiarDatoInput($_POST['idPremio'], true);
+
+        // eliminar asociación existente entre premio y ganador honorífico (si existe)
+        $sqlDeletePremioCandidatura = $conexion->prepare("DELETE FROM premio_candidatura WHERE id_premio = ?");
+        $sqlDeletePremioCandidatura->bind_param("i", $idPremio);
+        $sqlDeletePremioCandidatura->execute();
+        $sqlDeletePremioCandidatura->close();
+
+        // eliminar ganador honorífico existente para ese premio (si existe)
+        $sqlDeleteGanadorHonorifico = $conexion->prepare("DELETE gh FROM ganador_honorifico gh INNER JOIN premio_candidatura pc ON gh.id_ganador_honorifico = pc.id_ganador_honorifico WHERE pc.id_premio = ?");
+        $sqlDeleteGanadorHonorifico->bind_param("i", $idPremio);
+        $sqlDeleteGanadorHonorifico->execute();
+        $sqlDeleteGanadorHonorifico->close();
+
+        // crear nuevo ganador honorífico
+        $sqlInsertGanadorHonorifico = $conexion->prepare("INSERT INTO ganador_honorifico (nombre, id_archivo_video) VALUES (?, ?)");
+        $sqlInsertGanadorHonorifico->bind_param("si", $nombre, $idVideoGanadorHonorifico);
+        $sqlInsertGanadorHonorifico->execute();
+        $idGanadorHonorifico = $conexion->insert_id;
+
+        // asociar ganador honorífico al premio
+        $sqlInsertPremioCandidatura = $conexion->prepare("INSERT INTO premio_candidatura (id_premio, id_ganador_honorifico) VALUES (?, ?)");
+        $sqlInsertPremioCandidatura->bind_param("ii", $idPremio, $idGanadorHonorifico);
+        $sqlInsertPremioCandidatura->execute();
+
+        echo json_encode(["status" => "success", "message" => "Ganador honorífico registrado correctamente"]);
+    } catch (Exception $e){
+        echo json_encode(["status" => "error", "message" => "Error al registrar ganador honorífico: " . $e->getMessage()]);
     }
 }
 

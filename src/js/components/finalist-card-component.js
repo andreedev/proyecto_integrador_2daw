@@ -49,7 +49,8 @@ class FinalistCardComponent extends HTMLElement {
             titulo: '',
             correoParticipante: '',
             sinopsis: '',
-            fechaPresentacion: ''
+            fechaPresentacion: '',
+            tipoCandidatura: ''
         };
     }
 
