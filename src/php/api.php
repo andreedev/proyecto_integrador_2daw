@@ -326,6 +326,9 @@ function obtenerConfiguracion() {
         if ($row['nombre'] === 'baseUrl') {
             $baseUrl = $row['valor'];
         }
+        if ($row['nombre'] === 'galaPreEventoStreamingActivo') {
+            $config['galaPreEventoStreamingActivo'] = $row['valor'] === 'true';
+        }
     }
     $stmtConfig->close();
 

@@ -304,6 +304,12 @@ p{
     border: 1px solid var(--neutral-01);
 }
 
+secondary-button-01.disabled, .secondary-button-01:disabled{
+    background-color: var(--neutral-04);
+    color: var(--neutral-06);
+    cursor: not-allowed;
+}
+
 .secondary-button-02{
     background-color: var(--neutral-09);
     color: var(--neutral-01);

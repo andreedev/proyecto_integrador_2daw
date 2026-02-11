@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <div class="d-flex flex-column flex-md-row align-items-center gap-12px">
-                            <span class="text-warning-01 fs-14px fw-500 hidden-force text-nowrap" id="unsavedChangesWarning">● Hay cambios sin publicar</span>
+                            <span class="text-warning-01 fs-14px fw-500 d-none text-nowrap" id="unsavedChangesWarning">● Hay cambios sin publicar</span>
                             <div class="d-flex flex-row w-100 align-items-center">
                                 <button class="primary-button-02 fs-14px w-100" id="publishChangesButton">Publicar cambios</button>
                             </div>
@@ -62,49 +62,45 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="generic-input-group">
-                            <span class="generic-input-label">Título del evento principal</span>
-                            <label class="generic-input-wrapper">
-                                <input id="tituloEventoInput" class="generic-input" value="Reunión de planificación" type="text">
-                            </label>
-                            <span id="tituloEventoErrorMessage" class="error-message"></span>
-                        </div>
+                        <input-component
+                                label="Título del evento principal"
+                                id="tituloEventoInput"
+                                width="100%"
+                                required
+                                required-message="El título no puede estar vacío"
+                                min-length="5"
+                                error-message="El título es demasiado corto (mínimo 5 letras)">
+                        </input-component>
                         <div class="generic-input-groups-row">
-                            <div class="generic-input-group">
-                                <span class="generic-input-label">Fecha</span>
-                                <label class="generic-input-wrapper">
-                                    <input id="fechaEventoInput" class="generic-input" value="09/01/2026">
-                                    <span class="icon-calendar w-20px h-20px bg-neutral-03"></span>
-                                </label>
-                                <span id="fechaEventoErrorMessage" class="error-message"></span>
-                            </div>
-                            <div class="generic-input-group">
-                                <span class="generic-input-label">Hora</span>
-                                <label class="generic-input-wrapper">
-                                    <input id="horaEventoInput" class="generic-input" value="19:00" type="text">
-                                    <span class="icon-clock w-20px h-20px bg-neutral-03"></span>
-                                </label>
-                                <span id="horaEventoErrorMessage" class="error-message"></span>
-                            </div>
+                            <date-component
+                                    id="fechaEventoInput"
+                                    label="Fecha de la gala"
+                                    required
+                                    min-date="today"
+                            ></date-component>
+                            <date-component
+                                    id="horaEventoInput"
+                                    label="Hora"
+                                    type="time"
+                            ></date-component>
                         </div>
                         <div class="generic-input-group">
-                            <span class="generic-input-label">Ubicación</span>
-                            <label class="generic-input-wrapper">
-                                <span class="icon-location w-20px h-20px bg-neutral-03"></span>
-                                <input id="ubicacionEventoInput" class="generic-input" value="Auditorio principal" type="text">
-                            </label>
-                            <span id="ubicacionEventoErrorMessage" class="error-message"></span>
+                            <input-component
+                                    label="Ubicación"
+                                    id="ubicacionEventoInput"
+                                    width="100%"
+                                    required
+                                    required-message="La ubicación no puede estar vacía">
+                            </input-component>
                         </div>
-                        <div class="large-input-group">
-                            <div class="large-input-group-header">
-                                <span class="large-input-group-label-text">Descripción</span>
-                            </div>
-                            <div class="large-input-group-body">
-                                <textarea id="descripcionInput" class="textarea-input" value="¡Bienvenidos a la Gala de Cortometrajes 2026! Únete a nosotros para celebrar el talento creativo de nuestros estudiantes y alumni. "></textarea>
-                            </div>
-                            <span id="descripcionErrorMessage" class="error-message"></span>
-                            <span class="helper-text">Esta información aparecerá en la landing page pública</span>
-                        </div>
+                        <input-component
+                                id="descripcionInput"
+                                label="Descripción del evento"
+                                textarea
+                                required
+                                required-message="La descripción no puede estar vacía"
+                        ></input-component>
+                        <span class="helper-text">Esta información aparecerá en la landing page pública</span>
                     </div>
                     <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
@@ -135,15 +131,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="generic-input-group hidden-force" id="urlStreamingContainer">
-                            <span class="generic-input-label">URL del streaming</span>
-                            <label class="generic-input-wrapper">
-                                <span class="icon-link w-20px h-20px bg-neutral-03"></span>
-                                <input id="urlStreamingInput" class="generic-input" type="text" placeholder="https://youtube.com/watch?v=...">
-                            </label>
-                            <span id="urlStreamingErrorMessage" class="error-message"></span>
-                            <span class="helper-text">Introduce la URL completa del streaming (YouTube, TikTok, etc.)</span>
-                        </div>
+                        <input-component
+                                label="URL del streaming"
+                                id="urlStreamingInput"
+                                width="100%"
+                                required
+                                required-message="La URL del streaming no puede estar vacía">
+                        </input-component>
+                        <span class="helper-text">Introduce la URL completa del streaming (YouTube, TikTok, etc.)</span>
                     </div>
                     <div class="generic-card preEventoCard hidden-force">
                         <div class="card-header">
@@ -185,10 +180,13 @@
                             <div class="large-input-group-header">
                                 <span class="large-input-group-label-text">Contenido</span>
                             </div>
-                            <div class="large-input-group-body h-100px">
-                                <textarea id="postEventoResumenInput" class="textarea-input">La Gala de Cortometrajes 2026 fue un éxito rotundo...</textarea>
-                            </div>
-                            <span id="postEventoResumenErrorMessage" class="error-message"></span>
+                            <input-component
+                                    id="postEventoResumenInput"
+                                    label="Resumen de la Gala"
+                                    textarea
+                                    required
+                                    required-message="El resumen no puede estar vacío"
+                            ></input-component>
                             <span class="helper-text">Describe los momentos destacados y el éxito del evento</span>
                         </div>
                     </div>
@@ -205,27 +203,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="fileDropZone" class="large-input-group-body bg-neutral-09 border-dashed border-primary-03">
-                            <input type="file" id="fileInput" class="file-input" hidden multiple>
-                            <div class="upload-content">
-                                <div class="drop-zone-icon-container bg-primary-05">
-                                    <span class="icon-picture bg-primary-03 w-20px h-20px"></span>
-                                </div>
-                                <p class="upload-text">Arrastra tu imagen o vídeo o haz clic para seleccionar</p>
-                                <p class="upload-subtext">MP4, WebM, JPG, JPEG, PNG, máximo 500MB</p>
-                            </div>
-                        </div>
-                        <div class="image-gallery-container">
-                            <div class="d-flex justify-space-between flex-wrap gap-8px">
-                                <span class="fw-500 fs-14px">Archivos subidos (<span id="uploadedFilesCount">0</span>)</span>
-                                <span class="fw-500 fs-14px text-neutral-04">Arrastra para reordenar</span>
-                            </div>
-                            <div class="image-gallery-items-container" id="galleryContainer">
-                            </div>
-                        </div>
-                        <div class="secondary-card hidden-force" id="noFilesHelperText">
-                            <span class="helper-text-2">No hay imágenes o vídeos subidos. Haz clic en el botón de arriba para añadir videos del evento.</span>
-                        </div>
+                        <file-component
+                            id="fileInputEdicionActual"
+                            label="Galería de imágenes y vídeos"
+                            primary-text="Arrastra tu imagen o vídeo o haz clic para seleccionar"
+                            secondary-text="Formatos aceptados: MP4, MOV, AVI, JPG, JPEG, PNG, WEBP, AVIF. Tamaño máximo: 200MB"
+                            accept=".mp4,.mov,.avi,.jpg,.jpeg,.png,.webp,.avif"
+                            max-size="209715200"
+                            required
+                            multiple
+                            error-type="Formato no válido. Los formatos permitidos son MP4, MOV, AVI, JPG, JPEG, PNG, WEBP y AVIF"
+                            error-size="El archivo es muy pesado. El máximo permitido son 200MB"
+                            error-required="Debes subir al menos una imagen o vídeo"
+                    ></file-component>
                     </div>
 
                     <div class="generic-card postEventoCard hidden-force">
@@ -253,9 +243,7 @@
 
                     <div class="generic-card postEventoCard hidden-force">
                         <div class="main-action-right-side">
-                            <div class="secondary-button-01 text-center" id="sendToPreviousEditionsButton">
-                                <span>Enviar a Ediciones Anteriores</span>
-                            </div>
+                            <button class="secondary-button-01 text-center" id="sendToPreviousEditionsButton" disabled>Enviar a Ediciones Anteriores</button>
                         </div>
                     </div>
                 </div>
@@ -278,15 +266,15 @@
         <div class="modal-body flex-grow-1 overflow-y-auto">
             <p class="fw-600">Información básica de la Edición</p>
             <div class="generic-input-groups-row">
-
-                <div class="generic-input-group">
-                    <span class="generic-input-label">Año de edición</span>
-                    <label class="generic-input-wrapper">
-                        <span class="icon-calendar w-16px h-16px bg-neutral-03"></span>
-                        <input id="yearEdicionInput" class="generic-input" autocomplete="off">
-                    </label>
-                    <span id="yearEditionErrorMessage" class="error-message"></span>
-                </div>
+                <input-component
+                        label="Año de edición"
+                        id="yearEdicionInput"
+                        type="number"
+                        required
+                        min-length="4"
+                        max-length="4"
+                        required-message="El año no puede estar vacío"
+                ></input-component>
                 <div class="generic-input-group">
                     <span class="generic-input-label">Número de participantes</span>
                     <label class="d-flex align-center p-12px gap-8px">
@@ -296,24 +284,24 @@
                 </div>
             </div>
             <p class="fw-600">Acciones programadas</p>
-            <div class="generic-input-group">
-                <span class="generic-input-label">Envío de email informativo</span>
-                <label class="generic-input-wrapper">
-                    <input id="fechaEnvioEmailInformativoInput" class="generic-input  text-neutral-02" value="09/01/2026">
-                    <span class="icon-calendar w-20px h-20px bg-neutral-02"></span>
-                </label>
-                <span id="fechaEnvioEmailInformativoErrorMessage" class="error-message"></span>
-                <span class="helper-text">Se enviará un email a todos los participantes informando del archivo de esta edición</span>
-            </div>
-            <div class="generic-input-group">
-                <span class="generic-input-label">Borrado de datos no ganadores</span>
-                <label class="generic-input-wrapper">
-                    <input id="fechaBorradoDatosInput" class="generic-input  text-neutral-02" value="09/01/2026">
-                    <span class="icon-calendar w-20px h-20px bg-neutral-02"></span>
-                </label>
-                <span id="fechaBorradoDatosInputErrorMessage" class="error-message"></span>
-                <span class="helper-text">Se eliminarán automáticamente las candidaturas que no sean ganadoras</span>
-            </div>
+
+            <date-component
+                    id="fechaEnvioEmailInformativoInput"
+                    label="Fecha de envío de email informativo"
+                    required
+                    min-date="today"
+            ></date-component>
+            <span class="helper-text">Se enviará un email a todos los participantes informando del archivo de esta edición</span>
+
+            <date-component
+                    id="fechaBorradoDatosInput"
+                    label="Fecha de borrado de candidaturas no ganadoras"
+                    required
+                    min-date="today"
+            ></date-component>
+            <span class="helper-text">Se eliminarán automáticamente las candidaturas que no sean ganadoras</span>
+
+
             <div class="card-header">
                 <div class="d-flex flex-row gap-12px">
                     <div class="icon-container flex-shrink-0">
@@ -377,6 +365,8 @@
 
     <notification-component id="notification"></notification-component>
 
+    <loading-bar-component id="loadingBar"></loading-bar-component>
+
     <script src="../js/libraries/Sortable.min.js"></script>
     <script src="../js/libraries/air-datepicker.min.js"></script>
     <script src="../js/components/input-component.js"></script>
@@ -387,6 +377,7 @@
     <script src="../js/components/pagination-component.js"></script>
     <script src="../js/components/video-player-component.js"></script>
     <script src="../js/components/carousel-component.js"></script>
+    <script src="../js/components/loading-bar-component.js"></script>
     <script src="../js/menu-admin.js"></script>
     <script src="../js/admin-modo.js"></script>
 </body>
