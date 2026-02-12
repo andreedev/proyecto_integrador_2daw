@@ -4,12 +4,18 @@ class CarouselComponent extends HTMLElement {
         this._slidesData = [];
         this._currentIndex = 0;
         this._config = { 0: 1 };
+        this._autoplayInterval = null;
     }
 
     static get observedAttributes() {
-        return ['show-arrows', 'click-to-nav', 'gap', 'responsive', 'center-vertically'];
+        return ['show-arrows', 'click-to-nav', 'gap', 'responsive', 'center-vertically', 'autoplay', 'autoplay-delay'];
     }
-2
+
+    disconnectedCallback() {
+        this._stopAutoplay();
+        if (this.resizeObserver) this.resizeObserver.disconnect();
+    }
+
     async connectedCallback() {
         if (window.injectExternalStyles) {
             await window.injectExternalStyles('../css/carousel-component.css', 'carousel-styles');
@@ -23,6 +29,9 @@ class CarouselComponent extends HTMLElement {
         if (oldVal !== newVal && this._track) {
             if (name === 'responsive') this._parseResponsiveConfig();
             if (name === 'center-vertically') this._applyCenterVertically();
+            if (name === 'autoplay' || name === 'autoplay-delay') {
+                this._resetAutoplay();
+            }
             this._updateLayout();
         }
     }
@@ -95,12 +104,14 @@ class CarouselComponent extends HTMLElement {
         this._dotsContainer = this.querySelector('.carousel-indicators');
         this._btnPrev = this.querySelector('.carousel-arrow.prev');
         this._btnNext = this.querySelector('.carousel-arrow.next');
+        this._container = this.querySelector('.carousel-container');
 
         this._applyCenterVertically();
 
         if (this._slidesData.length > 0) {
             this._setupNavigation();
             this._updateLayout();
+            this._setupAutoplay();
         }
     }
 
@@ -130,7 +141,10 @@ class CarouselComponent extends HTMLElement {
         for (let i = 0; i < steps; i++) {
             const dot = document.createElement('div');
             dot.className = `carousel-dot cursor-pointer w-8px h-8px ${i === this._currentIndex ? 'bg-primary-03' : 'bg-neutral-05'}`;
-            dot.onclick = () => this.goTo(i);
+            dot.onclick = () => {
+                this.goTo(i);
+                this._resetAutoplay();
+            };
             this._dotsContainer.appendChild(dot);
         }
     }
@@ -144,7 +158,10 @@ class CarouselComponent extends HTMLElement {
         const gap = parseInt(this.getAttribute('gap') || 24);
         const slideWidth = this._viewport.offsetWidth / this._updateItemsInView();
 
-        const moveAmount = this._currentIndex * (this.querySelector('.carousel-slide').offsetWidth + gap);
+        const slideEl = this.querySelector('.carousel-slide');
+        const actualSlideWidth = slideEl ? slideEl.offsetWidth : slideWidth;
+
+        const moveAmount = this._currentIndex * (actualSlideWidth + gap);
         this._track.style.transform = `translateX(-${moveAmount}px)`;
 
         if (this._dotsContainer) {
@@ -163,8 +180,47 @@ class CarouselComponent extends HTMLElement {
     }
 
     _setupNavigation() {
-        if (this._btnPrev) this._btnPrev.onclick = () => this.move(-1);
-        if (this._btnNext) this._btnNext.onclick = () => this.move(1);
+        if (this._btnPrev) this._btnPrev.onclick = () => {
+            this.move(-1);
+            this._resetAutoplay();
+        };
+        if (this._btnNext) this._btnNext.onclick = () => {
+            this.move(1);
+            this._resetAutoplay();
+        };
+    }
+
+    _setupAutoplay() {
+        this._startAutoplay();
+
+        if (this._container) {
+            this._container.addEventListener('mouseenter', () => this._stopAutoplay());
+            this._container.addEventListener('mouseleave', () => this._startAutoplay());
+        }
+    }
+
+    _startAutoplay() {
+        const isAutoplay = this.getAttribute('autoplay') === 'true';
+
+        if (this._autoplayInterval || !isAutoplay) return;
+
+        const delay = parseInt(this.getAttribute('autoplay-delay') || 1500);
+
+        this._autoplayInterval = setInterval(() => {
+            this.move(1);
+        }, delay);
+    }
+
+    _stopAutoplay() {
+        if (this._autoplayInterval) {
+            clearInterval(this._autoplayInterval);
+            this._autoplayInterval = null;
+        }
+    }
+
+    _resetAutoplay() {
+        this._stopAutoplay();
+        this._startAutoplay();
     }
 
     _setupResizeObserver() {

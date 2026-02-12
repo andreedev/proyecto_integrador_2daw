@@ -35,7 +35,7 @@ class HomeFooter extends HTMLElement {
                     <div class="d-flex flex-column flex-md-row justify-content-center justify-space-between align-items-center w-100 gap-16px m-auto flex-wrap container-lg-to-xl">
                         <div class="d-flex flex-column justify-content-center align-items-center gap-16px order-3 order-md-2">
                             <span class="fw-500 text-neutral-09">C/Tajo, s/n, 28670</span>
-                            <span class="fw-500 text-neutral-09">festivalcortosuen@universidadeuropea.es</span>
+                            <span class="fw-500 text-neutral-09 fs-12px fs-md-16px">festivalcortosuen@universidadeuropea.es</span>
                         </div>
                         <div class="d-flex flex-column justify-content-center align-items-center gap-16px order-4 order-md-3">
                             <a class="fw-500 text-neutral-09" href="#">Política de privacidad</a>
@@ -64,6 +64,7 @@ class HomeFooter extends HTMLElement {
         carousel.setAttribute('gap', '32');
         carousel.setAttribute('center-vertically', 'true');
         carousel.setAttribute('show-arrows', 'false');
+        carousel.setAttribute('autoplay', 'true');
         carousel.setAttribute('responsive', JSON.stringify({
             "0": 1,
             "600": 3,
