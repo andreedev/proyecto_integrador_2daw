@@ -712,7 +712,7 @@ function eliminarPatrocinador() {
  * Esto se usa para construir las URLs completas de los archivos
  */
 function obtenerBaseUrl() {
-    return $_ENV['BASE_URL'];
+    return $_ENV['BASE_URL'] ?? 'https://festivalcortosuem.azurewebsites.net/';
 }
 
 /**
