@@ -153,7 +153,7 @@ async function cargarCandidaturas() {
 
     renderizarCandidaturas(candidaturas, paginaActual, totalPaginas, totalRecords);
 
-    await sleep(100)
+    await sleep(300)
 
     skeletonCandidaturas.hide(tablaWrapper);
 }

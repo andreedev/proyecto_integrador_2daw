@@ -40,35 +40,36 @@
                         <select-component
                                 id="filtroTipo"
                                 label="Filtrar por tipo"
-                                width="auto"
+                                class="w-100 w-md-auto"
                         >
                         </select-component>
 
                         <select-component
                                 id="filtroEstado"
                                 label="Filtrar por estado"
-                                width="auto"
+                                class="w-100 w-md-auto"
                         >
                         </select-component>
 
                         <date-component
                                 label="Fecha de presentación"
                                 id="filtroFecha"
-                                width="150px"
+                                class="w-100 w-md-auto"
                         ></date-component>
-                        <button id="btnAplicarFiltros" class="primary-button-02">Buscar</button>
-                        <button id="btnLimpiarFiltros" class="secondary-button-02">Limpiar filtros</button>
+                        <button id="btnAplicarFiltros" class="primary-button-02 w-100 w-md-auto">Buscar</button>
+                        <button id="btnLimpiarFiltros" class="secondary-button-02 w-100 w-md-auto">Limpiar filtros</button>
                     </div>
 
-                    <skeleton-table-component
-                            id="skeletonCandidaturas"
-                            rows="7"
-                            columns="8"
-                            height="36px"
-                            width="80%"
-                            gap="24px"
-                    ></skeleton-table-component>
-
+                    <div class="overflow-x-auto min-w-800px">
+                        <skeleton-table-component
+                                id="skeletonCandidaturas"
+                                rows="7"
+                                columns="8"
+                                height="36px"
+                                width="80%"
+                                gap="24px"
+                        ></skeleton-table-component>
+                    </div>
                     <div class="table-wrapper" id="tablaWrapper">
                         <table class="table table-striped table-hover w-100">
                             <thead>
@@ -100,14 +101,15 @@
                             </thead>
                             <tbody class="w-100" id="bodyTablaCandidaturas"></tbody>
                         </table>
+                    </div>
 
-                        <div class="d-flex justify-content-center align-items-center p-16px">
+                    <div>
+                        <div class="d-flex justify-content-center align-items-center p-8px">
                             <pagination-component
                                     id="paginacionCandidaturas">
                             </pagination-component>
                         </div>
-
-                        <div class="d-flex justify-content-center align-items-center p-16px text-neutral-03">
+                        <div class="d-flex justify-content-center align-items-center p-8px text-neutral-03">
                             Mostrando&nbsp;<span id="totalPorPagina">999</span>&nbsp;de&nbsp;<span id="totalCandidaturas">999</span>&nbsp;candidaturas
                         </div>
                     </div>
@@ -163,8 +165,8 @@
                 <input-component id="fechaPresentacionInput" label="Fecha de presentación"
                                 disabled></input-component>
 
-                <INPUT-component id="fechaActualizacionInput" label="Última actualización"
-                                disabled></INPUT-component>
+                <input-component id="fechaActualizacionInput" label="Última actualización"
+                                disabled></input-component>
 
             </div>
 

@@ -779,6 +779,10 @@
     min-width: fit-content;
 }
 
+.min-w-800px{
+    min-width: 800px;
+}
+
 .w-max-content{
     width: max-content;
 }
@@ -3618,6 +3622,10 @@ ps-0{
 
 .overflow-y-auto{
     overflow-y: auto;
+}
+
+.overflow-x-auto{
+    overflow-x: auto;
 }
 
 .aspect-ratio-1-1{
